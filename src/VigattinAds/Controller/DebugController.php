@@ -20,6 +20,7 @@ class DebugController extends AbstractActionController
 {
     public function indexAction()
     {
+        //echo 'sfsd'fsfs;
         $sm = $this->getServiceLocator();
         $em = $sm->get('Doctrine\ORM\EntityManager');
         $viewModel = new ViewModel();

@@ -5,7 +5,7 @@ return array(
             'vigattinads' => array(
                 'type'    => 'segment',
                 'options' => array(
-                    'route'    => '/vigattinads[/][:controller[/:action]]',
+                    'route'    => '/vigattinads[/][:controller][/][:action]',
                     'constraints' => array(
                         'controller'    => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'action'        => '[a-zA-Z][a-zA-Z0-9_-]*',
