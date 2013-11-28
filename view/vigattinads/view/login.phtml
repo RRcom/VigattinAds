@@ -1,14 +1,15 @@
 <div class="row">
     <div class="col-lg-4 col-md-3 col-sm-2"></div>
     <div class="col-lg-4 col-md-6 col-sm-8">
-        <form class="form-signin">
-            <h2 class="form-signin-heading">Please sign in</h2>
-            <input type="text" class="form-control" placeholder="Email address" required autofocus>
-            <input type="password" class="form-control" placeholder="Password" required>
+        <?php if($this->error) echo '<div class="alert alert-warning">'.$this->error.'</div>'; ?>
+        <form class="form-signin" action="" method="post">
+            <h2 class="form-signin-heading">Please log in</h2>
+            <input name="email" type="text" class="form-control" placeholder="Email address" required autofocus>
+            <input name="password" type="password" class="form-control" placeholder="Password" required>
             <label class="checkbox">
-                <input type="checkbox" value="remember-me"> Remember me
+                <input name="remember" type="checkbox" value="remember-me"> Remember me
             </label>
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            <button name="login" value="true" class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
         </form>
     </div>
     <div class="col-lg-4 col-md-3 col-sm-2"></div>

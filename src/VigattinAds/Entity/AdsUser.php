@@ -66,6 +66,12 @@ class AdsUser {
     protected $verified = false;
 
     /**
+     * @var string
+     * @ORM\Column(name="privilege", type="string", length=255)
+     */
+    protected $privilege = 'b';
+
+    /**
      * @var arraycollection
      * @ORM\OneToMany(targetEntity="Ads", mappedBy="adsUser")
      */
@@ -215,6 +221,20 @@ class AdsUser {
         return $this->verified;
     }
 
+    /**
+     * @return string
+     */
+    public function getPrivilege()
+    {
+        return $this->privilege;
+    }
 
+    /**
+     * @param $privilege
+     */
+    public function setPrivilege($privilege)
+    {
+        $this->privilege = $privilege;
+    }
 
 }

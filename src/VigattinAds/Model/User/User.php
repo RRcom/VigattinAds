@@ -100,11 +100,11 @@ class User
     {
         if($this->emailValidator->isValid($user))
         {
-            $query = $this->entityManager->createQuery("SELECT u FROM UserEntity u WHERE u.email = :user");
+            $query = $this->entityManager->createQuery("SELECT u FROM VigattinAds\Entity\AdsUser u WHERE u.email = :user");
         }
         elseif($this->digitValidator->isValid($user))
         {
-            $query = $this->entityManager->createQuery("SELECT u FROM UserEntity u WHERE u.id = :user");
+            $query = $this->entityManager->createQuery("SELECT u FROM VigattinAds\Entity\AdsUser u WHERE u.id = :user");
         }
         elseif($this->alphaNumericValidator->isValid($user))
         {
@@ -147,20 +147,26 @@ class User
     }
 
     /**
-     * @return UserEntity
-     */
-    public function getUserEntity()
-    {
-        return $this->user;
-    }
-
-    /**
      * @return bool
      */
     public function isLogin()
     {
         if($this->user instanceof UserEntity) return true;
         return false;
+    }
+
+    public function logout()
+    {
+        $this->user = null;
+        $this->sessionManager->getStorage()->user = null;
+    }
+
+    /**
+     * @return UserEntity
+     */
+    public function getUserEntity()
+    {
+        return $this->user;
     }
 
     /**

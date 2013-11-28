@@ -23,11 +23,15 @@ return array(
         'invokables' => array(
             'VigattinAds\Controller\Index' => 'VigattinAds\Controller\IndexController',
             'VigattinAds\Controller\Debug' => 'VigattinAds\Controller\DebugController',
+            'VigattinAds\Controller\AccountHome' => 'VigattinAds\Controller\AccountHomeController',
+            'VigattinAds\Controller\Cli'   => 'VigattinAds\Controller\CliController',
+            'VigattinAds\Controller\Logout'   => 'VigattinAds\Controller\LogoutController',
         ),
     ),
     'view_manager' => array(
         'template_map' => array(
             'vigattinads/layout/default'    => __DIR__ . '/../view/vigattinads/layout/default.phtml',
+            'vigattinads/layout/active'    => __DIR__ . '/../view/vigattinads/layout/active.phtml',
             'vigattinads/view/index' => __DIR__ . '/../view/vigattinads/view/index.phtml',
         ),
         'template_path_stack' => array(
@@ -49,5 +53,20 @@ return array(
                 ),
             ),
         ),
+    ),
+    'console' => array(
+        'router' => array(
+            'routes' => array(
+                'create-user' => array(
+                    'options' => array(
+                        'route'    => 'create-user [--email=] [--username=] [--password=] [--first-name=] [--last-name=]',
+                        'defaults' => array(
+                            'controller' => 'VigattinAds\Controller\Cli',
+                            'action'     => 'index',
+                        )
+                    )
+                )
+            )
+        )
     ),
 );

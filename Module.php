@@ -1,6 +1,7 @@
 <?php
 namespace VigattinAds;
 
+use Zend\Db\Sql\Predicate\Literal;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Session\SessionManager;
@@ -16,6 +17,37 @@ class Module
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
         $this->bootstrapSession($e);
+        $this->dispatchRouter($e);
+    }
+
+    public function dispatchRouter(MvcEvent $e)
+    {
+        $e->getApplication()->getEventManager()->attach(MvcEvent::EVENT_DISPATCH,function(MvcEvent $e)
+        {
+            if($e->getRouteMatch()->getMatchedRouteName() != 'vigattinads') return;
+            switch(strtolower($e->getRouteMatch()->getParam('controller')))
+            {
+                // accounthome controller
+                case strtolower('VigattinAds\Controller\Index'):
+                    $user = $e->getApplication()->getServiceManager()->get('VigattinAds\Model\User\User');
+                    if($user->isLogin())
+                    {
+                        Header('Location: /vigattinads/account-home');
+                        exit();
+                    }
+                    break;
+
+                // any controller
+                default:
+                    $user = $e->getApplication()->getServiceManager()->get('VigattinAds\Model\User\User');
+                    if(!$user->isLogin())
+                    {
+                        Header('Location: /vigattinads');
+                        exit();
+                    }
+                    break;
+            }
+        });
     }
 
     public function getConfig()
