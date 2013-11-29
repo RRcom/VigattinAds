@@ -1,0 +1,29 @@
+<div>
+    <p><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Create New Ads Wizard</button></p>
+</div>
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Ads ID</th>
+        <th>Ads Name</th>
+        <th>Status</th>
+        <th>Show In</th>
+        <th>Ads Link</th>
+        <th>Options</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach($adsList as $ads): ?>
+    <tr>
+        <td>1</td>
+        <td><?php echo $ads->getId(); ?></td>
+        <td><?php echo $ads->getAdsName(); ?></td>
+        <td><?php echo $userModel->getAds()->translateStatus($ads->getStatus()); ?></td>
+        <td><?php echo $ads->getShowIn(); ?></td>
+        <td><?php echo $ads->getAdsUrl(); ?></td>
+        <td><a href="#"><span class="glyphicon glyphicon-edit"></span> Edit</a></td>
+    </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>

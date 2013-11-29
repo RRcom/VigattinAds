@@ -12,6 +12,10 @@ use VigattinAds\Entity\AdsUser;
  */
 class Ads {
 
+    const STATUS_PENDING = 0;
+    const STATUS_APPROVED = 1;
+    const STATUS_DISAPPROVED = -1;
+
     /**
      * @ORM\Id
      * @ORM\Column(name="id", type="integer", options={"unsigned"=true})
@@ -38,6 +42,18 @@ class Ads {
      * @ORM\OneToMany(targetEntity="AdsView", mappedBy="ads")
      */
     protected $adsView = null;
+
+    /**
+     * @var string
+     * @ORM\Column(name="show_in", type="string", length=255)
+     */
+    protected $showIn;
+
+    /**
+     * @var integer
+     * @ORM\Column(name="status", type="smallint")
+     */
+    protected $status = 0;
 
     /**
      * @ORM\ManyToOne(targetEntity="AdsUser", inversedBy="ads")
@@ -123,5 +139,39 @@ class Ads {
     {
         return $this->adsUrl;
     }
+
+    /**
+     * @param string $showIn
+     */
+    public function setShowIn($showIn)
+    {
+        $this->showIn = $showIn;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShowIn()
+    {
+        return $this->showIn;
+    }
+
+    /**
+     * @param int $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+
 
 }

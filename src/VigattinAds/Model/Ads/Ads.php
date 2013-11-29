@@ -11,6 +11,15 @@ class Ads
 {
     const ORDER_BY_ASC = 0;
     const ORDER_BY_DESC = 1;
+    const TRANSLATE_SATATUS = 0;
+
+    protected $dictionary = array(
+        self::TRANSLATE_SATATUS => array(
+            AdsEntity::STATUS_DISAPPROVED => '<span class="text-danger"></spa><span class="glyphicon glyphicon-ban-circle"></span> Disapprove</span>',
+            AdsEntity::STATUS_PENDING => '<span class="text-warning"></spa><span class="glyphicon glyphicon-warning-sign"></span> Pending</span>',
+            AdsEntity::STATUS_APPROVED => '<span class="text-success"></spa><span class="glyphicon glyphicon-ok"></span> Approved</span>',
+        ),
+    );
 
     /**
      * @var \Zend\ServiceManager\ServiceManager
@@ -52,6 +61,13 @@ class Ads
         return $ads;
     }
 
+    /**
+     * @param int $start
+     * @param int $limit
+     * @param int $order
+     * @param UserEntity $userEntity
+     * @return array
+     */
     public function listAds($start = 0, $limit = 30, $order = self::ORDER_BY_ASC, UserEntity $userEntity = null)
     {
         switch($order)
@@ -89,5 +105,10 @@ class Ads
             }
         }
         return $count;
+    }
+
+    public function translateStatus($result)
+    {
+        return $this->dictionary[self::TRANSLATE_SATATUS][$result];
     }
 }
