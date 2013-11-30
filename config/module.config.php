@@ -5,10 +5,12 @@ return array(
             'vigattinads' => array(
                 'type'    => 'segment',
                 'options' => array(
-                    'route'    => '/vigattinads[/][:controller][/][:action]',
+                    'route'    => '/vigattinads[/][:controller][/][:action][/][:param1][/][:param2]',
                     'constraints' => array(
                         'controller'    => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'action'        => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'param1'        => '[a-zA-Z0-9_-]*',
+                        'param2'        => '[a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
                         '__NAMESPACE__' => 'VigattinAds\Controller',

@@ -22,12 +22,12 @@ class Module
 
     public function dispatchRouter(MvcEvent $e)
     {
-        $e->getApplication()->getEventManager()->attach(MvcEvent::EVENT_DISPATCH,function(MvcEvent $e)
+        $e->getApplication()->getEventManager()->attach(MvcEvent::EVENT_ROUTE,function(MvcEvent $e)
         {
             if($e->getRouteMatch()->getMatchedRouteName() != 'vigattinads') return;
             switch(strtolower($e->getRouteMatch()->getParam('controller')))
             {
-                // accounthome controller
+                // if enter accounthome controller
                 case strtolower('VigattinAds\Controller\Index'):
                     $user = $e->getApplication()->getServiceManager()->get('VigattinAds\Model\User\User');
                     if($user->isLogin())
@@ -37,7 +37,7 @@ class Module
                     }
                     break;
 
-                // any controller
+                // if enter any controller
                 default:
                     $user = $e->getApplication()->getServiceManager()->get('VigattinAds\Model\User\User');
                     if(!$user->isLogin())

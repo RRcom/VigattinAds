@@ -26,7 +26,6 @@ class Admin
     {
         $actionContent = new ViewModel();
         $actionContent->setTemplate('vigattinads/view/account-home-admin');
-        $actionContent->setVariable('title', 'Admin');
         $this->viewModel->addChild($actionContent, 'actionContent');
         return $this->viewModel;
     }

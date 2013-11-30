@@ -26,7 +26,6 @@ class Profile
     {
         $actionContent = new ViewModel();
         $actionContent->setTemplate('vigattinads/view/account-home-index');
-        $actionContent->setVariable('title', 'My Profile');
         $this->viewModel->addChild($actionContent, 'actionContent');
         return $this->viewModel;
     }

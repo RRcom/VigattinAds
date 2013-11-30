@@ -32,7 +32,6 @@ class Ads
     {
         $actionContent = new ViewModel();
         $actionContent->setTemplate('vigattinads/view/account-home-ads');
-        $actionContent->setVariable('title', 'My Ads');
         $actionContent->setVariable('adsList', $this->getAdsList());
         $actionContent->setVariable('userModel', $this->userModel);
         $this->viewModel->addChild($actionContent, 'actionContent');

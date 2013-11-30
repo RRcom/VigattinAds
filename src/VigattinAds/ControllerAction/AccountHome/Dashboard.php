@@ -26,7 +26,6 @@ class Dashboard
     {
         $actionContent = new ViewModel();
         $actionContent->setTemplate('vigattinads/view/account-home-index');
-        $actionContent->setVariable('title', 'Dashbaord');
         $this->viewModel->addChild($actionContent, 'actionContent');
         return $this->viewModel;
     }
