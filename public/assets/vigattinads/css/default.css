@@ -11,11 +11,40 @@ body {
 footer {
     padding: 30px 0;
 }
+.ol-no-padding {
+    padding: 0;
+}
 .description-input {
     resize: vertical;
     min-height: 150px
 }
-
+.wizard-edit-info-form {
+    max-width: 500px;
+}
+.ads-sample-template {
+    height: 200px;
+    position: relative;
+}
+.ads-sample-template div {
+    border: 1px solid #CCC;
+    text-align: center;
+    font-size: 2em;
+    color: #CCC;
+}
+.ads-sample-topbar > div {
+    height: 48px;
+    line-height: 48px;
+}
+.ads-sample-template.ads-sample-bottombar {
+   height: 50px;
+   margin-top: 138px;
+}
+.ads-sample-template.ads-sample-sidebar-left > div {
+    height: 180px;
+    width: 38px;
+    padding: 0 5px 0 5px;
+    word-break: break-all;
+}
 /*
  * Off Canvas
  * --------------------------------------------------

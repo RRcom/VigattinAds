@@ -42,10 +42,25 @@ class AccountHomeController extends AbstractActionController
             case 'wizard':
                 switch($param2)
                 {
-                    default:
-                        $this->mainView->setVariable('title', 'Ads Wizard / Edit Info');
+                    case 'template':
+                        $this->mainView->setVariable('title', 'Please choose which ads space to use.');
+                        $wizardChooseTemplte = new AccountHome\WizardChooseTemplate($this);
+                        return $wizardChooseTemplte->process();
+                        break;
+                    case 'edit':
+                        $this->mainView->setVariable('title', 'Edit your ads information');
                         $wizardEditInfo = new AccountHome\WizardEditInfo($this);
                         return $wizardEditInfo->process();
+                        break;
+                    case 'image':
+                        $this->mainView->setVariable('title', 'Upload your ads image.');
+                        $wizardChooseTemplte = new AccountHome\WizardUploadImage($this);
+                        return $wizardChooseTemplte->process();
+                        break;
+                    default:
+                        $this->mainView->setVariable('title', 'Please choose which ads space to use.');
+                        $wizardChooseTemplte = new AccountHome\WizardChooseTemplate($this);
+                        return $wizardChooseTemplte->process();
                         break;
                 }
                 break;

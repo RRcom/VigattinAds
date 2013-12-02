@@ -48,7 +48,13 @@ class Ads {
      * @ORM\Column(name="show_in", type="string", length=255)
      */
     protected $showIn;
-
+    
+    /**
+     * @var string
+     * @ORM\Column(name="template", type="string", length=255)
+     */
+    protected $template;
+    
     /**
      * @var integer
      * @ORM\Column(name="status", type="smallint")

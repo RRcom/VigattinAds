@@ -26,6 +26,11 @@ class WizardEditInfo
      * @var \Zend\View\Model\ViewModel
      */
     protected $actionContent;
+    
+    /**
+     * @var \Zend\Session\SessionManager
+     */
+    protected $sessionManager;
 
     public function __construct(AccountHomeController $accountHomeCtrl)
     {
@@ -34,6 +39,7 @@ class WizardEditInfo
         $this->userModel = $this->accountHomeCtrl->getServiceLocator()->get('VigattinAds\Model\User\User');
         $this->actionContent = new ViewModel();
         $this->actionContent->setTemplate('vigattinads/view/wizard-edit-info');
+        $this->sessionManager = $this->accountHomeCtrl->getServiceLocator()->get('Zend\Session\SessionManager');
     }
 
     public function process()
@@ -55,13 +61,16 @@ class WizardEditInfo
                 'adsUrlError' => Validator::isUrlValid($this->accountHomeCtrl->getRequest()->getPost('ads-url', '')),
                 'adsDescriptionError' => Validator::isDescriptionValid($this->accountHomeCtrl->getRequest()->getPost('ads-description', '')),
             );
+            $this->sessionManager->getStorage()->tempAdsName = $formError['adsName'];
+            $this->sessionManager->getStorage()->tempAdsUrl = $formError['adsUrl'];
+            $this->sessionManager->getStorage()->tempAdsDescription = $formError['adsDescription'];
         }
         else
         {
             $formError = array(
-                'adsName' => $this->accountHomeCtrl->getRequest()->getPost('ads-name', ''),
-                'adsUrl' => $this->accountHomeCtrl->getRequest()->getPost('ads-url', ''),
-                'adsDescription' => $this->accountHomeCtrl->getRequest()->getPost('ads-description', ''),
+                'adsName' => $this->sessionManager->getStorage()->tempAdsName,
+                'adsUrl' => $this->sessionManager->getStorage()->tempAdsUrl,
+                'adsDescription' => $this->sessionManager->getStorage()->tempAdsDescription,
                 'adsNameError' => '',
                 'adsUrlError' => '',
                 'adsDescriptionError' => '',
