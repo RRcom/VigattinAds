@@ -40,7 +40,7 @@ class Validator
         return '';
     }
 
-    static public function isDescriptionValid($text, $min = 0, $max = 32)
+    static public function isDescriptionValid($text, $min = 0, $max = 320)
     {
         $regex = new Regex(array('pattern' => '#^[a-zA-Z0-9_-\s\.]*$#'));
         $strlength = new StringLength();
