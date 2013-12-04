@@ -49,13 +49,16 @@ class Ads
         $this->userEntity = $userEntity;
     }
 
-    public function createAds($adsName, $adsUrl, $adsDescription)
+    public function createAds($adsTitle, $adsUrl, $adsDescription, $showIn, $template, $keyword = '')
     {
         $ads = new AdsEntity();
         $ads->setAdsUser($this->userEntity);
-        $ads->setAdsName($adsName);
+        $ads->setAdsTitle($adsTitle);
         $ads->setAdsUrl($adsUrl);
         $ads->setAdsDescription($adsDescription);
+        $ads->setShowIn($showIn);
+        $ads->setTemplate($template);
+        $ads->setKeywords($keyword);
         $this->entityManager->persist($ads);
         $this->entityManager->flush($ads);
         return $ads;

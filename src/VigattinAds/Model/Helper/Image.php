@@ -136,7 +136,6 @@ class Image
             $this->image_resource = @imagecreatefromstring($image_file);
             return $this->image_resource;
         }
-
     }
 
     /**

@@ -6,6 +6,21 @@ use Zend\View\Model\ViewModel;
 
 class WizardChooseTemplate
 {
+    protected $template = array(
+        '1' => array(
+            'showIn' => 'vigattintrade.com',
+            'template' => 'home-sidebar-left',
+        ),
+        '2' => array(
+            'showIn' => 'vigattintrade.com',
+            'template' => 'related-ads-bottom',
+        ),
+        '3' => array(
+            'showIn' => 'vigattintourism.com',
+            'template' => 'home-sidebar-right',
+        ),
+    );
+
     /**
      * @var \VigattinAds\Controller\AccountHomeController
      */
@@ -50,6 +65,20 @@ class WizardChooseTemplate
 
     public function action()
     {
+        $template = $this->getTemplate($this->accountHomeCtrl->getRequest()->getPost('action', ''));
+        if(is_array($template))
+        {
+            $this->sessionManager->getStorage()->tempAdsTemplate = $template;
+            header('Location: /vigattinads/account-home/ads/wizard/edit');
+            exit();
+        }
         return $this->actionContent;
+    }
+
+    public function getTemplate($templateCode)
+    {
+        $templateCode = strval($templateCode);
+        if(isset($this->template[$templateCode])) return $this->template[$templateCode];
+        return '';
     }
 }

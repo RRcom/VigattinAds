@@ -8,7 +8,7 @@ use VigattinAds\Entity\AdsUser;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="ads", indexes={@ORM\Index(name="search_index", columns={"ads_name", "ads_url"})})
+ * @ORM\Table(name="ads", indexes={@ORM\Index(name="search_index", columns={"ads_title", "show_in", "template", "keywords"})})
  */
 class Ads {
 
@@ -24,11 +24,12 @@ class Ads {
     protected $id;
 
     /**
-     * @ORM\Column(name="ads_name", type="string", length=255)
+     * @ORM\Column(name="ads_title", type="string", length=255)
      */
-    protected $adsName;
+    protected $adsTitle;
 
     /**
+     * Back link of the ads (full URL to ads site).
      * @ORM\Column(name="ads_url", type="string", length=255)
      */
     protected $adsUrl;
@@ -44,18 +45,28 @@ class Ads {
     protected $adsView = null;
 
     /**
+     * Web site for the ads to show
      * @var string
      * @ORM\Column(name="show_in", type="string", length=255)
      */
     protected $showIn;
     
     /**
+     * Position in the site where the ads will be placed.
      * @var string
      * @ORM\Column(name="template", type="string", length=255)
      */
     protected $template;
+
+    /**
+     * Keywords for the ads to show
+     * @var string
+     * @ORM\Column(name="keywords", type="string", length=255)
+     */
+    protected $keywords;
     
     /**
+     * Ads status can be 0 = pending, 1 = approved or -1 = disapproved.
      * @var integer
      * @ORM\Column(name="status", type="smallint")
      */
@@ -115,19 +126,19 @@ class Ads {
     }
 
     /**
-     * @param mixed $adsName
+     * @param mixed $adsTitle
      */
-    public function setAdsName($adsName)
+    public function setAdsTitle($adsTitle)
     {
-        $this->adsName = $adsName;
+        $this->adsTitle = $adsTitle;
     }
 
     /**
      * @return mixed
      */
-    public function getAdsName()
+    public function getAdsTitle()
     {
-        return $this->adsName;
+        return $this->adsTitle;
     }
 
     /**
@@ -177,6 +188,40 @@ class Ads {
     {
         return $this->status;
     }
+
+    /**
+     * @param string $keywords
+     */
+    public function setKeywords($keywords)
+    {
+        $this->keywords = $keywords;
+    }
+
+    /**
+     * @return string
+     */
+    public function getKeywords()
+    {
+        return $this->keywords;
+    }
+
+    /**
+     * @param string $template
+     */
+    public function setTemplate($template)
+    {
+        $this->template = $template;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTemplate()
+    {
+        return $this->template;
+    }
+
+
 
 
 

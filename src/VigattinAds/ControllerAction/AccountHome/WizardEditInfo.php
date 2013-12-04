@@ -54,29 +54,65 @@ class WizardEditInfo
         if(strtolower($this->accountHomeCtrl->getRequest()->getPost('submit', '')) == 'next')
         {
             $formError = array(
-                'adsName' => $this->accountHomeCtrl->getRequest()->getPost('ads-name', ''),
+                'adsTitle' => $this->accountHomeCtrl->getRequest()->getPost('ads-title', ''),
                 'adsUrl' => $this->accountHomeCtrl->getRequest()->getPost('ads-url', ''),
+                'adsKeyword' => $this->accountHomeCtrl->getRequest()->getPost('ads-keyword', ''),
                 'adsDescription' => $this->accountHomeCtrl->getRequest()->getPost('ads-description', ''),
-                'adsNameError' => Validator::isNameValid($this->accountHomeCtrl->getRequest()->getPost('ads-name', '')),
+                'adsImageError' => Validator::isImage($this->accountHomeCtrl->getRequest()->getFiles('ads-image')),
+                'adsTitleError' => Validator::isTitleValid($this->accountHomeCtrl->getRequest()->getPost('ads-title', '')),
                 'adsUrlError' => Validator::isUrlValid($this->accountHomeCtrl->getRequest()->getPost('ads-url', '')),
+                'adsKeywordError' => Validator::isKeywordValid($this->accountHomeCtrl->getRequest()->getPost('ads-keyword', '')),
                 'adsDescriptionError' => Validator::isDescriptionValid($this->accountHomeCtrl->getRequest()->getPost('ads-description', '')),
             );
-            $this->sessionManager->getStorage()->tempAdsName = $formError['adsName'];
+            $this->sessionManager->getStorage()->tempAdsTitle = $formError['adsTitle'];
             $this->sessionManager->getStorage()->tempAdsUrl = $formError['adsUrl'];
+            $this->sessionManager->getStorage()->tempAdsKeyword = $formError['adsKeyword'];
             $this->sessionManager->getStorage()->tempAdsDescription = $formError['adsDescription'];
+            if(!strlen($formError['adsImageError'].$formError['adsTitleError'].$formError['adsUrlError'].$formError['adsKeywordError'].$formError['adsDescriptionError']))
+            {
+                $this->processRequest();
+            }
         }
         else
         {
             $formError = array(
-                'adsName' => $this->sessionManager->getStorage()->tempAdsName,
+                'adsTitle' => $this->sessionManager->getStorage()->tempAdsTitle,
                 'adsUrl' => $this->sessionManager->getStorage()->tempAdsUrl,
+                'adsKeyword' => $this->sessionManager->getStorage()->tempAdsKeyword,
                 'adsDescription' => $this->sessionManager->getStorage()->tempAdsDescription,
-                'adsNameError' => '',
+                'adsImageError' => '',
+                'adsTitleError' => '',
                 'adsUrlError' => '',
+                'adsKeywordError' => '',
                 'adsDescriptionError' => '',
             );
         }
         $this->actionContent->setVariables($formError);
         return $this->actionContent;
+    }
+
+    public function processRequest()
+    {
+        $adsModel = $this->userModel->getAds();
+        $adsModel->createAds(
+            $this->sessionManager->getStorage()->tempAdsTitle,
+            $this->sessionManager->getStorage()->tempAdsUrl,
+            $this->sessionManager->getStorage()->tempAdsDescription,
+            $this->sessionManager->getStorage()->tempAdsTemplate['showIn'],
+            $this->sessionManager->getStorage()->tempAdsTemplate['template'],
+            $this->sessionManager->getStorage()->tempAdsKeyword
+        );
+        $this->clearTempData();
+        header('Location: /vigattinads/account-home/ads');
+        exit();
+    }
+
+    public function clearTempData()
+    {
+        $this->sessionManager->getStorage()->tempAdsTitle = null;
+        $this->sessionManager->getStorage()->tempAdsUrl = null;
+        $this->sessionManager->getStorage()->tempAdsDescription = null;
+        $this->sessionManager->getStorage()->tempAdsTemplate = null;
+        $this->sessionManager->getStorage()->tempAdsKeyword = null;
     }
 }
