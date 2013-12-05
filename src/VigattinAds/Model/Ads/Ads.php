@@ -6,6 +6,7 @@ use VigattinAds\Entity\AdsUser as UserEntity;
 use VigattinAds\Entity\Ads as AdsEntity;
 use VigattinAds\Entity\AdsView;
 use Zend\ServiceManager\ServiceManager;
+use Doctrine\ORM\NoResultException;
 
 class Ads
 {
@@ -49,7 +50,7 @@ class Ads
         $this->userEntity = $userEntity;
     }
 
-    public function createAds($adsTitle, $adsUrl, $adsDescription, $showIn, $template, $keyword = '')
+    public function createAds($adsTitle, $adsUrl, $adsImage, $adsDescription, $showIn, $template, $keyword = '')
     {
         $ads = new AdsEntity();
         $ads->setAdsUser($this->userEntity);
@@ -59,6 +60,7 @@ class Ads
         $ads->setShowIn($showIn);
         $ads->setTemplate($template);
         $ads->setKeywords($keyword);
+        $ads->setAdsImage($adsImage);
         $this->entityManager->persist($ads);
         $this->entityManager->flush($ads);
         return $ads;
@@ -69,7 +71,7 @@ class Ads
      * @param int $limit
      * @param int $order
      * @param UserEntity $userEntity
-     * @return array
+     * @return \VigattinAds\Entity\Ads[]
      */
     public function listAds($start = 0, $limit = 30, $order = self::ORDER_BY_ASC, UserEntity $userEntity = null)
     {
@@ -90,7 +92,32 @@ class Ads
         $query->setParameter('userEntity', $userEntity);
         $query->setFirstResult($start);
         $query->setMaxResults($limit);
-        return $query->getResult();
+        try {
+            $result = $query->getResult();
+        } catch(NoResultException $ex) {
+            return array();
+        }
+        return $result;
+
+    }
+
+    /**
+     * @param int $id Ads Id
+     * @return bool|\VigattinAds\Entity\Ads
+     */
+    public function getAds($id)
+    {
+        $query = $this->entityManager->createQuery("SELECT a FROM VigattinAds\Entity\Ads a WHERE a.id = :adsId AND a.adsUser = :userEntity");
+        $query->setParameters(array(
+            'adsId' => intval($id),
+            'userEntity' => $this->userEntity,
+        ));
+        try {
+            $result = $query->getSingleResult();
+        } catch(NoResultException $ex) {
+            return false;
+        }
+        return $result;
     }
 
     public function deleteAds($ads)

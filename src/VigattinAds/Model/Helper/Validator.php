@@ -9,7 +9,7 @@ class Validator
 {
     static public function isNameValid($name, $min = 6, $max = 32)
     {
-        $regex = new Regex(array('pattern' => '#^[a-z-AZ0-9_-][a-zA-Z0-9_-\s]+$#'));
+        $regex = new Regex(array('pattern' => '#^[a-zA-Z0-9_-][a-zA-Z0-9_\s-]+$#'));
         $strlength = new StringLength();
         $strlength->setMin($min);
         $strlength->setMax($max);
@@ -20,7 +20,7 @@ class Validator
 
     static public function isTitleValid($name, $min = 6, $max = 32)
     {
-        $regex = new Regex(array('pattern' => '#^[a-z-AZ0-9_-][a-zA-Z0-9_-\s]+$#'));
+        $regex = new Regex(array('pattern' => '#^[a-zA-Z0-9_-][a-zA-Z0-9_\s-]+$#'));
         $strlength = new StringLength();
         $strlength->setMin($min);
         $strlength->setMax($max);

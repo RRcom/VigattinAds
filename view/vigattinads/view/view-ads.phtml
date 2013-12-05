@@ -1,0 +1,23 @@
+<?php if(!($ads instanceof \VigattinAds\Entity\Ads)): ?>
+<div class="alert alert-danger">No Ads Found!</div>
+<?php else: ?>
+<div class="panel panel-primary ">
+    <div class="panel-heading">Ads ID</div>
+        <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="thumbnail">
+                    <img src="/repo<?php echo $ads->getAdsImage(); ?>">
+                    <div class="caption">
+                        <h4 class="text-center"><?php echo $ads->getAdsTitle(); ?></h4>
+                        <p><?php echo $ads->getAdsDescription(); ?></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+
+            </div>
+        </div>
+    </div>
+</div>
+<?php endif; ?>

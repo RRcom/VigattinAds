@@ -2,10 +2,10 @@
 
     <div class="col-xs-6 col-sm-3 col-md-2 sidebar-offcanvas" id="sidebar" role="navigation">
         <div class="list-group">
-            <a href="<?php echo ($action == 'index') ? '#' : '/vigattinads/account-home'; ?>" class="list-group-item <?php echo ($action == 'index') ? 'active' : ''; ?>"><span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;&nbsp;Dashboard</a>
-            <a href="<?php echo ($action == 'ads') ? '#' : '/vigattinads/account-home/ads'; ?>" class="list-group-item <?php echo ($action == 'ads') ? 'active' : ''; ?>"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;&nbsp;&nbsp;Ads</a>
-            <a href="<?php echo ($action == 'profile') ? '#' : '/vigattinads/account-home/profile'; ?>" class="list-group-item <?php echo ($action == 'profile') ? 'active' : ''; ?>"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;&nbsp;Profile</a>
-            <a href="<?php echo ($action == 'admin') ? '#' : '/vigattinads/account-home/admin'; ?>" class="list-group-item <?php echo ($action == 'admin') ? 'active' : ''; ?>"><span class="glyphicon glyphicon-wrench"></span>&nbsp;&nbsp;&nbsp;Admin</a>
+            <a href="/vigattinads/account-home" class="list-group-item <?php echo ($action == 'index') ? 'active' : ''; ?>"><span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;&nbsp;Dashboard</a>
+            <a href="/vigattinads/account-home/ads" class="list-group-item <?php echo ($action == 'ads') ? 'active' : ''; ?>"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;&nbsp;&nbsp;Ads</a>
+            <a href="/vigattinads/account-home/profile" class="list-group-item <?php echo ($action == 'profile') ? 'active' : ''; ?>"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;&nbsp;Profile</a>
+            <a href="/vigattinads/account-home/admin" class="list-group-item <?php echo ($action == 'admin') ? 'active' : ''; ?>"><span class="glyphicon glyphicon-wrench"></span>&nbsp;&nbsp;&nbsp;Admin</a>
         </div>
     </div><!--/span-->
 
@@ -18,7 +18,7 @@
                 <?php echo $breadCrumbs; ?>
             </div>
             <div>
-                <div class="alert alert-info"><?php echo $title; ?></div>
+                <p class="text-muted"><strong><?php echo $title; ?></strong></p>
             <?php echo $actionContent; ?>
         </div>
     </div><!--/span-->

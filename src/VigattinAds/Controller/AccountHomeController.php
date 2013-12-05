@@ -64,6 +64,16 @@ class AccountHomeController extends AbstractActionController
                         break;
                 }
                 break;
+            case 'edit':
+                $this->mainView->setVariable('title', 'Edit Ads');
+                $editAds = new AccountHome\EditAds($this);
+                return $editAds->process();
+                break;
+            case 'view':
+                $this->mainView->setVariable('title', 'View ads full details');
+                $viewAds = new AccountHome\ViewAds($this);
+                return $viewAds->process();
+                break;
             default:
                 $this->mainView->setVariable('title', 'My Ads');
                 $myAds = new AccountHome\Ads($this);

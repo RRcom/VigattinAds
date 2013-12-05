@@ -3,7 +3,52 @@ namespace VigattinAds\Model\Helper;
 
 class Image
 {
+    /**
+     * @var resource
+     */
     private $image_resource;
+
+    /**
+     * @var string Directory of all uploaded images will be save
+     */
+    protected $image_repo;
+
+    public function __construct($image_repo = null)
+    {
+        $this->setImageRepo($image_repo);
+    }
+
+    /**
+     * Convert and resize image to specified width. Height is automatically adjusted based on aspect ratio.
+     * This method will return an array if the conversion succeeded.
+     * sample return
+     * <pre>
+     * array(
+     *  'status' => 'success' or 'failed',
+     *  'reason' => 'description of error if any',
+     *  'width' => 200,
+     *  'height' => 300,
+     *  'repo' => main directory of the image,
+     *  'path' => sub directory and new name of the image
+     * )
+     * </pre>
+     * @param $source_image_location The image to be converted or resize, can be image location or image from string.
+     * @param int $width The width the image will be after the conversion, height is automatically adjusted based on aspect ratio.
+     * @param int $quality The desired quality 0 to 100, the higher the good quality but larger file size.
+     * @param bool $progressive Either convert image as progressive jpeg. Progressive jpeg first load a low quality image and further on became clearer and clearer until the image download completely.
+     * @return array
+     */
+    public function save_convert_resize($source_image_location, $width = 320, $quality = 75, $progressive = false)
+    {
+        $repo = $this->getImageRepo();
+        if(!is_dir($repo)) return array('status' => 'failed', 'reason' => 'invalid image repo, or not set');
+        $subDir = $this->createDir();
+        if(!$subDir) return array('status' => 'failed', 'reason' =>'cannot create directory');
+        $subDir = $subDir.'/'.uniqid().'.jpg';
+        $result = $this->base_width_convert_resize($source_image_location, $repo.'/'.$subDir, $width, $quality, $progressive);
+        if(!$result) return array('status' => 'failed', 'reason' => 'something went wrong when processing the image');
+        return array('status' => 'success', 'reason' => '', 'width' => $result['width'], 'height' => $result['height'], 'repo' => $this->getImageRepo(), 'path' => $subDir);
+    }
 
     /**
      * Convert and resize image to specified width. Height is automatically adjusted based on aspect ratio.
@@ -248,5 +293,45 @@ class Image
         }
         $new_size = array($new_width, $new_height, $new_x, $new_y);
         return $new_size;
+    }
+
+    /**
+     * @param $imageRepo Image repository directory
+     */
+    public function setImageRepo($imageRepo)
+    {
+        if(is_dir($imageRepo)) $this->image_repo = rtrim($imageRepo, "/\\");
+    }
+
+    /**
+     * @return string Image repository directory
+     */
+    public function getImageRepo()
+    {
+        return $this->image_repo;
+    }
+
+    /**
+     * Create directory structure base on date.;
+     * @return bool|string The generated directory (repo dir is excluded).
+     */
+    public function createDir()
+    {
+        $dir = array(
+            date('Y'),
+            date('m'),
+            date('d'),
+            date('H'),
+        );
+        $repo = $this->getImageRepo();
+        $subPath = '';
+        if(!is_dir($repo)) return false;
+        foreach($dir as $folder)
+        {
+            $subPath .= '/'.$folder;
+            if(!is_dir($repo.'/'.$subPath)) mkdir($repo.'/'.$subPath);
+        }
+        if(is_dir($repo.'/'.$subPath)) return $subPath;
+        return false;
     }
 }

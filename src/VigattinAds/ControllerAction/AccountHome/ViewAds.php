@@ -4,7 +4,7 @@ namespace VigattinAds\ControllerAction\AccountHome;
 use VigattinAds\Controller\AccountHomeController;
 use Zend\View\Model\ViewModel;
 
-class WizardUploadImage
+class ViewAds
 {
     /**
      * @var \VigattinAds\Controller\AccountHomeController
@@ -37,7 +37,7 @@ class WizardUploadImage
         $this->viewModel = $accountHomeCtrl->getMainView();
         $this->userModel = $this->accountHomeCtrl->getServiceLocator()->get('VigattinAds\Model\User\User');
         $this->actionContent = new ViewModel();
-        $this->actionContent->setTemplate('vigattinads/view/wizard-upload-image');
+        $this->actionContent->setTemplate('vigattinads/view/view-ads');
         $this->sessionManager = $this->accountHomeCtrl->getServiceLocator()->get('Zend\Session\SessionManager');
     }
 
@@ -50,6 +50,9 @@ class WizardUploadImage
 
     public function action()
     {
+        $adsId = $this->accountHomeCtrl->params('param2', '');
+        $adsModel = $this->userModel->getAds();
+        $this->actionContent->setVariable('ads', $adsModel->getAds($adsId));
         return $this->actionContent;
     }
 }

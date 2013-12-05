@@ -64,6 +64,12 @@ class Ads {
      * @ORM\Column(name="keywords", type="string", length=255)
      */
     protected $keywords;
+
+    /**
+     * @var string
+     * @ORM\Column(name="ads_image", type="string", length=255)
+     */
+    protected $adsImage;
     
     /**
      * Ads status can be 0 = pending, 1 = approved or -1 = disapproved.
@@ -221,8 +227,21 @@ class Ads {
         return $this->template;
     }
 
+    /**
+     * @param string $adsImage
+     */
+    public function setAdsImage($adsImage)
+    {
+        $this->adsImage = $adsImage;
+    }
 
-
+    /**
+     * @return string
+     */
+    public function getAdsImage()
+    {
+        return $this->adsImage;
+    }
 
 
 }

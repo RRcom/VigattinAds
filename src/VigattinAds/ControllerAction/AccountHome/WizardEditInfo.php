@@ -4,9 +4,15 @@ namespace VigattinAds\ControllerAction\AccountHome;
 use VigattinAds\Controller\AccountHomeController;
 use Zend\View\Model\ViewModel;
 use VigattinAds\Model\Helper\Validator;
+use VigattinAds\Model\Helper\Image;
 
 class WizardEditInfo
 {
+    const IMAGE_REPO = 'repo';
+    const IMAGE_WIDTH = 480;
+    const IMAGE_QUALITY = 75;
+    const IMAGE_PROGRESSIVE = true;
+
     /**
      * @var \VigattinAds\Controller\AccountHomeController
      */
@@ -70,7 +76,7 @@ class WizardEditInfo
             $this->sessionManager->getStorage()->tempAdsDescription = $formError['adsDescription'];
             if(!strlen($formError['adsImageError'].$formError['adsTitleError'].$formError['adsUrlError'].$formError['adsKeywordError'].$formError['adsDescriptionError']))
             {
-                $this->processRequest();
+                $formError['adsImageError'] = $this->processRequest();
             }
         }
         else
@@ -93,18 +99,32 @@ class WizardEditInfo
 
     public function processRequest()
     {
-        $adsModel = $this->userModel->getAds();
-        $adsModel->createAds(
-            $this->sessionManager->getStorage()->tempAdsTitle,
-            $this->sessionManager->getStorage()->tempAdsUrl,
-            $this->sessionManager->getStorage()->tempAdsDescription,
-            $this->sessionManager->getStorage()->tempAdsTemplate['showIn'],
-            $this->sessionManager->getStorage()->tempAdsTemplate['template'],
-            $this->sessionManager->getStorage()->tempAdsKeyword
+        $repo = realpath(__DIR__.'/../../../../../../public/'.self::IMAGE_REPO);
+        $image = new Image($repo);
+        $uploadedImage = $this->accountHomeCtrl->getRequest()->getFiles('ads-image');
+        $result = $image->save_convert_resize(
+            $uploadedImage['tmp_name'],
+            self::IMAGE_WIDTH,
+            self::IMAGE_QUALITY,
+            self::IMAGE_PROGRESSIVE
         );
-        $this->clearTempData();
-        header('Location: /vigattinads/account-home/ads');
-        exit();
+        if($result['status'] == 'success')
+        {
+            $adsModel = $this->userModel->getAds();
+            $adsModel->createAds(
+                $this->sessionManager->getStorage()->tempAdsTitle,
+                $this->sessionManager->getStorage()->tempAdsUrl,
+                $result['path'],
+                $this->sessionManager->getStorage()->tempAdsDescription,
+                $this->sessionManager->getStorage()->tempAdsTemplate['showIn'],
+                $this->sessionManager->getStorage()->tempAdsTemplate['template'],
+                $this->sessionManager->getStorage()->tempAdsKeyword
+            );
+            $this->clearTempData();
+            header('Location: /vigattinads/account-home/ads');
+            exit();
+        }
+        return $result['reason'].' '.$repo;
     }
 
     public function clearTempData()

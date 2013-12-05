@@ -25,7 +25,7 @@
             <td><?php echo $ads->getShowIn(); ?></td>
             <td><?php echo $ads->getTemplate(); ?></td>
             <td><?php echo $ads->getAdsUrl(); ?></td>
-            <td><a href="#"><span class="glyphicon glyphicon-edit"></span> Edit/View</a></td>
+            <td><a href="/vigattinads/account-home/ads/view/<?php echo $ads->getId(); ?>"><span class="glyphicon glyphicon-edit"></span> View</a></td>
         </tr>
         <?php endforeach; ?>
         </tbody>
