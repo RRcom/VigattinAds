@@ -52,7 +52,16 @@ class ViewAds
     {
         $adsId = $this->accountHomeCtrl->params('param2', '');
         $adsModel = $this->userModel->getAds();
-        $this->actionContent->setVariable('ads', $adsModel->getAds($adsId));
+        $adsEntity = $adsModel->getAds($adsId);
+        $formError = array(
+            'adsImageError' => '',
+            'adsTitleError' => '',
+            'adsUrlError' => '',
+            'adsKeywordError' => '',
+            'adsDescriptionError' => '',
+        );
+        $this->actionContent->setVariables($formError);
+        $this->actionContent->setVariable('ads', $adsEntity);
         return $this->actionContent;
     }
 }

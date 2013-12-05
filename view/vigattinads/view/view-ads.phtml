@@ -1,23 +1,53 @@
 <?php if(!($ads instanceof \VigattinAds\Entity\Ads)): ?>
 <div class="alert alert-danger">No Ads Found!</div>
 <?php else: ?>
-<div class="panel panel-primary ">
-    <div class="panel-heading">Ads ID</div>
-        <div class="panel-body">
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="thumbnail">
-                    <img src="/repo<?php echo $ads->getAdsImage(); ?>">
-                    <div class="caption">
-                        <h4 class="text-center"><?php echo $ads->getAdsTitle(); ?></h4>
-                        <p><?php echo $ads->getAdsDescription(); ?></p>
+<form method="post" action="">
+    <div class="panel panel-primary ">
+        <div class="panel-heading">Ads ID</div>
+            <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="thumbnail">
+                        <img src="/repo<?php echo $ads->getAdsImage(); ?>">
+                        <div class="caption">
+                            <h4 class="text-center"><?php echo $ads->getAdsTitle(); ?></h4>
+                            <p><?php echo $ads->getAdsDescription(); ?></p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-sm-6">
-
+                <div class="col-sm-6">
+                    <div class="form-group <?php echo $adsTitleError ? 'has-error' : ''; ?>">
+                        <label class="control-label" for="ads-title">Ads Title</label>
+                        <?php if($adsTitleError): ?>
+                            <span class="help-block"><?php echo $adsTitleError; ?></span>
+                        <?php endif ?>
+                        <input type="text" class="form-control" id="ads-title" name="ads-title" required="true" placeholder="Ads Title" value="<?php echo $this->escapeHtmlAttr($ads->getAdsTitle()); ?>">
+                    </div>
+                    <div class="form-group <?php echo $adsUrlError ? 'has-error' : ''; ?>">
+                        <label class="control-label" for="ads-url">Ads Url</label>
+                        <?php if($adsUrlError): ?>
+                            <span class="help-block"><?php echo $adsUrlError; ?></span>
+                        <?php endif ?>
+                        <input type="text" class="form-control" id="ads-url" name="ads-url" required="true" placeholder="Ads URL" value="<?php echo $this->escapeHtmlAttr($ads->getAdsUrl()); ?>">
+                    </div>
+                    <div class="form-group <?php echo $adsKeywordError ? 'has-error' : ''; ?>">
+                        <label class="control-label" for="ads-keyword">Target Keyword</label>
+                        <?php if($adsKeywordError): ?>
+                            <span class="help-block"><?php echo $adsKeywordError; ?></span>
+                        <?php endif ?>
+                        <input type="text" class="form-control" id="ads-keyword" name="ads-keyword" placeholder="Leave blank to target all" value="<?php echo $this->escapeHtmlAttr($ads->getKeywords()); ?>">
+                    </div>
+                    <div class="form-group <?php echo $adsDescriptionError ? 'has-error' : ''; ?>">
+                        <label class="control-label" for="ads-description">Ads Description</label>
+                        <?php if($adsDescriptionError): ?>
+                            <span class="help-block"><?php echo $adsDescriptionError; ?></span>
+                        <?php endif ?>
+                        <textarea class="description-input form-control" id="ads-description" name="ads-description" placeholder="Ads Description"><?php echo $this->escapeHtml($ads->getAdsDescription()); ?></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" name="submit" value="next">Update</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</form>
 <?php endif; ?>

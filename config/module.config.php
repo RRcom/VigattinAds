@@ -28,6 +28,7 @@ return array(
             'VigattinAds\Controller\AccountHome' => 'VigattinAds\Controller\AccountHomeController',
             'VigattinAds\Controller\Cli'   => 'VigattinAds\Controller\CliController',
             'VigattinAds\Controller\Logout'   => 'VigattinAds\Controller\LogoutController',
+            'VigattinAds\Controller\JsonService'   => 'VigattinAds\Controller\JsonServiceController',
         ),
     ),
     'view_manager' => array(
@@ -38,6 +39,9 @@ return array(
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
+        ),
+        'strategies' => array(
+            'ViewJsonStrategy',
         ),
     ),
     'doctrine' => array(
