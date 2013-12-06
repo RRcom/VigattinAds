@@ -9,7 +9,7 @@ use VigattinAds\Model\Helper\Image;
 class WizardEditInfo
 {
     const IMAGE_REPO = 'repo';
-    const IMAGE_WIDTH = 480;
+    const IMAGE_WIDTH = 150;
     const IMAGE_QUALITY = 75;
     const IMAGE_PROGRESSIVE = true;
 

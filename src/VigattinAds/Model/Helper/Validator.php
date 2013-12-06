@@ -7,7 +7,7 @@ use VigattinAds\Model\Helper\Image;
 
 class Validator
 {
-    static public function isNameValid($name, $min = 6, $max = 32)
+    static public function isNameValid($name, $min = 6, $max = 48)
     {
         $regex = new Regex(array('pattern' => '#^[a-zA-Z0-9_-][a-zA-Z0-9_\s-]+$#'));
         $strlength = new StringLength();
@@ -18,7 +18,7 @@ class Validator
         return '';
     }
 
-    static public function isTitleValid($name, $min = 6, $max = 32)
+    static public function isTitleValid($name, $min = 6, $max = 48)
     {
         $regex = new Regex(array('pattern' => '#^[a-zA-Z0-9_-][a-zA-Z0-9_\s-]+$#'));
         $strlength = new StringLength();
@@ -29,7 +29,7 @@ class Validator
         return '';
     }
 
-    static public function isKeywordValid($text, $min = 0, $max = 32)
+    static public function isKeywordValid($text, $min = 0, $max = 48)
     {
         $regex = new Regex(array('pattern' => '#^[a-zA-Z0-9\s\,]*$#'));
         $strlength = new StringLength();
@@ -40,20 +40,24 @@ class Validator
         return '';
     }
 
-    static public function isDescriptionValid($text, $min = 0, $max = 320)
+    static public function isDescriptionValid($text, $min = 0, $max = 160)
     {
-        $regex = new Regex(array('pattern' => '#^[a-zA-Z0-9_-\s\.]*$#'));
+        $regex = new Regex(array('pattern' => '#^[a-zA-Z0-9_-\s\.\'",`]*$#'));
         $strlength = new StringLength();
         $strlength->setMin($min);
         $strlength->setMax($max);
-        if(!$regex->isValid($text)) return 'Invalid description! Must be alphanumeric or spaces or underscore or dashes';
+        if(!$regex->isValid($text)) return 'Invalid description! Must be alphanumeric or spaces or _-.\'"';
         if(!$strlength->isValid($text)) return 'Description must be minimum of '.$min.' and maximum of '.$max.' character';
         return '';
     }
 
-    static public function isUrlValid($url)
+    static public function isUrlValid($url, $min = 0, $max = 256)
     {
+        $strlength = new StringLength();
+        $strlength->setMin($min);
+        $strlength->setMax($max);
         if(!filter_var($url, FILTER_VALIDATE_URL)) return 'The link you provided is not a valid url';
+        if(!$strlength->isValid($url)) return 'Url must be maximum of '.$max.' character';
         return '';
     }
 

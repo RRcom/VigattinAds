@@ -29,6 +29,7 @@ return array(
             'VigattinAds\Controller\Cli'   => 'VigattinAds\Controller\CliController',
             'VigattinAds\Controller\Logout'   => 'VigattinAds\Controller\LogoutController',
             'VigattinAds\Controller\JsonService'   => 'VigattinAds\Controller\JsonServiceController',
+            'VigattinAds\Controller\ShowAds'   => 'VigattinAds\Controller\ShowAdsController',
         ),
     ),
     'view_manager' => array(

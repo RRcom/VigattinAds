@@ -11,7 +11,6 @@
             <th>Status</th>
             <th>Show In</th>
             <th>Position</th>
-            <th>Ads Link</th>
             <th>Options</th>
         </tr>
         </thead>
@@ -24,7 +23,6 @@
             <td><?php echo $userModel->getAds()->translateStatus($ads->getStatus()); ?></td>
             <td><?php echo $ads->getShowIn(); ?></td>
             <td><?php echo $ads->getTemplate(); ?></td>
-            <td><?php echo $ads->getAdsUrl(); ?></td>
             <td><a href="/vigattinads/account-home/ads/view/<?php echo $ads->getId(); ?>"><span class="glyphicon glyphicon-edit"></span> View</a></td>
         </tr>
         <?php endforeach; ?>
