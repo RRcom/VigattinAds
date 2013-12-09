@@ -6,7 +6,7 @@ use VigattinAds\Entity\Ads;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="ads_view", indexes={@ORM\Index(name="search_index", columns={"view_time", "clicked", "ads_referrer"})})
+ * @ORM\Table(name="ads_view", indexes={@ORM\Index(name="search_index", columns={"view_time", "clicked", "browser_id"})})
  */
 class AdsView {
 
@@ -35,6 +35,12 @@ class AdsView {
      * @ORM\Column(name="ads_referrer", type="string", length=255)
      */
     protected $adsReferrer;
+
+    /**
+     * @var string;
+     * @ORM\Column(name="browser_id", type="string", length=255)
+     */
+    protected $browserId;
 
     /**
      *
@@ -108,6 +114,20 @@ class AdsView {
         return $this->adsReferrer;
     }
 
+    /**
+     * @param string $browserId
+     */
+    public function setBrowserId($browserId)
+    {
+        $this->browserId = $browserId;
+    }
 
+    /**
+     * @return string
+     */
+    public function getBrowserId()
+    {
+        return $this->browserId;
+    }
 
 }

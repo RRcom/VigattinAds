@@ -27,6 +27,10 @@ class Module
             if($e->getRouteMatch()->getMatchedRouteName() != 'vigattinads') return;
             switch(strtolower($e->getRouteMatch()->getParam('controller')))
             {
+                // if show ads only
+                case strtolower('VigattinAds\Controller\ShowAds'):
+                    break;
+
                 // if enter accounthome controller
                 case strtolower('VigattinAds\Controller\Index'):
                     $user = $e->getApplication()->getServiceManager()->get('VigattinAds\Model\User\User');

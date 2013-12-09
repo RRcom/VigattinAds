@@ -141,4 +141,16 @@ class Ads
     {
         return $this->dictionary[self::TRANSLATE_SATATUS][$result];
     }
+
+    public function publicGetAds($ids)
+    {
+        $query = $this->entityManager->createQuery("SELECT a FROM VigattinAds\Entity\Ads a WHERE a.id IN (:ids)");
+        $query->setParameter('ids', $ids);
+        try {
+            $result = $query->getResult();
+        } catch(NoResultException $ex) {
+            return false;
+        }
+        return $result;
+    }
 }

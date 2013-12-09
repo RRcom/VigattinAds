@@ -1,0 +1,44 @@
+body {
+    background-color: #EEEDDD;
+}
+.clear-float {
+    clear: both;
+}
+.ads-frame {
+    width: 100%;
+    font-size: 11px;
+    margin-bottom: 10px;
+    display: block;
+    color: #333333;
+    opacity: 0.90;
+}
+.ads-frame:hover {
+    text-decoration: none;
+    color: #333333;
+    opacity: 1.00;
+}
+.ads-frame .ads-frame-title {
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    padding: 3px 0;
+}
+.ads-frame .ads-content {
+    width: 100%;
+}
+
+.ads-frame .ads-content .ads-image-preview-container {
+    width: 40%;
+    display: inline-block;
+    float: left;
+    margin-right: 5px;
+}
+.ads-frame .ads-content .ads-image-preview-container .ads-frame-image {
+    width: 100%;
+}
+.ads-separator {
+    border-top: 1px solid #FFFFFF;
+    border-bottom: 1px solid #CCCCCC;
+    opacity: 0.50;
+    margin: 5px;
+}

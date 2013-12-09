@@ -45,6 +45,41 @@ footer {
     padding: 0 5px 0 5px;
     word-break: break-all;
 }
+.padding-no {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+.padding-5px {
+    padding: 5px !important;
+    margin: 0 !important;
+}
+.padding-no-left {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+}
+.padding-no-right {
+    padding-right: 0 !important;
+    margin-right: 0 !important;
+}
+.ads-frame {
+    font-size: 11px;
+    padding: 10px 0;
+    background-color: #EEEDDD;
+}
+.ads-frame .ads-frame-image {
+    width: 100%;
+}
+.ads-frame .ads-frame-title {
+    font-weight: bold;
+    text-align: center;
+    padding-bottom: 3px;
+}
+.ads-frame .ads-image-preview-container {
+    display: inline-block;
+    width: 40%;
+    margin-right: 5px;
+    float: left;
+}
 /*
  * Off Canvas
  * --------------------------------------------------
