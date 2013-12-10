@@ -191,6 +191,39 @@ class Ads
         return $result;
     }
 
+    /**
+     * @param $showIn
+     * @param $template
+     * @param $keyword
+     * @param int $start
+     * @param int $limit
+     * @return AdsEntity[]
+     */
+    public function publicSearchAds($showIn, $template, $keyword, $start = 0, $limit = 10)
+    {
+        if($keyword)
+        {
+            $query = $this->entityManager->createQuery("SELECT a FROM VigattinAds\Entity\Ads a WHERE a.status = 1 AND a.showIn = :showIn AND a.template = :template AND a.keywords LIKE :keyword");
+            $query->setParameters(array('showIn' => $showIn, 'template' => $template, 'keyword' => '%'.$keyword.'%'));
+        }
+        else
+        {
+            $query = $this->entityManager->createQuery("SELECT a FROM VigattinAds\Entity\Ads a WHERE a.status = 1 AND a.showIn = :showIn AND a.template = :template");
+            $query->setParameters(array('showIn' => $showIn, 'template' => $template));
+        }
+        $query->setFirstResult($start);
+        $query->setMaxResults($limit);
+        try {
+            $result = $query->getResult();
+        } catch(NoResultException $ex) {
+            return array();
+        }
+        return $result;
+    }
+
+    /**
+     * @return array|EntityManager|object
+     */
     public function getEntityManager()
     {
         return $this->entityManager;

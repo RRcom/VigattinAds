@@ -8,11 +8,12 @@ use Zend\Mvc\MvcEvent;
 use Zend\Crypt\BlockCipher;
 use VigattinAds\Model\Ads\Ads as AdsModel;
 use VigattinAds\Entity\AdsView;
+use VigattinAds\Entity\Ads as AdsEntity;
 
 class ShowAdsController extends AbstractActionController
 {
     const COOKIE_NAME_VIEWS = 'hyd67YuhduZr';
-    const COOKIE_EXPIRE_VIEWS = 3600;
+    const COOKIE_EXPIRE_VIEWS = 300; // every 5 minutes
     const COOKIE_NAME_CLICK = 'N78TGdteiL37';
     const COOKIE_EXPIRE_CLICK = 3600;
     const ENCRYPTION_KEY = '4^O6lP%hdy';
@@ -28,9 +29,35 @@ class ShowAdsController extends AbstractActionController
      */
     protected $adsModel;
 
+    /**
+     * @var AdsEntity[]
+     */
+    protected $searchedAds;
+
+    /**
+     * 1 construct the controller
+     */
     public function __construct()
     {
         $this->viewModel = new ViewModel();
+    }
+
+    /**
+     * 2 initialize require method
+     * @param MvcEvent $e
+     * @return mixed
+     */
+    public function onDispatch(MvcEvent $e) {
+        // Create instance of adsModel
+        $this->adsModel = new AdsModel($this->getServiceLocator());
+        // Create browser id, if already exist reuse the id
+        $this->initViewSession();
+        // Create list of ads entities based on query param provided in the url
+        $this->searchedAds = $this->generateAds();
+        // Set template to use by this controller
+        $this->layout()->setTemplate('vigattinads/layout/ads');
+        // Call parent onDispatch
+        return parent::onDispatch($e);
     }
 
     public function indexAction()
@@ -41,7 +68,7 @@ class ShowAdsController extends AbstractActionController
     public function sidebarAction()
     {
         $this->viewModel->setTemplate('vigattinads/view/show-ads-sidebar');
-        $this->viewModel->setVariable('ads', $this->generateAds($this->request->getQuery('adsid', array())));
+        $this->viewModel->setVariable('ads', $this->searchedAds);
         return $this->viewModel;
     }
 
@@ -54,26 +81,24 @@ class ShowAdsController extends AbstractActionController
 
     public function validateAction()
     {
-        $status = '';
-        $data = $this->request->getPost('data', '');
-        $data = $this->processData($data);
         $jsonView = new JsonModel();
+        $status = '';
 
-        if(!is_array($data))
+        if(empty($_COOKIE[self::COOKIE_NAME_VIEWS]))
+        {
+            $jsonView->setVariable('status', 'I don`t know what to do!');
+            return $jsonView;
+        }
+
+        $ids = $this->request->getPost('ids', array());
+        if(!is_array($ids))
         {
             $status = 'invalid data';
             $jsonView->setVariable('status', $status);
             return $jsonView;
         }
 
-        if($data['expire'] < time())
-        {
-            $status = 'data expire';
-            $jsonView->setVariable('status', $status);
-            return $jsonView;
-        }
-
-        $adsEntities = $this->generateAds($data['adsId']);
+        $adsEntities = $this->adsModel->publicGetAds($ids);
 
         foreach($adsEntities as $adsEntity)
         {
@@ -82,7 +107,7 @@ class ShowAdsController extends AbstractActionController
             $view->setClicked(false);
             $view->setViewTime(time());
             $view->setAdsReferrer($_SERVER['HTTP_REFERER']);
-            $view->setBrowserId($_SERVER['REMOTE_ADDR'].'_'.$data['browserId']);
+            $view->setBrowserId($_SERVER['REMOTE_ADDR'].'_'.$_COOKIE[self::COOKIE_NAME_VIEWS]);
             $this->adsModel->getEntityManager()->persist($view);
         }
         $this->adsModel->getEntityManager()->flush();
@@ -90,46 +115,19 @@ class ShowAdsController extends AbstractActionController
         return $jsonView;
     }
 
-    public function processData($data)
-    {
-        $salt = isset($_COOKIE[self::COOKIE_NAME_VIEWS]) ? $_COOKIE[self::COOKIE_NAME_VIEWS] : '';
-        $blockCipher = BlockCipher::factory('mcrypt', array('algo' => 'aes'));
-        $blockCipher->setKey(self::ENCRYPTION_KEY.$salt);
-        $data = $blockCipher->decrypt($data);
-        return unserialize($data);
-    }
-
     public function initViewSession()
     {
+        if(isset($_COOKIE[self::COOKIE_NAME_VIEWS])) return $_COOKIE[self::COOKIE_NAME_VIEWS];
         $id = uniqid();
         setcookie(self::COOKIE_NAME_VIEWS, $id, time()+self::COOKIE_EXPIRE_VIEWS, "/vigattinads");
         return $id;
     }
 
-    public function createSecretData($browserId, $adsId)
+    public function generateAds()
     {
-        $data = array(
-            'expire' => time()+self::DATA_EXPIRE,
-            'browserId' => $browserId,
-            'adsId' => $adsId,
-        );
-        $data = serialize($data);
-        $blockCipher = BlockCipher::factory('mcrypt', array('algo' => 'aes'));
-        $blockCipher->setKey(self::ENCRYPTION_KEY.$browserId);
-        return $blockCipher->encrypt($data);
-    }
-
-    public function generateAds($adsIds)
-    {
-        return $this->adsModel->publicGetAds($adsIds);
-    }
-
-    public function onDispatch(MvcEvent $e) {
-        $this->adsModel = new AdsModel($this->getServiceLocator());
-        $adsId = $this->request->getQuery('adsid', array());
-        $uniqueId = $this->initViewSession();
-        $this->layout()->setTemplate('vigattinads/layout/ads');
-        $this->layout()->setVariable('js', 'var data = "'.$this->createSecretData($uniqueId, $adsId).'"');
-        return parent::onDispatch($e);
+        $showIn = $this->request->getQuery('showin', '');
+        $template = $this->request->getQuery('template', '');
+        $keyword = $this->request->getQuery('keyword', '');
+        return $this->adsModel->publicSearchAds($showIn, $template, $keyword);
     }
 }
