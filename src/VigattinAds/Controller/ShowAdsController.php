@@ -6,7 +6,7 @@ use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
 use Zend\Mvc\MvcEvent;
 use Zend\Crypt\BlockCipher;
-use VigattinAds\Model\Ads;
+use VigattinAds\Model\Ads\Ads as AdsModel;
 use VigattinAds\Entity\AdsView;
 
 class ShowAdsController extends AbstractActionController
@@ -22,6 +22,11 @@ class ShowAdsController extends AbstractActionController
      * @var \Zend\View\Model\ViewModel
      */
     protected $viewModel;
+
+    /**
+     * @var AdsModel
+     */
+    protected $adsModel;
 
     public function __construct()
     {
@@ -68,9 +73,6 @@ class ShowAdsController extends AbstractActionController
             return $jsonView;
         }
 
-        /** @var  $entityManager \Doctrine\ORM\EntityManager */
-        $entityManager = $this->serviceLocator->get('Doctrine\ORM\EntityManager');
-
         $adsEntities = $this->generateAds($data['adsId']);
 
         foreach($adsEntities as $adsEntity)
@@ -81,9 +83,9 @@ class ShowAdsController extends AbstractActionController
             $view->setViewTime(time());
             $view->setAdsReferrer($_SERVER['HTTP_REFERER']);
             $view->setBrowserId($_SERVER['REMOTE_ADDR'].'_'.$data['browserId']);
-            $entityManager->persist($view);
+            $this->adsModel->getEntityManager()->persist($view);
         }
-        $entityManager->flush();
+        $this->adsModel->getEntityManager()->flush();
         $jsonView->setVariable('status', 'success');
         return $jsonView;
     }
@@ -117,17 +119,17 @@ class ShowAdsController extends AbstractActionController
         return $blockCipher->encrypt($data);
     }
 
+    public function generateAds($adsIds)
+    {
+        return $this->adsModel->publicGetAds($adsIds);
+    }
+
     public function onDispatch(MvcEvent $e) {
+        $this->adsModel = new AdsModel($this->getServiceLocator());
         $adsId = $this->request->getQuery('adsid', array());
         $uniqueId = $this->initViewSession();
         $this->layout()->setTemplate('vigattinads/layout/ads');
         $this->layout()->setVariable('js', 'var data = "'.$this->createSecretData($uniqueId, $adsId).'"');
         return parent::onDispatch($e);
-    }
-
-    public function generateAds($adsIds)
-    {
-        $ads = new Ads\Ads($this->getServiceLocator());
-        return $ads->publicGetAds($adsIds);
     }
 }

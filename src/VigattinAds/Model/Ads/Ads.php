@@ -14,6 +14,9 @@ class Ads
     const ORDER_BY_DESC = 1;
     const TRANSLATE_SATATUS = 0;
 
+    /**
+     * @var array
+     */
     protected $dictionary = array(
         self::TRANSLATE_SATATUS => array(
             AdsEntity::STATUS_DISAPPROVED => '<span class="text-danger"></spa><span class="glyphicon glyphicon-ban-circle"></span> Disapprove</span>',
@@ -37,6 +40,11 @@ class Ads
      */
     protected $userEntity;
 
+    /**
+     * Create new instance of Ads model require service manager
+     * @param ServiceManager $serviceManager
+     * @param UserEntity $userEntity optional
+     */
     public function __construct(ServiceManager $serviceManager, UserEntity $userEntity = null)
     {
         $this->serviceManager = $serviceManager;
@@ -45,11 +53,26 @@ class Ads
         else $this->userEntity = new UserEntity();
     }
 
+    /**
+     * Set the current owner of this Ads
+     * @param UserEntity $userEntity
+     */
     public function setUserEntity(UserEntity $userEntity)
     {
         $this->userEntity = $userEntity;
     }
 
+    /**
+     * Create new ads to current user (userEntity must be set).
+     * @param $adsTitle Title for the ads to be created.
+     * @param $adsUrl Back link to your ads.
+     * @param $adsImage Image to show with your ads.
+     * @param $adsDescription Describe your ads here
+     * @param $showIn Which website to show your ads
+     * @param $template Which part of the site the ads will appear.
+     * @param string $keyword Your target keyword where your ads will appear
+     * @return AdsEntity Newly created ads entity based on the current setting of this method.
+     */
     public function createAds($adsTitle, $adsUrl, $adsImage, $adsDescription, $showIn, $template, $keyword = '')
     {
         $ads = new AdsEntity();
@@ -71,7 +94,7 @@ class Ads
      * @param int $limit
      * @param int $order
      * @param UserEntity $userEntity
-     * @return \VigattinAds\Entity\Ads[]
+     * @return AdsEntity[]
      */
     public function listAds($start = 0, $limit = 30, $order = self::ORDER_BY_ASC, UserEntity $userEntity = null)
     {
@@ -103,7 +126,7 @@ class Ads
 
     /**
      * @param int $id Ads Id
-     * @return bool|\VigattinAds\Entity\Ads
+     * @return bool|AdsEntity
      */
     public function getAds($id)
     {
@@ -120,6 +143,10 @@ class Ads
         return $result;
     }
 
+    /**
+     * @param AdsEntity[] $ads Array of ads entity to be deleted;
+     * @return int Count of deleted ads;
+     */
     public function deleteAds($ads)
     {
         if(!is_array($ads)) $ads = array($ads);
@@ -137,11 +164,21 @@ class Ads
         return $count;
     }
 
+    /**
+     * Translate Ads status table field to html
+     * @param $result
+     * @return mixed
+     */
     public function translateStatus($result)
     {
         return $this->dictionary[self::TRANSLATE_SATATUS][$result];
     }
 
+    /**
+     * Get ads without the need of user entity. Use to show ads on iFrame.
+     * @param array $ids Array of ads id to be fetch
+     * @return \VigattinAds\Entity\Ads[]|bool Array of user entity, false if no entity found.
+     */
     public function publicGetAds($ids)
     {
         $query = $this->entityManager->createQuery("SELECT a FROM VigattinAds\Entity\Ads a WHERE a.id IN (:ids)");
@@ -152,5 +189,10 @@ class Ads
             return false;
         }
         return $result;
+    }
+
+    public function getEntityManager()
+    {
+        return $this->entityManager;
     }
 }
