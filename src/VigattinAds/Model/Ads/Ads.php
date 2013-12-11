@@ -5,8 +5,10 @@ use Doctrine\ORM\EntityManager;
 use VigattinAds\Entity\AdsUser as UserEntity;
 use VigattinAds\Entity\Ads as AdsEntity;
 use VigattinAds\Entity\AdsView;
+use VigattinAds\Entity\Settings;
 use Zend\ServiceManager\ServiceManager;
 use Doctrine\ORM\NoResultException;
+use VigattinAds\Model\SettingsManager;
 
 class Ads
 {
@@ -41,6 +43,11 @@ class Ads
     protected $userEntity;
 
     /**
+     * @var \VigattinAds\Model\SettingsManager
+     */
+    protected $settingsManager;
+
+    /**
      * Create new instance of Ads model require service manager
      * @param ServiceManager $serviceManager
      * @param UserEntity $userEntity optional
@@ -51,6 +58,7 @@ class Ads
         $this->entityManager = $this->serviceManager->get('Doctrine\ORM\EntityManager');
         if($userEntity instanceof UserEntity) $this->userEntity = $userEntity;
         else $this->userEntity = new UserEntity();
+        $this->settingsManager = new SettingsManager($this->serviceManager);
     }
 
     /**
@@ -218,6 +226,55 @@ class Ads
         } catch(NoResultException $ex) {
             return array();
         }
+        return $result;
+    }
+
+    /**
+     * Count total of search result
+     * @param $showIn
+     * @param $template
+     * @param $keyword
+     * @return mixed
+     */
+    public function publicSearchAdsTotal($showIn, $template, $keyword)
+    {
+        if($keyword)
+        {
+            $query = $this->entityManager->createQuery("SELECT COUNT(a.id) FROM VigattinAds\Entity\Ads a WHERE a.status = 1 AND a.showIn = :showIn AND a.template = :template AND a.keywords LIKE :keyword");
+            $query->setParameters(array('showIn' => $showIn, 'template' => $template, 'keyword' => '%'.$keyword.'%'));
+        }
+        else
+        {
+            $query = $this->entityManager->createQuery("SELECT COUNT(a.id) FROM VigattinAds\Entity\Ads a WHERE a.status = 1 AND a.showIn = :showIn AND a.template = :template");
+            $query->setParameters(array('showIn' => $showIn, 'template' => $template));
+        }
+        return $query->getSingleScalarResult();
+    }
+
+    public function publicGetRotationAds($showIn, $template, $keyword, $limit = 10)
+    {
+        $key = md5('global-rotate'.$showIn.$template.$keyword);
+        $start = $this->settingsManager->get($key);
+        $total = $this->publicSearchAdsTotal($showIn, $template, $keyword);
+
+        // Check if start is higher than total and if so, reset start
+        if($start > $total) $start = $start - $total;
+
+        $result = $this->publicSearchAds($showIn, $template, $keyword, $start, $limit);
+        $resultTotal = count($result);
+
+        // Check if result is lower than limit output if so query again to the first row to fill the the remaining ads
+        if($resultTotal < $limit)
+        {
+            $result2 = $this->publicSearchAds($showIn, $template, $keyword, 0, $limit - $resultTotal);
+            $start = $limit - $resultTotal;
+            foreach($result2 as $tmpres)
+            {
+                $result[] = $tmpres;
+            }
+        }
+        else $start = $start + $limit;
+        $this->settingsManager->set($key, $start);
         return $result;
     }
 

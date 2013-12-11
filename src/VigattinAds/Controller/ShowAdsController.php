@@ -52,8 +52,6 @@ class ShowAdsController extends AbstractActionController
         $this->adsModel = new AdsModel($this->getServiceLocator());
         // Create browser id, if already exist reuse the id
         $this->initViewSession();
-        // Create list of ads entities based on query param provided in the url
-        $this->searchedAds = $this->generateAds();
         // Set template to use by this controller
         $this->layout()->setTemplate('vigattinads/layout/ads');
         // Call parent onDispatch
@@ -67,6 +65,9 @@ class ShowAdsController extends AbstractActionController
 
     public function sidebarAction()
     {
+        // Create list of ads entities based on query param provided in the url
+        $this->searchedAds = $this->generateAds();
+
         $this->viewModel->setTemplate('vigattinads/view/show-ads-sidebar');
         $this->viewModel->setVariable('ads', $this->searchedAds);
         return $this->viewModel;
@@ -128,6 +129,7 @@ class ShowAdsController extends AbstractActionController
         $showIn = $this->request->getQuery('showin', '');
         $template = $this->request->getQuery('template', '');
         $keyword = $this->request->getQuery('keyword', '');
-        return $this->adsModel->publicSearchAds($showIn, $template, $keyword);
+        $limit = $this->request->getQuery('limit', 8);
+        return $this->adsModel->publicGetRotationAds($showIn, $template, $keyword, $limit);
     }
 }
