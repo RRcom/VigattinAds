@@ -53,7 +53,7 @@ class ViewAds
         $adsId = $this->accountHomeCtrl->params('param2', '');
         $adsModel = $this->userModel->getAds();
         $adsEntity = $adsModel->getAds($adsId);
-        $adsViewCount = $adsModel->countViews($adsEntity->getId());
+        $adsViewCount = $adsModel->countViews($adsEntity);
         $formError = array(
             'adsImageError' => '',
             'adsTitleError' => '',
