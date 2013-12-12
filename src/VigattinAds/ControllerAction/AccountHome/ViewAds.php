@@ -53,6 +53,7 @@ class ViewAds
         $adsId = $this->accountHomeCtrl->params('param2', '');
         $adsModel = $this->userModel->getAds();
         $adsEntity = $adsModel->getAds($adsId);
+        $adsViewCount = $adsModel->countViews($adsEntity->getId());
         $formError = array(
             'adsImageError' => '',
             'adsTitleError' => '',
@@ -62,6 +63,8 @@ class ViewAds
         );
         $this->actionContent->setVariables($formError);
         $this->actionContent->setVariable('ads', $adsEntity);
+        $this->actionContent->setVariable('userModel', $this->userModel);
+        $this->actionContent->setVariable('adsViewCount', $adsViewCount);
         return $this->actionContent;
     }
 }

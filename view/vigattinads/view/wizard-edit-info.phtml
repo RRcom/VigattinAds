@@ -23,28 +23,28 @@
                         <input type="file" id="ads-choose-image-input" name="ads-image" accept="image/*" required="true">
                     </div>
                     <div class="form-group <?php echo $adsTitleError ? 'has-error' : ''; ?>">
-                        <label class="control-label" for="ads-title">Ads Title <small class="text-warning">(max character 48)</small></label>
+                        <label class="control-label" for="ads-title">Ads Title <small class="text-warning">(max character 48 allowed alphanumeric, space and .-_'"/,&())</small></label>
                         <?php if($adsTitleError): ?>
                             <span class="help-block"><?php echo $adsTitleError; ?></span>
                         <?php endif ?>
                         <input type="text" maxlength="48" class="form-control" id="ads-title" name="ads-title" required="true" placeholder="Ads Title" value="<?php echo $this->escapeHtmlAttr($adsTitle); ?>">
                     </div>
                     <div class="form-group <?php echo $adsUrlError ? 'has-error' : ''; ?>">
-                        <label class="control-label" for="ads-url">Ads Url <small class="text-warning">(max character 256)</small></label>
+                        <label class="control-label" for="ads-url">Ads Url <small class="text-warning">(max character 256 allowed valid url)</small></label>
                         <?php if($adsUrlError): ?>
                             <span class="help-block"><?php echo $adsUrlError; ?></span>
                         <?php endif ?>
                         <input type="text" maxlength="256" class="form-control" id="ads-url" name="ads-url" required="true" placeholder="Ads URL" value="<?php echo $this->escapeHtmlAttr($adsUrl); ?>">
                     </div>
                     <div class="form-group <?php echo $adsKeywordError ? 'has-error' : ''; ?>">
-                        <label class="control-label" for="ads-keyword">Target Keyword <small class="text-warning">(max character 48)</small></label>
+                        <label class="control-label" for="ads-keyword">Target Keyword <small class="text-warning">(max character 48 allowed alphanumeric, space and comma)</small></label>
                         <?php if($adsKeywordError): ?>
                             <span class="help-block"><?php echo $adsKeywordError; ?></span>
                         <?php endif ?>
                         <input type="text" maxlength="48" class="form-control" id="ads-keyword" name="ads-keyword" placeholder="Leave blank to target all" value="<?php echo $this->escapeHtmlAttr($adsKeyword); ?>">
                     </div>
                     <div class="form-group <?php echo $adsDescriptionError ? 'has-error' : ''; ?>">
-                        <label class="control-label" for="ads-description">Ads Description <small class="text-warning">(max character 160)</small></label>
+                        <label class="control-label" for="ads-description">Ads Description <small class="text-warning">(max character 160 allowed alphanumeric, space and .-_'"/,&())</small></label>
                         <?php if($adsDescriptionError): ?>
                             <span class="help-block"><?php echo $adsDescriptionError; ?></span>
                         <?php endif ?>

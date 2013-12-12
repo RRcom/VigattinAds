@@ -20,11 +20,12 @@ class Validator
 
     static public function isTitleValid($name, $min = 6, $max = 48)
     {
-        $regex = new Regex(array('pattern' => '#^[a-zA-Z0-9_-][a-zA-Z0-9_\s-]+$#'));
+        $pattern = '#^[a-zA-Z0-9_-\s.\'"/,&()]*$#';
+        $regex = new Regex(array('pattern' => $pattern));
         $strlength = new StringLength();
         $strlength->setMin($min);
         $strlength->setMax($max);
-        if(!$regex->isValid($name)) return 'Invalid Title! Must be alphanumeric, underscore or dashes';
+        if(!$regex->isValid($name)) return 'Title has invalid character';
         if(!$strlength->isValid($name)) return 'Title must be minimum of '.$min.' and maximum of '.$max.' character';
         return '';
     }
@@ -35,18 +36,19 @@ class Validator
         $strlength = new StringLength();
         $strlength->setMin($min);
         $strlength->setMax($max);
-        if(!$regex->isValid($text)) return 'Invalid keyword! Must be alphanumeric or spaces or comma';
+        if(!$regex->isValid($text)) return 'Keyword has invalid character';
         if(!$strlength->isValid($text)) return 'Keyword must be minimum of '.$min.' and maximum of '.$max.' character';
         return '';
     }
 
     static public function isDescriptionValid($text, $min = 0, $max = 160)
     {
-        $regex = new Regex(array('pattern' => '#^[a-zA-Z0-9_-\s\.\'",`]*$#'));
+        $pattern = '#^[a-zA-Z0-9_-\s.\'"/,&()]*$#';
+        $regex = new Regex(array('pattern' => $pattern));
         $strlength = new StringLength();
         $strlength->setMin($min);
         $strlength->setMax($max);
-        if(!$regex->isValid($text)) return 'Invalid description! Must be alphanumeric or spaces or _-.\'"';
+        if(!$regex->isValid($text)) return 'Description has invalid character';
         if(!$strlength->isValid($text)) return 'Description must be minimum of '.$min.' and maximum of '.$max.' character';
         return '';
     }

@@ -61,6 +61,9 @@ footer {
     padding-right: 0 !important;
     margin-right: 0 !important;
 }
+.margin-right-30px {
+    margin-right: 30px;
+}
 .ads-frame {
     font-size: 11px;
     padding: 10px 0;
@@ -121,4 +124,16 @@ footer {
 }
 .form-signin input {
     margin-bottom: 5px;
+}
+.big-font {
+    font-size: 5em;
+}
+.big-font-3em {
+    font-size: 3em;
+}
+.ads-view-info {
+
+}
+.ads-view-info .ads-view-info-col {
+    vertical-align: middle;
 }

@@ -15,15 +15,21 @@ class Ads
     const ORDER_BY_ASC = 0;
     const ORDER_BY_DESC = 1;
     const TRANSLATE_SATATUS = 0;
+    const TRANSLATE_SATATUS_2 = 1;
 
     /**
      * @var array
      */
     protected $dictionary = array(
         self::TRANSLATE_SATATUS => array(
-            AdsEntity::STATUS_DISAPPROVED => '<span class="text-danger"></spa><span class="glyphicon glyphicon-ban-circle"></span> Disapprove</span>',
-            AdsEntity::STATUS_PENDING => '<span class="text-warning"></spa><span class="glyphicon glyphicon-warning-sign"></span> Pending</span>',
-            AdsEntity::STATUS_APPROVED => '<span class="text-success"></spa><span class="glyphicon glyphicon-ok"></span> Approved</span>',
+            AdsEntity::STATUS_DISAPPROVED => '<span class="text-danger"><span class="glyphicon glyphicon-ban-circle"></span> Disapproved</span>',
+            AdsEntity::STATUS_PENDING => '<span class="text-warning"><span class="glyphicon glyphicon-warning-sign"></span> Pending</span>',
+            AdsEntity::STATUS_APPROVED => '<span class="text-success"><span class="glyphicon glyphicon-ok"></span> Approved</span>',
+        ),
+        self::TRANSLATE_SATATUS_2 => array(
+            AdsEntity::STATUS_DISAPPROVED => '<span title="Disapproved" class="text-danger glyphicon glyphicon-ban-circle big-font-3em ads-view-info-col margin-right-30px"></span>',
+            AdsEntity::STATUS_PENDING => '<span title="Pending" class="text-warning glyphicon glyphicon-warning-sign big-font-3em ads-view-info-col margin-right-30px"></span>',
+            AdsEntity::STATUS_APPROVED => '<span title="Approved" class="text-success glyphicon glyphicon-ok big-font-3em ads-view-info-col margin-right-30px"></span>',
         ),
     );
 
@@ -177,9 +183,9 @@ class Ads
      * @param $result
      * @return mixed
      */
-    public function translateStatus($result)
+    public function translateStatus($result, $mode = self::TRANSLATE_SATATUS)
     {
-        return $this->dictionary[self::TRANSLATE_SATATUS][$result];
+        return $this->dictionary[$mode][$result];
     }
 
     /**
@@ -251,6 +257,14 @@ class Ads
         return $query->getSingleScalarResult();
     }
 
+    /**
+     * Get list of ads to show, move the cursor to the next batch of ads for next retrieval (rotational fetch).
+     * @param $showIn
+     * @param $template
+     * @param $keyword
+     * @param int $limit
+     * @return array|\VigattinAds\Entity\Ads[]
+     */
     public function publicGetRotationAds($showIn, $template, $keyword, $limit = 10)
     {
         $key = md5('global-rotate'.$showIn.$template.$keyword);
@@ -276,6 +290,13 @@ class Ads
         else $start = $start + $limit;
         $this->settingsManager->set($key, $start);
         return $result;
+    }
+
+    public function countViews($adsId)
+    {
+        $query = $this->entityManager->createQuery("SELECT COUNT(v.id) FROM VigattinAds\Entity\AdsView v WHERE v.ads = :adsId");
+        $query->setParameter('adsId', $adsId);
+        return $query->getSingleScalarResult();
     }
 
     /**
