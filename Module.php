@@ -6,7 +6,7 @@ use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Session\SessionManager;
 use Zend\Session\Container;
-use VigattinAds\Model\User\User;
+use VigattinAds\DomainModel\OrmEventListener;
 
 class Module
 {
@@ -18,6 +18,7 @@ class Module
         $moduleRouteListener->attach($eventManager);
         $this->bootstrapSession($e);
         $this->dispatchRouter($e);
+        $this->initDoctrineEvents($e);
     }
 
     public function dispatchRouter(MvcEvent $e)
@@ -33,8 +34,8 @@ class Module
 
                 // if enter accounthome controller
                 case strtolower('VigattinAds\Controller\Index'):
-                    $user = $e->getApplication()->getServiceManager()->get('VigattinAds\Model\User\User');
-                    if($user->isLogin())
+                    $userManager = $e->getApplication()->getServiceManager()->get('VigattinAds\DomainModel\UserManager');
+                    if($userManager->isLogin())
                     {
                         Header('Location: /vigattinads/account-home');
                         exit();
@@ -43,8 +44,8 @@ class Module
 
                 // if enter any controller
                 default:
-                    $user = $e->getApplication()->getServiceManager()->get('VigattinAds\Model\User\User');
-                    if(!$user->isLogin())
+                    $userManager = $e->getApplication()->getServiceManager()->get('VigattinAds\DomainModel\UserManager');
+                    if(!$userManager->isLogin())
                     {
                         Header('Location: /vigattinads');
                         exit();
@@ -129,10 +130,18 @@ class Module
                     Container::setDefaultManager($sessionManager);
                     return $sessionManager;
                 },
-                'VigattinAds\Model\User\User' => function($sm) {
-                    return new User($sm);
+                'VigattinAds\DomainModel\UserManager' => function($sm) {
+                        return new \VigattinAds\DomainModel\UserManager($sm);
                 }
             ),
         );
+    }
+
+    public function initDoctrineEvents(MvcEvent $e)
+    {
+        $serviceManager = $e->getApplication()->getServiceManager();
+        /** @var $entityManager \Doctrine\ORM\EntityManager */
+        $entityManager = $serviceManager->get('Doctrine\ORM\EntityManager');
+        $ormEventListener = new OrmEventListener($serviceManager, $entityManager->getEventManager());
     }
 }

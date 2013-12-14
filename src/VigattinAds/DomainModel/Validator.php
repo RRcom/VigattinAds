@@ -1,12 +1,39 @@
 <?php
-namespace VigattinAds\Model\Helper;
+namespace VigattinAds\DomainModel;
+
 use Zend\Validator\Regex;
 use Zend\Validator\EmailAddress;
 use Zend\Validator\StringLength;
-use VigattinAds\Model\Helper\Image;
+use Zend\Validator\Digits;
+use VigattinAds\DomainModel\Image;
 
 class Validator
 {
+    static public function isDigitValid($digit)
+    {
+        $digitValidator = new Digits();
+        if(!$digitValidator->isValid($digitValidator)) return 'Not a digit number';
+        return '';
+    }
+
+    static public function isEmailValid($emailAddress)
+    {
+        $emailValidator = new EmailAddress();
+        if(!$emailValidator->isValid($emailAddress)) return 'Invalid email address';
+        return '';
+    }
+
+    static public function isUsernameValid($name, $min = 4, $max = 48)
+    {
+        $regex = new Regex(array('pattern' => '#^[a-zA-Z0-9_-][a-zA-Z0-9_]+$#'));
+        $strlength = new StringLength();
+        $strlength->setMin($min);
+        $strlength->setMax($max);
+        if(!$regex->isValid($name)) return 'Invalid username! Must be alphanumeric and underscore';
+        if(!$strlength->isValid($name)) return 'Username must be minimum of '.$min.' and maximum of '.$max.' character';
+        return '';
+    }
+
     static public function isNameValid($name, $min = 6, $max = 48)
     {
         $regex = new Regex(array('pattern' => '#^[a-zA-Z0-9_-][a-zA-Z0-9_\s-]+$#'));

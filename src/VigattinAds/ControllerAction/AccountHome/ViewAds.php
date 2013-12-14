@@ -17,9 +17,9 @@ class ViewAds
     protected $viewModel;
 
     /**
-     * @var $user \VigattinAds\Model\User\User
+     * @var $user \VigattinAds\DomainModel\UserManager
      */
-    protected $userModel;
+    protected $userManager;
 
     /**
      * @var \Zend\View\Model\ViewModel
@@ -35,7 +35,7 @@ class ViewAds
     {
         $this->accountHomeCtrl = $accountHomeCtrl;
         $this->viewModel = $accountHomeCtrl->getMainView();
-        $this->userModel = $this->accountHomeCtrl->getServiceLocator()->get('VigattinAds\Model\User\User');
+        $this->userManager = $this->accountHomeCtrl->getServiceLocator()->get('VigattinAds\DomainModel\UserManager');
         $this->actionContent = new ViewModel();
         $this->actionContent->setTemplate('vigattinads/view/view-ads');
         $this->sessionManager = $this->accountHomeCtrl->getServiceLocator()->get('Zend\Session\SessionManager');
@@ -51,9 +51,11 @@ class ViewAds
     public function action()
     {
         $adsId = $this->accountHomeCtrl->params('param2', '');
-        $adsModel = $this->userModel->getAds();
-        $adsEntity = $adsModel->getAds($adsId);
-        $adsViewCount = $adsModel->countViews($adsEntity);
+        $adsUser = $this->userManager->getCurrentUser();
+        $adsViewCount = 0;
+        $adsEntity = $adsUser->getSingleAds($adsId);
+        if($adsEntity instanceof \VigattinAds\DomainModel\Ads) $adsViewCount = $adsEntity->get('adsView')->count();
+
         $formError = array(
             'adsImageError' => '',
             'adsTitleError' => '',
@@ -63,7 +65,7 @@ class ViewAds
         );
         $this->actionContent->setVariables($formError);
         $this->actionContent->setVariable('ads', $adsEntity);
-        $this->actionContent->setVariable('userModel', $this->userModel);
+        $this->actionContent->setVariable('userManager', $this->userManager);
         $this->actionContent->setVariable('adsViewCount', $adsViewCount);
         return $this->actionContent;
     }

@@ -6,7 +6,7 @@ use Zend\View\Model\ViewModel;
 use Zend\Mvc\MvcEvent;
 use Zend\View\ViewEvent;
 use VigattinAds\ControllerAction\AccountHome;
-use VigattinAds\Model\Helper\Navigation;
+use VigattinAds\DomainModel\Navigation;
 
 class AccountHomeController extends AbstractActionController
 {

@@ -47,16 +47,16 @@ return array(
     ),
     'doctrine' => array(
         'driver' => array(
-            'vigattinads_entities' => array(
+            'vigattinads_domain_model' => array(
                 'class' =>'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
                 'paths' => array(
-                    __DIR__ . '/../src/VigattinAds/Entity',
+                    __DIR__ . '/../src/VigattinAds/DomainModel',
                 ),
             ),
             'orm_default' => array(
                 'drivers' => array(
-                    'VigattinAds\Entity' => 'vigattinads_entities',
+                    'VigattinAds\DomainModel' => 'vigattinads_domain_model',
                 ),
             ),
         ),

@@ -1,5 +1,5 @@
 <?php
-namespace VigattinAds\Entity;
+namespace VigattinAds\DomainModel;
 
 use Doctrine\ORM\Mapping as ORM;
 

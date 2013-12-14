@@ -1,5 +1,5 @@
 <?php
-namespace VigattinAds\Model\Helper;
+namespace VigattinAds\DomainModel;
 
 class Image
 {

@@ -32,11 +32,6 @@ class WizardChooseTemplate
     protected $viewModel;
 
     /**
-     * @var $user \VigattinAds\Model\User\User
-     */
-    protected $userModel;
-
-    /**
      * @var \Zend\View\Model\ViewModel
      */
     protected $actionContent;
@@ -50,7 +45,6 @@ class WizardChooseTemplate
     {
         $this->accountHomeCtrl = $accountHomeCtrl;
         $this->viewModel = $accountHomeCtrl->getMainView();
-        $this->userModel = $this->accountHomeCtrl->getServiceLocator()->get('VigattinAds\Model\User\User');
         $this->actionContent = new ViewModel();
         $this->actionContent->setTemplate('vigattinads/view/wizard-choose-template');
         $this->sessionManager = $this->accountHomeCtrl->getServiceLocator()->get('Zend\Session\SessionManager');

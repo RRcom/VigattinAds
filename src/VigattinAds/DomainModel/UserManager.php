@@ -1,24 +1,14 @@
 <?php
-namespace VigattinAds\Model\User;
+namespace VigattinAds\DomainModel;
 
 use Zend\ServiceManager\ServiceManager;
-use Zend\Validator\EmailAddress;
-use Zend\Validator\Digits;
-use Zend\Validator\Regex;
+use VigattinAds\DomainModel\AdsUser;
+use VigattinAds\DomainModel\Validator;
 use Zend\Crypt\Password\Bcrypt;
 use Zend\Math\Rand;
-use Doctrine\ORM\NoResultException;
-use VigattinAds\Entity\AdsUser as UserEntity;
-use VigattinAds\Model\Ads\Ads;
 
-class User
+class UserManager
 {
-    const MIN_USERNAME_LENGTH = 4;
-    const MAX_USERNAME_LENGTH = 32;
-    const MIN_PASSWORD_LENGTH = 6;
-    const MAX_PASSWORD_LENGTH = 32;
-    const MIN_NAME_LENGTH = 2;
-    const MAX_NAME_LENGTH = 64;
 
     /**
      * @var \Zend\ServiceManager\ServiceManager
@@ -26,59 +16,25 @@ class User
     protected $serviceManager;
 
     /**
-     * @var \Zend\Session\SessionManager
-     */
-    protected $sessionManager;
-
-    /**
-     * @var \VigattinAds\Entity\AdsUser
-     */
-    protected $user = null;
-
-    /**
      * @var \Doctrine\ORM\EntityManager
      */
     protected $entityManager;
 
     /**
-     * @var \Zend\Validator\EmailAddress
+     * @var \Zend\Session\SessionManager
      */
-    protected $emailValidator;
+    protected $sessionManager;
 
     /**
-     * @var \Zend\Validator\Digits
+     * @var \VigattinAds\DomainModel\AdsUser
      */
-    protected $digitValidator;
+    protected $user;
 
-    /**
-     * @var \Zend\Validator\Regex
-     */
-    protected $alphaNumericValidator;
-
-    /**
-     * @var \Zend\Validator\Regex
-     */
-    protected $alphaValidator;
-
-    /**
-     * @var \VigattinAds\Model\Ads\Ads
-     */
-    protected $ads = null;
-
-    /*----------- Public method -------------*/
-
-    /**
-     * @param ServiceManager $serviceManager
-     */
     public function __construct(ServiceManager $serviceManager)
     {
         $this->serviceManager = $serviceManager;
         $this->entityManager = $this->serviceManager->get('Doctrine\ORM\EntityManager');
         $this->sessionManager = $this->serviceManager->get('Zend\Session\SessionManager');
-        $this->emailValidator = new EmailAddress();
-        $this->digitValidator = new Digits();
-        $this->alphaNumericValidator = new Regex('#^[a-zA-Z][a-zA-Z0-9_]*#');
-        $this->alphaValidator = new Regex('#^[a-zA-Z]*#');
         if($this->sessionManager->getStorage()->user) $this->user = $this->getEntityFromSession();
     }
 
@@ -98,17 +54,17 @@ class User
      */
     public function login($user, $password)
     {
-        if($this->emailValidator->isValid($user))
+        if(!Validator::isEmailValid($user))
         {
-            $query = $this->entityManager->createQuery("SELECT u FROM VigattinAds\Entity\AdsUser u WHERE u.email = :user");
+            $query = $this->entityManager->createQuery("SELECT u FROM VigattinAds\DomainModel\AdsUser u WHERE u.email = :user");
         }
-        elseif($this->digitValidator->isValid($user))
+        elseif(!Validator::isDigitValid($user))
         {
-            $query = $this->entityManager->createQuery("SELECT u FROM VigattinAds\Entity\AdsUser u WHERE u.id = :user");
+            $query = $this->entityManager->createQuery("SELECT u FROM VigattinAds\DomainModel\AdsUser u WHERE u.id = :user");
         }
-        elseif($this->alphaNumericValidator->isValid($user))
+        elseif(!Validator::isUsernameValid($user))
         {
-            $query = $this->entityManager->createQuery("SELECT u FROM VigattinAds\Entity\AdsUser u WHERE u.username = :user");
+            $query = $this->entityManager->createQuery("SELECT u FROM VigattinAds\DomainModel\AdsUser u WHERE u.username = :user");
         }
         else
         {
@@ -120,6 +76,7 @@ class User
         }
         $query->setParameter('user', $user);
         try{
+            /** @var $result \VigattinAds\DomainModel\AdsUser */
             $result = $query->getSingleResult();
         }catch(NoResultException $ex)
         {
@@ -129,10 +86,12 @@ class User
                 'reason' => 'not a register user '.$user,
             );
         }
-        if($this->checkPassword($result->getPassHash(), $password, $result->getPassSalt())) {
+        if($this->checkPassword($result->get('passHash'), $password, $result->get('passSalt'))) {
             $this->user = $result;
-            $this->entityManager->detach($result);
-            $this->sessionManager->getStorage()->user = $result;
+            $this->user->set('serviceManager', null);
+            $this->entityManager->detach($this->user);
+            $this->sessionManager->getStorage()->user = $this->user;
+            $this->user = $this->getEntityFromSession();
             return array
             (
                 'status' => 'success',
@@ -151,10 +110,13 @@ class User
      */
     public function isLogin()
     {
-        if($this->user instanceof UserEntity) return true;
+        if($this->user instanceof AdsUser) return true;
         return false;
     }
 
+    /**
+     * Destroy user session
+     */
     public function logout()
     {
         $this->user = null;
@@ -162,9 +124,9 @@ class User
     }
 
     /**
-     * @return UserEntity
+     * @return \VigattinAds\DomainModel\AdsUser
      */
-    public function getUserEntity()
+    public function getCurrentUser()
     {
         return $this->user;
     }
@@ -190,7 +152,7 @@ class User
     {
         $password = strval($password);
         $error = array();
-        if(!$this->emailValidator->isValid($email)) $error[] = 'invalid email';
+        if(Validator::isEmailValid($email)) $error[] = 'invalid email';
         if($this->isTableExist('email', $email)) $error[] = 'email already exist';
         if(strlen($username) < self::MIN_USERNAME_LENGTH) $error[] = 'username must be minimum of '.self::MIN_USERNAME_LENGTH.' character';
         if(strlen($username) > self::MAX_USERNAME_LENGTH) $error[] = 'username to long max require is '.self::MAX_USERNAME_LENGTH.' character';
@@ -214,20 +176,15 @@ class User
         $user->setFirstName($firstName);
         $user->setLastName($lastName);
         $this->entityManager->persist($user);
-        $this->entityManager->flush($user);
         return $user;
     }
 
     /**
-     * Update database and session data
-     * @param UserEntity $user
+     * Flush to database all insert to view
      */
-    public function updateUser(UserEntity $userEntity) {
-        $this->entityManager->persist($userEntity);
-        $this->entityManager->flush($userEntity);
-        $this->user = $userEntity;
-        $this->entityManager->detach($userEntity);
-        $this->sessionManager->getStorage()->user = $userEntity;
+    public function flush()
+    {
+        $this->entityManager->flush();
     }
 
     /**
@@ -235,7 +192,7 @@ class User
      * @param $password string
      * @return string
      */
-    public function makePassSalt($password)
+    protected function makePassSalt($password)
     {
         return md5(Rand::getBytes(strlen($password), true));
     }
@@ -246,7 +203,7 @@ class User
      * @param $salt string
      * @return string
      */
-    public function createPassHash($password, $salt)
+    protected function createPassHash($password, $salt)
     {
         $bcrypt = new Bcrypt(
             array(
@@ -259,23 +216,6 @@ class User
     }
 
     /**
-     * @return null|Ads
-     */
-    public function getAds()
-    {
-        if($this->ads instanceof Ads) return $this->ads;
-        if($this->user instanceof UserEntity)
-        {
-            $ads = new Ads($this->serviceManager, $this->getUserEntity());
-            $this->ads = $ads;
-            return $this->ads;
-        }
-        return null;
-    }
-
-    /*----------- Protected method -------------*/
-
-    /**
      * Reinitialize serialized entity from session
      * @return object active entity
      */
@@ -283,6 +223,7 @@ class User
     {
         $user = $this->sessionManager->getStorage()->user;
         $user = $this->entityManager->merge($user);
+        $user->set('serviceManager', $this->serviceManager);
         return $user;
     }
 
@@ -321,5 +262,4 @@ class User
         );
         return $bcrypt->verify($password, $hash);
     }
-
 }

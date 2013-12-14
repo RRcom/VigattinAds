@@ -2,7 +2,7 @@
 namespace VigattinAds\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
-use VigattinAds\Model\User\User;
+use VigattinAds\DomainModel\UserManager;
 
 class CliController extends AbstractActionController
 {
@@ -10,14 +10,14 @@ class CliController extends AbstractActionController
     {
         $error = '';
         $request = $this->getRequest();
-        $user = new User($this->serviceLocator);
+        $userManager = new UserManager($this->serviceLocator);
         if(!$request->getParam('email')) $error .= "require email ex. --email myemail@mail.sample\n";
         if(!$request->getParam('username')) $error .= "require username ex. --username myusername\n";
         if(!$request->getParam('password')) $error .= "require password ex. --password mypassword\n";
         if(!$request->getParam('first-name')) $error .= "require first-name ex. --first-name myfirstname\n";
         if(!$request->getParam('last-name')) $error .= "require last-name ex. --last-name mylastname\n";
         if($error) return $error;
-        $result = $user->createUser(
+        $result = $userManager->createUser(
             $request->getParam('email'),
             $request->getParam('username'),
             $request->getParam('password'),
@@ -30,7 +30,10 @@ class CliController extends AbstractActionController
                 $error .= $err."\n";
             }
         }
-        else return "success user id ".$result->getId();
+        else {
+            $userManager->flush();
+            return "success user id ".$result->getId();
+        }
         return $error;
     }
 }

@@ -1,28 +1,30 @@
 <?php
 namespace VigattinAds\Controller;
 
-use Doctrine\Common\Util\Debug;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Mvc\MvcEvent;
-use Doctrine\ORM\EntityNotFoundException;
-use Doctrine\ORM\EntityManager;
-use VigattinAds\Entity\Ads;
-use VigattinAds\Entity\AdsView;
-use Zend\Session\Config\StandardConfig;
-use Zend\Session\SessionManager;
-use VigattinAds\Model\User\User;
-use VigattinAds\Model\Ads\Ads as AdsModel;
-use VigattinAds\Entity\AdsUser;
+use VigattinAds\DomainModel\Ads;
 
 
 class DebugController extends AbstractActionController
 {
     public function indexAction()
     {
-        //echo 'sfsd'fsfs;
         $sm = $this->getServiceLocator();
+        /** @var $em \Doctrine\ORM\EntityManager */
         $em = $sm->get('Doctrine\ORM\EntityManager');
+
+        /** @var $userManager \VigattinAds\DomainModel\UserManager */
+        $userManager = $sm->get('VigattinAds\DomainModel\UserManager');
+
+        /** @var $user \VigattinAds\DomainModel\AdsUser; */
+        $user = $userManager->getCurrentUser();
+
+        $ads = $user->get('ads');
+
+        echo $ads->count();
+
         $viewModel = new ViewModel();
         $viewModel->setTemplate('vigattinads/view/index');
         return $viewModel;

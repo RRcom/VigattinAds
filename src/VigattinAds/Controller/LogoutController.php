@@ -8,8 +8,8 @@ class LogoutController extends AbstractActionController
     public function indexAction()
     {
         /** @var $user \VigattinAds\Model\User\User */
-        $user = $this->serviceLocator->get('VigattinAds\Model\User\User');
-        $user->logout();
+        $userManager = $this->serviceLocator->get('VigattinAds\DomainModel\UserManager');
+        $userManager->logout();
         header('Location: /vigattinads');
         exit();
     }

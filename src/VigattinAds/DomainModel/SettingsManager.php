@@ -1,7 +1,7 @@
 <?php
-namespace VigattinAds\Model;
+namespace VigattinAds\DomainModel;
 
-use VigattinAds\Entity\Settings;
+use VigattinAds\DomainModel\Settings;
 use Doctrine\ORM\NoResultException;
 use Zend\ServiceManager\ServiceManager;
 
@@ -22,7 +22,7 @@ class SettingsManager
 
     public function set($key, $value)
     {
-        $query = $this->entityManager->createQuery("SELECT s FROM VigattinAds\Entity\Settings s WHERE s.key = :key");
+        $query = $this->entityManager->createQuery("SELECT s FROM VigattinAds\DomainModel\Settings s WHERE s.key = :key");
         $query->setParameter('key', $key);
         try {
             $result = $query->getSingleResult();
@@ -38,7 +38,7 @@ class SettingsManager
 
     public function get($key, $defaultValue = '')
     {
-        $query = $this->entityManager->createQuery("SELECT s.value FROM VigattinAds\Entity\Settings s WHERE s.key = :key");
+        $query = $this->entityManager->createQuery("SELECT s.value FROM VigattinAds\DomainModel\Settings s WHERE s.key = :key");
         $query->setParameter('key', $key);
         try {
             $result = $query->getSingleScalarResult();
@@ -50,14 +50,14 @@ class SettingsManager
 
     public function has($key)
     {
-        $query = $this->entityManager->createQuery("SELECT COUNT(s.id) FROM VigattinAds\Entity\Settings s WHERE s.key = :key");
+        $query = $this->entityManager->createQuery("SELECT COUNT(s.id) FROM VigattinAds\DomainModel\Settings s WHERE s.key = :key");
         $query->setParameter('key', $key);
         return $query->getSingleScalarResult() ? true : false;
     }
 
     public function delete($key)
     {
-        $query = $this->entityManager->createQuery("DELETE VigattinAds\Entity\Settings s WHERE s.key = :key");
+        $query = $this->entityManager->createQuery("DELETE VigattinAds\DomainModel\Settings s WHERE s.key = :key");
         $query->setParameter('key', $key);
         return $query->execute();
     }

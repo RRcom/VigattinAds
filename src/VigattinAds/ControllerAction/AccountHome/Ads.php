@@ -17,15 +17,15 @@ class Ads
     protected $viewModel;
 
     /**
-     * @var $user \VigattinAds\Model\User\User
+     * @var $user \VigattinAds\DomainModel\UserManager
      */
-    protected $userModel;
+    protected $userManager;
 
     public function __construct(AccountHomeController $accountHomeCtrl)
     {
         $this->accountHomeCtrl = $accountHomeCtrl;
         $this->viewModel = $accountHomeCtrl->getMainView();
-        $this->userModel = $this->accountHomeCtrl->getServiceLocator()->get('VigattinAds\Model\User\User');
+        $this->userManager = $this->accountHomeCtrl->getServiceLocator()->get('VigattinAds\DomainModel\UserManager');
     }
 
     public function process()
@@ -33,14 +33,17 @@ class Ads
         $actionContent = new ViewModel();
         $actionContent->setTemplate('vigattinads/view/account-home-ads');
         $actionContent->setVariable('adsList', $this->getAdsList());
-        $actionContent->setVariable('userModel', $this->userModel);
+        $actionContent->setVariable('userManager', $this->userManager);
         $this->viewModel->addChild($actionContent, 'actionContent');
         return $this->viewModel;
     }
 
     public function getAdsList()
     {
-        $adsList = $this->userModel->getAds()->listAds();
+        /** @var $user \VigattinAds\DomainModel\AdsUser; */
+        $adsUser = $this->userManager->getCurrentUser();
+        /** @var $adsList \Doctrine\Common\Collections\ArrayCollection */
+        $adsList = $adsUser->get('ads');
         return $adsList;
     }
 }

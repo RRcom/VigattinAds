@@ -1,10 +1,8 @@
-<?php if(!($ads instanceof \VigattinAds\Entity\Ads)): ?>
+<?php if(!($ads instanceof \VigattinAds\DomainModel\Ads)): ?>
 <div class="alert alert-danger">No Ads Found!</div>
 <?php else: ?>
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ads-view-info">
-        <span class="ads-view-info-col">Ads ID</span>
-        <span class="big-font ads-view-info-col margin-right-30px"><?php echo $ads->getId(); ?></span>
         <span class="ads-view-info-col">Total View(s)</span>
         <span class="big-font ads-view-info-col margin-right-30px"><?php echo $adsViewCount; ?></span>
         <span class="ads-view-info-col">Remaining View(s)</span>
@@ -13,7 +11,17 @@
 </div>
 <form class="small" method="post" action="">
     <div class="panel panel-info ">
-        <div class="panel-heading"><?php echo $userModel->getAds()->translateStatus($ads->getStatus()); ?></div>
+        <div class="panel-heading"><?php switch($ads->get('status')):
+                case \VigattinAds\DomainModel\Ads::STATUS_APPROVED: ?>
+                    <span class="text-success"><span class="glyphicon glyphicon-ok"></span> Approved</span>
+                    <?php break;
+                case \VigattinAds\DomainModel\Ads::STATUS_PENDING: ?>
+                    <span class="text-warning"><span class="glyphicon glyphicon-warning-sign"></span> Pending</span>
+                    <?php break;
+                case \VigattinAds\DomainModel\Ads::STATUS_DISAPPROVED: ?>
+                    <span class="text-danger"><span class="glyphicon glyphicon-ban-circle"></span> Disapproved</span>
+                    <?php break;
+            endswitch; ?></div>
             <div class="panel-body">
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
@@ -21,8 +29,8 @@
                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                         <div class="row ads-frame">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ads-frame-title"><?php echo $this->escapeHtmlAttr($ads->getAdsTitle()); ?></div>
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><div class="ads-image-preview-container"><img class="ads-frame-image" src="/repo<?php echo $ads->getAdsImage(); ?>"></div><span class="ads-frame-description"><?php echo $this->escapeHtml($ads->getAdsDescription()); ?></span></div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ads-frame-title"><?php echo $this->escapeHtmlAttr($ads->get('adsTitle')); ?></div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><div class="ads-image-preview-container"><img class="ads-frame-image" src="/repo<?php echo $ads->get('adsImage'); ?>"></div><span class="ads-frame-description"><?php echo $this->escapeHtml($ads->get('adsDescription')); ?></span></div>
                         </div>
                     </div>
                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
@@ -33,28 +41,28 @@
                         <?php if($adsTitleError): ?>
                             <span class="help-block"><?php echo $adsTitleError; ?></span>
                         <?php endif ?>
-                        <input type="text" maxlength="48" class="form-control" id="ads-title" name="ads-title" required="true" placeholder="Ads Title" value="<?php echo $this->escapeHtmlAttr($ads->getAdsTitle()); ?>">
+                        <input type="text" maxlength="48" class="form-control" id="ads-title" name="ads-title" required="true" placeholder="Ads Title" value="<?php echo $this->escapeHtmlAttr($ads->get('adsTitle')); ?>">
                     </div>
                     <div class="form-group <?php echo $adsUrlError ? 'has-error' : ''; ?>">
                         <label class="control-label" for="ads-url">Ads Url <small class="text-warning">(max character 256 allowed valid url)</small></label>
                         <?php if($adsUrlError): ?>
                             <span class="help-block"><?php echo $adsUrlError; ?></span>
                         <?php endif ?>
-                        <input type="text" maxlength="256" class="form-control" id="ads-url" name="ads-url" required="true" placeholder="Ads URL" value="<?php echo $this->escapeHtmlAttr($ads->getAdsUrl()); ?>">
+                        <input type="text" maxlength="256" class="form-control" id="ads-url" name="ads-url" required="true" placeholder="Ads URL" value="<?php echo $this->escapeHtmlAttr($ads->get('adsUrl')); ?>">
                     </div>
                     <div class="form-group <?php echo $adsKeywordError ? 'has-error' : ''; ?>">
                         <label class="control-label" for="ads-keyword">Target Keyword <small class="text-warning">(max character 48 allowed alphanumeric, space and comma)</small></label>
                         <?php if($adsKeywordError): ?>
                             <span class="help-block"><?php echo $adsKeywordError; ?></span>
                         <?php endif ?>
-                        <input type="text" maxlength="48" class="form-control" id="ads-keyword" name="ads-keyword" placeholder="Leave blank to target all" value="<?php echo $this->escapeHtmlAttr($ads->getKeywords()); ?>">
+                        <input type="text" maxlength="48" class="form-control" id="ads-keyword" name="ads-keyword" placeholder="Leave blank to target all" value="<?php echo $this->escapeHtmlAttr($ads->get('keywords')); ?>">
                     </div>
                     <div class="form-group <?php echo $adsDescriptionError ? 'has-error' : ''; ?>">
                         <label class="control-label" for="ads-description">Ads Description <small class="text-warning">(max character 160 allowed alphanumeric, space and .-_'"/,&())</small></label>
                         <?php if($adsDescriptionError): ?>
                             <span class="help-block"><?php echo $adsDescriptionError; ?></span>
                         <?php endif ?>
-                        <textarea maxlength="160" class="description-input form-control" id="ads-description" name="ads-description" placeholder="Ads Description"><?php echo $this->escapeHtml($ads->getAdsDescription()); ?></textarea>
+                        <textarea maxlength="160" class="description-input form-control" id="ads-description" name="ads-description" placeholder="Ads Description"><?php echo $this->escapeHtml($ads->get('adsDescription')); ?></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary" name="submit" value="next">Update</button>
                 </div>

@@ -3,8 +3,8 @@ namespace VigattinAds\ControllerAction\AccountHome;
 
 use VigattinAds\Controller\AccountHomeController;
 use Zend\View\Model\ViewModel;
-use VigattinAds\Model\Helper\Validator;
-use VigattinAds\Model\Helper\Image;
+use VigattinAds\DomainModel\Validator;
+use VigattinAds\DomainModel\Image;
 
 class WizardEditInfo
 {
@@ -24,9 +24,9 @@ class WizardEditInfo
     protected $viewModel;
 
     /**
-     * @var $user \VigattinAds\Model\User\User
+     * @var $user \VigattinAds\DomainModel\UserManager
      */
-    protected $userModel;
+    protected $userManager;
 
     /**
      * @var \Zend\View\Model\ViewModel
@@ -42,7 +42,7 @@ class WizardEditInfo
     {
         $this->accountHomeCtrl = $accountHomeCtrl;
         $this->viewModel = $accountHomeCtrl->getMainView();
-        $this->userModel = $this->accountHomeCtrl->getServiceLocator()->get('VigattinAds\Model\User\User');
+        $this->userManager = $this->accountHomeCtrl->getServiceLocator()->get('VigattinAds\DomainModel\UserManager');
         $this->actionContent = new ViewModel();
         $this->actionContent->setTemplate('vigattinads/view/wizard-edit-info');
         $this->sessionManager = $this->accountHomeCtrl->getServiceLocator()->get('Zend\Session\SessionManager');
@@ -110,8 +110,8 @@ class WizardEditInfo
         );
         if($result['status'] == 'success')
         {
-            $adsModel = $this->userModel->getAds();
-            $adsModel->createAds(
+            $adsUser = $this->userManager->getCurrentUser();
+            $adsUser->createAds(
                 $this->sessionManager->getStorage()->tempAdsTitle,
                 $this->sessionManager->getStorage()->tempAdsUrl,
                 $result['path'],
@@ -120,6 +120,7 @@ class WizardEditInfo
                 $this->sessionManager->getStorage()->tempAdsTemplate['template'],
                 $this->sessionManager->getStorage()->tempAdsKeyword
             );
+            $adsUser->flush();
             $this->clearTempData();
             header('Location: /vigattinads/account-home/ads');
             exit();

@@ -21,8 +21,8 @@ class IndexController extends AbstractActionController
         if($post->get('login') == 'true')
         {
             /** @var $user \VigattinAds\Model\User\User */
-            $user = $this->serviceLocator->get('VigattinAds\Model\User\User');
-            $result = $user->login($post->get('email'), $post->get('password'));
+            $userManager = $this->serviceLocator->get('VigattinAds\DomainModel\UserManager');
+            $result = $userManager->login($post->get('email'), $post->get('password'));
             if($result['status'] == 'success')
             {
                 header('Location: /vigattinads/account-home');

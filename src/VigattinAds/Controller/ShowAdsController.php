@@ -6,9 +6,7 @@ use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
 use Zend\Mvc\MvcEvent;
 use Zend\Crypt\BlockCipher;
-use VigattinAds\Model\Ads\Ads as AdsModel;
-use VigattinAds\Entity\AdsView;
-use VigattinAds\Entity\Ads as AdsEntity;
+use VigattinAds\DomainModel\AdsManager;
 
 class ShowAdsController extends AbstractActionController
 {
@@ -25,9 +23,9 @@ class ShowAdsController extends AbstractActionController
     protected $viewModel;
 
     /**
-     * @var AdsModel
+     * @var AdsManager
      */
-    protected $adsModel;
+    protected $adsManager;
 
     /**
      * @var AdsEntity[]
@@ -48,8 +46,8 @@ class ShowAdsController extends AbstractActionController
      * @return mixed
      */
     public function onDispatch(MvcEvent $e) {
-        // Create instance of adsModel
-        $this->adsModel = new AdsModel($this->getServiceLocator());
+        // Create instance of AdsManager
+        $this->adsManager = new AdsManager($this->getServiceLocator());
         // Create browser id, if already exist reuse the id
         $this->initViewSession();
         // Set template to use by this controller
@@ -99,19 +97,17 @@ class ShowAdsController extends AbstractActionController
             return $jsonView;
         }
 
-        $adsEntities = $this->adsModel->publicGetAds($ids);
+        $adsEntities = $this->adsManager->searchAdsByIds($ids);
 
         foreach($adsEntities as $adsEntity)
         {
-            $view = new AdsView();
-            $view->setAds($adsEntity);
-            $view->setClicked(false);
-            $view->setViewTime(time());
-            $view->setAdsReferrer($_SERVER['HTTP_REFERER']);
-            $view->setBrowserId($_SERVER['REMOTE_ADDR'].'_'.$_COOKIE[self::COOKIE_NAME_VIEWS]);
-            $this->adsModel->getEntityManager()->persist($view);
+            $adsEntity->addView(
+                $_SERVER['HTTP_REFERER'],
+                $_SERVER['REMOTE_ADDR'].'_'.$_COOKIE[self::COOKIE_NAME_VIEWS],
+                $isClicked = false
+            );
         }
-        $this->adsModel->getEntityManager()->flush();
+        $this->adsManager->flush();
         $jsonView->setVariable('status', 'success');
         return $jsonView;
     }
@@ -130,6 +126,6 @@ class ShowAdsController extends AbstractActionController
         $template = $this->request->getQuery('template', '');
         $keyword = $this->request->getQuery('keyword', '');
         $limit = $this->request->getQuery('limit', 8);
-        return $this->adsModel->publicGetRotationAds($showIn, $template, $keyword, $limit);
+        return $this->adsManager->getRotationAds($showIn, $template, $keyword, $limit);
     }
 }

@@ -6,7 +6,6 @@
         <thead>
         <tr>
             <th>#</th>
-            <th>Ads ID</th>
             <th>Ads Title</th>
             <th>Status</th>
             <th>Show In</th>
@@ -15,15 +14,24 @@
         </tr>
         </thead>
         <tbody>
-        <?php foreach($adsList as $ads): ?>
+        <?php foreach($adsList as $key => $ads): ?>
         <tr>
-            <td></td>
-            <td><?php echo $ads->getId(); ?></td>
-            <td><?php echo $ads->getAdsTitle(); ?></td>
-            <td><?php echo $userModel->getAds()->translateStatus($ads->getStatus()); ?></td>
-            <td><?php echo $ads->getShowIn(); ?></td>
-            <td><?php echo $ads->getTemplate(); ?></td>
-            <td><a href="/vigattinads/account-home/ads/view/<?php echo $ads->getId(); ?>"><span class="glyphicon glyphicon-edit"></span> View</a></td>
+            <td><?php echo $key+1; ?></td>
+            <td><?php echo $ads->get('adsTitle'); ?></td>
+            <td><?php switch($ads->get('status')):
+                case \VigattinAds\DomainModel\Ads::STATUS_APPROVED: ?>
+                    <span class="text-success"><span class="glyphicon glyphicon-ok"></span> Approved</span>
+                    <?php break;
+                case \VigattinAds\DomainModel\Ads::STATUS_PENDING: ?>
+                    <span class="text-warning"><span class="glyphicon glyphicon-warning-sign"></span> Pending</span>
+                    <?php break;
+                case \VigattinAds\DomainModel\Ads::STATUS_DISAPPROVED: ?>
+                    <span class="text-danger"><span class="glyphicon glyphicon-ban-circle"></span> Disapproved</span>
+                    <?php break;
+            endswitch; ?></td>
+            <td><?php echo $ads->get('showIn'); ?></td>
+            <td><?php echo $ads->get('template'); ?></td>
+            <td><a href="/vigattinads/account-home/ads/view/<?php echo $ads->get('id'); ?>"><span class="glyphicon glyphicon-edit"></span> View</a></td>
         </tr>
         <?php endforeach; ?>
         </tbody>
