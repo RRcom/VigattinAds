@@ -58,4 +58,12 @@ abstract class AbstractEntity
     {
         $this->entityManager->flush();
     }
+
+    /**
+     * Reload fresh data from database
+     */
+    public function refresh()
+    {
+        $this->entityManager->refresh($this);
+    }
 }

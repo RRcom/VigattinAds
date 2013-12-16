@@ -66,6 +66,7 @@ class ViewAds
         $this->actionContent->setVariables($formError);
         $this->actionContent->setVariable('ads', $adsEntity);
         $this->actionContent->setVariable('userManager', $this->userManager);
+        $this->actionContent->setVariable('adsUser', $adsUser);
         $this->actionContent->setVariable('adsViewCount', $adsViewCount);
         return $this->actionContent;
     }

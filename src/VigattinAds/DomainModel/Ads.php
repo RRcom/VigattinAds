@@ -77,6 +77,12 @@ class Ads extends AbstractEntity
     protected $status = 0;
 
     /**
+     * @var int
+     * @ORM\Column(name="view_limit", type="integer", options={"unsigned"=true});
+     */
+    protected $viewLimit = 0;
+
+    /**
      * @ORM\ManyToOne(targetEntity="VigattinAds\DomainModel\AdsUser", inversedBy="ads")
      */
     protected $adsUser;

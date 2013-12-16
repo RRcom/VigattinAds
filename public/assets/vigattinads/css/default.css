@@ -131,9 +131,15 @@ footer {
 .big-font-3em {
     font-size: 3em;
 }
+.big-font-2em {
+    font-size: 2em;
+}
 .ads-view-info {
 
 }
 .ads-view-info .ads-view-info-col {
     vertical-align: middle;
+}
+.border-right-light {
+    border-right: 1px solid #CCCCCC;
 }

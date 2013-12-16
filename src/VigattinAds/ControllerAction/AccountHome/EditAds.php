@@ -50,6 +50,7 @@ class EditAds
 
     public function action()
     {
+
         return $this->actionContent;
     }
 }
