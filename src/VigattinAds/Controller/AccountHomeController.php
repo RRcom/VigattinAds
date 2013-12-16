@@ -28,7 +28,7 @@ class AccountHomeController extends AbstractActionController
 
     public function profileAction()
     {
-        $this->mainView->setVariable('title', 'My Profile');
+        $this->mainView->setVariable('title', 'Profile Maintenance');
         $dashBoard = new AccountHome\Profile($this);
         return $dashBoard->process();
     }

@@ -1,18 +1,18 @@
 <?php
 namespace VigattinAds\DomainModel;
 
-use Zend\ServiceManager\ServiceManager;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
+use VigattinAds\DomainModel\AbstractEntity;
 use VigattinAds\DomainModel\Ads;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="ads_user", uniqueConstraints={@ORM\UniqueConstraint(name="unique_email", columns={"email"}), @ORM\UniqueConstraint(name="unique_username", columns={"username"})}, indexes={@ORM\Index(name="search_index", columns={"pass_hash"})})
  */
-class AdsUser {
-
+class AdsUser extends AbstractEntity
+{
     /**
      * Table primary key
      *
@@ -74,15 +74,16 @@ class AdsUser {
     protected $privilege = 'b';
 
     /**
+     * @var int
+     * @ORM\Column(name="credit", type="float")
+     */
+    protected $credit = 0;
+
+    /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      * @ORM\OneToMany(targetEntity="VigattinAds\DomainModel\Ads", mappedBy="adsUser")
      */
     protected $ads = null;
-
-    /**
-     * @var \Zend\ServiceManager\ServiceManager
-     */
-    protected $serviceManager;
 
     //==================================================================================================
 
@@ -98,7 +99,7 @@ class AdsUser {
      */
     public function get($propertyName)
     {
-        return $this->$propertyName;
+        return parent::get($propertyName);
     }
 
     /**
@@ -109,10 +110,8 @@ class AdsUser {
      */
     public function set($propertyName, $value)
     {
-        if($propertyName == 'id') return $this;
         if($propertyName == 'ads') return $this;
-        $this->$propertyName = $value;
-        return $this;
+        return parent::set($propertyName, $value);
     }
 
     /**
@@ -125,6 +124,36 @@ class AdsUser {
         $criteria = Criteria::create()->where(Criteria::expr()->eq('id', $adsId));
         $ads = $this->ads->matching($criteria);
         return $ads->first();
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getApprovedAds()
+    {
+        $criteria = Criteria::create()->where(Criteria::expr()->eq('status', Ads::STATUS_APPROVED));
+        $ads = $this->ads->matching($criteria);
+        return $ads;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getPendingAds()
+    {
+        $criteria = Criteria::create()->where(Criteria::expr()->eq('status', Ads::STATUS_PENDING));
+        $ads = $this->ads->matching($criteria);
+        return $ads;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getDisapprovedAds()
+    {
+        $criteria = Criteria::create()->where(Criteria::expr()->eq('status', Ads::STATUS_DISAPPROVED));
+        $ads = $this->ads->matching($criteria);
+        return $ads;
     }
 
     /**
@@ -153,13 +182,5 @@ class AdsUser {
         $this->ads->add($ads);
         $entityManager->persist($ads);
         return $ads;
-    }
-
-    /**
-     * Flush to database all insert to view
-     */
-    public function flush()
-    {
-        $this->serviceManager->get('Doctrine\ORM\EntityManager')->flush();
     }
 }

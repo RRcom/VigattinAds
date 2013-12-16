@@ -101,11 +101,12 @@ class ShowAdsController extends AbstractActionController
 
         foreach($adsEntities as $adsEntity)
         {
-            $adsEntity->addView(
+            $adsView = $adsEntity->addView(
                 $_SERVER['HTTP_REFERER'],
                 $_SERVER['REMOTE_ADDR'].'_'.$_COOKIE[self::COOKIE_NAME_VIEWS],
                 $isClicked = false
             );
+            $adsView->persistSelf();
         }
         $this->adsManager->flush();
         $jsonView->setVariable('status', 'success');

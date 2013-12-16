@@ -1,15 +1,16 @@
 <?php
 namespace VigattinAds\DomainModel;
 
-use Zend\ServiceManager\ServiceManager;
 use Doctrine\ORM\Mapping as ORM;
+use VigattinAds\DomainModel\AbstractEntity;
 use VigattinAds\DomainModel\Ads;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="ads_view", indexes={@ORM\Index(name="search_index", columns={"view_time", "clicked", "browser_id"})})
  */
-class AdsView {
+class AdsView extends AbstractEntity
+{
 
     /**
      * Unique ID of ads view
@@ -49,11 +50,6 @@ class AdsView {
      */
     protected $ads;
 
-    /**
-     * @var \Zend\ServiceManager\ServiceManager
-     */
-    protected $serviceManager;
-
     //=================================================================================
 
     public function __construct(Ads $ads)
@@ -68,7 +64,7 @@ class AdsView {
      */
     public function get($propertyName)
     {
-        return $this->$propertyName;
+        return parent::get($propertyName);
     }
 
     /**
@@ -79,8 +75,6 @@ class AdsView {
      */
     public function set($propertyName, $value)
     {
-        if($propertyName == 'id') return $this;
-        $this->$propertyName = $value;
-        return $this;
+        return parent::set($propertyName, $value);
     }
 }

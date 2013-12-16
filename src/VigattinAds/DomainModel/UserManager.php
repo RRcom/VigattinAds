@@ -89,6 +89,7 @@ class UserManager
         if($this->checkPassword($result->get('passHash'), $password, $result->get('passSalt'))) {
             $this->user = $result;
             $this->user->set('serviceManager', null);
+            $this->user->set('entityManager', null);
             $this->entityManager->detach($this->user);
             $this->sessionManager->getStorage()->user = $this->user;
             $this->user = $this->getEntityFromSession();

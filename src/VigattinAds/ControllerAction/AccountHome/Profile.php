@@ -2,6 +2,7 @@
 namespace VigattinAds\ControllerAction\AccountHome;
 
 use VigattinAds\Controller\AccountHomeController;
+use VigattinAds\DomainModel\AdsUser;
 use Zend\View\Model\ViewModel;
 
 class Profile
@@ -16,17 +17,31 @@ class Profile
      */
     protected $viewModel;
 
+    /**
+     * @var \VigattinAds\DomainModel\AdsUser
+     */
+    protected $adsUser;
+
     public function __construct(AccountHomeController $accountHomeCtrl)
     {
         $this->accountHomeCtrl = $accountHomeCtrl;
+        $this->adsUser = $this->accountHomeCtrl->getServiceLocator()->get('VigattinAds\DomainModel\UserManager')->getCurrentUser();
         $this->viewModel = $accountHomeCtrl->getMainView();
     }
 
     public function process()
     {
         $actionContent = new ViewModel();
-        $actionContent->setTemplate('vigattinads/view/account-home-index');
+        $this->setUserInfo($actionContent);
+        $actionContent->setTemplate('vigattinads/view/account-home-profile');
         $this->viewModel->addChild($actionContent, 'actionContent');
         return $this->viewModel;
+    }
+
+    public function setUserInfo(ViewModel $actionContent)
+    {
+        $actionContent->setVariable('firstName', $this->adsUser->get('firstName'));
+        $actionContent->setVariable('lastName', $this->adsUser->get('lastName'));
+        $actionContent->setVariable('credit', $this->adsUser->get('credit'));
     }
 }

@@ -1,18 +1,19 @@
 <?php
 namespace VigattinAds\DomainModel;
 
-use Zend\ServiceManager\ServiceManager;
 use Doctrine\ORM\Mapping as ORM;
 use VigattinAds\DomainModel\AdsUser;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
+use VigattinAds\DomainModel\AbstractEntity;
 use VigattinAds\DomainModel\AdsView;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="ads", indexes={@ORM\Index(name="search_index", columns={"ads_title", "show_in", "template", "keywords"})})
  */
-class Ads {
+class Ads extends AbstractEntity
+{
 
     const STATUS_PENDING = 0;
     const STATUS_APPROVED = 1;
@@ -86,9 +87,6 @@ class Ads {
      */
     protected $adsView;
 
-    /** @var  \Zend\ServiceManager\ServiceManager */
-    protected $serviceManager;
-
     //==================================================================================================
 
     public function __construct(AdsUser $adsUser)
@@ -104,7 +102,7 @@ class Ads {
      */
     public function get($propertyName)
     {
-        return $this->$propertyName;
+        return parent::get($propertyName);
     }
 
     /**
@@ -115,11 +113,9 @@ class Ads {
      */
     public function set($propertyName, $value)
     {
-        if($propertyName == 'id') return $this;
         if($propertyName == 'adsUser') return $this;
         if($propertyName == 'adsView') return $this;
-        $this->$propertyName = $value;
-        return $this;
+        return parent::set($propertyName, $value);
     }
 
     /**
@@ -131,22 +127,12 @@ class Ads {
     public function addView($adsReferrer, $browserId, $isClicked = false)
     {
         $adsView = new AdsView($this);
+        $adsView->set('serviceManager', $this->serviceManager);
         $adsView->set('viewTime', time())
             ->set('adsReferrer', $adsReferrer)
             ->set('browserId', $browserId)
             ->set('clicked', $isClicked);
         $this->adsView->add($adsView);
-        /** @var  $entityManager \Doctrine\ORM\EntityManager */
-        $entityManager = $this->serviceManager->get('Doctrine\ORM\EntityManager');
-        $entityManager->persist($adsView);
         return $adsView;
-    }
-
-    /**
-     * Flush to database all insert to view
-     */
-    public function flush()
-    {
-        $this->serviceManager->get('Doctrine\ORM\EntityManager')->flush();
     }
 }

@@ -1,2 +1,29 @@
-
-<p>This is an example to show the potential of an offcanvas layout pattern in Bootstrap. Try some responsive-range viewport sizes to see it in action.</p>
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 big-font-2em">
+        Welcome <?php echo $this->escapeHtml($firstName.' '.$lastName); ?>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <hr>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div>current gold</div> <span class="big-font-3em"><?php echo $credit; ?></span>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div>approved ads</div> <span class="big-font-3em text-success"><?php echo $approvedAds->count(); ?></span>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div>pending ads</div> <span class="big-font-3em text-warning"><?php echo $pendingAds->count(); ?></span>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div>disapproved ads</div> <span class="big-font-3em text-danger"><?php echo $disapprovedAds->count(); ?></span>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <hr>
+    </div>
+</div>
