@@ -1,18 +1,25 @@
 <?php if(!($ads instanceof \VigattinAds\DomainModel\Ads)): ?>
 <div class="alert alert-danger">No Ads Found!</div>
 <?php else: ?>
+<div class="alert fade in ajax-result-alert">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+    <strong class="title"></strong> <span class="message"></span>
+</div>
+<input id="adsId" type="hidden" name="adsId" value="<?php echo $ads->get('id'); ?>" />
 <div class="row">
-    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
-        <div>Total View(s)</div> <span class="big-font-3em"><?php echo $adsViewCount; ?></span>
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+        <div>Current Gold <img class="current-gold-progress" src="/assets/vigattinads/img/circle-preloader-2.gif" /></div>
+        <span class="big-font-3em text-warning current-gold middle-align"><?php echo $adsUser->get('credit'); ?></span> <a href="#" data-toggle="modal" data-target="#addGoldCredit" class="middle-align inline-block hover-do-underline tooltip-enable-right" data-toggle="tooltip" title="Add credit to your gold"><span class="glyphicon glyphicon-plus-sign top-align"></span> <small class="top-align">add credit</small></a>
     </div>
-    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
-        <div>View(s) Remaining</div> <span class="big-font-3em text-success"><?php echo $ads->get('viewLimit'); ?></span>
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+        <div>Total View(s)</div>
+        <span class="big-font-3em total-views middle-align"><?php echo $adsViewCount; ?></span>
     </div>
-    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+        <div>View(s) Remaining <img class="views-remaining-progress" src="/assets/vigattinads/img/circle-preloader-2.gif" /></div>
+        <span class="big-font-3em text-success middle-align remaining-views"><?php echo $ads->get('viewLimit'); ?></span> <a href="#" data-toggle="modal" data-target="#addViewCredit" class="middle-align inline-block hover-do-underline tooltip-enable-right" data-toggle="tooltip" title="Add credit to your remaining view(s) using your gold points"><span class="glyphicon glyphicon-plus-sign top-align"></span> <small class="top-align">add credit</small></a>
+    </div>
 
-    </div>
-    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-    </div>
 </div>
 <form class="small" method="post" action="">
     <div class="panel panel-info ">
@@ -75,4 +82,57 @@
         </div>
     </div>
 </form>
+    <!-- Modal Add Views -->
+    <div class="modal fade" id="addViewCredit" tabindex="-1" role="dialog" aria-labelledby="addViewCredit" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Add View(s) Credit</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <p>Exchange rate Gold to View <span class="viewToGoldRate">0</span></p>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                            <div>Current Gold</div>
+                            <span class="modal-current-gold">0</span>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                            <div>Views Remaining</div>
+                            <span class="modal-after-view-remaining">0</span>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                            <div>Add Views</div>
+                            <input type="number" class="form-control middle-align modal-remaining-views allowed-number-only" value="0" min="0" max="1000000" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="addViewCreditSave" type="button" disabled="disabled" class="btn btn-primary add-views-save-change">Save changes</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!-- Modal Add Gold -->
+    <div class="modal fade" id="addGoldCredit" tabindex="-1" role="dialog" aria-labelledby="addGoldCredit" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Add Gold Credit</h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" disabled="disabled" class="btn btn-primary add-views-save-change">Save changes</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 <?php endif; ?>

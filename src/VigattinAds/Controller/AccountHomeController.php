@@ -7,6 +7,7 @@ use Zend\Mvc\MvcEvent;
 use Zend\View\ViewEvent;
 use VigattinAds\ControllerAction\AccountHome;
 use VigattinAds\DomainModel\Navigation;
+use VigattinAds\DomainModel\SettingsManager;
 
 class AccountHomeController extends AbstractActionController
 {
@@ -89,8 +90,11 @@ class AccountHomeController extends AbstractActionController
         return $dashBoard->process();
     }
 
-    public function onDispatch(MvcEvent $e) {
+    public function onDispatch(MvcEvent $e)
+    {
+        $settingsManager = new SettingsManager($this->serviceLocator);
         $this->layout()->setTemplate('vigattinads/layout/active');
+        $this->layout()->setVariable('js', 'var viewToGoldRate = '.$settingsManager->get('viewToGoldRate').';');
         $this->mainView->setVariable('action', strtolower($this->params('action')));
         return parent::onDispatch($e);
     }

@@ -52,6 +52,7 @@ class ViewAds
     {
         $adsId = $this->accountHomeCtrl->params('param2', '');
         $adsUser = $this->userManager->getCurrentUser();
+        $adsUser->refresh();
         $adsViewCount = 0;
         $adsEntity = $adsUser->getSingleAds($adsId);
         if($adsEntity instanceof \VigattinAds\DomainModel\Ads) $adsViewCount = $adsEntity->get('adsView')->count();
