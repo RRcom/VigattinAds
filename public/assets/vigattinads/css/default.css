@@ -143,3 +143,23 @@ footer {
 .border-right-light {
     border-right: 1px solid #CCCCCC;
 }
+.middle-align {
+    vertical-align: middle;
+}
+.top-align {
+    vertical-align: top;
+}
+.inline-block {
+    display: inline-block;
+}
+.hover-do-underline:hover {
+    text-decoration: none;
+}
+.tooltip-inner {
+    font-size: 11px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.hide {
+    display: none;
+}
