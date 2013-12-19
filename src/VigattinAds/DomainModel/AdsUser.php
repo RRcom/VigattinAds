@@ -81,7 +81,7 @@ class AdsUser extends AbstractEntity
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
-     * @ORM\OneToMany(targetEntity="VigattinAds\DomainModel\Ads", mappedBy="adsUser")
+     * @ORM\OneToMany(targetEntity="VigattinAds\DomainModel\Ads", mappedBy="adsUser", orphanRemoval=true, cascade={"persist", "remove"})
      */
     protected $ads = null;
 
