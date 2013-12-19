@@ -183,4 +183,5 @@ class AdsUser extends AbstractEntity
         $entityManager->persist($ads);
         return $ads;
     }
+
 }

@@ -141,4 +141,5 @@ class Ads extends AbstractEntity
         $this->adsView->add($adsView);
         return $adsView;
     }
+
 }

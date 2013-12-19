@@ -9,6 +9,10 @@ use VigattinAds\DomainModel\Image;
 
 class Validator
 {
+    static $titlePattern = '#^[a-zA-Z0-9_-\s.\'"/,&()]*$#';
+    static $keywordPattern = '#^[a-zA-Z0-9\s\,]*$#';
+    static $descriptionPattern = '#^[a-zA-Z0-9_-\s.\'"/,&()]*$#';
+
     static public function isDigitValid($digit)
     {
         $digitValidator = new Digits();
@@ -47,7 +51,7 @@ class Validator
 
     static public function isTitleValid($name, $min = 6, $max = 48)
     {
-        $pattern = '#^[a-zA-Z0-9_-\s.\'"/,&()]*$#';
+        $pattern = self::$titlePattern;
         $regex = new Regex(array('pattern' => $pattern));
         $strlength = new StringLength();
         $strlength->setMin($min);
@@ -59,7 +63,7 @@ class Validator
 
     static public function isKeywordValid($text, $min = 0, $max = 48)
     {
-        $regex = new Regex(array('pattern' => '#^[a-zA-Z0-9\s\,]*$#'));
+        $regex = new Regex(array('pattern' => self::$keywordPattern));
         $strlength = new StringLength();
         $strlength->setMin($min);
         $strlength->setMax($max);
@@ -70,7 +74,7 @@ class Validator
 
     static public function isDescriptionValid($text, $min = 0, $max = 160)
     {
-        $pattern = '#^[a-zA-Z0-9_-\s.\'"/,&()]*$#';
+        $pattern = self::$descriptionPattern;
         $regex = new Regex(array('pattern' => $pattern));
         $strlength = new StringLength();
         $strlength->setMin($min);

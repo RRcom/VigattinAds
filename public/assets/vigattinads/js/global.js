@@ -100,7 +100,6 @@ $(document).ready(function(e) {
 
     /* add views limit */
     (function($) {
-        $('.ajax-result-alert').alert('close');
         $('.views-remaining-progress').hide();
         $('.current-gold-progress').hide();
         $('#addViewCreditSave').click(function(e) {
@@ -120,7 +119,8 @@ $(document).ready(function(e) {
                     $('.views-remaining-progress').hide();
                     $('.current-gold-progress').hide();
                     if(textStatus != 'success') {
-                        console.log('ads view failed');
+                        $('.alert-box').html('<div class="alert alert-danger fade in"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><strong>Failed!</strong> Network error</div>');
+                        $(".alert").alert();
                     }
                 },
                 success: function(data, textStatus, jqXHR) {
@@ -129,15 +129,146 @@ $(document).ready(function(e) {
                         $('.remaining-views').html(data.views);
                         $('.current-gold-success').show().fadeOut(1000);
                         $('.views-remaining-success').show().fadeOut(1000);
-                        $('.ajax-result-alert .title').html('Success!');
-                        $('.ajax-result-alert .message').html('');
-                        $('.ajax-result-alert').alert();
                     }
                     else {
-
+                        $('.alert-box').html('<div class="alert alert-danger fade in"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><strong>'+data.status.charAt(0).toUpperCase()+data.status.slice(1)+'!</strong> '+data.reason.charAt(0).toUpperCase()+data.reason.slice(1)+'</div>');
+                        $(".alert").alert();
                     }
                 }
             });
+        });
+        setTimeout(function(){
+            $(".alert.auto-hide").fadeOut(5000, function() {
+                $(".alert.auto-hide").alert('close');
+            })
+        }, 10000);
+    })(jQuery);
+
+    /* ads form validate */
+    (function($) {
+
+        $("form button[type=submit]").click(function() {
+            $("button[type=submit]", $(this).parents("form")).removeAttr("clicked");
+            $(this).attr("clicked", "true");
+        });
+
+        function checkTitle() {
+            var reg = /^[a-zA-Z0-9_\s.\'"/,&()-]*$/;
+            var min = 6;
+            var max = 48;
+            var invalidCharMsg = 'Title has invalid character';
+            var lengthErrorMsg = 'Title must be minimum of '+min+' and maximum of '+max+' character';
+            var formGroup = $('.ads-form-title');
+            var value = $('input', formGroup).val();
+            if(value.length > max || value.length < min) {
+                formGroup.removeClass('has-error').addClass('has-error');
+                $('.help-block', formGroup).html(lengthErrorMsg);
+                return false;
+            }
+            if(!value.match(reg)) {
+                formGroup.removeClass('has-error').addClass('has-error');
+                $('.help-block', formGroup).html(invalidCharMsg);
+                return false;
+            }
+            formGroup.removeClass('has-error');
+            $('.help-block', formGroup).html('');
+            return true;
+        }
+
+        function checkUrl() {
+            var reg = new RegExp('^(https?:\\/\\/)'+ // protocol
+                '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+                '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+                '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+                '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+                '(\\#[-a-z\\d_]*)?$','i'); // fragment locator;
+            var min = 0;
+            var max = 255;
+            var invalidCharMsg = 'The link you provided is not a valid url';
+            var lengthErrorMsg = 'Url must be maximum of '+max+' character';
+            var formGroup = $('.ads-form-url');
+            var value = $('input', formGroup).val();
+            if(value.length > max || value.length < min) {
+                formGroup.removeClass('has-error').addClass('has-error');
+                $('.help-block', formGroup).html(lengthErrorMsg);
+                return false;
+            }
+            if(!value.match(reg)) {
+                formGroup.removeClass('has-error').addClass('has-error');
+                $('.help-block', formGroup).html(invalidCharMsg);
+                return false;
+            }
+            formGroup.removeClass('has-error');
+            $('.help-block', formGroup).html('');
+            return true;
+        }
+
+        function checkKeyword() {
+            var reg = /^[a-zA-Z0-9\s\,]*$/;
+            var min = 0;
+            var max = 48;
+            var invalidCharMsg = 'Keyword has invalid character';
+            var lengthErrorMsg = 'Keyword must be minimum of '+min+' and maximum of '+max+' character';
+            var formGroup = $('.ads-form-keyword');
+            var value = $('input', formGroup).val();
+            if(value.length > max || value.length < min) {
+                formGroup.removeClass('has-error').addClass('has-error');
+                $('.help-block', formGroup).html(lengthErrorMsg);
+                return false;
+            }
+            if(!value.match(reg)) {
+                formGroup.removeClass('has-error').addClass('has-error');
+                $('.help-block', formGroup).html(invalidCharMsg);
+                return false;
+            }
+            formGroup.removeClass('has-error');
+            $('.help-block', formGroup).html('');
+            return true;
+        }
+
+        function checkDescription() {
+            var reg = /^[a-zA-Z0-9_\s.\'"/,&()-]*$/;
+            var min = 0;
+            var max = 160;
+            var invalidCharMsg = 'Description has invalid character';
+            var lengthErrorMsg = 'Description must be minimum of '+min+' and maximum of '+max+' character';
+            var formGroup = $('.ads-form-description');
+            var value = $('textarea', formGroup).val();
+            if(value.length > max || value.length < min) {
+                formGroup.removeClass('has-error').addClass('has-error');
+                $('.help-block', formGroup).html(lengthErrorMsg);
+                return false;
+            }
+            if(!value.match(reg)) {
+                formGroup.removeClass('has-error').addClass('has-error');
+                $('.help-block', formGroup).html(invalidCharMsg);
+                return false;
+            }
+            formGroup.removeClass('has-error');
+            $('.help-block', formGroup).html('');
+            return true;
+        }
+
+        $('#ads-form').submit(function(e) {
+            var submitVal = $("button[type=submit][clicked=true]", e.currentTarget).val();
+            var err = 0;
+            switch(submitVal)
+            {
+                case 'next':
+                    if(!checkTitle()) err++;
+                    if(!checkUrl()) err++;
+                    if(!checkKeyword()) err++;
+                    if(!checkDescription()) err++;
+                    if(err) return false
+                    break;
+                case 'delete':
+                    if(confirm("This action can't be undone! All view points of this ads will be discarded! Are you sure you want to delete this ads?")) {
+
+                    } else {
+                        return false;
+                    }
+                    break;
+            }
         });
     })(jQuery);
 
