@@ -1,3 +1,4 @@
+<?php /** @var $user \VigattinAds\DomainModel\adsUser */ ?>
 <div class="row row-offcanvas row-offcanvas-left">
 
     <div class="col-xs-6 col-sm-3 col-md-2 sidebar-offcanvas" id="sidebar" role="navigation">
@@ -6,6 +7,9 @@
             <a href="/vigattinads/account-home/ads" class="list-group-item <?php echo ($action == 'ads') ? 'active' : ''; ?>"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;&nbsp;&nbsp;Ads</a>
             <a href="/vigattinads/account-home/profile" class="list-group-item <?php echo ($action == 'profile') ? 'active' : ''; ?>"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;&nbsp;Profile</a>
             <a href="/vigattinads/account-home/admin" class="list-group-item <?php echo ($action == 'admin') ? 'active' : ''; ?>"><span class="glyphicon glyphicon-wrench"></span>&nbsp;&nbsp;&nbsp;Admin</a>
+            <?php if($user->hasPermit($user::PERMIT_TO_APPROVE_ADS)): ?>
+                <a href="/vigattinads/account-home/approval" class="list-group-item <?php echo ($action == 'approval') ? 'active' : ''; ?>"><span class="glyphicon glyphicon-wrench"></span>&nbsp;&nbsp;&nbsp;Ads Approval</a>
+            <?php endif; ?>
         </div>
     </div><!--/span-->
 

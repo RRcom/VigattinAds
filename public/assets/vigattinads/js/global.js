@@ -54,51 +54,18 @@ $(document).ready(function(e) {
         $('.tooltip-enable-right').tooltip({"placement":"right"});
     })(jQuery);
 
-    /* modal add views*/
+    /* modal edit reserve views */
     (function($) {
         $('#addViewCredit').on('show.bs.modal', function(e) {
-            $('.modal-after-view-remaining').html($('.remaining-views').text());
+            $('.modal-current-reserve-view').html($('.remaining-views').text());
             var currentGold = parseFloat($('.current-gold').text());
             $('.modal-current-gold').html(currentGold.toFixed(2));
             $('.viewToGoldRate').html(viewToGoldRate);
-            $('.modal-remaining-views').val(0);
+            $('.modal-remaining-views').val($('.remaining-views').text());
         })
     })(jQuery);
 
-    /* verify/filter */
-    (function($){
-        $('.allowed-number-only').keydown(function(e) {
-            if ( $.inArray(e.which,[8,39,37]) !== -1) return;
-            else if($(e.currentTarget).val().length > 6) return false;
-            else {
-                if (e.shiftKey || (e.which < 48 || e.which > 57) && (e.which < 96 || e.which > 105 )) {
-                    return false;
-                }
-            }
-        }).change(function(e) {
-            var inputVal = parseInt($(e.currentTarget).val());
-            if(isNaN(inputVal)) inputVal = 0;
-            $('.modal-after-view-remaining').html(parseInt($('.remaining-views').text()) + inputVal);
-            var goldResult = (parseFloat($('.current-gold').text()) - (inputVal*viewToGoldRate));
-            $('.modal-current-gold').html(goldResult.toFixed(2));
-            if((goldResult < 0) || inputVal < 1) $('.add-views-save-change').removeAttr('disabled').attr('disabled', 'disabled');
-            else $('.add-views-save-change').removeAttr('disabled');
-            if(goldResult < 0) $('.modal-current-gold').removeClass('text-danger').addClass('text-danger');
-            else $('.modal-current-gold').removeClass('text-danger');
-        }).keyup(function(e) {
-            var inputVal = parseInt($(e.currentTarget).val());
-            if(isNaN(inputVal)) inputVal = 0;
-            $('.modal-after-view-remaining').html(parseInt($('.remaining-views').text()) + inputVal);
-            var goldResult = (parseFloat($('.current-gold').text()) - (inputVal*viewToGoldRate));
-            $('.modal-current-gold').html(goldResult.toFixed(2));
-            if(goldResult < 0 || inputVal < 1) $('.add-views-save-change').removeAttr('disabled').attr('disabled', 'disabled');
-            else $('.add-views-save-change').removeAttr('disabled');
-            if(goldResult < 0) $('.modal-current-gold').removeClass('text-danger').addClass('text-danger');
-            else $('.modal-current-gold').removeClass('text-danger');
-        });
-    })(jQuery);
-
-    /* add views limit */
+    /* edit reserve views */
     (function($) {
         $('.views-remaining-progress').hide();
         $('.current-gold-progress').hide();
@@ -142,6 +109,52 @@ $(document).ready(function(e) {
                 $(".alert.auto-hide").alert('close');
             })
         }, 10000);
+    })(jQuery);
+
+    /* verify/filter */
+    (function($){
+        $('.allowed-number-only').keydown(function(e) {
+            if ( $.inArray(e.which,[8,39,37]) !== -1) return;
+            else if($(e.currentTarget).val().length > 6) return false;
+            else {
+                if (e.shiftKey || (e.which < 48 || e.which > 57) && (e.which < 96 || e.which > 105 )) {
+                    return false;
+                }
+            }
+        }).change(function(e) {
+            var inputVal = parseInt($(e.currentTarget).val());
+            if(isNaN(inputVal)) inputVal = 0;
+            var goldResult = calculateCurrentGold(
+                parseFloat($('.current-gold').text()),
+                parseInt($('.modal-current-reserve-view').text()),
+                inputVal,
+                viewToGoldRate
+            );
+            $('.modal-current-gold').html(goldResult.toFixed(2));
+            if((goldResult < 0) || inputVal == $('.modal-current-reserve-view').text()) $('.add-views-save-change').removeAttr('disabled').attr('disabled', 'disabled');
+            else $('.add-views-save-change').removeAttr('disabled');
+            if(goldResult < 0) $('.modal-current-gold').removeClass('text-danger').addClass('text-danger');
+            else $('.modal-current-gold').removeClass('text-danger');
+        }).keyup(function(e) {
+            var inputVal = parseInt($(e.currentTarget).val());
+            if(isNaN(inputVal)) inputVal = 0;
+            var goldResult = calculateCurrentGold(
+                parseFloat($('.current-gold').text()),
+                parseInt($('.modal-current-reserve-view').text()),
+                inputVal,
+                viewToGoldRate
+            );
+            $('.modal-current-gold').html(goldResult.toFixed(2));
+            if(goldResult < 0 || inputVal == $('.modal-current-reserve-view').text()) $('.add-views-save-change').removeAttr('disabled').attr('disabled', 'disabled');
+            else $('.add-views-save-change').removeAttr('disabled');
+            if(goldResult < 0) $('.modal-current-gold').removeClass('text-danger').addClass('text-danger');
+            else $('.modal-current-gold').removeClass('text-danger');
+        });
+
+        function calculateCurrentGold(currentGold, currentReserve, newReserve, viewToGoldRate) {
+            var viewChange = (currentReserve - newReserve) * viewToGoldRate;
+            return currentGold + viewChange;
+        }
     })(jQuery);
 
     /* ads form validate */
@@ -262,14 +275,15 @@ $(document).ready(function(e) {
                     if(err) return false
                     break;
                 case 'delete':
-                    if(confirm("This action can't be undone! All view points of this ads will be discarded! Are you sure you want to delete this ads?")) {
-
-                    } else {
-                        return false;
-                    }
+                    return false;
                     break;
             }
         });
+    })(jQuery);
+
+    /* modal ads confirm delete */
+    (function($) {
+
     })(jQuery);
 
 });

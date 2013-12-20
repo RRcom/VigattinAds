@@ -33,19 +33,30 @@ class Validator
         $strlength = new StringLength();
         $strlength->setMin($min);
         $strlength->setMax($max);
-        if(!$regex->isValid($name)) return 'Invalid username! Must be alphanumeric and underscore';
+        if(!$regex->isValid($name)) return 'Invalid username! Must be alphanumeric, underscore and no white spaces';
         if(!$strlength->isValid($name)) return 'Username must be minimum of '.$min.' and maximum of '.$max.' character';
         return '';
     }
 
-    static public function isNameValid($name, $min = 6, $max = 48)
+    static public function isPasswordValid($password, $min = 6, $max = 48)
+    {
+        $regex = new Regex(array('pattern' => '#^.+$#'));
+        $strlength = new StringLength();
+        $strlength->setMin($min);
+        $strlength->setMax($max);
+        if(!$regex->isValid($password)) return 'Invalid password';
+        if(!$strlength->isValid($password)) return 'Password must be minimum of '.$min.' and maximum of '.$max.' character';
+        return '';
+    }
+
+    static public function isNameValid($name, $min = 6, $max = 48, $title = 'name')
     {
         $regex = new Regex(array('pattern' => '#^[a-zA-Z0-9_-][a-zA-Z0-9_\s-]+$#'));
         $strlength = new StringLength();
         $strlength->setMin($min);
         $strlength->setMax($max);
-        if(!$regex->isValid($name)) return 'Invalid name! Must be alphanumeric, underscore or dashes';
-        if(!$strlength->isValid($name)) return 'Name must be minimum of '.$min.' and maximum of '.$max.' character';
+        if(!$regex->isValid($name)) return 'Invalid '.$title.'! Must be alphanumeric, underscore or dashes';
+        if(!$strlength->isValid($name)) return ucfirst($title).' must be minimum of '.$min.' and maximum of '.$max.' character';
         return '';
     }
 

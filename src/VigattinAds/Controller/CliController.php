@@ -31,8 +31,7 @@ class CliController extends AbstractActionController
             }
         }
         else {
-            $userManager->flush();
-            return "success user id ".$result->getId();
+            return "success user id ".$result->get('id');
         }
         return $error;
     }

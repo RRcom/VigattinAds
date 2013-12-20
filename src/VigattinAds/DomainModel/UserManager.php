@@ -3,7 +3,7 @@ namespace VigattinAds\DomainModel;
 
 use Zend\ServiceManager\ServiceManager;
 use VigattinAds\DomainModel\AdsUser;
-use VigattinAds\DomainModel\Validator;
+use VigattinAds\DomainModel\Validator as SafeValidator;
 use Zend\Crypt\Password\Bcrypt;
 use Zend\Math\Rand;
 
@@ -152,31 +152,28 @@ class UserManager
     public function createUser($email, $username, $password, $firstName, $lastName)
     {
         $password = strval($password);
+        $finalError = array();
         $error = array();
-        if(Validator::isEmailValid($email)) $error[] = 'invalid email';
-        if($this->isTableExist('email', $email)) $error[] = 'email already exist';
-        if(strlen($username) < self::MIN_USERNAME_LENGTH) $error[] = 'username must be minimum of '.self::MIN_USERNAME_LENGTH.' character';
-        if(strlen($username) > self::MAX_USERNAME_LENGTH) $error[] = 'username to long max require is '.self::MAX_USERNAME_LENGTH.' character';
-        if(!$this->alphaNumericValidator->isValid($username)) $error[] = 'invalid username must be a-z 0-9 and _ character only';
-        if($this->isTableExist('username', $username)) $error[] = 'username already exist';
-        if(strlen($password) < self::MIN_PASSWORD_LENGTH) $error[] = 'password must be minimum of '.self::MIN_PASSWORD_LENGTH.' character';
-        if(strlen($password) > self::MAX_PASSWORD_LENGTH) $error[] = 'password to long max require is '.self::MAX_PASSWORD_LENGTH.' character';
-        if(strlen($firstName) < self::MIN_NAME_LENGTH) $error[] = 'first name must be minimum of '.self::MIN_NAME_LENGTH.' character';
-        if(strlen($firstName) > self::MAX_NAME_LENGTH) $error[] = 'first name to long max require is '.self::MAX_NAME_LENGTH.' character';
-        if(strlen($lastName) < self::MIN_NAME_LENGTH) $error[] = 'last name must be minimum of '.self::MIN_NAME_LENGTH.' character';
-        if(strlen($lastName) > self::MAX_NAME_LENGTH) $error[] = 'last name to long max require is '.self::MAX_NAME_LENGTH.' character';
-        if(!$this->alphaValidator->isValid($firstName)) $error[] = 'invalid first name must be a-z character only';
-        if(!$this->alphaValidator->isValid($lastName)) $error[] = 'invalid last name must be a-z character only';
-        if(count($error)) return $error;
-        $user = new UserEntity();
-        $user->setEmail($email);
-        $user->setUsername($username);
+        $error[] = SafeValidator::isEmailValid($email);
+        $error[] = SafeValidator::isUsernameValid($username);
+        $error[] = SafeValidator::isPasswordValid($password);
+        $error[] = SafeValidator::isNameValid($firstName, 1, 48, 'first name');
+        $error[] = SafeValidator::isNameValid($lastName, 1, 48, 'last name');
+        foreach($error as $er)
+        {
+            if($er) $finalError[] = $er;
+        }
+        if(count($finalError)) return $finalError;
+        $user = new AdsUser();
+        $user->set('email', $email);
+        $user->set('username', $username);
         $salt = $this->makePassSalt($password);
-        $user->setPassSalt($salt);
-        $user->setPassHash($this->createPassHash($password, $salt));
-        $user->setFirstName($firstName);
-        $user->setLastName($lastName);
+        $user->set('passSalt', $salt);
+        $user->set('passHash', $this->createPassHash($password, $salt));
+        $user->set('firstName', $firstName);
+        $user->set('lastName', $lastName);
         $this->entityManager->persist($user);
+        $this->entityManager->flush();
         return $user;
     }
 

@@ -15,9 +15,10 @@ use VigattinAds\DomainModel\AdsView;
 class Ads extends AbstractEntity
 {
 
+    const STATUS_DISAPPROVED = -1;
     const STATUS_PENDING = 0;
     const STATUS_APPROVED = 1;
-    const STATUS_DISAPPROVED = -1;
+    const STATUS_PAUSED = 2;
 
     /**
      * @ORM\Id
@@ -89,7 +90,7 @@ class Ads extends AbstractEntity
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
-     * @ORM\OneToMany(targetEntity="VigattinAds\DomainModel\AdsView", mappedBy="ads", orphanRemoval=true, cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="VigattinAds\DomainModel\AdsView", mappedBy="ads", orphanRemoval=true)
      */
     protected $adsView;
 
@@ -140,6 +141,25 @@ class Ads extends AbstractEntity
             ->set('clicked', $isClicked);
         $this->adsView->add($adsView);
         return $adsView;
+    }
+
+    /**
+     * Delete this ads from database
+     */
+    public function deleteSelf()
+    {
+        $this->deleteAllViews();
+        $this->entityManager->remove($this);
+    }
+
+    /**
+     * Delete all views from database
+     */
+    public function deleteAllViews()
+    {
+        $query = $this->entityManager->createQuery("DELETE VigattinAds\DomainModel\AdsView v WHERE v.ads = :adsId");
+        $query->setParameter('adsId', $this->id);
+        $query->execute();
     }
 
 }

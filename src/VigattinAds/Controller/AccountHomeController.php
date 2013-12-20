@@ -8,10 +8,15 @@ use Zend\View\ViewEvent;
 use VigattinAds\ControllerAction\AccountHome;
 use VigattinAds\DomainModel\Navigation;
 use VigattinAds\DomainModel\SettingsManager;
+use VigattinAds\DomainModel\AdsUser;
 
 class AccountHomeController extends AbstractActionController
 {
+    /** @var \Zend\View\Model\ViewModel */
     protected $mainView;
+
+    /** @var \VigattinAds\DomainModel\UserManager */
+    protected $userManager;
 
     public function __construct()
     {
@@ -90,11 +95,21 @@ class AccountHomeController extends AbstractActionController
         return $dashBoard->process();
     }
 
+    public function approvalAction()
+    {
+        if(!$this->userManager->getCurrentUser()->hasPermit(AdsUser::PERMIT_TO_APPROVE_ADS)) exit('You are not allowed here!');
+        $this->mainView->setVariable('title', 'Ads Approval');
+        $dashBoard = new AccountHome\Approval($this);
+        return $dashBoard->process();
+    }
+
     public function onDispatch(MvcEvent $e)
     {
+        $this->userManager = $this->getServiceLocator()->get('VigattinAds\DomainModel\UserManager');
         $settingsManager = new SettingsManager($this->serviceLocator);
         $this->layout()->setTemplate('vigattinads/layout/active');
         $this->layout()->setVariable('js', 'var viewToGoldRate = '.$settingsManager->get('viewToGoldRate').';');
+        $this->mainView->setVariable('user', $this->userManager->getCurrentUser());
         $this->mainView->setVariable('action', strtolower($this->params('action')));
         return parent::onDispatch($e);
     }

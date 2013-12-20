@@ -63,7 +63,7 @@ class JsonServiceController extends AbstractActionController
         );
 
         $requestViews = intval($this->request['requestViews']);
-        if($requestViews < 1)
+        if($requestViews < 0)
         {
             $jsonResult['status'] = 'failed';
             $jsonResult['reason'] = 'view request must be higher than 0';
@@ -94,17 +94,17 @@ class JsonServiceController extends AbstractActionController
         }
 
         // calculate how many gold left;
-        $goldLeft = ($user->get('credit') - ($requestViews * $viewToGoldRate));
+        $goldLeft = ($user->get('credit') + (($ads->get('viewLimit') - $requestViews) * $viewToGoldRate));
         if($goldLeft < 0)
         {
             $jsonResult['status'] = 'failed';
-            $jsonResult['reason'] = 'not enough gold';
+            $jsonResult['reason'] = 'not enough gold, please refresh this page to update current gold status';
             return $this->jsonView->setVariables($jsonResult);
         }
 
         $user->set('credit', $goldLeft);
         $user->persistSelf();
-        $ads->set('viewLimit', $ads->get('viewLimit') + $requestViews);
+        $ads->set('viewLimit', $requestViews);
         $ads->persistSelf();
         $user->flush();
 

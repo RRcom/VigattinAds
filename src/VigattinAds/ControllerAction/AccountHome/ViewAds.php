@@ -95,11 +95,50 @@ class ViewAds
                 $viewLimit = $adsEntity->get('viewLimit');
                 if($viewLimit < 0) $viewLimit = 0;
                 $adsEntity->set('viewLimit', 0);
-                $adsUser->set('credit', $viewLimit*$viewToGoldRate);
-                $adsUser->deleteAds($adsEntity->get('id'));
+                $adsUser->set('credit', floatval($adsUser->get('credit'))+($viewLimit*$viewToGoldRate));
+                $adsEntity->deleteSelf();
+                $adsEntity->flush();
 
                 header('Location: /vigattinads/account-home/ads');
                 exit();
+            }
+            elseif(strtolower($this->accountHomeCtrl->getRequest()->getPost('submit', '')) == 'pause')
+            {
+                if($adsEntity->get('status') == $adsEntity::STATUS_APPROVED)
+                {
+                    $adsEntity->set('status', $adsEntity::STATUS_PAUSED);
+                    $adsEntity->persistSelf();
+                    $adsEntity->flush();
+                }
+                $formError = array(
+                    'adsTitle' => $adsEntity->get('adsTitle'),
+                    'adsUrl' => $adsEntity->get('adsUrl'),
+                    'adsKeyword' => $adsEntity->get('keywords'),
+                    'adsDescription' => $adsEntity->get('adsDescription'),
+                    'adsTitleError' => '',
+                    'adsUrlError' => '',
+                    'adsKeywordError' => '',
+                    'adsDescriptionError' => '',
+                );
+            }
+            elseif(strtolower($this->accountHomeCtrl->getRequest()->getPost('submit', '')) == 'resume')
+            {
+                if($adsEntity->get('status') == $adsEntity::STATUS_PAUSED)
+                {
+                    $adsEntity->set('status', $adsEntity::STATUS_APPROVED);
+                    $adsEntity->persistSelf();
+                    $adsEntity->flush();
+                }
+                $formError = array(
+                    'adsTitle' => $adsEntity->get('adsTitle'),
+                    'adsUrl' => $adsEntity->get('adsUrl'),
+                    'adsKeyword' => $adsEntity->get('keywords'),
+                    'adsDescription' => $adsEntity->get('adsDescription'),
+                    'adsTitleError' => '',
+                    'adsUrlError' => '',
+                    'adsKeywordError' => '',
+                    'adsDescriptionError' => '',
+                );
             }
             else
             {

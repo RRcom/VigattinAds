@@ -10,6 +10,7 @@
             <th>Status</th>
             <th>Show In</th>
             <th>Position</th>
+            <th>Reserve</th>
             <th>Options</th>
         </tr>
         </thead>
@@ -28,10 +29,14 @@
                 case \VigattinAds\DomainModel\Ads::STATUS_DISAPPROVED: ?>
                     <span class="text-danger"><span class="glyphicon glyphicon-ban-circle"></span> Disapproved</span>
                     <?php break;
+                case \VigattinAds\DomainModel\Ads::STATUS_PAUSED: ?>
+                    <span class="text-warning"><span class="glyphicon glyphicon-pause"></span> Paused</span>
+                    <?php break;
             endswitch; ?></td>
             <td><?php echo $ads->get('showIn'); ?></td>
             <td><?php echo $ads->get('template'); ?></td>
-            <td><a href="/vigattinads/account-home/ads/view/<?php echo $ads->get('id'); ?>"><span class="glyphicon glyphicon-edit"></span> View</a></td>
+            <td><?php echo $ads->get('viewLimit'); ?></td>
+            <td><a href="/vigattinads/account-home/ads/view/<?php echo $ads->get('id'); ?>"><span class="glyphicon glyphicon-edit"></span> Edit</a></td>
         </tr>
         <?php endforeach; ?>
         </tbody>

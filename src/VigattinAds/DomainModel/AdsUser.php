@@ -13,6 +13,10 @@ use VigattinAds\DomainModel\Ads;
  */
 class AdsUser extends AbstractEntity
 {
+    const PERMIT_ALL = 's';
+    const PERMIT_BASIC_ACCESS = 'b';
+    const PERMIT_TO_APPROVE_ADS = 'p';
+
     /**
      * Table primary key
      *
@@ -81,7 +85,7 @@ class AdsUser extends AbstractEntity
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
-     * @ORM\OneToMany(targetEntity="VigattinAds\DomainModel\Ads", mappedBy="adsUser", orphanRemoval=true, cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="VigattinAds\DomainModel\Ads", mappedBy="adsUser", orphanRemoval=true)
      */
     protected $ads = null;
 
@@ -182,6 +186,17 @@ class AdsUser extends AbstractEntity
         $this->ads->add($ads);
         $entityManager->persist($ads);
         return $ads;
+    }
+
+    /**
+     * Check if user has privilege to access site functionality
+     * @param $permit Permit constant
+     * @return bool
+     */
+    public function hasPermit($permit)
+    {
+        if(strpos($this->privilege, $permit) === false) return false;
+        return true;
     }
 
 }
