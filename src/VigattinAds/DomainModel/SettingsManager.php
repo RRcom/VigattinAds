@@ -43,6 +43,7 @@ class SettingsManager
         try {
             $result = $query->getSingleScalarResult();
         } catch(NoResultException $ex) {
+            $this->set($key, $defaultValue);
             $result = $defaultValue;
         }
         return $result;
@@ -53,6 +54,13 @@ class SettingsManager
         $query = $this->entityManager->createQuery("SELECT COUNT(s.id) FROM VigattinAds\DomainModel\Settings s WHERE s.key = :key");
         $query->setParameter('key', $key);
         return $query->getSingleScalarResult() ? true : false;
+    }
+
+    public function getIncrement($key)
+    {
+        $increment = intval($this->get($key, 0));
+        $this->set($key, $increment+1);
+        return $increment;
     }
 
     public function delete($key)

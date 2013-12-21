@@ -5,6 +5,8 @@ use Zend\ServiceManager\ServiceManager;
 use VigattinAds\DomainModel\Ads;
 use VigattinAds\DomainModel\AdsUser;
 use VigattinAds\DomainModel\SettingsManager;
+use Doctrine\ORM\NoResultException;
+use VigattinAds\DomainModel\AdsApproveLog;
 
 class AdsManager
 {
@@ -63,7 +65,7 @@ class AdsManager
      * @param $template
      * @param $keyword
      * @param int $limit
-     * @return array|\VigattinAds\Entity\Ads[]
+     * @return Ads[]
      */
     public function getRotationAds($showIn, $template, $keyword, $limit = 10)
     {
@@ -159,6 +161,108 @@ class AdsManager
             return false;
         }
         return $result;
+    }
+
+    /**
+     * Get ads using review_version id
+     * @param $reviewVersion
+     * @return mixed|null
+     */
+    public function getAdsByReviewVersion($reviewVersion)
+    {
+        $query = $this->entityManager->createQuery("SELECT a FROM VigattinAds\DomainModel\Ads a WHERE a.reviewVersion = :version");
+        $query->setParameter('version', $reviewVersion);
+        try {
+            $result = $query->getSingleResult();
+        } catch(NoResultException $ex) {
+            $result = null;
+        }
+        return $result;
+    }
+
+    /**
+     * Get log
+     * @param AdsUser $approver
+     */
+    public function getCurrentReviewingLog(AdsUser $approver)
+    {
+        $query = $this->entityManager->createQuery("SELECT l FROM VigattinAds\DomainModel\AdsApproveLog l WHERE l.approver = :user AND l.reviewResult = :result");
+        $query->setParameters(array('user' => $approver, 'result' => Ads::STATUS_REVIEWING));
+        try {
+            $result = $query->getSingleResult();
+        } catch(NoResultException $ex) {
+            $result = null;
+        }
+        return $result;
+    }
+
+    /**
+     * @param AdsUser $approver
+     * @return Ads|null
+     */
+    public function getCurrentReviewingAds(AdsUser $approver)
+    {
+        $log = $this->getCurrentReviewingLog($approver);
+        if(!($log instanceof AdsApproveLog)) return null;
+        $ads = $this->getAdsByReviewVersion($log->get('reviewVersion'));
+        if(!($ads instanceof Ads)) return null;
+        return $ads;
+    }
+
+    /**
+     * Get single pending ads waiting for review
+     * @return Ads|null
+     */
+    public function getPendingAds()
+    {
+        $query = $this->entityManager->createQuery("SELECT a FROM VigattinAds\DomainModel\Ads a WHERE a.status = :status ORDER BY a.reviewVersion ASC");
+        $query->setParameter('status', Ads::STATUS_PENDING);
+        try {
+            $result = $query->getSingleResult();
+        } catch(NoResultException $ex) {
+            $result = null;
+        }
+        return $result;
+    }
+
+    /**
+     * @param AdsUser $approver
+     * @param Ads $ads
+     * @param $reviewVersion
+     * @param int $reviewResult
+     * @param string $reviewReason
+     * @return AdsApproveLog
+     */
+    public function createReviewLog(AdsUser $approver, Ads $ads, $reviewVersion, $reviewResult = Ads::STATUS_REVIEWING, $reviewReason = '')
+    {
+        $log = new AdsApproveLog();
+        $log->set('approver', $approver);
+        $log->set('ads', $ads);
+        $log->set('reviewVersion', $reviewVersion);
+        $log->set('reviewResult', $reviewResult);
+        $log->set('reviewReason', $reviewReason);
+        $this->entityManager->persist($log);
+        $this->entityManager->persist();
+        return $log;
+    }
+
+    /**
+     * Get ads to review
+     */
+    public function fetchAdsToReview(AdsUser $approver)
+    {
+        $ads = $this->getCurrentReviewingAds($approver);
+        if(!($ads instanceof Ads))
+        {
+            $ads = $this->getPendingAds();
+            if(!($ads instanceof Ads)) return null;
+            $ads->set('status', Ads::STATUS_REVIEWING);
+            $ads->persistSelf();
+            //$this->createReviewLog($approver);
+
+
+            $ads->flush();
+        }
     }
 
     /**

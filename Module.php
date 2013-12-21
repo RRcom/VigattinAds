@@ -132,6 +132,9 @@ class Module
                 },
                 'VigattinAds\DomainModel\UserManager' => function($sm) {
                         return new \VigattinAds\DomainModel\UserManager($sm);
+                },
+                'VigattinAds\DomainModel\AdsManager' => function($sm) {
+                    return new \VigattinAds\DomainModel\AdsManager($sm);
                 }
             ),
         );

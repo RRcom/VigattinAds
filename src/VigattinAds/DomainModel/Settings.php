@@ -28,6 +28,11 @@ class Settings {
     protected $value;
 
     /**
+     * @ORM\Column(name="`int_value`", type="integer")
+     */
+    protected $intValue = 0;
+
+    /**
      * @param string $key
      */
     public function setKey($key)

@@ -10,7 +10,7 @@ use VigattinAds\DomainModel\AdsView;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="ads", indexes={@ORM\Index(name="search_index", columns={"ads_title", "show_in", "template", "keywords"})})
+ * @ORM\Table(name="ads", indexes={@ORM\Index(name="search_index", columns={"ads_title", "show_in", "template", "keywords", "status"}), @ORM\Index(name="version_index", columns={"review_version"})})
  */
 class Ads extends AbstractEntity
 {
@@ -19,6 +19,7 @@ class Ads extends AbstractEntity
     const STATUS_PENDING = 0;
     const STATUS_APPROVED = 1;
     const STATUS_PAUSED = 2;
+    const STATUS_REVIEWING = 3;
 
     /**
      * @ORM\Id
@@ -78,6 +79,13 @@ class Ads extends AbstractEntity
     protected $status = 0;
 
     /**
+     * Used only when ads under review
+     * @var String
+     * @ORM\Column(name="review_version", type="string", length=255)
+     */
+    protected $reviewVersion = '0';
+
+    /**
      * @var int
      * @ORM\Column(name="view_limit", type="integer", options={"unsigned"=true});
      */
@@ -90,7 +98,7 @@ class Ads extends AbstractEntity
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
-     * @ORM\OneToMany(targetEntity="VigattinAds\DomainModel\AdsView", mappedBy="ads", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="VigattinAds\DomainModel\AdsView", mappedBy="ads")
      */
     protected $adsView;
 
@@ -104,7 +112,7 @@ class Ads extends AbstractEntity
 
     /**
      * Get property value
-     * @param string $propertyName List of properties are id, adsTitle, adsUrl, adsDescription, showIn, template, keywords, adsImage, status, adsUser, adsView and ServiceManager.
+     * @param string $propertyName List of properties are id, adsTitle, adsUrl, adsDescription, showIn, template, keywords, adsImage, status, adsUser, adsView, reviewVersion and ServiceManager.
      * @return mixed
      */
     public function get($propertyName)
@@ -114,7 +122,7 @@ class Ads extends AbstractEntity
 
     /**
      * Set property value
-     * @param string $propertyName List of properties are adsTitle, adsUrl, adsDescription, showIn, template, keywords, adsImage, status and ServiceManager.
+     * @param string $propertyName List of properties are adsTitle, adsUrl, adsDescription, showIn, template, keywords, adsImage, status, reviewVersion and ServiceManager.
      * @param mixed $value
      * @return AdsUser
      */

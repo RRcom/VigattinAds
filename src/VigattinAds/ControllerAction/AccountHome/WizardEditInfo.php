@@ -5,6 +5,7 @@ use VigattinAds\Controller\AccountHomeController;
 use Zend\View\Model\ViewModel;
 use VigattinAds\DomainModel\Validator;
 use VigattinAds\DomainModel\Image;
+use VigattinAds\DomainModel\SettingsManager;
 
 class WizardEditInfo
 {

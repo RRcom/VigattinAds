@@ -85,7 +85,7 @@ class AdsUser extends AbstractEntity
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
-     * @ORM\OneToMany(targetEntity="VigattinAds\DomainModel\Ads", mappedBy="adsUser", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="VigattinAds\DomainModel\Ads", mappedBy="adsUser")
      */
     protected $ads = null;
 
@@ -173,7 +173,6 @@ class AdsUser extends AbstractEntity
      */
     public function createAds($adsTitle, $adsUrl, $adsImage, $adsDescription, $showIn, $template, $keyword = '')
     {
-        $entityManager = $this->serviceManager->get('Doctrine\ORM\EntityManager');
         $ads = new Ads($this);
         $ads->set('adsTitle', $adsTitle)
             ->set('adsUrl', $adsUrl)
@@ -182,9 +181,10 @@ class AdsUser extends AbstractEntity
             ->set('showIn', $showIn)
             ->set('template', $template)
             ->set('keywords', $keyword)
-            ->set('status', Ads::STATUS_PENDING);
+            ->set('status', Ads::STATUS_PENDING)
+            ->set('reviewVersion', uniqid());
         $this->ads->add($ads);
-        $entityManager->persist($ads);
+        $this->entityManager->persist($ads);
         return $ads;
     }
 

@@ -82,7 +82,12 @@ class ViewAds
                     $adsEntity->set('adsUrl', $formError['adsUrl']);
                     $adsEntity->set('keywords', $formError['adsKeyword']);
                     $adsEntity->set('adsDescription', $formError['adsDescription']);
-                    if($oldValue !== $newValue) $adsEntity->set('status', $adsEntity::STATUS_PENDING);
+                    if($oldValue !== $newValue)
+                    {
+                        $adsEntity->set('reviewVersion', uniqid());
+                        $adsEntity->set('status', $adsEntity::STATUS_PENDING);
+                    }
+
 
                     $adsEntity->persistSelf();
                     $adsEntity->flush();

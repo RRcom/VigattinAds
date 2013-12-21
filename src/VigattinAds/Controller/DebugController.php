@@ -5,6 +5,8 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Mvc\MvcEvent;
 use VigattinAds\DomainModel\Ads;
+use VigattinAds\DomainModel\SettingsManager;
+use VigattinAds\DomainModel\AdsManager;
 
 
 class DebugController extends AbstractActionController
@@ -21,10 +23,7 @@ class DebugController extends AbstractActionController
         /** @var $user \VigattinAds\DomainModel\AdsUser; */
         $user = $userManager->getCurrentUser();
 
-        echo get_class($user);
-        //$ads = $user->get('ads');
-
-        //echo $ads->count();
+        echo uniqid();
 
         $viewModel = new ViewModel();
         $viewModel->setTemplate('vigattinads/view/index');
