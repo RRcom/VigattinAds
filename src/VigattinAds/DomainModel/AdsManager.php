@@ -164,6 +164,57 @@ class AdsManager
     }
 
     /**
+     * Get ads to review
+     */
+    public function fetchAdsToReview(AdsUser $approver)
+    {
+        $ads = $this->getCurrentReviewingAds($approver);
+        if($ads instanceof Ads) return $ads;
+        else
+        {
+            $ads = $this->getPendingAds();
+            if(!($ads instanceof Ads)) return null;
+            $this->createReviewLog($approver, $ads, $ads->get('reviewVersion'));
+            $ads->flush();
+            return $ads;
+        }
+    }
+
+    public function changeAdsStatus($adsVersion, $status, $reason = '')
+    {
+        $ads = $this->getAdsByReviewVersion($adsVersion);
+        $log = $this->getLogByReviewVersion($adsVersion);
+        if(!($ads instanceof Ads)) return;
+        switch($status)
+        {
+            case Ads::STATUS_APPROVED:
+                $ads->set('status', Ads::STATUS_APPROVED);
+                $log->set('reviewReason', $reason);
+                $log->set('reviewResult', Ads::STATUS_APPROVED);
+                $ads->persistSelf();
+                $log->persistSelf();
+                $log->flush();
+                break;
+            case Ads::STATUS_DISAPPROVED:
+                $ads->set('status', Ads::STATUS_DISAPPROVED);
+                $log->set('reviewReason', $reason);
+                $log->set('reviewResult', Ads::STATUS_DISAPPROVED);
+                $ads->persistSelf();
+                $log->persistSelf();
+                $log->flush();
+                break;
+        }
+    }
+
+    /**
+     * Flush to database all insert to view
+     */
+    public function flush()
+    {
+        $this->entityManager->flush();
+    }
+
+    /**
      * Get ads using review_version id
      * @param $reviewVersion
      * @return mixed|null
@@ -172,6 +223,24 @@ class AdsManager
     {
         $query = $this->entityManager->createQuery("SELECT a FROM VigattinAds\DomainModel\Ads a WHERE a.reviewVersion = :version");
         $query->setParameter('version', $reviewVersion);
+        $query->setMaxResults(1);
+        try {
+            $result = $query->getSingleResult();
+        } catch(NoResultException $ex) {
+            $result = null;
+        }
+        return $result;
+    }
+
+    /**
+     * @param $reviewVersion
+     * @return \VigattinAds\DomainModel\AdsApproveLog|null
+     */
+    public function getLogByReviewVersion($reviewVersion)
+    {
+        $query = $this->entityManager->createQuery("SELECT l FROM VigattinAds\DomainModel\AdsApproveLog l WHERE l.reviewVersion = :version");
+        $query->setParameter('version', $reviewVersion);
+        $query->setMaxResults(1);
         try {
             $result = $query->getSingleResult();
         } catch(NoResultException $ex) {
@@ -184,10 +253,11 @@ class AdsManager
      * Get log
      * @param AdsUser $approver
      */
-    public function getCurrentReviewingLog(AdsUser $approver)
+    protected  function getCurrentReviewingLog(AdsUser $approver)
     {
         $query = $this->entityManager->createQuery("SELECT l FROM VigattinAds\DomainModel\AdsApproveLog l WHERE l.approver = :user AND l.reviewResult = :result");
         $query->setParameters(array('user' => $approver, 'result' => Ads::STATUS_REVIEWING));
+        $query->setMaxResults(1);
         try {
             $result = $query->getSingleResult();
         } catch(NoResultException $ex) {
@@ -200,12 +270,18 @@ class AdsManager
      * @param AdsUser $approver
      * @return Ads|null
      */
-    public function getCurrentReviewingAds(AdsUser $approver)
+    protected  function getCurrentReviewingAds(AdsUser $approver)
     {
         $log = $this->getCurrentReviewingLog($approver);
         if(!($log instanceof AdsApproveLog)) return null;
         $ads = $this->getAdsByReviewVersion($log->get('reviewVersion'));
-        if(!($ads instanceof Ads)) return null;
+        if(!($ads instanceof Ads))
+        {
+            $log->set('reviewResult', $log::STATUS_GONE);
+            $log->persistSelf();
+            $log->flush();
+            return null;
+        }
         return $ads;
     }
 
@@ -213,16 +289,23 @@ class AdsManager
      * Get single pending ads waiting for review
      * @return Ads|null
      */
-    public function getPendingAds()
+    protected  function getPendingAds()
     {
         $query = $this->entityManager->createQuery("SELECT a FROM VigattinAds\DomainModel\Ads a WHERE a.status = :status ORDER BY a.reviewVersion ASC");
         $query->setParameter('status', Ads::STATUS_PENDING);
+        $query->setMaxResults(1);
         try {
             $result = $query->getSingleResult();
         } catch(NoResultException $ex) {
             $result = null;
         }
-        return $result;
+        if($result instanceof Ads)
+        {
+            $result->set('status', Ads::STATUS_REVIEWING);
+            $result->persistSelf();
+            return $result;
+        }
+        return null;
     }
 
     /**
@@ -233,43 +316,16 @@ class AdsManager
      * @param string $reviewReason
      * @return AdsApproveLog
      */
-    public function createReviewLog(AdsUser $approver, Ads $ads, $reviewVersion, $reviewResult = Ads::STATUS_REVIEWING, $reviewReason = '')
+    protected  function createReviewLog(AdsUser $approver, Ads $ads, $reviewVersion, $reviewResult = Ads::STATUS_REVIEWING, $reviewReason = '')
     {
         $log = new AdsApproveLog();
+        $log->set('entityManager', $this->entityManager);
         $log->set('approver', $approver);
         $log->set('ads', $ads);
         $log->set('reviewVersion', $reviewVersion);
         $log->set('reviewResult', $reviewResult);
         $log->set('reviewReason', $reviewReason);
-        $this->entityManager->persist($log);
-        $this->entityManager->persist();
+        $log->persistSelf();
         return $log;
-    }
-
-    /**
-     * Get ads to review
-     */
-    public function fetchAdsToReview(AdsUser $approver)
-    {
-        $ads = $this->getCurrentReviewingAds($approver);
-        if(!($ads instanceof Ads))
-        {
-            $ads = $this->getPendingAds();
-            if(!($ads instanceof Ads)) return null;
-            $ads->set('status', Ads::STATUS_REVIEWING);
-            $ads->persistSelf();
-            //$this->createReviewLog($approver);
-
-
-            $ads->flush();
-        }
-    }
-
-    /**
-     * Flush to database all insert to view
-     */
-    public function flush()
-    {
-        $this->entityManager->flush();
     }
 }

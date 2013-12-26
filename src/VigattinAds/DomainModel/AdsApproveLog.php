@@ -10,6 +10,13 @@ use VigattinAds\DomainModel\AbstractEntity;
  */
 class AdsApproveLog extends AbstractEntity
 {
+    const STATUS_GONE = -2;
+    const STATUS_DISAPPROVED = -1;
+    const STATUS_PENDING = 0;
+    const STATUS_APPROVED = 1;
+    const STATUS_PAUSED = 2;
+    const STATUS_REVIEWING = 3;
+
     /**
      * @ORM\Id
      * @ORM\Column(name="id", type="integer", options={"unsigned"=true})
@@ -19,13 +26,13 @@ class AdsApproveLog extends AbstractEntity
 
     /**
      * @var \VigattinAds\DomainModel\AdsUser
-     * @ORM\OneToOne(targetEntity="VigattinAds\DomainModel\AdsUser")
+     * @ORM\ManyToOne(targetEntity="VigattinAds\DomainModel\AdsUser")
      */
     protected $approver;
 
     /**
      * @var \VigattinAds\DomainModel\AdsUser
-     * @ORM\OneToOne(targetEntity="VigattinAds\DomainModel\Ads")
+     * @ORM\ManyToOne(targetEntity="VigattinAds\DomainModel\Ads")
      */
     protected $ads;
 

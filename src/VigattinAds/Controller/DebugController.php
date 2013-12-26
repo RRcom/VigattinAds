@@ -23,7 +23,15 @@ class DebugController extends AbstractActionController
         /** @var $user \VigattinAds\DomainModel\AdsUser; */
         $user = $userManager->getCurrentUser();
 
-        echo uniqid();
+        $adsManager = new AdsManager($sm);
+
+        $ads = $adsManager->fetchAdsToReview($user);
+
+        if($ads instanceof Ads)
+        {
+            echo $ads->get('adsTitle');
+        }
+
 
         $viewModel = new ViewModel();
         $viewModel->setTemplate('vigattinads/view/index');
