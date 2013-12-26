@@ -32,6 +32,9 @@
                 case \VigattinAds\DomainModel\Ads::STATUS_PAUSED: ?>
                     <span class="text-warning"><span class="glyphicon glyphicon-pause"></span> Paused</span>
                     <?php break;
+                case \VigattinAds\DomainModel\Ads::STATUS_REVIEWING: ?>
+                    <span class="text-warning"><span class="glyphicon glyphicon-search"></span> Reviewing</span>
+                    <?php break;
             endswitch; ?></td>
             <td><?php echo $ads->get('showIn'); ?></td>
             <td><?php echo $ads->get('template'); ?></td>
