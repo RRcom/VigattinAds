@@ -32,6 +32,7 @@ class Approval
     {
         $this->accountHomeCtrl = $accountHomeCtrl;
         $this->adsUser = $this->accountHomeCtrl->getServiceLocator()->get('VigattinAds\DomainModel\UserManager')->getCurrentUser();
+        $this->adsUser->refresh();
         $this->adsManager = $this->accountHomeCtrl->getServiceLocator()->get('VigattinAds\DomainModel\AdsManager');
         $this->viewModel = $accountHomeCtrl->getMainView();
     }

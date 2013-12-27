@@ -3,26 +3,53 @@ namespace VigattinAds\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use VigattinAds\DomainModel\UserManager;
+use Zend\Mvc\MvcEvent;
 
 class CliController extends AbstractActionController
 {
+    /**
+     * @var \Zend\ServiceManager\ServiceLocatorInterface
+     */
+    protected $serviceManager;
+
+    /**
+     * @var \VigattinAds\DomainModel\UserManager
+     */
+    protected $userManager;
+
+    /**
+     * @var \Zend\Stdlib\RequestInterface
+     */
+    protected $request;
+
+    public function onDispatch(MvcEvent $e)
+    {
+        $this->serviceManager = $e->getApplication()->getServiceManager();
+        $this->userManager = $this->serviceManager->get('VigattinAds\DomainModel\UserManager');
+        $this->request = $this->getRequest();
+        return parent::onDispatch($e);
+    }
+
     public function indexAction()
     {
+        return "vigattinads newuser\nvigattinads changepass";
+    }
+
+    public function newuserAction()
+    {
         $error = '';
-        $request = $this->getRequest();
-        $userManager = new UserManager($this->serviceLocator);
-        if(!$request->getParam('email')) $error .= "require email ex. --email myemail@mail.sample\n";
-        if(!$request->getParam('username')) $error .= "require username ex. --username myusername\n";
-        if(!$request->getParam('password')) $error .= "require password ex. --password mypassword\n";
-        if(!$request->getParam('first-name')) $error .= "require first-name ex. --first-name myfirstname\n";
-        if(!$request->getParam('last-name')) $error .= "require last-name ex. --last-name mylastname\n";
+        if(!$this->request->getParam('email')) $error .= "require email ex. --email myemail@mail.sample\n";
+        if(!$this->request->getParam('username')) $error .= "require username ex. --username myusername\n";
+        if(!$this->request->getParam('password')) $error .= "require password ex. --password mypassword\n";
+        if(!$this->request->getParam('first-name')) $error .= "require first-name ex. --first-name myfirstname\n";
+        if(!$this->request->getParam('last-name')) $error .= "require last-name ex. --last-name mylastname\n";
         if($error) return $error;
-        $result = $userManager->createUser(
-            $request->getParam('email'),
-            $request->getParam('username'),
-            $request->getParam('password'),
-            $request->getParam('first-name'),
-            $request->getParam('last-name')
+        $result = $this->userManager->createUser(
+            $this->request->getParam('email'),
+            $this->request->getParam('username'),
+            $this->request->getParam('password'),
+            $this->request->getParam('first-name'),
+            $this->request->getParam('last-name')
         );
         if(is_array($result)) {
             foreach($result as $err)
@@ -34,5 +61,16 @@ class CliController extends AbstractActionController
             return "success user id ".$result->get('id');
         }
         return $error;
+    }
+
+    public function changepassAction()
+    {
+        $email = $this->request->getParam('email', '');
+        $username = $this->request->getParam('username', '');
+        $password = $this->request->getParam('password', '');
+        $msg = '';
+        if((!$email && !$username) || !$password) return "require email or username\nex --email myemail@mail.sample or --username myusername\nrequire password ex. --password mypassword";
+        $user = $email ? $email : $username;
+        return $this->userManager->changePassword($user, $password);
     }
 }

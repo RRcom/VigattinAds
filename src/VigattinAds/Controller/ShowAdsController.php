@@ -52,6 +52,8 @@ class ShowAdsController extends AbstractActionController
         $this->initViewSession();
         // Set template to use by this controller
         $this->layout()->setTemplate('vigattinads/layout/ads');
+        // Set body background color
+        $this->layout()->setVariable('bgcolor', '#'.$this->request->getQuery('bgcolor', 'FFFFFF'));
         // Call parent onDispatch
         return parent::onDispatch($e);
     }

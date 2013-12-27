@@ -39,6 +39,36 @@ class UserManager
     }
 
     /**
+     * @param $user
+     * @return \VigattinAds\DomainModel\AdsUser|null
+     */
+    public function getUser($user)
+    {
+        if(!Validator::isEmailValid($user))
+        {
+            $query = $this->entityManager->createQuery("SELECT u FROM VigattinAds\DomainModel\AdsUser u WHERE u.email = :user");
+        }
+        elseif(!Validator::isDigitValid($user))
+        {
+            $query = $this->entityManager->createQuery("SELECT u FROM VigattinAds\DomainModel\AdsUser u WHERE u.id = :user");
+        }
+        elseif(!Validator::isUsernameValid($user))
+        {
+            $query = $this->entityManager->createQuery("SELECT u FROM VigattinAds\DomainModel\AdsUser u WHERE u.username = :user");
+        }
+        else return null;
+        $query->setParameter('user', $user);
+        $query->setMaxResults(1);
+        try{
+            $result = $query->getSingleResult();
+        }catch(NoResultException $ex)
+        {
+            $result = null;
+        }
+        return $result;
+    }
+
+    /**
      * Create new user session<br>
      * return array of result, if if success the value of status will be success and reason will be empty.
      * If login was failed the status will be error and reason will contain description of the failed login
@@ -175,6 +205,20 @@ class UserManager
         $this->entityManager->persist($user);
         $this->entityManager->flush();
         return $user;
+    }
+
+    public function changePassword($user, $password)
+    {
+        $user = $this->getUser($user);
+        if(!($user instanceof AdsUser)) return 'no user found';
+        $passErr = SafeValidator::isPasswordValid($password);
+        if($passErr) return $passErr;
+        $salt = $this->makePassSalt($password);
+        $user->set('passSalt', $salt);
+        $user->set('passHash', $this->createPassHash($password, $salt));
+        $user->persistSelf();
+        $user->flush();
+        return 'success';
     }
 
     /**

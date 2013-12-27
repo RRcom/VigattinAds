@@ -64,15 +64,33 @@ return array(
     'console' => array(
         'router' => array(
             'routes' => array(
-                'create-user' => array(
+                'vigattinads-menu' => array(
                     'options' => array(
-                        'route'    => 'create-user [--email=] [--username=] [--password=] [--first-name=] [--last-name=]',
+                        'route'    => 'vigattinads',
                         'defaults' => array(
                             'controller' => 'VigattinAds\Controller\Cli',
                             'action'     => 'index',
                         )
                     )
-                )
+                ),
+                'vigattinads-create-user' => array(
+                    'options' => array(
+                        'route'    => 'vigattinads newuser [--email=] [--username=] [--password=] [--first-name=] [--last-name=]',
+                        'defaults' => array(
+                            'controller' => 'VigattinAds\Controller\Cli',
+                            'action'     => 'newuser',
+                        )
+                    )
+                ),
+                'vigattinads-change-password' => array(
+                    'options' => array(
+                        'route'    => 'vigattinads changepass [--email=] [--username=] [--password=]',
+                        'defaults' => array(
+                            'controller' => 'VigattinAds\Controller\Cli',
+                            'action'     => 'changepass',
+                        )
+                    )
+                ),
             )
         )
     ),

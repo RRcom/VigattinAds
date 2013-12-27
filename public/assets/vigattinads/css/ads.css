@@ -1,5 +1,6 @@
 body {
-    background-color: #EEEDDD;
+    /*background-color: #EEEDDD;*/
+    background-color: transparent;
     padding-top: 10px;
 }
 .clear-float {
