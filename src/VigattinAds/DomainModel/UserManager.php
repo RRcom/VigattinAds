@@ -159,6 +159,7 @@ class UserManager
      */
     public function getCurrentUser()
     {
+        $this->user->refresh();
         return $this->user;
     }
 

@@ -39,7 +39,6 @@ class Dashboard
 
     public function setUserInfo(ViewModel $actionContent)
     {
-        $this->adsUser->refresh();
         $actionContent->setVariable('firstName', $this->adsUser->get('firstName'));
         $actionContent->setVariable('lastName', $this->adsUser->get('lastName'));
         $actionContent->setVariable('credit', $this->adsUser->get('credit'));
