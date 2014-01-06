@@ -19,10 +19,131 @@ return array(
                     ),
                 ),
             ),
+            'vigattinads/dashboard/ads' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/vigattinads/dashboard/ads[/][:controller][/][:action][/][:param1][/][:param2]',
+                    'constraints' => array(
+                        'controller'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'action'        => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'param1'        => '[a-zA-Z0-9_-]*',
+                        'param2'        => '[a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'VigattinAds\Controller\Dashboard',
+                        'controller'    => 'Ads',
+                        'action'        => 'index',
+                    ),
+                ),
+            ),
+            'vigattinads/dashboard/ads/edit' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/vigattinads/dashboard/ads/edit[/][:controller][/][:param1][/][:param2]',
+                    'constraints' => array(
+                        'controller'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'param1'        => '[a-zA-Z0-9_-]*',
+                        'param2'        => '[a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'VigattinAds\Controller\Dashboard\Ads',
+                        'controller'    => 'Edit',
+                        'action'        => 'index',
+                    ),
+                ),
+            ),
+            'vigattinads/dashboard/ads/template' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/vigattinads/dashboard/ads/template[/][:controller]',
+                    'constraints' => array(
+                        'controller'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'VigattinAds\Controller\Dashboard\Ads',
+                        'controller'    => 'Template',
+                        'action'        => 'index',
+                    ),
+                ),
+            ),
+            'vigattinads/dashboard/ads/info' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/vigattinads/dashboard/ads/info[/][:controller]',
+                    'constraints' => array(
+                        'controller'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'VigattinAds\Controller\Dashboard\Ads',
+                        'controller'    => 'Info',
+                        'action'        => 'index',
+                    ),
+                ),
+            ),
+            'vigattinads/dashboard/profile' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/vigattinads/dashboard/profile[/][:controller][/][:action][/][:param1][/][:param2]',
+                    'constraints' => array(
+                        'controller'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'action'        => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'param1'        => '[a-zA-Z0-9_-]*',
+                        'param2'        => '[a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'VigattinAds\Controller\Dashboard',
+                        'controller'    => 'Profile',
+                        'action'        => 'index',
+                    ),
+                ),
+            ),
+            'vigattinads/dashboard/admin' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/vigattinads/dashboard/admin[/][:controller][/][:action][/][:param1][/][:param2]',
+                    'constraints' => array(
+                        'controller'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'action'        => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'param1'        => '[a-zA-Z0-9_-]*',
+                        'param2'        => '[a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'VigattinAds\Controller\Dashboard',
+                        'controller'    => 'Admin',
+                        'action'        => 'index',
+                    ),
+                ),
+            ),
+            'vigattinads/dashboard/approval' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/vigattinads/dashboard/approval[/][:controller][/][:action][/][:param1][/][:param2]',
+                    'constraints' => array(
+                        'controller'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'action'        => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'param1'        => '[a-zA-Z0-9_-]*',
+                        'param2'        => '[a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'VigattinAds\Controller\Dashboard',
+                        'controller'    => 'Approval',
+                        'action'        => 'index',
+                    ),
+                ),
+            ),
         ),
     ),
     'controllers' => array(
         'invokables' => array(
+            'VigattinAds\Controller\Dashboard' => 'VigattinAds\Controller\Dashboard\DashboardController',
+            'VigattinAds\Controller\Dashboard\Ads'   => 'VigattinAds\Controller\Dashboard\Ads\AdsController',
+            'VigattinAds\Controller\Dashboard\Ads\Edit'   => 'VigattinAds\Controller\Dashboard\Ads\AdsEditController',
+            'VigattinAds\Controller\Dashboard\Ads\Template'   => 'VigattinAds\Controller\Dashboard\Ads\AdsWizardChooseTemplateController',
+            'VigattinAds\Controller\Dashboard\Ads\Info'   => 'VigattinAds\Controller\Dashboard\Ads\AdsWizardEditInfoController',
+            'VigattinAds\Controller\Dashboard\Profile'   => 'VigattinAds\Controller\Dashboard\Profile\ProfileController',
+            'VigattinAds\Controller\Dashboard\Admin'   => 'VigattinAds\Controller\Dashboard\Admin\AdminController',
+            'VigattinAds\Controller\Dashboard\Approval'   => 'VigattinAds\Controller\Dashboard\Approval\ApprovalController',
+
             'VigattinAds\Controller\Index' => 'VigattinAds\Controller\IndexController',
             'VigattinAds\Controller\Debug' => 'VigattinAds\Controller\DebugController',
             'VigattinAds\Controller\AccountHome' => 'VigattinAds\Controller\AccountHomeController',

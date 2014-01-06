@@ -1,0 +1,47 @@
+<div>
+    <p><a href="/vigattinads/dashboard/ads/template" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Create New Ads Wizard</a></p>
+</div>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Ads Title</th>
+            <th>Status</th>
+            <th>Show In</th>
+            <th>Position</th>
+            <th>Reserve</th>
+            <th>Options</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach($adsList as $key => $ads): ?>
+        <tr>
+            <td><?php echo $key+1; ?></td>
+            <td><?php echo $ads->get('adsTitle'); ?></td>
+            <td><?php switch($ads->get('status')):
+                case \VigattinAds\DomainModel\Ads::STATUS_APPROVED: ?>
+                    <span class="text-success"><span class="glyphicon glyphicon-ok"></span> Approved</span>
+                    <?php break;
+                case \VigattinAds\DomainModel\Ads::STATUS_PENDING: ?>
+                    <span class="text-warning"><span class="glyphicon glyphicon-warning-sign"></span> Pending</span>
+                    <?php break;
+                case \VigattinAds\DomainModel\Ads::STATUS_DISAPPROVED: ?>
+                    <span class="text-danger"><span class="glyphicon glyphicon-ban-circle"></span> Disapproved</span>
+                    <?php break;
+                case \VigattinAds\DomainModel\Ads::STATUS_PAUSED: ?>
+                    <span class="text-warning"><span class="glyphicon glyphicon-pause"></span> Paused</span>
+                    <?php break;
+                case \VigattinAds\DomainModel\Ads::STATUS_REVIEWING: ?>
+                    <span class="text-warning"><span class="glyphicon glyphicon-search"></span> Reviewing</span>
+                    <?php break;
+            endswitch; ?></td>
+            <td><?php echo $ads->get('showIn'); ?></td>
+            <td><?php echo $ads->get('template'); ?></td>
+            <td><?php echo $ads->get('viewLimit'); ?></td>
+            <td><a href="/vigattinads/dashboard/ads/edit/<?php echo $ads->get('id'); ?>"><span class="glyphicon glyphicon-edit"></span> Edit</a></td>
+        </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>

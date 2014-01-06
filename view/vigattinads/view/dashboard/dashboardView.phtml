@@ -1,0 +1,30 @@
+<?php /** @var $user \VigattinAds\DomainModel\adsUser */ ?>
+<div class="row row-offcanvas row-offcanvas-left">
+
+    <div class="col-xs-6 col-sm-3 col-md-2 sidebar-offcanvas" id="sidebar" role="navigation">
+        <div class="list-group">
+            <a href="/vigattinads/dashboard" class="list-group-item <?php echo ($controller == 'vigattinads\controller\dashboard') ? 'active' : ''; ?>"><span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;&nbsp;Dashboard</a>
+            <a href="/vigattinads/dashboard/ads" class="list-group-item <?php echo ($controller == 'vigattinads\controller\dashboard\ads') ? 'active' : ''; ?>"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;&nbsp;&nbsp;Ads</a>
+            <a href="/vigattinads/dashboard/profile" class="list-group-item <?php echo ($controller == 'vigattinads\controller\dashboard\profile') ? 'active' : ''; ?>"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;&nbsp;Profile</a>
+            <a href="/vigattinads/dashboard/admin" class="list-group-item <?php echo ($controller == 'vigattinads\controller\dashboard\admin') ? 'active' : ''; ?>"><span class="glyphicon glyphicon-wrench"></span>&nbsp;&nbsp;&nbsp;Admin</a>
+            <?php if($user->hasPermit($user::PERMIT_TO_APPROVE_ADS)): ?>
+                <a href="/vigattinads/dashboard/approval" class="list-group-item <?php echo ($controller == 'vigattinads\controller\dashboard\approval') ? 'active' : ''; ?>"><span class="glyphicon glyphicon-wrench"></span>&nbsp;&nbsp;&nbsp;Ads Approval</a>
+            <?php endif; ?>
+        </div>
+    </div><!--/span-->
+
+    <div class="col-xs-12 col-sm-9 col-md-10">
+        <p class="pull-left visible-xs">
+            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+        </p>
+        <div>
+            <div class="table-responsive">
+                <?php echo $breadCrumbs; ?>
+            </div>
+            <div>
+                <p class="text-muted"><strong><?php echo $title; ?></strong></p>
+            <?php echo $actionContent; ?>
+        </div>
+    </div><!--/span-->
+
+</div><!--/row-->

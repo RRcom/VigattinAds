@@ -12,7 +12,7 @@ class Navigation
         unset($splited[0]);
         unset($splited[1]);
         $breadCrumb = '<ol class="breadcrumb ol-no-padding"><li><a href="/vigattinads">Dashboard</a></li>';
-        $route = '/vigattinads/account-home';
+        $route = '/vigattinads/dashboard';
         $navTotal = count($splited);
         foreach($splited as $nav)
         {

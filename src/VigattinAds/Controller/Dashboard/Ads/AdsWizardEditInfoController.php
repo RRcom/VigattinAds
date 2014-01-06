@@ -1,79 +1,35 @@
 <?php
-namespace VigattinAds\ControllerAction\AccountHome;
+namespace VigattinAds\Controller\Dashboard\Ads;
 
-use VigattinAds\Controller\AccountHomeController;
 use Zend\View\Model\ViewModel;
-use VigattinAds\DomainModel\Validator;
 use VigattinAds\DomainModel\Image;
-use VigattinAds\DomainModel\SettingsManager;
+use VigattinAds\DomainModel\Validator;
 
-class WizardEditInfo
+class AdsWizardEditInfoController extends AdsController
 {
     const IMAGE_REPO = 'repo';
     const IMAGE_WIDTH = 150;
     const IMAGE_QUALITY = 75;
     const IMAGE_PROGRESSIVE = true;
 
-    /**
-     * @var \VigattinAds\Controller\AccountHomeController
-     */
-    protected $accountHomeCtrl;
-
-    /**
-     * @var \Zend\View\Model\ViewModel
-     */
-    protected $viewModel;
-
-    /**
-     * @var $user \VigattinAds\DomainModel\UserManager
-     */
-    protected $userManager;
-
-    /**
-     * @var \Zend\View\Model\ViewModel
-     */
-    protected $actionContent;
-    
-    /**
-     * @var \Zend\Session\SessionManager
-     */
-    protected $sessionManager;
-
-    public function __construct(AccountHomeController $accountHomeCtrl)
-    {
-        $this->accountHomeCtrl = $accountHomeCtrl;
-        $this->viewModel = $accountHomeCtrl->getMainView();
-        $this->userManager = $this->accountHomeCtrl->getServiceLocator()->get('VigattinAds\DomainModel\UserManager');
-        $this->actionContent = new ViewModel();
-        $this->actionContent->setTemplate('vigattinads/view/wizard-edit-info');
-        $this->sessionManager = $this->accountHomeCtrl->getServiceLocator()->get('Zend\Session\SessionManager');
-    }
-
-    public function process()
-    {
-        $actionContent = $this->action();
-        $this->viewModel->addChild($actionContent, 'actionContent');
-        return $this->viewModel;
-    }
-
-    public function action()
+    public function indexAction()
     {
         if(empty($this->sessionManager->getStorage()->tempAdsTemplate['showIn']) || empty($this->sessionManager->getStorage()->tempAdsTemplate['template'])) {
             header('Location: /vigattinads/dashboard/ads/template');
             exit();
         }
-        if(strtolower($this->accountHomeCtrl->getRequest()->getPost('submit', '')) == 'next')
+        if(strtolower($this->getRequest()->getPost('submit', '')) == 'next')
         {
             $formError = array(
-                'adsTitle' => $this->accountHomeCtrl->getRequest()->getPost('ads-title', ''),
-                'adsUrl' => $this->accountHomeCtrl->getRequest()->getPost('ads-url', ''),
-                'adsKeyword' => $this->accountHomeCtrl->getRequest()->getPost('ads-keyword', ''),
-                'adsDescription' => $this->accountHomeCtrl->getRequest()->getPost('ads-description', ''),
-                'adsImageError' => Validator::isImage($this->accountHomeCtrl->getRequest()->getFiles('ads-image')),
-                'adsTitleError' => Validator::isTitleValid($this->accountHomeCtrl->getRequest()->getPost('ads-title', '')),
-                'adsUrlError' => Validator::isUrlValid($this->accountHomeCtrl->getRequest()->getPost('ads-url', '')),
-                'adsKeywordError' => Validator::isKeywordValid($this->accountHomeCtrl->getRequest()->getPost('ads-keyword', '')),
-                'adsDescriptionError' => Validator::isDescriptionValid($this->accountHomeCtrl->getRequest()->getPost('ads-description', '')),
+                'adsTitle' => $this->getRequest()->getPost('ads-title', ''),
+                'adsUrl' => $this->getRequest()->getPost('ads-url', ''),
+                'adsKeyword' => $this->getRequest()->getPost('ads-keyword', ''),
+                'adsDescription' => $this->getRequest()->getPost('ads-description', ''),
+                'adsImageError' => Validator::isImage($this->getRequest()->getFiles('ads-image')),
+                'adsTitleError' => Validator::isTitleValid($this->getRequest()->getPost('ads-title', '')),
+                'adsUrlError' => Validator::isUrlValid($this->getRequest()->getPost('ads-url', '')),
+                'adsKeywordError' => Validator::isKeywordValid($this->getRequest()->getPost('ads-keyword', '')),
+                'adsDescriptionError' => Validator::isDescriptionValid($this->getRequest()->getPost('ads-description', '')),
             );
             $this->sessionManager->getStorage()->tempAdsTitle = $formError['adsTitle'];
             $this->sessionManager->getStorage()->tempAdsUrl = $formError['adsUrl'];
@@ -98,15 +54,20 @@ class WizardEditInfo
                 'adsDescriptionError' => '',
             );
         }
-        $this->actionContent->setVariables($formError);
-        return $this->actionContent;
+
+        $this->mainView->setVariable('title', 'Edit Ads Info');
+        $actionContent = new ViewModel();
+        $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsWizardEditInfoView');
+        $actionContent->setVariables($formError);
+        $this->mainView->addChild($actionContent, 'actionContent');
+        return $this->mainView;
     }
 
     public function processRequest()
     {
-        $repo = realpath(__DIR__.'/../../../../../../public/'.self::IMAGE_REPO);
+        $repo = 'public/'.self::IMAGE_REPO;
         $image = new Image($repo);
-        $uploadedImage = $this->accountHomeCtrl->getRequest()->getFiles('ads-image');
+        $uploadedImage = $this->getRequest()->getFiles('ads-image');
         $result = $image->save_convert_resize(
             $uploadedImage['tmp_name'],
             self::IMAGE_WIDTH,
@@ -115,8 +76,7 @@ class WizardEditInfo
         );
         if($result['status'] == 'success')
         {
-            $adsUser = $this->userManager->getCurrentUser();
-            $adsUser->createAds(
+            $this->adsUser->createAds(
                 $this->sessionManager->getStorage()->tempAdsTitle,
                 $this->sessionManager->getStorage()->tempAdsUrl,
                 $result['path'],
@@ -125,9 +85,9 @@ class WizardEditInfo
                 $this->sessionManager->getStorage()->tempAdsTemplate['template'],
                 $this->sessionManager->getStorage()->tempAdsKeyword
             );
-            $adsUser->flush();
+            $this->adsUser->flush();
             $this->clearTempData();
-            header('Location: /vigattinads/account-home/ads');
+            header('Location: /vigattinads/dashboard/ads');
             exit();
         }
         return $result['reason'].' '.$repo;
