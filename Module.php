@@ -25,19 +25,19 @@ class Module
     {
         $e->getApplication()->getEventManager()->attach(MvcEvent::EVENT_ROUTE,function(MvcEvent $e)
         {
-            if($e->getRouteMatch()->getMatchedRouteName() != 'vigattinads') return;
-            switch(strtolower($e->getRouteMatch()->getParam('controller')))
-            {
+            if(!preg_match('/^vigattinads*/', $e->getRouteMatch()->getMatchedRouteName())) return;
+
+            switch(strtolower($e->getRouteMatch()->getParam('controller'))) {
                 // if show ads only
                 case strtolower('VigattinAds\Controller\ShowAds'):
                     break;
 
                 // if enter accounthome controller
-                case strtolower('VigattinAds\Controller\Index'):
+                case strtolower('VigattinAds\Controller\Login'):
                     $userManager = $e->getApplication()->getServiceManager()->get('VigattinAds\DomainModel\UserManager');
                     if($userManager->isLogin())
                     {
-                        Header('Location: /vigattinads/account-home');
+                        Header('Location: /vigattinads');
                         exit();
                     }
                     break;
@@ -47,7 +47,7 @@ class Module
                     $userManager = $e->getApplication()->getServiceManager()->get('VigattinAds\DomainModel\UserManager');
                     if(!$userManager->isLogin())
                     {
-                        Header('Location: /vigattinads');
+                        Header('Location: /vigattinads/login');
                         exit();
                     }
                     break;

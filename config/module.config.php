@@ -3,18 +3,41 @@ return array(
     'router' => array(
         'routes' => array(
             'vigattinads' => array(
-                'type'    => 'segment',
+                'type'    => 'Segment',
                 'options' => array(
-                    'route'    => '/vigattinads[/][:controller][/][:action][/][:param1][/][:param2]',
-                    'constraints' => array(
-                        'controller'    => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'action'        => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'param1'        => '[a-zA-Z0-9_-]*',
-                        'param2'        => '[a-zA-Z0-9_-]*',
-                    ),
+                    'route'    => '/vigattinads[/]',
                     'defaults' => array(
-                        '__NAMESPACE__' => 'VigattinAds\Controller',
-                        'controller'    => 'Index',
+                        'controller'    => 'VigattinAds\Controller\Dashboard',
+                        'action'        => 'index',
+                    ),
+                ),
+            ),
+            'vigattinads/login' => array(
+                'type'    => 'Segment',
+                'options' => array(
+                    'route'    => '/vigattinads/login[/]',
+                    'defaults' => array(
+                        'controller'    => 'VigattinAds\Controller\Login',
+                        'action'        => 'index',
+                    ),
+                ),
+            ),
+            'vigattinads/logout' => array(
+                'type'    => 'Segment',
+                'options' => array(
+                    'route'    => '/vigattinads/logout[/]',
+                    'defaults' => array(
+                        'controller'    => 'VigattinAds\Controller\Logout',
+                        'action'        => 'index',
+                    ),
+                ),
+            ),
+            'vigattinads/dashboard' => array(
+                'type'    => 'Segment',
+                'options' => array(
+                    'route'    => '/vigattinads/dashboard[/]',
+                    'defaults' => array(
+                        'controller'    => 'VigattinAds\Controller\Dashboard',
                         'action'        => 'index',
                     ),
                 ),
@@ -135,6 +158,8 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
+            'VigattinAds\Controller\Login'   => 'VigattinAds\Controller\LoginController',
+            'VigattinAds\Controller\Logout'   => 'VigattinAds\Controller\LogoutController',
             'VigattinAds\Controller\Dashboard' => 'VigattinAds\Controller\Dashboard\DashboardController',
             'VigattinAds\Controller\Dashboard\Ads'   => 'VigattinAds\Controller\Dashboard\Ads\AdsController',
             'VigattinAds\Controller\Dashboard\Ads\Edit'   => 'VigattinAds\Controller\Dashboard\Ads\AdsEditController',
@@ -148,7 +173,6 @@ return array(
             'VigattinAds\Controller\Debug' => 'VigattinAds\Controller\DebugController',
             'VigattinAds\Controller\AccountHome' => 'VigattinAds\Controller\AccountHomeController',
             'VigattinAds\Controller\Cli'   => 'VigattinAds\Controller\CliController',
-            'VigattinAds\Controller\Logout'   => 'VigattinAds\Controller\LogoutController',
             'VigattinAds\Controller\JsonService'   => 'VigattinAds\Controller\JsonServiceController',
             'VigattinAds\Controller\ShowAds'   => 'VigattinAds\Controller\ShowAdsController',
         ),
