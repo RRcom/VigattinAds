@@ -32,7 +32,7 @@ class DashboardController extends AbstractActionController
     {
         $this->mainView->setVariable('title', 'Dashboard');
         $actionContent = new ViewModel();
-        $actionContent->setTemplate('vigattinads/view/account-home-index');
+        $actionContent->setTemplate('vigattinads/view/dashboard/dashboardHomeView');
         $actionContent->setVariable('firstName', $this->adsUser->get('firstName'));
         $actionContent->setVariable('lastName', $this->adsUser->get('lastName'));
         $actionContent->setVariable('credit', $this->adsUser->get('credit'));

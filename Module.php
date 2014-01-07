@@ -26,7 +26,6 @@ class Module
         $e->getApplication()->getEventManager()->attach(MvcEvent::EVENT_ROUTE,function(MvcEvent $e)
         {
             if(!preg_match('/^vigattinads*/', $e->getRouteMatch()->getMatchedRouteName())) return;
-
             switch(strtolower($e->getRouteMatch()->getParam('controller'))) {
                 // if show ads only
                 case strtolower('VigattinAds\Controller\ShowAds'):

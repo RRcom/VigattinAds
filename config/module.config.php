@@ -12,6 +12,16 @@ return array(
                     ),
                 ),
             ),
+            'vigattinads/showads' => array(
+                'type'    => 'Segment',
+                'options' => array(
+                    'route'    => '/vigattinads/showads[/]',
+                    'defaults' => array(
+                        'controller'    => 'VigattinAds\Controller\ShowAds',
+                        'action'        => 'index',
+                    ),
+                ),
+            ),
             'vigattinads/login' => array(
                 'type'    => 'Segment',
                 'options' => array(
@@ -123,16 +133,23 @@ return array(
             'vigattinads/dashboard/admin' => array(
                 'type'    => 'segment',
                 'options' => array(
-                    'route'    => '/vigattinads/dashboard/admin[/][:controller][/][:action][/][:param1][/][:param2]',
+                    'route'    => '/vigattinads/dashboard/admin[/]',
+                    'defaults' => array(
+                        'controller'    => 'VigattinAds\Controller\Dashboard\Admin',
+                        'action'        => 'index',
+                    ),
+                ),
+            ),
+            'vigattinads/dashboard/admin/manageaccount' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/vigattinads/dashboard/admin/manageaccount[/][:param1][/][:param2]',
                     'constraints' => array(
-                        'controller'    => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'action'        => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'param1'        => '[a-zA-Z0-9_-]*',
                         'param2'        => '[a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
-                        '__NAMESPACE__' => 'VigattinAds\Controller\Dashboard',
-                        'controller'    => 'Admin',
+                        'controller'    => 'VigattinAds\Controller\Dashboard\Admin\ManageAccount',
                         'action'        => 'index',
                     ),
                 ),
@@ -167,11 +184,9 @@ return array(
             'VigattinAds\Controller\Dashboard\Ads\Info'   => 'VigattinAds\Controller\Dashboard\Ads\AdsWizardEditInfoController',
             'VigattinAds\Controller\Dashboard\Profile'   => 'VigattinAds\Controller\Dashboard\Profile\ProfileController',
             'VigattinAds\Controller\Dashboard\Admin'   => 'VigattinAds\Controller\Dashboard\Admin\AdminController',
+            'VigattinAds\Controller\Dashboard\Admin\ManageAccount'   => 'VigattinAds\Controller\Dashboard\Admin\AdminManageAccountController',
             'VigattinAds\Controller\Dashboard\Approval'   => 'VigattinAds\Controller\Dashboard\Approval\ApprovalController',
-
-            'VigattinAds\Controller\Index' => 'VigattinAds\Controller\IndexController',
             'VigattinAds\Controller\Debug' => 'VigattinAds\Controller\DebugController',
-            'VigattinAds\Controller\AccountHome' => 'VigattinAds\Controller\AccountHomeController',
             'VigattinAds\Controller\Cli'   => 'VigattinAds\Controller\CliController',
             'VigattinAds\Controller\JsonService'   => 'VigattinAds\Controller\JsonServiceController',
             'VigattinAds\Controller\ShowAds'   => 'VigattinAds\Controller\ShowAdsController',
