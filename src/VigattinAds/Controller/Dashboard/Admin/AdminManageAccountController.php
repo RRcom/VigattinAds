@@ -7,8 +7,10 @@ class AdminManageAccountController extends AdminController
 {
     protected function currentTab(ViewModel $actionContent)
     {
-        $homeView = new ViewModel();
-        $homeView->setTemplate('vigattinads/view/dashboard/admin/adminManageAccountView');
-        $actionContent->addChild($homeView);
+        $adminManageAccountView = new ViewModel();
+        $adminManageAccountView->setTemplate('vigattinads/view/dashboard/admin/adminManageAccountView');
+        $adminManageAccountView->setVariable('accountList', $this->userManager->getUserList());
+
+        $actionContent->addChild($adminManageAccountView);
     }
 }

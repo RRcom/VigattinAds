@@ -7,6 +7,9 @@ use VigattinAds\DomainModel\SettingsManager;
 
 class JsonServiceController extends AbstractActionController
 {
+    /** @var \VigattinAds\DomainModel\UserManager */
+    protected $userManager;
+
     /**
      * @var \Zend\View\Model\JsonModel
      */
@@ -115,8 +118,18 @@ class JsonServiceController extends AbstractActionController
         return $this->jsonView->setVariables($jsonResult);
     }
 
+    public function updateAccountAction()
+    {
+        $user = $this->userManager->getCurrentUser();
+        if(!$user->hasPermit($user::PERMIT_ADMIN_ACCESS)) {
+            $this->jsonView->setVariable('error', 'no access');
+        }
+        return $this->jsonView;
+    }
+
     public function onDispatch(\Zend\Mvc\MvcEvent $e)
     {
+        $this->userManager = $this->serviceLocator->get('VigattinAds\DomainModel\UserManager');
         if(strtolower($this->params('param1')) == 'post') $this->request = $this->getRequest()->getPost();
         else $this->request = $this->getRequest()->getQuery();
         return parent::onDispatch($e);

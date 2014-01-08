@@ -4,11 +4,17 @@ namespace VigattinAds\Controller\Dashboard\Approval;
 use Zend\View\Model\ViewModel;
 use VigattinAds\Controller\Dashboard\DashboardController;
 use VigattinAds\DomainModel\Ads;
+use VigattinAds\DomainModel\AdsUser;
 
 class ApprovalController extends DashboardController
 {
     public function indexAction()
     {
+        if(!$this->adsUser->hasPermit(AdsUser::PERMIT_TO_APPROVE_ADS))
+        {
+            header('Location: /vigattinads');
+            exit();
+        }
         $this->mainView->setVariable('title', 'Approval');
         $actionContent = new ViewModel();
         $actionContent->setTemplate('vigattinads/view/dashboard/approval/approvalView');

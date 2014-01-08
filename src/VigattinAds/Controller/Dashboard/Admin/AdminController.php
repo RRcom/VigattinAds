@@ -3,6 +3,7 @@ namespace VigattinAds\Controller\Dashboard\Admin;
 
 use Zend\View\Model\ViewModel;
 use VigattinAds\Controller\Dashboard\DashboardController;
+use VigattinAds\DomainModel\AdsUser;
 
 class AdminController extends DashboardController
 {
@@ -10,6 +11,11 @@ class AdminController extends DashboardController
 
     public function indexAction()
     {
+        if(!$this->adsUser->hasPermit(AdsUser::PERMIT_ADMIN_ACCESS))
+        {
+            header('Location: /vigattinads');
+            exit();
+        }
         $this->mainView->setVariable('title', 'Dashboard');
         $actionContent = new ViewModel();
         $actionContent->setVariable('controller', strtolower($this->params('controller')));

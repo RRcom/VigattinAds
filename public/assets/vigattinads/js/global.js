@@ -286,4 +286,83 @@ $(document).ready(function(e) {
 
     })(jQuery);
 
+    /* modal account form */
+    (function($) {
+        $('.option-edit-account').click(function(e) {
+            var tableRow = $('tr#'+$(e.currentTarget).attr('target-id'));
+            $('#accountForm .form-control').val('');
+            $('#accountForm .form-error').html('');
+            $('#accountForm .dynamic-title').html('Edit Account');
+            $('#accountForm .dynamic-title').html('Edit Account');
+            $('#accountForm .account-form-progress').hide();
+            $('#accountForm .submit-action').html('Update');
+            $('#accountForm #inputEmail1').val($('.data-email', tableRow).text());
+            $('#accountForm #inputUsername1').val($('.data-username', tableRow).text());
+            $('#accountForm #inputFirstName1').val($('.data-first-name', tableRow).text());
+            $('#accountForm #inputLastName1').val($('.data-last-name', tableRow).text());
+            $('#accountForm #inputGold1').val($('.data-gold', tableRow).text());
+            $('#accountForm #inputId1').val($(e.currentTarget).attr('target-id'));
+            if($('.data-privilege', tableRow).text().indexOf('B') === -1) $('#accountForm #inputPrivilegeB1').prop('checked', false);
+            else $('#accountForm #inputPrivilegeB1').removeAttr('checked').prop('checked', true);
+            console.log($('.data-privilege', tableRow).text());
+            if($('.data-privilege', tableRow).text().indexOf('A') === -1) $('#accountForm #inputPrivilegeA1').prop('checked', false);
+            else $('#accountForm #inputPrivilegeA1').prop('checked', true);
+            if($('.data-privilege', tableRow).text().indexOf('P') === -1) $('#accountForm #inputPrivilegeP1').prop('checked', false);
+            else $('#accountForm #inputPrivilegeP1').prop('checked', true);
+        });
+    })(jQuery);
+
+    /* account form action */
+    (function($) {
+        $('#accountForm #inputSubmit1').click(function(e) {
+            $(e.currentTarget).removeAttr('disabled').attr('disabled', 'disabled');
+            var id = $('#accountForm #inputId1').val();
+            var email = $('#accountForm #inputEmail1').val();
+            var username = $('#accountForm #inputUsername1').val();
+            var password = $('#accountForm #inputPassword1').val();
+            var firstName = $('#accountForm #inputFirstName1').val();
+            var lastName = $('#accountForm #inputLastName1').val();
+            var privilege = function() {
+                var privilege = '';
+                if($('#accountForm #inputPrivilegeB1').prop('checked', true)) privilege += 'B';
+                if($('#accountForm #inputPrivilegeP1').prop('checked', true)) privilege += 'P';
+                if($('#accountForm #inputPrivilegeA1').prop('checked', true)) privilege += 'A';
+                return privilege;
+            };
+            var gold = $('#accountForm #inputGold1').val();
+            $.ajax( {
+                type: 'POST',
+                data: {
+                    "id":id,
+                    "email":email,
+                    "username":username,
+                    "password":password,
+                    "firstName":password,
+                    "lastName":lastName,
+                    "privilege":privilege(),
+                    "gold":gold
+                },
+                url: '/vigattinads/json-service/update-account/post',
+                dataType: 'json',
+                beforeSend: function(jqXHR, settings) {
+                    $('#accountForm .account-form-progress').show();
+                },
+                complete: function(jqXHR, textStatus) {
+                    $('#accountForm .account-form-progress').hide();
+                    if(textStatus != 'success') {
+
+                    }
+                },
+                success: function(data, textStatus, jqXHR) {
+                    if(data.status == 'success') {
+
+                    }
+                    else {
+
+                    }
+                }
+            });
+        });
+    })(jQuery);
+
 });

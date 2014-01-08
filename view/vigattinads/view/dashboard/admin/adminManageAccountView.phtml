@@ -1,37 +1,97 @@
 <br />
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createNewAccount">Create New Account</button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#accountForm">Create New Account</button>
+    </div>
+</div>
+<p></p>
+<!-- Account list -->
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="table-responsive">
+            <div>Account list</div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>First name</th>
+                        <th>Last name</th>
+                        <th>Gold</th>
+                        <th>Privilege</th>
+                        <th>Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php foreach($accountList as $key => $account): ?>
+                    <tr id="<?php echo $account->get('id'); ?>">
+                        <td><?php echo $key+1; ?></td>
+                        <td class="data-username"><?php echo $this->escapeHtml($account->get('username')); ?></td>
+                        <td class="data-email"><?php echo $this->escapeHtml($account->get('email')); ?></td>
+                        <td class="data-first-name"><?php echo $this->escapeHtml($account->get('firstName')); ?></td>
+                        <td class="data-last-name"><?php echo $this->escapeHtml($account->get('lastName')); ?></td>
+                        <td><span class="text-warning data-gold"><?php echo $account->get('credit'); ?></span></td>
+                        <td class="data-privilege"><?php echo strtoupper($account->get('privilege')); ?></td>
+                        <td><a href="javascript:" class="option-edit-account" data-toggle="modal" data-target="#accountForm" target-id="<?php echo $account->get('id'); ?>"><span class="glyphicon glyphicon-edit"></span> Edit</a></td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
 <!-- Modal Create new account -->
-<div class="modal fade" id="createNewAccount" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="accountForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Create new account</h4>
+                <h4 class="modal-title" id="myModalLabel"><span class="dynamic-title">Account Form</span> <img style="display: none;" class="account-form-progress" src="/assets/vigattinads/img/circle-preloader-2.gif" /></h4>
             </div>
-            <div class="modal-body">
-                <form role="form">
+            <form role="form">
+                <div class="modal-body">
                     <div class="form-group">
-                        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+                        <div class="form-error form-error-email text-danger"><small></small></div>
+                        <input title="Email" type="email" class="form-control" id="inputEmail1" placeholder="Email">
                     </div>
                     <div class="form-group">
-                        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Username">
+                        <div class="form-error form-error-username text-danger"><small></small></div>
+                        <input title="Username" type="text" class="form-control" id="inputUsername1" placeholder="Username">
                     </div>
                     <div class="form-group">
-                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                        <div class="form-error form-error-password text-danger"><small></small></div>
+                        <input title="Password" type="password" class="form-control" id="inputPassword1" placeholder="Password">
                     </div>
-
-                    <button type="submit" class="btn btn-default">Submit</button>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Create</button>
-            </div>
+                    <div class="form-group">
+                        <div class="form-error form-error-password-repeat text-danger"><small></small></div>
+                        <input title="Repeat password" type="password" class="form-control" id="inputRepeatPassword1" placeholder="Repeat password">
+                    </div>
+                    <div class="form-group">
+                        <div class="form-error form-error-first-name text-danger"><small></small></div>
+                        <input title="First name" type="text" class="form-control" id="inputFirstName1" placeholder="First name">
+                    </div>
+                    <div class="form-group">
+                        <div class="form-error form-error-last-name text-danger"><small></small></div>
+                        <input title="Last name" type="text" class="form-control" id="inputLastName1" placeholder="Last name">
+                    </div>
+                    <div class="form-group">
+                        <div class="form-error form-error-gold text-danger"><small></small></div>
+                        <input title="Gold" type="number" class="form-control" id="inputGold1" placeholder="Gold" value="0">
+                    </div>
+                    <div class="form-group">
+                        <p><input type="checkbox" id="inputPrivilegeB1" disabled="disabled"> <small>(B) Basic usage</small></p>
+                        <p><input type="checkbox" id="inputPrivilegeA1"> <small>(A) Admin</small></p>
+                        <p><input type="checkbox" id="inputPrivilegeP1"> <small>(P) Approve ads</small></p>
+                    </div>
+                    <input type="hidden" name="id" id="inputId1" class="form-control">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary submit-action" id="inputSubmit1">Create</button>
+                </div>
+            </form>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->

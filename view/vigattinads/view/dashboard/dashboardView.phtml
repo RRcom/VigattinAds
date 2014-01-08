@@ -4,9 +4,11 @@
     <div class="col-xs-6 col-sm-3 col-md-2 sidebar-offcanvas" id="sidebar" role="navigation">
         <div class="list-group">
             <a href="/vigattinads/dashboard" class="list-group-item <?php echo ($controller == 'vigattinads\controller\dashboard') ? 'active' : ''; ?>"><span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;&nbsp;Dashboard</a>
-            <a href="/vigattinads/dashboard/ads" class="list-group-item <?php echo ($controller == 'vigattinads\controller\dashboard\ads') ? 'active' : ''; ?>"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;&nbsp;&nbsp;Ads</a>
+            <a href="/vigattinads/dashboard/ads" class="list-group-item <?php echo (preg_match('/^vigattinads\\\\controller\\\\dashboard\\\\ads*+$/', $controller)) ? 'active' : ''; ?>"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;&nbsp;&nbsp;Ads</a>
             <a href="/vigattinads/dashboard/profile" class="list-group-item <?php echo ($controller == 'vigattinads\controller\dashboard\profile') ? 'active' : ''; ?>"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;&nbsp;Profile</a>
+            <?php if($user->hasPermit($user::PERMIT_ADMIN_ACCESS)): ?>
             <a href="/vigattinads/dashboard/admin" class="list-group-item <?php echo ($controller == 'vigattinads\controller\dashboard\admin') ? 'active' : ''; ?>"><span class="glyphicon glyphicon-wrench"></span>&nbsp;&nbsp;&nbsp;Admin</a>
+            <?php endif; ?>
             <?php if($user->hasPermit($user::PERMIT_TO_APPROVE_ADS)): ?>
                 <a href="/vigattinads/dashboard/approval" class="list-group-item <?php echo ($controller == 'vigattinads\controller\dashboard\approval') ? 'active' : ''; ?>"><span class="glyphicon glyphicon-wrench"></span>&nbsp;&nbsp;&nbsp;Ads Approval</a>
             <?php endif; ?>

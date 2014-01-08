@@ -10,6 +10,14 @@ use Zend\Math\Rand;
 class UserManager
 {
 
+    const SORT_BY_ID = 0;
+    const SORT_BY_EMAIL = 1;
+    const SORT_BY_USERNAME = 2;
+    const SORT_BY_FIRST_NAME = 3;
+    const SORT_BY_LAST_NAME = 4;
+    const SORT_DIRECTION_ASC = 0;
+    const SORT_DIRECTION_DESC = 1;
+
     /**
      * @var \Zend\ServiceManager\ServiceManager
      */
@@ -66,6 +74,34 @@ class UserManager
             $result = null;
         }
         return $result;
+    }
+
+    /**
+     * @return \VigattinAds\DomainModel\AdsUser
+     */
+    public function getCurrentUser()
+    {
+        $this->user->refresh();
+        return $this->user;
+    }
+
+    public function getUserList($sortBy = self::SORT_BY_ID, $sortDirection = self::SORT_DIRECTION_ASC, $start = 0, $limit = 30)
+    {
+        $fieldName = array(
+            'id',
+            'email',
+            'username',
+            'first_name',
+            'last_name'
+        );
+        $direction = array(
+            'ASC',
+            'DESC'
+        );
+        $query = $this->entityManager->createQuery("SELECT u FROM VigattinAds\DomainModel\AdsUser u ORDER BY u.".$fieldName[$sortBy]." ".$direction[$sortDirection]);
+        $query->setFirstResult($start);
+        $query->setMaxResults($limit);
+        return $query->getResult();
     }
 
     /**
@@ -155,15 +191,6 @@ class UserManager
     }
 
     /**
-     * @return \VigattinAds\DomainModel\AdsUser
-     */
-    public function getCurrentUser()
-    {
-        $this->user->refresh();
-        return $this->user;
-    }
-
-    /**
      * Create new user<br>
      * if an error occurs return an array of error string otherwise return an object of instanceof \VigattinAds\Entity\AdsUser<br>
      * sample error return<br><pre>
@@ -222,6 +249,25 @@ class UserManager
         return 'success';
     }
 
+    public function updateUser($user, $email, $username, $password, $firstName, $lastName, $gold, $privilege)
+    {
+        $error = array(
+            'status' => '',
+            'general' => '',
+            'email' => SafeValidator::isEmailValid($email),
+            'username' => SafeValidator::isUsernameValid($username),
+            'password' => SafeValidator::isPasswordValid($password),
+            'firstName' => SafeValidator::isNameValid($firstName, 1, 48, 'first name'),
+            'lastName' => SafeValidator::isNameValid($lastName, 1, 48, 'last name'),
+        );
+        $user = $this->getUser($user);
+        if(!$user) {
+            $error['status'] = 'failed';
+            $error['general'] = 'no user found';
+        }
+        return $error;
+    }
+
     /**
      * Flush to database all insert to view
      */
@@ -278,7 +324,7 @@ class UserManager
      */
     protected function isTableExist($columnName, $value)
     {
-        $query = $this->entityManager->createQuery("SELECT u FROM VigattinAds\Entity\AdsUser u WHERE u.$columnName = :value");
+        $query = $this->entityManager->createQuery("SELECT u FROM VigattinAds\DomainModel\AdsUser u WHERE u.$columnName = :value");
         $query->setParameter(':value', $value);
         try{
             $query->getSingleResult();
