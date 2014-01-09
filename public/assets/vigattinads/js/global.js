@@ -374,7 +374,7 @@ $(document).ready(function(e) {
                 success: function(data, textStatus, jqXHR) {
                     if(data.status == 'success') {
                         $('#accountForm').modal('hide');
-                        if(action == 'update') {
+                        if(action.toLowerCase() == 'update') {
                             tableRow.css({'opacity':0});
                             $('.data-email', tableRow).html(email);
                             $('.data-username', tableRow).html(username);
