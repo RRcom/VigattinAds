@@ -90,6 +90,12 @@ class AdsUser extends AbstractEntity
      */
     protected $ads = null;
 
+    /**
+     * @var bool
+     * @ORM\Column(name="deleted", type="boolean")
+     */
+    protected $deleted = false;
+
     //==================================================================================================
 
     public function __construct()

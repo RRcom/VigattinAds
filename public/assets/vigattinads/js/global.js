@@ -309,6 +309,18 @@ $(document).ready(function(e) {
             else $('#accountForm #inputPrivilegeA1').prop('checked', true);
             if($('.data-privilege', tableRow).text().indexOf('P') === -1) $('#accountForm #inputPrivilegeP1').prop('checked', false);
             else $('#accountForm #inputPrivilegeP1').prop('checked', true);
+            $('#accountForm #inputDelete1').attr('target-id', $(e.currentTarget).attr('target-id'));
+            $('#accountForm #inputDelete1').show();
+        });
+
+        $('.account-create-new').click(function(e) {
+            $('#accountForm .form-control').val('');
+            $('#accountForm .form-error').html('');
+            $('#accountForm .submit-action').html('Create');
+            $('#accountForm #inputPrivilegeB1').prop('checked', true);
+            $('#accountForm #inputPrivilegeA1').prop('checked', false);
+            $('#accountForm #inputPrivilegeP1').prop('checked', false);
+            $('#accountForm #inputDelete1').hide();
         });
     })(jQuery);
 
@@ -320,16 +332,20 @@ $(document).ready(function(e) {
             var email = $('#accountForm #inputEmail1').val();
             var username = $('#accountForm #inputUsername1').val();
             var password = $('#accountForm #inputPassword1').val();
+            var repeatPassword = $('#accountForm #inputRepeatPassword1').val();
             var firstName = $('#accountForm #inputFirstName1').val();
             var lastName = $('#accountForm #inputLastName1').val();
             var privilege = function() {
                 var privilege = '';
-                if($('#accountForm #inputPrivilegeB1').prop('checked', true)) privilege += 'B';
-                if($('#accountForm #inputPrivilegeP1').prop('checked', true)) privilege += 'P';
-                if($('#accountForm #inputPrivilegeA1').prop('checked', true)) privilege += 'A';
+                if($('#accountForm #inputPrivilegeB1').prop('checked')) privilege += 'B';
+                if($('#accountForm #inputPrivilegeP1').prop('checked')) privilege += 'P';
+                if($('#accountForm #inputPrivilegeA1').prop('checked')) privilege += 'A';
                 return privilege;
             };
             var gold = $('#accountForm #inputGold1').val();
+            var action = $('#accountForm #inputSubmit1').html();
+            var actionUrl = (action.toLowerCase() == 'update') ? '/vigattinads/json-service/update-account/post' : '/vigattinads/json-service/create-account/post'
+            var tableRow = (action.toLowerCase() == 'update') ? $('tr#'+id) : '';
             $.ajax( {
                 type: 'POST',
                 data: {
@@ -337,31 +353,57 @@ $(document).ready(function(e) {
                     "email":email,
                     "username":username,
                     "password":password,
-                    "firstName":password,
+                    "repeatPassword": repeatPassword,
+                    "firstName":firstName,
                     "lastName":lastName,
                     "privilege":privilege(),
                     "gold":gold
                 },
-                url: '/vigattinads/json-service/update-account/post',
+                url: actionUrl,
                 dataType: 'json',
                 beforeSend: function(jqXHR, settings) {
                     $('#accountForm .account-form-progress').show();
                 },
                 complete: function(jqXHR, textStatus) {
                     $('#accountForm .account-form-progress').hide();
+                    $(e.currentTarget).removeAttr('disabled');
                     if(textStatus != 'success') {
 
                     }
                 },
                 success: function(data, textStatus, jqXHR) {
                     if(data.status == 'success') {
-
+                        $('#accountForm').modal('hide');
+                        if(action == 'update') {
+                            tableRow.css({'opacity':0});
+                            $('.data-email', tableRow).html(email);
+                            $('.data-username', tableRow).html(username);
+                            $('.data-first-name', tableRow).html(firstName);
+                            $('.data-last-name', tableRow).html(lastName);
+                            $('.data-gold', tableRow).html(gold);
+                            $('.data-privilege', tableRow).html(privilege());
+                            tableRow.animate({'opacity':1}, 1000);
+                        } else {
+                            window.location = '/vigattinads/dashboard/admin/manageaccount';
+                        }
                     }
                     else {
-
+                        $('#accountForm .form-error').html('');
+                        if(data.email) $('#accountForm .form-error.form-error-email').html('<small>'+data.email+'</small>');
+                        if(data.username) $('#accountForm .form-error.form-error-username').html('<small>'+data.username+'</small>');
+                        if(data.password) $('#accountForm .form-error.form-error-password').html('<small>'+data.password+'</small>');
+                        if(data.repeatPassword) $('#accountForm .form-error.form-error-repeat-password').html('<small>'+data.repeatPassword+'</small>');
+                        if(data.firstName) $('#accountForm .form-error.form-error-first-name').html('<small>'+data.firstName+'</small>');
+                        if(data.lastName) $('#accountForm .form-error.form-error-last-name').html('<small>'+data.lastName+'</small>');
                     }
                 }
             });
+        });
+        $('#accountForm #inputDelete1').click(function(e) {
+            var id = $(e.currentTarget).attr('target-id');
+            if(confirm('are you sure you want to delete this account?')) {
+                window.location = '/vigattinads/dashboard/admin/manageaccount/delete/'+id;
+            }
         });
     })(jQuery);
 

@@ -102,6 +102,12 @@ class Ads extends AbstractEntity
      */
     protected $adsView;
 
+    /**
+     * @var bool
+     * @ORM\Column(name="deleted", type="boolean")
+     */
+    protected $deleted = false;
+
     //==================================================================================================
 
     public function __construct(AdsUser $adsUser)
@@ -156,6 +162,7 @@ class Ads extends AbstractEntity
      */
     public function deleteSelf()
     {
+        $this->deleteAllLogs();
         $this->deleteAllViews();
         $this->entityManager->remove($this);
     }
@@ -166,6 +173,16 @@ class Ads extends AbstractEntity
     public function deleteAllViews()
     {
         $query = $this->entityManager->createQuery("DELETE VigattinAds\DomainModel\AdsView v WHERE v.ads = :adsId");
+        $query->setParameter('adsId', $this->id);
+        $query->execute();
+    }
+
+    /**
+     * Delete all logs from database
+     */
+    public function deleteAllLogs()
+    {
+        $query = $this->entityManager->createQuery("DELETE VigattinAds\DomainModel\AdsApproveLog l WHERE l.ads = :adsId");
         $query->setParameter('adsId', $this->id);
         $query->execute();
     }

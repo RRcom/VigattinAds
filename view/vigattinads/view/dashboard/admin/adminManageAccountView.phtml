@@ -1,7 +1,7 @@
 <br />
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#accountForm">Create New Account</button>
+        <button type="button" class="btn btn-primary account-create-new" data-toggle="modal" data-target="#accountForm">Create New Account</button>
     </div>
 </div>
 <p></p>
@@ -23,7 +23,7 @@
                         <th>Options</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="account-list-tbody">
                 <?php foreach($accountList as $key => $account): ?>
                     <tr id="<?php echo $account->get('id'); ?>">
                         <td><?php echo $key+1; ?></td>
@@ -65,7 +65,7 @@
                         <input title="Password" type="password" class="form-control" id="inputPassword1" placeholder="Password">
                     </div>
                     <div class="form-group">
-                        <div class="form-error form-error-password-repeat text-danger"><small></small></div>
+                        <div class="form-error form-error-repeat-password text-danger"><small></small></div>
                         <input title="Repeat password" type="password" class="form-control" id="inputRepeatPassword1" placeholder="Repeat password">
                     </div>
                     <div class="form-group">
@@ -90,6 +90,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary submit-action" id="inputSubmit1">Create</button>
+                    <button type="button" class="btn btn-danger delete-action" id="inputDelete1">Delete</button>
                 </div>
             </form>
         </div><!-- /.modal-content -->

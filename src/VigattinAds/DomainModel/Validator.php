@@ -16,7 +16,7 @@ class Validator
     static public function isDigitValid($digit)
     {
         $digitValidator = new Digits();
-        if(!$digitValidator->isValid($digitValidator)) return 'Not a digit number';
+        if(!$digitValidator->isValid($digit)) return 'Not a digit number';
         return '';
     }
 

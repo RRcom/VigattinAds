@@ -6,6 +6,7 @@ use VigattinAds\DomainModel\AdsUser;
 use VigattinAds\DomainModel\Validator as SafeValidator;
 use Zend\Crypt\Password\Bcrypt;
 use Zend\Math\Rand;
+use Doctrine\ORM\NoResultException;
 
 class UserManager
 {
@@ -207,19 +208,27 @@ class UserManager
      * @param $lastName string
      * @return object|array
      */
-    public function createUser($email, $username, $password, $firstName, $lastName)
+    public function createUser($email, $username, $password, $firstName, $lastName, $gold = 0, $privilege = 'b')
     {
         $password = strval($password);
         $finalError = array();
         $error = array();
-        $error[] = SafeValidator::isEmailValid($email);
-        $error[] = SafeValidator::isUsernameValid($username);
-        $error[] = SafeValidator::isPasswordValid($password);
-        $error[] = SafeValidator::isNameValid($firstName, 1, 48, 'first name');
-        $error[] = SafeValidator::isNameValid($lastName, 1, 48, 'last name');
-        foreach($error as $er)
+        $error['email'] = SafeValidator::isEmailValid($email);
+        $error['username'] = SafeValidator::isUsernameValid($username);
+        $error['password'] = SafeValidator::isPasswordValid($password);
+        $error['firstName'] = SafeValidator::isNameValid($firstName, 1, 48, 'first name');
+        $error['lastName'] = SafeValidator::isNameValid($lastName, 1, 48, 'last name');
+
+        if(!$error['email']) {
+            if($this->isTableExist('email', $email)) $error['email'] = 'email already exist';
+        }
+        if(!$error['username']) {
+            if($this->isTableExist('username', $username)) $error['username'] = 'username already exist';
+        }
+
+        foreach($error as $key => $er)
         {
-            if($er) $finalError[] = $er;
+            if($er) $finalError[$key] = $er;
         }
         if(count($finalError)) return $finalError;
         $user = new AdsUser();
@@ -230,6 +239,8 @@ class UserManager
         $user->set('passHash', $this->createPassHash($password, $salt));
         $user->set('firstName', $firstName);
         $user->set('lastName', $lastName);
+        $user->set('credit', floatval($gold));
+        $user->set('privilege', strtolower(strval($privilege)));
         $this->entityManager->persist($user);
         $this->entityManager->flush();
         return $user;
@@ -249,23 +260,52 @@ class UserManager
         return 'success';
     }
 
-    public function updateUser($user, $email, $username, $password, $firstName, $lastName, $gold, $privilege)
+    public function updateUser($user, $email, $username, $firstName, $lastName, $gold, $privilege)
     {
-        $error = array(
+        $user = $this->getUser($user);
+        $errors = $this->validateForm($user, $email, $username, $firstName, $lastName);
+        if($errors['status'] == 'failed') return $errors;
+        $user->set('email', $email);
+        $user->set('username', $username);
+        $user->set('firstName', $firstName);
+        $user->set('lastName', $lastName);
+        $user->set('credit', floatval($gold));
+        $user->set('privilege', strtolower(strval($privilege)));
+        $user->persistSelf();
+        $user->flush();
+        $errors['status'] = 'success';
+        return $errors;
+    }
+
+    public function validateForm($user, $email, $username, $firstName, $lastName)
+    {
+        $errors = array(
             'status' => '',
-            'general' => '',
+            'general' => ($user instanceof \VigattinAds\DomainModel\AdsUser) ? '' : 'no user found',
             'email' => SafeValidator::isEmailValid($email),
             'username' => SafeValidator::isUsernameValid($username),
-            'password' => SafeValidator::isPasswordValid($password),
             'firstName' => SafeValidator::isNameValid($firstName, 1, 48, 'first name'),
             'lastName' => SafeValidator::isNameValid($lastName, 1, 48, 'last name'),
         );
-        $user = $this->getUser($user);
-        if(!$user) {
-            $error['status'] = 'failed';
-            $error['general'] = 'no user found';
+        foreach($errors as $error) {
+            if($error) {
+                $errors['status'] = 'failed';
+            }
         }
-        return $error;
+        if(($this->isTableExist('email', $email)) && ($user->get('email') != $email)) {
+            $errors['status'] = 'failed';
+            $errors['email'] = 'email already exist';
+        }
+        if(($this->isTableExist('username', $username)) && ($user->get('username') != $username)) {
+            $errors['status'] = 'failed';
+            $errors['username'] = 'username already exist';
+        }
+        return $errors;
+    }
+
+    public function deleteUser(AdsUser $user)
+    {
+        $this->entityManager->remove($user);
     }
 
     /**

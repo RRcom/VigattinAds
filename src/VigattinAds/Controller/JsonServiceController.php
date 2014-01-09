@@ -124,6 +124,69 @@ class JsonServiceController extends AbstractActionController
         if(!$user->hasPermit($user::PERMIT_ADMIN_ACCESS)) {
             $this->jsonView->setVariable('error', 'no access');
         }
+        $id = $this->request['id'];
+        $email = $this->request['email'];
+        $username = $this->request['username'];
+        $password = $this->request['password'];
+        $repeatPassword = $this->request['repeatPassword'];
+        $firstName = $this->request['firstName'];
+        $lastName = $this->request['lastName'];
+        $privilege = $this->request['privilege'];
+        $gold = $this->request['gold'];
+        $result = $this->userManager->updateUser($id, $email, $username, $firstName, $lastName, $gold, $privilege);
+        if($password) {
+            if($password != $repeatPassword) {
+                $result['repeatPassword'] = 'repeat password not match';
+                $result['status'] = 'failed';
+            } else {
+                $passResult = $this->userManager->changePassword($id, $password);
+                if($passResult != 'success') {
+                    $result['password'] = $passResult;
+                    $result['status'] = 'failed';
+                }
+            }
+
+        }
+        $this->jsonView->setVariables($result);
+        return $this->jsonView;
+    }
+
+    public function createAccountAction()
+    {
+        $user = $this->userManager->getCurrentUser();
+        if(!$user->hasPermit($user::PERMIT_ADMIN_ACCESS)) {
+            $this->jsonView->setVariable('error', 'no access');
+        }
+        $errors = array(
+            'status' => '',
+            'general' => '',
+            'email' => '',
+            'username' => '',
+            'password' => '',
+            'repeatPassword' => '',
+            'firstName' => '',
+            'lastName' => '',
+        );
+        $email = $this->request['email'];
+        $username = $this->request['username'];
+        $password = $this->request['password'];
+        $repeatPassword = $this->request['repeatPassword'];
+        $firstName = $this->request['firstName'];
+        $lastName = $this->request['lastName'];
+        $privilege = $this->request['privilege'];
+        $gold = $this->request['gold'];
+        if($password != $repeatPassword) {
+            $errors['repeatPassword'] = 'repeat password not match';
+            $errors['status'] = 'failed';
+        } else {
+            $result = $this->userManager->createUser($email, $username, $password, $firstName, $lastName, $gold, $privilege);
+            if(!($result instanceof \VigattinAds\DomainModel\AdsUser)) {
+                $errors = array_merge($errors, $result);
+                $errors['status'] = 'failed';
+            }
+            else $errors['status'] = 'success';
+        }
+        $this->jsonView->setVariables($errors);
         return $this->jsonView;
     }
 
