@@ -19,7 +19,7 @@ return array(
                     ),
                 ),
             ),
-            'vigattinads/showads' => array(
+            'vigattinads_showads' => array(
                 'type'    => 'Segment',
                 'options' => array(
                     'route'    => '/vigattinads/showads[/]',
@@ -29,7 +29,7 @@ return array(
                     ),
                 ),
             ),
-            'vigattinads/login' => array(
+            'vigattinads_login' => array(
                 'type'    => 'Segment',
                 'options' => array(
                     'route'    => '/vigattinads/login[/]',
@@ -39,7 +39,7 @@ return array(
                     ),
                 ),
             ),
-            'vigattinads/logout' => array(
+            'vigattinads_logout' => array(
                 'type'    => 'Segment',
                 'options' => array(
                     'route'    => '/vigattinads/logout[/]',
@@ -49,7 +49,7 @@ return array(
                     ),
                 ),
             ),
-            'vigattinads/dashboard' => array(
+            'vigattinads_dashboard' => array(
                 'type'    => 'Segment',
                 'options' => array(
                     'route'    => '/vigattinads/dashboard[/]',
@@ -59,24 +59,23 @@ return array(
                     ),
                 ),
             ),
-            'vigattinads/dashboard/ads' => array(
+            'vigattinads_dashboard_ads' => array(
                 'type'    => 'segment',
                 'options' => array(
-                    'route'    => '/vigattinads/dashboard/ads[/][:controller][/][:action][/][:param1][/][:param2]',
+                    'route'    => '/vigattinads/dashboard/ads[/][:page]',
                     'constraints' => array(
                         'controller'    => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'action'        => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'param1'        => '[a-zA-Z0-9_-]*',
-                        'param2'        => '[a-zA-Z0-9_-]*',
+                        'page'          => '[0-9]',
                     ),
                     'defaults' => array(
-                        '__NAMESPACE__' => 'VigattinAds\Controller\Dashboard',
-                        'controller'    => 'Ads',
+                        'controller'    => 'VigattinAds\Controller\Dashboard\Ads',
                         'action'        => 'index',
+                        'page'          => 1,
                     ),
                 ),
             ),
-            'vigattinads/dashboard/ads/edit' => array(
+            'vigattinads_dashboard_ads_edit' => array(
                 'type'    => 'segment',
                 'options' => array(
                     'route'    => '/vigattinads/dashboard/ads/edit[/][:controller][/][:param1][/][:param2]',
@@ -92,7 +91,7 @@ return array(
                     ),
                 ),
             ),
-            'vigattinads/dashboard/ads/template' => array(
+            'vigattinads_dashboard_ads_template' => array(
                 'type'    => 'segment',
                 'options' => array(
                     'route'    => '/vigattinads/dashboard/ads/template[/][:controller]',
@@ -106,7 +105,7 @@ return array(
                     ),
                 ),
             ),
-            'vigattinads/dashboard/ads/info' => array(
+            'vigattinads_dashboard_ads_info' => array(
                 'type'    => 'segment',
                 'options' => array(
                     'route'    => '/vigattinads/dashboard/ads/info[/][:controller]',
@@ -120,7 +119,7 @@ return array(
                     ),
                 ),
             ),
-            'vigattinads/dashboard/profile' => array(
+            'vigattinads_dashboard_profile' => array(
                 'type'    => 'segment',
                 'options' => array(
                     'route'    => '/vigattinads/dashboard/profile[/][:controller][/][:action][/][:param1][/][:param2]',
@@ -137,7 +136,7 @@ return array(
                     ),
                 ),
             ),
-            'vigattinads/dashboard/admin' => array(
+            'vigattinads_dashboard_admin' => array(
                 'type'    => 'segment',
                 'options' => array(
                     'route'    => '/vigattinads/dashboard/admin[/]',
@@ -147,7 +146,7 @@ return array(
                     ),
                 ),
             ),
-            'vigattinads/dashboard/admin/manageaccount' => array(
+            'vigattinads_dashboard_admin_manageaccount' => array(
                 'type'    => 'segment',
                 'options' => array(
                     'route'    => '/vigattinads/dashboard/admin/manageaccount[/][:param1][/][:param2]',
@@ -161,7 +160,7 @@ return array(
                     ),
                 ),
             ),
-            'vigattinads/dashboard/approval' => array(
+            'vigattinads_dashboard_approval' => array(
                 'type'    => 'segment',
                 'options' => array(
                     'route'    => '/vigattinads/dashboard/approval[/][:controller][/][:action][/][:param1][/][:param2]',

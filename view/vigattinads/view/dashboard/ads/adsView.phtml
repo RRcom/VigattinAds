@@ -15,7 +15,7 @@
         </tr>
         </thead>
         <tbody>
-        <?php foreach($adsList as $key => $ads): ?>
+        <?php foreach($paginator as $key => $ads): ?>
         <tr>
             <td><?php echo $key+1; ?></td>
             <td><?php echo $ads->get('adsTitle'); ?></td>
@@ -44,4 +44,7 @@
         <?php endforeach; ?>
         </tbody>
     </table>
+</div>
+<div class="text-center">
+    <?php echo $this->paginationControl($paginator, 'Sliding', 'vigattinads/view/paginator/bootstrapPagination', array('route' => 'vigattinads_dashboard_ads')); ?>
 </div>
