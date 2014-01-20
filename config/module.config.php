@@ -260,4 +260,9 @@ return array(
             )
         )
     ),
+    'service_manager' => array(
+        'factories' => array(
+            'Vigattin\Vauth\Vauth' => 'VigattinAds\DomainModel\VauthServiceFactory',
+        ),
+    ),
 );

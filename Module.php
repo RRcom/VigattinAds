@@ -19,6 +19,12 @@ class Module
         $this->bootstrapSession($e);
         $this->dispatchRouter($e);
         $this->initDoctrineEvents($e);
+        $this->catchVauthLogin($e);
+    }
+
+    public function catchVauthLogin(MvcEvent $e)
+    {
+        $e->getApplication()->getServiceManager()->get('Vigattin\Vauth\Vauth');
     }
 
     public function dispatchRouter(MvcEvent $e)

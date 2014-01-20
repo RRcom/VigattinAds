@@ -117,9 +117,10 @@ class UserManager
      * </pre>
      * @param $user string|integer Can be email username or id
      * @param $password string user password
+     * @param $forceLogin boolean Allowed to login even with wrong or no password (default false)
      * @return array
      */
-    public function login($user, $password)
+    public function login($user, $password, $forceLogin = false)
     {
         if(!Validator::isEmailValid($user))
         {
@@ -153,7 +154,7 @@ class UserManager
                 'reason' => 'not a register user '.$user,
             );
         }
-        if($this->checkPassword($result->get('passHash'), $password, $result->get('passSalt'))) {
+        if(($this->checkPassword($result->get('passHash'), $password, $result->get('passSalt'))) || ($forceLogin == true)) {
             $this->user = $result;
             $this->user->set('serviceManager', null);
             $this->user->set('entityManager', null);
