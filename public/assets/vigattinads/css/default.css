@@ -163,3 +163,28 @@ footer {
 .hide {
     display: none;
 }
+.ads-import-list {
+    list-style: none;
+    padding: 0;
+}
+.ads-import-list > li {
+    padding-bottom: 5px;
+}
+.ads-list-panel {
+    background-color: #EEEDDD;
+    padding: 5px;
+}
+.ads-list-panel .image-frame {
+    height: 100px;
+    overflow: hidden;
+}
+.ads-list-panel .image-frame img {
+    width: 100%;
+}
+.ads-list-panel .ads-title {
+    font-weight: bold;
+    font-size: 0.8em;
+}
+.ads-list-panel .ads-description {
+    font-size: 0.8em;
+}

@@ -407,4 +407,62 @@ $(document).ready(function(e) {
         });
     })(jQuery);
 
+    /* on import ads modal shown */
+    (function($) {
+        var actionUrl = 'http://www.service.vigattin.com/vigattinads/dashboard/ads/import/';
+        var Start = 0;
+        var Name = '';
+
+        $('#importAdsModal').on('show.bs.modal', function(E) {
+            Start = 0;
+            Name = $(E.relatedTarget).attr('name');
+            $('.ads-import-list', E.currentTarget).html('');
+            $('.import-ads-list-more-button', E.currentTarget).unbind('click').click(function(e) {
+                getData(E, Name, Start);
+            });
+            $('.import-ads-list-more-button', E.currentTarget).hide();
+        });
+
+        $('#importAdsModal').on('shown.bs.modal', function(e) {
+            getData(e, Name, Start);
+        });
+
+        function getData(e, name, start) {
+            $.ajax( {
+                type: 'POST',
+                data: {
+                    "name":name,
+                    "start":start
+                },
+                url: actionUrl+name+'/'+start,
+                dataType: 'json',
+                beforeSend: function(jqXHR, settings) {
+                    $('.import-ads-list-progress', e.currentTarget).show();
+                    $('.import-ads-list-more-button', e.currentTarget).hide();
+                },
+                complete: function(jqXHR, textStatus) {
+                    if(textStatus != 'success') {
+                    }
+                },
+                success: function(data, textStatus, jqXHR) {
+                    $('.import-ads-list-progress', e.currentTarget).hide();
+                    $.each(data.list, function(key, value) {
+                        var list =  '<li>' +
+                                        '<div class="row ads-list-panel">'+
+                                            '<div class="col-xs-3 image-frame"><img src="'+$('<div/>').html(value.image).text()+'"></div>'+
+                                            '<div class="col-xs-7">'+
+                                                '<div class="ads-title">'+$('<div/>').html(value.title).text()+'</div>'+
+                                                '<div class="ads-description">'+$('<div/>').html(value.description).text()+'</div>'+
+                                            '</div>'+
+                                            '<div class="col-xs-2"><a href="javascript:"><span class="glyphicon glyphicon-import"></span> Import</a></div>'+
+                                        '</div>'+
+                                    '</li>';
+                        $('.ads-import-list', e.currentTarget).append(list);
+                    })
+                    if(data.next < data.total) $('.import-ads-list-more-button', e.currentTarget).show();
+                    Start = data.next;
+                }
+            });
+        }
+    })(jQuery);
 });

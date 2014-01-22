@@ -119,6 +119,21 @@ return array(
                     ),
                 ),
             ),
+            'vigattinads_dashboard_ads_import' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/vigattinads/dashboard/ads/import[/][:name][/][:start]',
+                    'constraints' => array(
+                        'name'    => '[a-zA-Z0-9_-]*',
+                        'start'    => '[a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'VigattinAds\Controller\Dashboard\Ads',
+                        'controller'    => 'Import',
+                        'action'        => 'index',
+                    ),
+                ),
+            ),
             'vigattinads_dashboard_profile' => array(
                 'type'    => 'segment',
                 'options' => array(
@@ -188,6 +203,7 @@ return array(
             'VigattinAds\Controller\Dashboard\Ads\Edit'   => 'VigattinAds\Controller\Dashboard\Ads\AdsEditController',
             'VigattinAds\Controller\Dashboard\Ads\Template'   => 'VigattinAds\Controller\Dashboard\Ads\AdsWizardChooseTemplateController',
             'VigattinAds\Controller\Dashboard\Ads\Info'   => 'VigattinAds\Controller\Dashboard\Ads\AdsWizardEditInfoController',
+            'VigattinAds\Controller\Dashboard\Ads\Import'   => 'VigattinAds\Controller\Dashboard\Ads\AdsImportController',
             'VigattinAds\Controller\Dashboard\Profile'   => 'VigattinAds\Controller\Dashboard\Profile\ProfileController',
             'VigattinAds\Controller\Dashboard\Admin'   => 'VigattinAds\Controller\Dashboard\Admin\AdminController',
             'VigattinAds\Controller\Dashboard\Admin\ManageAccount'   => 'VigattinAds\Controller\Dashboard\Admin\AdminManageAccountController',
