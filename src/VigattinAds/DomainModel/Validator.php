@@ -119,4 +119,11 @@ class Validator
         if(!is_resource($image->create_source_from_img($imageFile['tmp_name']))) return 'Invalid image or empty image. Valid types are jpeg, gif, png and bitmap';
         return '';
     }
+
+    static public function isImageString($imageFile)
+    {
+        $image = new Image();
+        if(!is_resource($image->create_source_from_img($imageFile))) return 'Invalid image or empty image. Valid types are jpeg, gif, png and bitmap';
+        return '';
+    }
 }

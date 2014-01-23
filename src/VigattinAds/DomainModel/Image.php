@@ -176,7 +176,13 @@ class Image
             $this->image_resource = @imagecreatefromstring(@file_get_contents($image_file));
             return $this->image_resource;
         }
-        // if string
+        else if(is_string($image_file)) {
+            if(preg_match('/^data:image/', $image_file)) {
+                $image = explode(',', $image_file);
+                $imageString = base64_decode($image[1]);
+                return @imagecreatefromstring($imageString);
+            }
+        }
         else {
             $this->image_resource = @imagecreatefromstring($image_file);
             return $this->image_resource;

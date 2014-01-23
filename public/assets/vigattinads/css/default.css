@@ -76,6 +76,10 @@ footer {
     font-weight: bold;
     text-align: center;
     padding-bottom: 3px;
+    word-wrap: break-word;
+}
+.ads-frame .ads-frame-description {
+    word-wrap: break-word;
 }
 .ads-frame .ads-image-preview-container {
     display: inline-block;

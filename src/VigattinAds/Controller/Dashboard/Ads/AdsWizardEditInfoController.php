@@ -18,14 +18,14 @@ class AdsWizardEditInfoController extends AdsController
             header('Location: /vigattinads/dashboard/ads/template');
             exit();
         }
-        if(strtolower($this->getRequest()->getPost('submit', '')) == 'next')
-        {
+        if(strtolower($this->getRequest()->getPost('submit', '')) == 'next') {
             $formError = array(
                 'adsTitle' => $this->getRequest()->getPost('ads-title', ''),
                 'adsUrl' => $this->getRequest()->getPost('ads-url', ''),
                 'adsKeyword' => $this->getRequest()->getPost('ads-keyword', ''),
                 'adsDescription' => $this->getRequest()->getPost('ads-description', ''),
-                'adsImageError' => Validator::isImage($this->getRequest()->getFiles('ads-image')),
+                'adsImageDataUrl' => $this->getRequest()->getPost('ads-image-data-url', ''),
+                'adsImageError' => Validator::isImageString($this->getRequest()->getPost('ads-image-data-url', '')),
                 'adsTitleError' => Validator::isTitleValid($this->getRequest()->getPost('ads-title', '')),
                 'adsUrlError' => Validator::isUrlValid($this->getRequest()->getPost('ads-url', '')),
                 'adsKeywordError' => Validator::isKeywordValid($this->getRequest()->getPost('ads-keyword', '')),
@@ -35,18 +35,17 @@ class AdsWizardEditInfoController extends AdsController
             $this->sessionManager->getStorage()->tempAdsUrl = $formError['adsUrl'];
             $this->sessionManager->getStorage()->tempAdsKeyword = $formError['adsKeyword'];
             $this->sessionManager->getStorage()->tempAdsDescription = $formError['adsDescription'];
-            if(!strlen($formError['adsImageError'].$formError['adsTitleError'].$formError['adsUrlError'].$formError['adsKeywordError'].$formError['adsDescriptionError']))
-            {
+            if(!strlen($formError['adsImageError'].$formError['adsTitleError'].$formError['adsUrlError'].$formError['adsKeywordError'].$formError['adsDescriptionError'])) {
                 $formError['adsImageError'] = $this->processRequest();
             }
         }
-        else
-        {
+        else {
             $formError = array(
                 'adsTitle' => $this->sessionManager->getStorage()->tempAdsTitle,
                 'adsUrl' => $this->sessionManager->getStorage()->tempAdsUrl,
                 'adsKeyword' => $this->sessionManager->getStorage()->tempAdsKeyword,
                 'adsDescription' => $this->sessionManager->getStorage()->tempAdsDescription,
+                'adsImageDataUrl' => '',
                 'adsImageError' => '',
                 'adsTitleError' => '',
                 'adsUrlError' => '',
@@ -67,9 +66,9 @@ class AdsWizardEditInfoController extends AdsController
     {
         $repo = 'public/'.self::IMAGE_REPO;
         $image = new Image($repo);
-        $uploadedImage = $this->getRequest()->getFiles('ads-image');
+        $uploadedImage = $this->getRequest()->getPost('ads-image-data-url', '');
         $result = $image->save_convert_resize(
-            $uploadedImage['tmp_name'],
+            $uploadedImage,
             self::IMAGE_WIDTH,
             self::IMAGE_QUALITY,
             self::IMAGE_PROGRESSIVE
