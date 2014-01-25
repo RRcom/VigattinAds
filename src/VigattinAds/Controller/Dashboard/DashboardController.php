@@ -28,6 +28,9 @@ class DashboardController extends AbstractActionController
     /** @var \Zend\Session\SessionManager */
     protected $sessionManager;
 
+    /** @var \Vigattin\Vauth\Vauth */
+    protected $vauth;
+
     public function indexAction()
     {
         $this->mainView->setVariable('title', 'Dashboard');
@@ -50,6 +53,7 @@ class DashboardController extends AbstractActionController
         $this->userManager = $this->serviceLocator->get('VigattinAds\DomainModel\UserManager');
         $this->adsUser = $this->userManager->getCurrentUser();
         $this->adsManager = new AdsManager($this->serviceLocator);
+        $this->vauth = $this->serviceLocator->get('Vigattin\Vauth\Vauth');
         $this->adsUser->refresh();
 
         // Set global layout
