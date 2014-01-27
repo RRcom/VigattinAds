@@ -193,6 +193,21 @@ return array(
                     ),
                 ),
             ),
+            'vigattinads_pageblock' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/vigattinads/pageblock[/:controller]',
+                    'constraints' => array(
+                        'controller'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'action'        => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'VigattinAds\Controller\PageBlock',
+                        'controller'    => 'BlockNoGold',
+                        'action'        => 'index',
+                    ),
+                ),
+            ),
         ),
     ),
     'controllers' => array(
@@ -213,6 +228,7 @@ return array(
             'VigattinAds\Controller\Cli'   => 'VigattinAds\Controller\CliController',
             'VigattinAds\Controller\JsonService'   => 'VigattinAds\Controller\JsonServiceController',
             'VigattinAds\Controller\ShowAds'   => 'VigattinAds\Controller\ShowAdsController',
+            'VigattinAds\Controller\PageBlock\BlockNoGold'   => 'VigattinAds\Controller\PageBlock\BlockNoGoldController',
         ),
     ),
     'view_manager' => array(

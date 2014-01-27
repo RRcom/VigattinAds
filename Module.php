@@ -37,11 +37,15 @@ class Module
                 case strtolower('VigattinAds\Controller\ShowAds'):
                     break;
 
+                // if show ads only
+                case strtolower('VigattinAds\Controller\PageBlock\BlockNoGold'):
+                    break;
+
                 // if enter accounthome controller
                 case strtolower('VigattinAds\Controller\Login'):
+                    /** @var \VigattinAds\DomainModel\UserManager $userManager */
                     $userManager = $e->getApplication()->getServiceManager()->get('VigattinAds\DomainModel\UserManager');
-                    if($userManager->isLogin())
-                    {
+                    if($userManager->isLogin()) {
                         Header('Location: /vigattinads');
                         exit();
                     }
@@ -50,11 +54,21 @@ class Module
                 // if enter any controller
                 default:
                     $userManager = $e->getApplication()->getServiceManager()->get('VigattinAds\DomainModel\UserManager');
-                    if(!$userManager->isLogin())
-                    {
+                    if(!$userManager->isLogin()) {
                         Header('Location: /vigattinads/login');
                         exit();
                     }
+
+                    $currentUser = $userManager->getCurrentUser();
+                    // if basic user only
+                    if(!$currentUser->hasPermit($currentUser::PERMIT_ADMIN_ACCESS) && !$currentUser->hasPermit($currentUser::PERMIT_TO_APPROVE_ADS)) {
+                        // if no gold redirect to no gold page block
+                        if(!$currentUser->get('credit')) {
+                            Header('Location: /vigattinads/pageblock');
+                            exit();
+                        }
+                    }
+
                     break;
             }
         });
