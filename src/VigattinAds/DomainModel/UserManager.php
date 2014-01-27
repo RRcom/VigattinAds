@@ -102,7 +102,15 @@ class UserManager
         $query = $this->entityManager->createQuery("SELECT u FROM VigattinAds\DomainModel\AdsUser u ORDER BY u.".$fieldName[$sortBy]." ".$direction[$sortDirection]);
         $query->setFirstResult($start);
         $query->setMaxResults($limit);
-        return $query->getResult();
+        $result = $query->getResult();
+        return $result;
+    }
+
+    public function countUserList()
+    {
+        $query = $this->entityManager->createQuery("SELECT COUNT(u.id) FROM VigattinAds\DomainModel\AdsUser u");
+        $result = $query->getSingleScalarResult();
+        return $result;
     }
 
     /**

@@ -24,7 +24,7 @@
                     </tr>
                 </thead>
                 <tbody class="account-list-tbody">
-                <?php foreach($accountList as $key => $account): ?>
+                <?php foreach($paginator as $key => $account): ?>
                     <tr id="<?php echo $account->get('id'); ?>">
                         <td><?php echo $key+1; ?></td>
                         <td class="data-username"><?php echo $this->escapeHtml($account->get('username')); ?></td>
@@ -40,6 +40,10 @@
             </table>
         </div>
     </div>
+</div>
+
+<div class="text-center">
+    <?php echo $this->paginationControl($paginator, 'Sliding', 'vigattinads/view/paginator/bootstrapPagination', array('route' => 'vigattinads_dashboard_admin_manageaccount')); ?>
 </div>
 
 <!-- Modal Create new account -->

@@ -3,6 +3,9 @@ namespace VigattinAds\Controller\Dashboard\Admin;
 
 use Zend\View\Model\ViewModel;
 use VigattinAds\DomainModel\UserManager;
+use Zend\Paginator\Paginator;
+use Zend\Paginator\Adapter\Iterator;
+use VigattinAds\DomainModel\Paginator\ArrayResultAdapter;
 
 class AdminManageAccountController extends AdminController
 {
@@ -18,9 +21,16 @@ class AdminManageAccountController extends AdminController
                 }
             }
         }
+
+        // Paginator
+        $paginator = new Paginator(new ArrayResultAdapter($this->userManager));
+        $paginator->setCurrentPageNumber(intval($this->params('page', 0)));
+        $paginator->setItemCountPerPage(1);
+        $paginator->setPageRange(7);
+
         $adminManageAccountView = new ViewModel();
         $adminManageAccountView->setTemplate('vigattinads/view/dashboard/admin/adminManageAccountView');
-        $adminManageAccountView->setVariable('accountList', $this->userManager->getUserList(UserManager::SORT_BY_ID, UserManager::SORT_DIRECTION_ASC));
+        $adminManageAccountView->setVariable('paginator', $paginator);
         $actionContent->addChild($adminManageAccountView);
     }
 }

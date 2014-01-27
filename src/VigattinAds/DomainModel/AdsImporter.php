@@ -9,7 +9,7 @@ class AdsImporter
     const PAGE_VIGATTINTRADE = 'http://www.vigattintrade.com';
     const PAGE_VIGATTINTOURISM = 'http://www.vigattintourism.com';
     const PAGE_VIGATTINDEALS = 'http://www.vigattindeals.com';
-    const PAGE_TEST = 'http://www.localhost/test2/index.php';
+    const PAGE_TEST = 'http://www.vigattintrade.com';
 
     protected $validator;
 
@@ -20,6 +20,7 @@ class AdsImporter
 
     public function importAds($page, $offset = 0, $limit = 10, $id = '')
     {
+        //$id = 605;
         switch(strtolower($page)) {
             case 'vigattin':
                 $serviceUrl = self::PAGE_VIGATTIN;

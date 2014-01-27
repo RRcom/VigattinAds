@@ -11,7 +11,7 @@ class AdsImportController extends AdsController
         $adsImporter = new AdsImporter();
         $name = $this->params('name', '');
         $start = $this->params('start', 0);
-        $limit = 3;
+        $limit = 10;
         $data = $adsImporter->importAds($name, $start, $limit, $this->vauth->get_vigid());
 
         $total = !empty($data['total']) ? $data['total'] : 0;

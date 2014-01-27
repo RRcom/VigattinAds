@@ -164,10 +164,11 @@ return array(
             'vigattinads_dashboard_admin_manageaccount' => array(
                 'type'    => 'segment',
                 'options' => array(
-                    'route'    => '/vigattinads/dashboard/admin/manageaccount[/][:param1][/][:param2]',
+                    'route'    => '/vigattinads/dashboard/admin/manageaccount[/:page][/:param1][/:param2]',
                     'constraints' => array(
                         'param1'        => '[a-zA-Z0-9_-]*',
                         'param2'        => '[a-zA-Z0-9_-]*',
+                        'page'          => '[0-9]'
                     ),
                     'defaults' => array(
                         'controller'    => 'VigattinAds\Controller\Dashboard\Admin\ManageAccount',
