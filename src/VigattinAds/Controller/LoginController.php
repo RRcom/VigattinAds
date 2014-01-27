@@ -62,8 +62,8 @@ class LoginController extends AbstractActionController
                     $this->vauth->get_email(),
                     $this->vauth->get_username() ? $this->vauth->get_username() : uniqid(),
                     uniqid(),
-                    $this->vauth->get_first_name(),
-                    $this->vauth->get_last_name()
+                    $this->vauth->get_first_name() ? $this->vauth->get_first_name() : 'no first name',
+                    $this->vauth->get_last_name() ? $this->vauth->get_last_name() : 'no last name'
                 );
                 if($user instanceof \VigattinAds\DomainModel\AdsUser) {
                     $vauthLocator->addAccount($this->vauth->get_vigid(), $user->get('id'));
@@ -74,6 +74,8 @@ class LoginController extends AbstractActionController
                         exit();
                     }
                 }
+                echo '<!-- '.\VigattinAds\DomainModel\Validator::isNameValid('').' -->';
+                //else echo '<!-- firstname: '.$this->vauth->get_first_name().' lastname: '.$this->vauth->get_last_name().' '.print_r($user, true).' -->';
             }
         }
     }
