@@ -25,7 +25,7 @@ class AdminManageAccountController extends AdminController
         // Paginator
         $paginator = new Paginator(new ArrayResultAdapter($this->userManager));
         $paginator->setCurrentPageNumber(intval($this->params('page', 0)));
-        $paginator->setItemCountPerPage(1);
+        $paginator->setItemCountPerPage(10);
         $paginator->setPageRange(7);
 
         $adminManageAccountView = new ViewModel();
