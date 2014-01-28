@@ -420,51 +420,51 @@ $(document).ready(function(e) {
         });
     })(jQuery);
 
-    /* ads import button event */
-    (function($) {
-        $('#adsImportDropdownButton').popover({
-            'trigger': "hover",
-            'content': "Import data from external website",
-            'delay': 500
-        });
-    })(jQuery);
-
     /* on import ads modal shown */
     (function($) {
         var actionUrl = 'http://www.service.vigattin.com/vigattinads/dashboard/ads/import/';
         var Start = 0;
         var Name = '';
+        var autoloadAdsImportList = $('.ads-import-list.auto-load');
+
+        if(autoloadAdsImportList.length) {
+            $('.import-ads-list-more-button').unbind('click').click(function(e) {
+                getData(autoloadAdsImportList.attr('target-page'));
+            });
+            $('.import-ads-list-more-button').hide();
+            getData(autoloadAdsImportList.attr('target-page'));
+        }
 
         $('#importAdsModal').on('show.bs.modal', function(E) {
             Start = 0;
             Name = $(E.relatedTarget).attr('name');
             $('.ads-import-list', E.currentTarget).html('');
             $('.import-ads-list-more-button', E.currentTarget).unbind('click').click(function(e) {
-                getData(E, Name, Start);
+                getData(Name);
             });
             $('.import-ads-list-more-button', E.currentTarget).hide();
         });
 
         $('#importAdsModal').on('shown.bs.modal', function(e) {
-            getData(e, Name);
+            getData(Name);
         });
 
-        function getData(e, name) {
+        function getData(name) {
             $.ajax( {
                 type: 'POST',
                 data: {},
                 url: actionUrl+name+'/'+Start,
                 dataType: 'json',
                 beforeSend: function(jqXHR, settings) {
-                    $('.import-ads-list-progress', e.currentTarget).show();
-                    $('.import-ads-list-more-button', e.currentTarget).hide();
+                    $('.import-ads-list-progress').show();
+                    $('.import-ads-list-more-button').hide();
                 },
                 complete: function(jqXHR, textStatus) {
                     if(textStatus != 'success') {
                     }
                 },
                 success: function(data, textStatus, jqXHR) {
-                    $('.import-ads-list-progress', e.currentTarget).hide();
+                    $('.import-ads-list-progress').hide();
                     $.each(data.list, function(key, value) {
                         Start++;
                         var list =  '<li>' +
@@ -474,13 +474,13 @@ $(document).ready(function(e) {
                                                 '<div><a class="ads-title" target="_blank" href="'+$('<div/>').html(value.url).text()+'">'+$('<div/>').html(value.title).text()+'</a></div>'+
                                                 '<div class="ads-description">'+$('<div/>').html(value.description).text()+'</div>'+
                                             '</div>'+
-                                            '<div class="col-xs-2"><a class="ads-import-single-button" data-target="#adsPanel'+Start+'" href="javascript:" data-dismiss="modal"><span class="glyphicon glyphicon-import"></span> Import</a></div>'+
+                                            '<div class="col-xs-2"><a class="ads-import-single-button" data-target="#adsPanel'+Start+'" href="javascript:" data-dismiss="modal"><span class="glyphicon glyphicon-star"></span> Promote</a></div>'+
                                         '</div>'+
                                     '</li>';
                         $('.ads-import-list', e.currentTarget).append(list);
                     });
                     $('.ads-list-panel .ads-import-single-button').unbind('click').click(onImportSingleClick);
-                    if(Start < data.total) $('.import-ads-list-more-button', e.currentTarget).show();
+                    if(Start < data.total) $('.import-ads-list-more-button').show();
                 }
             });
         }

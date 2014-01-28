@@ -52,10 +52,14 @@ return array(
             'vigattinads_dashboard' => array(
                 'type'    => 'Segment',
                 'options' => array(
-                    'route'    => '/vigattinads/dashboard[/]',
+                    'route'    => '/vigattinads/dashboard[/:param]',
+                    'constraints' => array(
+                        'param'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
                     'defaults' => array(
                         'controller'    => 'VigattinAds\Controller\Dashboard',
                         'action'        => 'index',
+                        'param'         => 'vigattintrade',
                     ),
                 ),
             ),

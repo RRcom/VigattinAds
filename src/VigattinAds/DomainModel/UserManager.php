@@ -4,6 +4,7 @@ namespace VigattinAds\DomainModel;
 use Zend\ServiceManager\ServiceManager;
 use VigattinAds\DomainModel\AdsUser;
 use VigattinAds\DomainModel\Validator as SafeValidator;
+use VigattinAds\DomainModel\VauthAccountLocator;
 use Zend\Crypt\Password\Bcrypt;
 use Zend\Math\Rand;
 use Doctrine\ORM\NoResultException;
@@ -315,6 +316,23 @@ class UserManager
     public function deleteUser(AdsUser $user)
     {
         $this->entityManager->remove($user);
+    }
+
+    /**
+     * @param $userId int
+     * @return \VigattinAds\DomainModel\VauthAccountLocator|null
+     */
+    public function getVauthAccountLocator($userId)
+    {
+        $query = $this->entityManager->createQuery("SELECT l FROM VigattinAds\DomainModel\VauthAccountLocator l WHERE l.adsUserId = :userId");
+        $query->setParameter('userId', $userId);
+        $query->setMaxResults(1);
+        try {
+            $result = $query->getSingleResult();
+        } catch(NoResultException $ex) {
+            $result = null;
+        }
+        return $result;
     }
 
     /**

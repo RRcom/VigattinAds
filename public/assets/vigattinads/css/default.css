@@ -192,3 +192,11 @@ footer {
 .ads-list-panel .ads-description {
     font-size: 0.8em;
 }
+.dashboard-number-status {
+    font-size: .8em;
+}
+.ads-import-single-button {
+
+}.ads-import-single-button:hover {
+    text-decoration: none;
+ }

@@ -33,6 +33,8 @@ class DashboardController extends AbstractActionController
 
     public function indexAction()
     {
+        $activeTab = strtolower($this->params('param', 'vigattintrade'));
+
         $this->mainView->setVariable('title', 'Dashboard');
         $actionContent = new ViewModel();
         $actionContent->setTemplate('vigattinads/view/dashboard/dashboardHomeView');
@@ -42,6 +44,7 @@ class DashboardController extends AbstractActionController
         $actionContent->setVariable('approvedAds', $this->adsUser->getApprovedAds());
         $actionContent->setVariable('pendingAds', $this->adsUser->getPendingAds());
         $actionContent->setVariable('disapprovedAds', $this->adsUser->getDisapprovedAds());
+        $actionContent->setVariable('activeTab', $activeTab);
         $this->mainView->addChild($actionContent, 'actionContent');
         return $this->mainView;
     }
