@@ -29,6 +29,8 @@ class AdsWizardChooseTemplateController extends AdsController
             exit();
         }
 
+        $this->saveImportedAdsToSession();
+
         $this->mainView->setVariable('title', 'Choose Ads Template');
         $actionContent = new ViewModel();
         $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsWizardChooseTemplateView');
@@ -41,5 +43,16 @@ class AdsWizardChooseTemplateController extends AdsController
         $templateCode = strval($templateCode);
         if(isset($this->template[$templateCode])) return $this->template[$templateCode];
         return '';
+    }
+
+    public function saveImportedAdsToSession()
+    {
+        if($this->getRequest()->getPost('action', '') == 'save-session') {
+            $this->sessionManager->getStorage()->tempAdsTitle = $this->getRequest()->getPost('ads-title', '');
+            $this->sessionManager->getStorage()->tempAdsUrl = $this->getRequest()->getPost('ads-url', '');
+            $this->sessionManager->getStorage()->tempAdsKeyword = $this->getRequest()->getPost('ads-keyword', '');
+            $this->sessionManager->getStorage()->tempAdsDescription = $this->getRequest()->getPost('ads-description', '');
+            $this->sessionManager->getStorage()->tempAdsImageDataUrl = $this->getRequest()->getPost('ads-image-data-url', '');
+        }
     }
 }

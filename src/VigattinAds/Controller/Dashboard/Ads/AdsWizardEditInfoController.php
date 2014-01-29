@@ -45,7 +45,7 @@ class AdsWizardEditInfoController extends AdsController
                 'adsUrl' => $this->sessionManager->getStorage()->tempAdsUrl,
                 'adsKeyword' => $this->sessionManager->getStorage()->tempAdsKeyword,
                 'adsDescription' => $this->sessionManager->getStorage()->tempAdsDescription,
-                'adsImageDataUrl' => '',
+                'adsImageDataUrl' => $this->sessionManager->getStorage()->tempAdsImageDataUrl,
                 'adsImageError' => '',
                 'adsTitleError' => '',
                 'adsUrlError' => '',
@@ -67,6 +67,9 @@ class AdsWizardEditInfoController extends AdsController
         $repo = 'public/'.self::IMAGE_REPO;
         $image = new Image($repo);
         $uploadedImage = $this->getRequest()->getPost('ads-image-data-url', '');
+        if(!$uploadedImage) {
+            $uploadedImage = $this->sessionManager->getStorage()->adsImageDataUrl;
+        }
         $result = $image->save_convert_resize(
             $uploadedImage,
             self::IMAGE_WIDTH,
@@ -99,5 +102,6 @@ class AdsWizardEditInfoController extends AdsController
         $this->sessionManager->getStorage()->tempAdsDescription = null;
         $this->sessionManager->getStorage()->tempAdsTemplate = null;
         $this->sessionManager->getStorage()->tempAdsKeyword = null;
+        $this->sessionManager->getStorage()->tempAdsImageDataUrl = null;
     }
 }
