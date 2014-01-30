@@ -1,0 +1,10 @@
+<div class="trade-featured-ads">
+    <?php foreach($ads as $ad): ?>
+        <a href="<?php echo $this->escapeHtmlAttr($ad->get('adsUrl')); ?>" target="_parent" class="ads-frame" id="<?php echo $ad->get('id'); ?>">
+            <div class="ads-image-preview-container"><img alt="<?php echo $this->escapeHtmlAttr($ad->get('adsTitle')); ?>" class="ads-frame-image" src="/repo<?php echo $this->escapeHtmlAttr($ad->get('adsImage')); ?>"></div>
+            <div class="ads-frame-title"><?php echo $this->escapeHtml($ad->get('adsTitle')); ?></div>
+            <div class="ads-frame-description"><?php //echo $this->escapeHtml($ad->get('adsDescription')); ?></div>
+        </a>
+    <?php endforeach; ?>
+</div>
+

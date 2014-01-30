@@ -5,7 +5,7 @@ body {
 .clear-float {
     clear: both;
 }
-.ads-frame {
+.ads-sidebar-generic .ads-frame {
     width: 100%;
     font-size: 11px;
     margin-bottom: 10px;
@@ -13,31 +13,31 @@ body {
     color: #333333;
     opacity: 0.90;
 }
-.ads-frame:hover {
+.ads-sidebar-generic .ads-frame:hover {
     text-decoration: none;
     color: #333333;
     opacity: 1.00;
 }
-.ads-frame .ads-frame-title {
+.ads-sidebar-generic .ads-frame .ads-frame-title {
     width: 100%;
     text-align: center;
     font-weight: bold;
     padding: 3px 0;
 }
-.ads-frame .ads-content {
+.ads-sidebar-generic .ads-frame .ads-content {
     width: 100%;
 }
 
-.ads-frame .ads-content .ads-image-preview-container {
+.ads-sidebar-generic .ads-frame .ads-content .ads-image-preview-container {
     width: 40%;
     display: inline-block;
     float: left;
     margin-right: 5px;
 }
-.ads-frame .ads-content .ads-image-preview-container .ads-frame-image {
+.ads-sidebar-generic .ads-frame .ads-content .ads-image-preview-container .ads-frame-image {
     width: 100%;
 }
-.ads-separator {
+.ads-sidebar-generic .ads-separator {
     border-top: 1px solid #FFFFFF;
     border-bottom: 1px solid #CCCCCC;
     opacity: 0.50;
@@ -48,4 +48,45 @@ body {
 }
 .float-right {
     float: right;
+}
+
+/* Trade ads */
+.trade-featured-ads {
+
+}
+.trade-featured-ads .ads-frame {
+    display: inline-block;
+    background-color: #f3ebe0;
+}
+.trade-featured-ads .ads-frame:hover {
+    background-color: #ffffff;
+    text-decoration: none;
+}
+.trade-featured-ads .ads-frame .ads-image-preview-container {
+    width: 120px;
+    height: 106px;
+    margin: 32px 62px 32px 62px;
+    text-align: center;
+    background-color: #eaeaea;
+    line-height: 106px;
+    overflow: hidden;
+}
+.trade-featured-ads .ads-frame .ads-image-preview-container .ads-frame-image {
+    width: 120px;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+}
+.trade-featured-ads .ads-frame .ads-frame-title {
+    width: 220px;
+    margin: 12px 12px 0 12px;
+    word-wrap: break-word;
+    text-align: center;
+    color: #433c2d;
+    height: 34px;
+}
+.trade-featured-ads .ads-frame .ads-frame-description {
+    height: 30px;
+    background-color: #70644c;
 }

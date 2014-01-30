@@ -29,8 +29,8 @@
 /* ads image choose preview */
 $(document).ready(function() {
     var ratio = 0.66667;
-    $('.ads-image-preview-container').css({'overflow':'hidden'}).height($('.ads-image-preview-container').width() * ratio);
+    $('.ads-sidebar-generic .ads-frame .ads-content .ads-image-preview-container').css({'overflow':'hidden'}).height($('.ads-sidebar-generic .ads-frame .ads-content .ads-image-preview-container').width() * ratio);
     $(window).resize(function(e) {
-        $('.ads-image-preview-container').height($('.ads-image-preview-container').width() * ratio);
+        $('.ads-sidebar-generic .ads-frame .ads-content .ads-image-preview-container').height($('.ads-sidebar-generic .ads-frame .ads-content .ads-image-preview-container').width() * ratio);
     });
 });

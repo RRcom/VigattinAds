@@ -80,6 +80,16 @@ class ShowAdsController extends AbstractActionController
         return $this->viewModel;
     }
 
+    public function tradeFeaturedAdsAction()
+    {
+        // Create list of ads entities based on query param provided in the url
+        $this->searchedAds = $this->generateAds();
+
+        $this->viewModel->setTemplate('vigattinads/view/show-trade-featured-ads');
+        $this->viewModel->setVariable('ads', $this->searchedAds);
+        return $this->viewModel;
+    }
+
     public function validateAction()
     {
         $jsonView = new JsonModel();

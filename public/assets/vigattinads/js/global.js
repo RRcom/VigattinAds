@@ -469,7 +469,7 @@ $(document).ready(function(e) {
                         Start++;
                         var list =  '<li>' +
                                         '<div id="adsPanel'+Start+'" class="row ads-list-panel">'+
-                                            '<div class="col-xs-3 image-frame"><img src="'+$('<div/>').html(value.image).text()+'"></div>'+
+                                            '<div class="col-xs-3 image-frame"><img alt="ads image" onerror="this.src=\'/assets/vigattinads/img/no-image.jpg\';" src="'+$('<div/>').html(value.image).text()+'"></div>'+
                                             '<div class="col-xs-7">'+
                                                 '<div><a class="ads-title" target="_blank" href="'+$('<div/>').html(value.url).text()+'">'+$('<div/>').html(value.title).text()+'</a></div>'+
                                                 '<div class="ads-description">'+$('<div/>').html(value.description).text()+'</div>'+

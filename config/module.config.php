@@ -22,7 +22,10 @@ return array(
             'vigattinads_showads' => array(
                 'type'    => 'Segment',
                 'options' => array(
-                    'route'    => '/vigattinads/showads[/]',
+                    'route'    => '/vigattinads/showads[/:action]',
+                    'constraints' => array(
+                        'action'        => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
                     'defaults' => array(
                         'controller'    => 'VigattinAds\Controller\ShowAds',
                         'action'        => 'index',
