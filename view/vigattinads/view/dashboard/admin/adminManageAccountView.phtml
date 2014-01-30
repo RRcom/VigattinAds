@@ -29,8 +29,8 @@
                         <td><?php echo $key+1; ?></td>
                         <td class="data-username"><?php echo $this->escapeHtml($account->get('username')); ?></td>
                         <td class="data-email"><?php echo $this->escapeHtml($account->get('email')); ?></td>
-                        <td class="data-first-name"><?php echo $this->escapeHtml($account->get('firstName')); ?></td>
-                        <td class="data-last-name"><?php echo $this->escapeHtml($account->get('lastName')); ?></td>
+                        <td class="data-first-name"><?php echo ucwords(strtolower($this->escapeHtml($account->get('firstName')))); ?></td>
+                        <td class="data-last-name"><?php echo ucwords(strtolower($this->escapeHtml($account->get('lastName')))); ?></td>
                         <td><span class="text-warning data-gold"><?php echo $account->get('credit'); ?></span></td>
                         <td class="data-privilege"><?php echo strtoupper($account->get('privilege')); ?></td>
                         <td><a href="javascript:" class="option-edit-account" data-toggle="modal" data-target="#accountForm" target-id="<?php echo $account->get('id'); ?>"><span class="glyphicon glyphicon-edit"></span> Edit</a></td>
@@ -58,31 +58,31 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <div class="form-error form-error-email text-danger"><small></small></div>
-                        <input title="Email" type="email" class="form-control" id="inputEmail1" placeholder="Email">
+                        <input title="Email" type="email" class="form-control tooltip-enable-right" id="inputEmail1" placeholder="Email">
                     </div>
                     <div class="form-group">
                         <div class="form-error form-error-username text-danger"><small></small></div>
-                        <input title="Username" type="text" class="form-control" id="inputUsername1" placeholder="Username">
+                        <input title="Username" type="text" class="form-control tooltip-enable-right" id="inputUsername1" placeholder="Username">
                     </div>
                     <div class="form-group">
                         <div class="form-error form-error-password text-danger"><small></small></div>
-                        <input title="Password" type="password" class="form-control" id="inputPassword1" placeholder="Password">
+                        <input title="Password" type="password" class="form-control tooltip-enable-right" id="inputPassword1" placeholder="Password">
                     </div>
                     <div class="form-group">
                         <div class="form-error form-error-repeat-password text-danger"><small></small></div>
-                        <input title="Repeat password" type="password" class="form-control" id="inputRepeatPassword1" placeholder="Repeat password">
+                        <input title="Repeat password" type="password" class="form-control tooltip-enable-right" id="inputRepeatPassword1" placeholder="Repeat password">
                     </div>
                     <div class="form-group">
                         <div class="form-error form-error-first-name text-danger"><small></small></div>
-                        <input title="First name" type="text" class="form-control" id="inputFirstName1" placeholder="First name">
+                        <input title="First name" type="text" class="form-control tooltip-enable-right" id="inputFirstName1" placeholder="First name">
                     </div>
                     <div class="form-group">
                         <div class="form-error form-error-last-name text-danger"><small></small></div>
-                        <input title="Last name" type="text" class="form-control" id="inputLastName1" placeholder="Last name">
+                        <input title="Last name" type="text" class="form-control tooltip-enable-right" id="inputLastName1" placeholder="Last name">
                     </div>
                     <div class="form-group">
                         <div class="form-error form-error-gold text-danger"><small></small></div>
-                        <input title="Gold" type="number" class="form-control" id="inputGold1" placeholder="Gold" value="0">
+                        <input title="Gold" type="number" class="form-control tooltip-enable-right" id="inputGold1" placeholder="Gold" value="0">
                     </div>
                     <div class="form-group">
                         <p><input type="checkbox" id="inputPrivilegeB1" disabled="disabled"> <small>(B) Basic usage</small></p>
