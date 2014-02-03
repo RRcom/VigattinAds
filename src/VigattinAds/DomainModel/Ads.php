@@ -45,6 +45,12 @@ class Ads extends AbstractEntity
     protected $adsDescription;
 
     /**
+     * @var integer
+     * @ORM\Column(name="ads_price", type="float")
+     */
+    protected $adsPrice = 0;
+
+    /**
      * Web site for the ads to show
      * @var string
      * @ORM\Column(name="show_in", type="string", length=255)
@@ -118,17 +124,18 @@ class Ads extends AbstractEntity
 
     /**
      * Get property value
-     * @param string $propertyName List of properties are id, adsTitle, adsUrl, adsDescription, showIn, template, keywords, adsImage, status, adsUser, adsView, reviewVersion and ServiceManager.
+     * @param string $propertyName List of properties are id, adsTitle, adsUrl, adsDescription, adsPrice, showIn, template, keywords, adsImage, status, adsUser, adsView, reviewVersion and ServiceManager.
      * @return mixed
      */
     public function get($propertyName)
     {
-        return parent::get($propertyName);
+        $result = parent::get($propertyName);
+        return $result;
     }
 
     /**
      * Set property value
-     * @param string $propertyName List of properties are adsTitle, adsUrl, adsDescription, showIn, template, keywords, adsImage, status, reviewVersion and ServiceManager.
+     * @param string $propertyName List of properties are adsTitle, adsUrl, adsDescription, adsPrice, showIn, template, keywords, adsImage, status, reviewVersion and ServiceManager.
      * @param mixed $value
      * @return AdsUser
      */
@@ -136,6 +143,7 @@ class Ads extends AbstractEntity
     {
         if($propertyName == 'adsUser') return $this;
         if($propertyName == 'adsView') return $this;
+        if($propertyName == 'adsPrice') $value = floatval($value);
         return parent::set($propertyName, $value);
     }
 

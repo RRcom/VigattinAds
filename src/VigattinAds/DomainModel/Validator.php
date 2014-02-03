@@ -20,6 +20,12 @@ class Validator
         return '';
     }
 
+    static public function isNumber($number)
+    {
+        if(!is_numeric($number)) return 'Not a valid number';
+        return '';
+    }
+
     static public function isEmailValid($emailAddress)
     {
         $emailValidator = new EmailAddress();

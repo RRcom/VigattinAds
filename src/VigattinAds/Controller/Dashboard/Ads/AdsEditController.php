@@ -19,19 +19,24 @@ class AdsEditController extends AdsController
                     'adsTitle' => $this->getRequest()->getPost('ads-title', ''),
                     'adsUrl' => $this->getRequest()->getPost('ads-url', ''),
                     'adsKeyword' => $this->getRequest()->getPost('ads-keyword', ''),
+                    'adsPrice' => $this->getRequest()->getPost('ads-price', ''),
                     'adsDescription' => $this->getRequest()->getPost('ads-description', ''),
                     'adsTitleError' => Validator::isTitleValid($this->getRequest()->getPost('ads-title', '')),
                     'adsUrlError' => Validator::isUrlValid($this->getRequest()->getPost('ads-url', '')),
                     'adsKeywordError' => Validator::isKeywordValid($this->getRequest()->getPost('ads-keyword', '')),
+                    'adsPriceError' => Validator::isNumber($this->getRequest()->getPost('ads-price', '')),
                     'adsDescriptionError' => Validator::isDescriptionValid($this->getRequest()->getPost('ads-description', '')),
                 );
-                if(!strlen($formError['adsTitleError'].$formError['adsUrlError'].$formError['adsKeywordError'].$formError['adsDescriptionError'])) {
+                if(!strlen($formError['adsTitleError'].$formError['adsUrlError'].$formError['adsKeywordError'].$formError['adsPriceError'].$formError['adsDescriptionError'])) {
+
+                    // check some value that need to verify first if change happen
                     $oldValue = strtolower($adsEntity->get('adsTitle').$adsEntity->get('adsUrl').$adsEntity->get('keywords').$adsEntity->get('adsDescription'));
                     $newValue = strtolower($formError['adsTitle'].$formError['adsUrl'].$formError['adsKeyword'].$formError['adsDescription']);
 
                     $adsEntity->set('adsTitle', $formError['adsTitle']);
                     $adsEntity->set('adsUrl', $formError['adsUrl']);
                     $adsEntity->set('keywords', $formError['adsKeyword']);
+                    $adsEntity->set('adsPrice', $formError['adsPrice']);
                     $adsEntity->set('adsDescription', $formError['adsDescription']);
                     if($oldValue !== $newValue) {
                         $adsEntity->set('reviewVersion', uniqid());
@@ -65,10 +70,12 @@ class AdsEditController extends AdsController
                     'adsTitle' => $adsEntity->get('adsTitle'),
                     'adsUrl' => $adsEntity->get('adsUrl'),
                     'adsKeyword' => $adsEntity->get('keywords'),
+                    'adsPrice' => $adsEntity->get('adsPrice'),
                     'adsDescription' => $adsEntity->get('adsDescription'),
                     'adsTitleError' => '',
                     'adsUrlError' => '',
                     'adsKeywordError' => '',
+                    'adsPriceError' => '',
                     'adsDescriptionError' => '',
                 );
             }
@@ -82,9 +89,11 @@ class AdsEditController extends AdsController
                     'adsTitle' => $adsEntity->get('adsTitle'),
                     'adsUrl' => $adsEntity->get('adsUrl'),
                     'adsKeyword' => $adsEntity->get('keywords'),
+                    'adsPrice' => $adsEntity->get('adsPrice'),
                     'adsDescription' => $adsEntity->get('adsDescription'),
                     'adsTitleError' => '',
                     'adsUrlError' => '',
+                    'adsPriceError' => '',
                     'adsKeywordError' => '',
                     'adsDescriptionError' => '',
                 );
@@ -94,10 +103,12 @@ class AdsEditController extends AdsController
                     'adsTitle' => $adsEntity->get('adsTitle'),
                     'adsUrl' => $adsEntity->get('adsUrl'),
                     'adsKeyword' => $adsEntity->get('keywords'),
+                    'adsPrice' => $adsEntity->get('adsPrice'),
                     'adsDescription' => $adsEntity->get('adsDescription'),
                     'adsTitleError' => '',
                     'adsUrlError' => '',
                     'adsKeywordError' => '',
+                    'adsPriceError' => '',
                     'adsDescriptionError' => '',
                 );
             }

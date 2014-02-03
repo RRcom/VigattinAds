@@ -23,19 +23,22 @@ class AdsWizardEditInfoController extends AdsController
                 'adsTitle' => $this->getRequest()->getPost('ads-title', ''),
                 'adsUrl' => $this->getRequest()->getPost('ads-url', ''),
                 'adsKeyword' => $this->getRequest()->getPost('ads-keyword', ''),
+                'adsPrice' => $this->getRequest()->getPost('ads-price', ''),
                 'adsDescription' => $this->getRequest()->getPost('ads-description', ''),
                 'adsImageDataUrl' => $this->getRequest()->getPost('ads-image-data-url', ''),
                 'adsImageError' => Validator::isImageString($this->getRequest()->getPost('ads-image-data-url', '')),
                 'adsTitleError' => Validator::isTitleValid($this->getRequest()->getPost('ads-title', '')),
                 'adsUrlError' => Validator::isUrlValid($this->getRequest()->getPost('ads-url', '')),
                 'adsKeywordError' => Validator::isKeywordValid($this->getRequest()->getPost('ads-keyword', '')),
+                'adsPriceError' => Validator::isNumber($this->getRequest()->getPost('ads-price', '')),
                 'adsDescriptionError' => Validator::isDescriptionValid($this->getRequest()->getPost('ads-description', '')),
             );
             $this->sessionManager->getStorage()->tempAdsTitle = $formError['adsTitle'];
             $this->sessionManager->getStorage()->tempAdsUrl = $formError['adsUrl'];
             $this->sessionManager->getStorage()->tempAdsKeyword = $formError['adsKeyword'];
+            $this->sessionManager->getStorage()->tempAdsPrice = $formError['adsPrice'];
             $this->sessionManager->getStorage()->tempAdsDescription = $formError['adsDescription'];
-            if(!strlen($formError['adsImageError'].$formError['adsTitleError'].$formError['adsUrlError'].$formError['adsKeywordError'].$formError['adsDescriptionError'])) {
+            if(!strlen($formError['adsImageError'].$formError['adsTitleError'].$formError['adsUrlError'].$formError['adsKeywordError'].$formError['adsPriceError'].$formError['adsDescriptionError'])) {
                 $formError['adsImageError'] = $this->processRequest();
             }
         }
@@ -44,12 +47,14 @@ class AdsWizardEditInfoController extends AdsController
                 'adsTitle' => $this->sessionManager->getStorage()->tempAdsTitle,
                 'adsUrl' => $this->sessionManager->getStorage()->tempAdsUrl,
                 'adsKeyword' => $this->sessionManager->getStorage()->tempAdsKeyword,
+                'adsPrice' => $this->sessionManager->getStorage()->tempAdsPrice,
                 'adsDescription' => $this->sessionManager->getStorage()->tempAdsDescription,
                 'adsImageDataUrl' => $this->sessionManager->getStorage()->tempAdsImageDataUrl,
                 'adsImageError' => '',
                 'adsTitleError' => '',
                 'adsUrlError' => '',
                 'adsKeywordError' => '',
+                'adsPriceError' => '',
                 'adsDescriptionError' => '',
             );
         }
@@ -85,7 +90,8 @@ class AdsWizardEditInfoController extends AdsController
                 $this->sessionManager->getStorage()->tempAdsDescription,
                 $this->sessionManager->getStorage()->tempAdsTemplate['showIn'],
                 $this->sessionManager->getStorage()->tempAdsTemplate['template'],
-                $this->sessionManager->getStorage()->tempAdsKeyword
+                $this->sessionManager->getStorage()->tempAdsKeyword,
+                $this->sessionManager->getStorage()->tempAdsPrice
             );
             $this->adsUser->flush();
             $this->clearTempData();
@@ -102,6 +108,7 @@ class AdsWizardEditInfoController extends AdsController
         $this->sessionManager->getStorage()->tempAdsDescription = null;
         $this->sessionManager->getStorage()->tempAdsTemplate = null;
         $this->sessionManager->getStorage()->tempAdsKeyword = null;
+        $this->sessionManager->getStorage()->tempAdsPrice = null;
         $this->sessionManager->getStorage()->tempAdsImageDataUrl = null;
     }
 }

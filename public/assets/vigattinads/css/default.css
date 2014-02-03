@@ -76,6 +76,11 @@ footer {
 .ads-frame .ads-frame-title {
     font-weight: bold;
     text-align: center;
+    word-wrap: break-word;
+}
+.ads-frame .ads-frame-price {
+    font-weight: bold;
+    text-align: center;
     padding-bottom: 3px;
     word-wrap: break-word;
 }
@@ -186,12 +191,20 @@ footer {
 .ads-list-panel .image-frame img {
     width: 100%;
 }
-.ads-list-panel .ads-title {
+.ads-list-panel .title-container {
+    height: 20px;
+    overflow: hidden;
+    word-wrap: break-word;
+}
+.ads-list-panel .title-container .ads-title {
     font-weight: bold;
     font-size: 0.8em;
 }
 .ads-list-panel .ads-description {
     font-size: 0.8em;
+    word-wrap: break-word;
+    height: 60px;
+    overflow: hidden;
 }
 .dashboard-number-status {
     font-size: .8em;

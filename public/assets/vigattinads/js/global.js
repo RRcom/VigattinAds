@@ -1,13 +1,41 @@
 /* tools */
 function getBase64Image(img) {
     var canvas = document.createElement("canvas");
-    canvas.width = img.width;
-    canvas.height = img.height;
+    var newSize = sizeConverter(img.width, img.height, 320)
+    canvas.width = newSize.width;
+    canvas.height = newSize.height;
 
     var ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0);
+    ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, newSize.width, newSize.height);
 
     return canvas.toDataURL();
+}
+/**
+ * Size converter
+ * @param int $src_width
+ * @param int $src_height
+ * @param int $size_limit
+ * @return array
+ */
+function sizeConverter(src_width, src_height, size_limit) {
+    var new_size = {"width":src_width, "height":src_height};
+    var new_width = 0;
+    var new_height = 0;
+    if(!size_limit) return new_size;
+    if(src_width > src_height)
+    {
+        if(src_width < size_limit) new_width = src_width;
+        else new_width = size_limit;
+        new_height = (src_height/src_width)*new_width;
+    }
+    else
+    {
+        if(src_height < size_limit) new_height = src_height;
+        else new_height = size_limit;
+        new_width = (src_width/src_height)*new_height;
+    }
+    new_size = {"width":new_width, "height":new_height};
+    return new_size;
 }
 
 $(document).ready(function(e) {
@@ -56,6 +84,12 @@ $(document).ready(function(e) {
         });
         $('#ads-description').keyup(function(e) {
             $('.ads-frame .ads-frame-description').text($(e.currentTarget).val());
+        });
+        $('#ads-price').change(function(e) {
+            $('.ads-frame .ads-frame-price .price-value').text(parseFloat($(e.currentTarget).val()).toFixed(2));
+        });
+        $('#ads-price').keyup(function(e) {
+            $('.ads-frame .ads-frame-price .price-value').text(parseFloat($(e.currentTarget).val()).toFixed(2));
         });
     })(jQuery);
 
@@ -471,7 +505,8 @@ $(document).ready(function(e) {
                                         '<div id="adsPanel'+Start+'" class="row ads-list-panel">'+
                                             '<div class="col-xs-3 image-frame"><img alt="ads image" onerror="this.src=\'/assets/vigattinads/img/no-image.jpg\';" src="'+$('<div/>').html(value.image).text()+'"></div>'+
                                             '<div class="col-xs-7">'+
-                                                '<div><a class="ads-title" target="_blank" href="'+$('<div/>').html(value.url).text()+'">'+$('<div/>').html(value.title).text()+'</a></div>'+
+                                                '<div class="title-container"><a class="ads-title" target="_blank" href="'+$('<div/>').html(value.url).text()+'">'+$('<div/>').html(value.title).text()+'</a></div>'+
+                                                '<div class="price-container">Php <span class="ads-price">'+parseFloat(value.price).toFixed(2)+'</span></div>'+
                                                 '<div class="ads-description">'+$('<div/>').html(value.description).text()+'</div>'+
                                             '</div>'+
                                             '<div class="col-xs-2"><a class="ads-import-single-button" data-target="#adsPanel'+Start+'" href="javascript:" data-dismiss="modal"><span class="glyphicon glyphicon-star"></span> Promote</a></div>'+
@@ -491,10 +526,11 @@ $(document).ready(function(e) {
                 title: $(targetId+' .ads-title').text(),
                 image: $(targetId+' .image-frame img').attr('src'),
                 description: $(targetId+' .ads-description').text(),
+                price: $(targetId+' .ads-price').text(),
                 url: $(targetId+' .ads-title').attr('href')
             };
             if(autoloadAdsImportList.length) {
-                submitInfo(data.title, data.url, data.image, '', data.description);
+                submitInfo(data.title, data.url, data.image, '', data.description, data.price);
                 return
             }
             var ratio = 0.66667;
@@ -509,20 +545,23 @@ $(document).ready(function(e) {
             $('#ads-title').val(data.title);
             $('#ads-url').val(data.url);
             $('#ads-description').val(data.description);
+            $('#ads-price').val(data.price);
             $('.ads-frame .ads-frame-title').text(data.title);
+            $('.ads-frame .ads-frame-price .price-value').text(data.price);
             $('.ads-frame .ads-frame-description').text(data.description);
             $(window).resize(function(e) {
                 $('.ads-image-preview-container').height($('.ads-image-preview-container').width() * ratio);
             });
         }
 
-        function submitInfo(adsTitle, adsUrl, adsImage, adsKeyword, adsDescription) {
+        function submitInfo(adsTitle, adsUrl, adsImage, adsKeyword, adsDescription, adsPrice) {
             var form = $('<form method="post" action="/vigattinads/dashboard/ads/template"></form>');
             form.append($('<input type="hidden" name="ads-title" value="'+adsTitle+'" />'));
             form.append($('<input type="hidden" name="ads-url" value="'+adsUrl+'" />'));
             form.append($('<input type="hidden" name="ads-image-data-url" value="'+adsImage+'" />'));
             form.append($('<input type="hidden" name="ads-keyword" value="'+adsKeyword+'"></input>'));
             form.append($('<input type="hidden" name="ads-description" value="'+adsDescription+'" />'));
+            form.append($('<input type="hidden" name="ads-price" value="'+adsPrice+'" />'));
             form.append($('<input type="hidden" name="action" value="save-session" />'));
             form.submit();
         }

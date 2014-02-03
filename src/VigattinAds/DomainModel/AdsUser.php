@@ -178,7 +178,7 @@ class AdsUser extends AbstractEntity
      * @param string $keyword
      * @return Ads
      */
-    public function createAds($adsTitle, $adsUrl, $adsImage, $adsDescription, $showIn, $template, $keyword = '')
+    public function createAds($adsTitle, $adsUrl, $adsImage, $adsDescription, $showIn, $template, $keyword = '', $adsPrice = 0)
     {
         $ads = new Ads($this);
         $ads->set('adsTitle', $adsTitle)
@@ -188,6 +188,7 @@ class AdsUser extends AbstractEntity
             ->set('showIn', $showIn)
             ->set('template', $template)
             ->set('keywords', $keyword)
+            ->set('adsPrice', $adsPrice)
             ->set('status', Ads::STATUS_PENDING)
             ->set('reviewVersion', uniqid());
         $this->ads->add($ads);
