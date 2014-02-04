@@ -55,13 +55,15 @@ body {
     float: right;
 }
 
-/* Trade ads */
+/***************** trade featured ads *****************/
 .trade-featured-ads {
-
+ width: 745px;
 }
 .trade-featured-ads .ads-frame {
     display: inline-block;
     background-color: #f3ebe0;
+    vertical-align: top;
+    margin: 2px;
 }
 .trade-featured-ads .ads-frame:hover {
     background-color: #ffffff;
@@ -90,13 +92,20 @@ body {
     text-align: center;
     color: #433c2d;
     height: 34px;
+    font-weight: bold;
+    font-size: 12px;
 }
-.trade-featured-ads .ads-frame .ads-frame-description {
+.trade-featured-ads .ads-frame .ads-frame-price {
     height: 30px;
     background-color: #70644c;
+    text-align: center;
+    font-size: 14px;
+    line-height: 30px;
+    color: #ffffff;
+    font-weight: bold;
 }
 
-/*************** trade sidebar *****************/
+/*************** trade sidebar ads *****************/
 
 .trade-sidebar-ads {
     font-family: Tahoma;
@@ -113,6 +122,7 @@ body {
     padding: 6px 0 6px 0;
     border-bottom: 1px solid rgba(0,0,0,0.15);
     width: inherit;
+    min-height: 160px;
  }
 .trade-sidebar-ads .ads-frame.last {
     border: none;
@@ -137,7 +147,6 @@ body {
 .trade-sidebar-ads .ads-frame .ads-divided-content .ads-frame-leftbar .ads-image-preview-container {
     padding: 4px 4px 4px 0;
     height: 61px;
-    line-height: 61px;
     overflow: hidden;
 }
 .trade-sidebar-ads .ads-frame .ads-divided-content .ads-frame-leftbar .ads-image-preview-container .ads-frame-image {
