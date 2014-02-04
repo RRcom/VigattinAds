@@ -2,6 +2,11 @@ body {
     background-color: #EEEDDD;
     padding-top: 10px;
 }
+.ads-no-padding {
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+}
 .clear-float {
     clear: both;
 }
@@ -89,4 +94,52 @@ body {
 .trade-featured-ads .ads-frame .ads-frame-description {
     height: 30px;
     background-color: #70644c;
+}
+
+/*************** trade sidebar *****************/
+
+.trade-sidebar-ads {
+    font-family: Tahoma;
+    font-size: 11px;
+    color: #564d39;
+    width: 217px;
+    overflow: hidden;
+    padding: 4px 6px;
+}
+.trade-sidebar-ads .ads-frame {
+    font-weight: bold;
+    color: inherit;
+    display: block;
+    padding: 6px 0 6px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.15);
+    width: inherit;
+ }
+.trade-sidebar-ads .ads-frame.last {
+    border: none;
+}
+.trade-sidebar-ads .ads-frame:hover {
+    text-decoration: none;
+}
+.trade-sidebar-ads .ads-frame .ads-divided-content {
+
+}
+.trade-sidebar-ads .ads-frame .ads-divided-content .ads-frame-leftbar, .trade-sidebar-ads .ads-frame .ads-divided-content .ads-frame-rightbar {
+    display: inline-block;
+    vertical-align: top;
+}
+.trade-sidebar-ads .ads-frame .ads-divided-content .ads-frame-leftbar {
+    width: 87px;
+}
+.trade-sidebar-ads .ads-frame .ads-divided-content .ads-frame-rightbar {
+    width: 130px;
+    font-weight: normal;
+}
+.trade-sidebar-ads .ads-frame .ads-divided-content .ads-frame-leftbar .ads-image-preview-container {
+    padding: 4px 4px 4px 0;
+    height: 61px;
+    line-height: 61px;
+    overflow: hidden;
+}
+.trade-sidebar-ads .ads-frame .ads-divided-content .ads-frame-leftbar .ads-image-preview-container .ads-frame-image {
+    width: 83px;
 }

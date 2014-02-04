@@ -506,7 +506,7 @@ $(document).ready(function(e) {
                                             '<div class="col-xs-3 image-frame"><img alt="ads image" onerror="this.src=\'/assets/vigattinads/img/no-image.jpg\';" src="'+$('<div/>').html(value.image).text()+'"></div>'+
                                             '<div class="col-xs-7">'+
                                                 '<div class="title-container"><a class="ads-title" target="_blank" href="'+$('<div/>').html(value.url).text()+'">'+$('<div/>').html(value.title).text()+'</a></div>'+
-                                                '<div class="price-container">Php <span class="ads-price">'+parseFloat(value.price).toFixed(2)+'</span></div>'+
+                                                '<div class="price-container">Php <span class="ads-price">'+parseFloat(isNaN(value.price) ? 0 : value.price).toFixed(2)+'</span></div>'+
                                                 '<div class="ads-description">'+$('<div/>').html(value.description).text()+'</div>'+
                                             '</div>'+
                                             '<div class="col-xs-2"><a class="ads-import-single-button" data-target="#adsPanel'+Start+'" href="javascript:" data-dismiss="modal"><span class="glyphicon glyphicon-star"></span> Promote</a></div>'+
