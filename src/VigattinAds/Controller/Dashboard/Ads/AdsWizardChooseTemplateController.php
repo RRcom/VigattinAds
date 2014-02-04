@@ -18,6 +18,10 @@ class AdsWizardChooseTemplateController extends AdsController
             'showIn' => 'vigattintourism.com',
             'template' => 'home-sidebar-right',
         ),
+        '4' => array(
+            'showIn' => 'vigattintrade.com',
+            'template' => 'featured-ads',
+        ),
     );
 
     public function indexAction()

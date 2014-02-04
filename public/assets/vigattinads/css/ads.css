@@ -113,7 +113,7 @@ body {
     color: #564d39;
     width: 217px;
     overflow: hidden;
-    padding: 4px 6px;
+    margin: 4px 6px;
 }
 .trade-sidebar-ads .ads-frame {
     font-weight: bold;
@@ -122,7 +122,7 @@ body {
     padding: 6px 0 6px 0;
     border-bottom: 1px solid rgba(0,0,0,0.15);
     width: inherit;
-    min-height: 160px;
+    min-height: 130px;
  }
 .trade-sidebar-ads .ads-frame.last {
     border: none;
