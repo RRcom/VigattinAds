@@ -194,6 +194,7 @@ body {
 }
 .sidebar-ads-fbstyle .ads-frame .ads-divided-content .ads-frame-rightbar {
     width: 112px;
+    word-wrap: break-word;
 }
 .sidebar-ads-fbstyle .ads-frame .ads-divided-content .ads-frame-leftbar .ads-image-preview-container {
     height: 72px;
