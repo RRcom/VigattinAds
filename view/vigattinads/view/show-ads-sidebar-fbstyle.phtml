@@ -1,0 +1,19 @@
+<div class="sidebar-ads-fbstyle">
+    <div class="ads-panel-title">VigattinAds</div>
+    <?php foreach($ads as $key => $ad): ?>
+        <a href="<?php echo $this->escapeHtmlAttr($ad->get('adsUrl')); ?>" target="_blank" class="ads-frame <?php echo (count($ads) == ($key+1)) ? 'last' : '';  ?>" id="<?php echo $ad->get('id'); ?>">
+            <div class="ads-frame-title"><?php echo $this->escapeHtml($ad->get('adsTitle')); ?></div>
+            <div class="ads-frame-price">
+                <?php if(floatval($ad->get('adsPrice'))): ?>
+                    Php <?php echo $this->escapeHtml(number_format($ad->get('adsPrice'), 2, '.', '')); ?>
+                <?php endif; ?>
+            </div>
+            <div class="ads-divided-content"><div class="ads-frame-leftbar">
+                <div class="ads-image-preview-container"><img class="ads-frame-image" src="/repo<?php echo $this->escapeHtmlAttr($ad->get('adsImage')); ?>"></div>
+            </div><div class="ads-frame-rightbar">
+                <div class="ads-frame-description"><?php echo $this->escapeHtml($ad->get('adsDescription')); ?></div>
+            </div></div>
+        </a>
+        <div class="ads-separator"></div>
+    <?php endforeach; ?>
+</div>

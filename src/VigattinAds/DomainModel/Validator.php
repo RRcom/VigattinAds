@@ -66,14 +66,14 @@ class Validator
         return '';
     }
 
-    static public function isTitleValid($name, $min = 6, $max = 48)
+    static public function isTitleValid($name, $min = 6, $max = 30)
     {
         $pattern = self::$titlePattern;
         $regex = new Regex(array('pattern' => $pattern));
         $strlength = new StringLength();
         $strlength->setMin($min);
         $strlength->setMax($max);
-        if(!$regex->isValid($name)) return 'Title has invalid character';
+        //if(!$regex->isValid($name)) return 'Title has invalid character';
         if(!$strlength->isValid($name)) return 'Title must be minimum of '.$min.' and maximum of '.$max.' character';
         return '';
     }
@@ -89,14 +89,14 @@ class Validator
         return '';
     }
 
-    static public function isDescriptionValid($text, $min = 0, $max = 160)
+    static public function isDescriptionValid($text, $min = 0, $max = 130)
     {
         $pattern = self::$descriptionPattern;
         $regex = new Regex(array('pattern' => $pattern));
         $strlength = new StringLength();
         $strlength->setMin($min);
         $strlength->setMax($max);
-        if(!$regex->isValid($text)) return 'Description has invalid character';
+        //if(!$regex->isValid($text)) return 'Description has invalid character';
         if(!$strlength->isValid($text)) return 'Description must be minimum of '.$min.' and maximum of '.$max.' character';
         return '';
     }

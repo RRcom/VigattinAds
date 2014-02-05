@@ -43,7 +43,7 @@
                         </div>
                         <form id="ads-form" role="form" action="" method="post" enctype="multipart/form-data">
                             <div class="form-group ads-form-title <?php echo $adsTitleError ? 'has-error' : ''; ?>">
-                                <label class="control-label" for="ads-title">Ads Title <small class="text-warning">(max character 48 allowed alphanumeric, space and .-_'"/,&())</small></label>
+                                <label class="control-label" for="ads-title">Ads Title <small class="text-warning">(max character 30)</small></label>
                                 <span class="help-block"><?php if($adsTitleError) echo $adsTitleError; ?></span>
                                 <input type="text" maxlength="48" class="form-control" id="ads-title" name="ads-title" required="true" placeholder="Ads Title" value="<?php echo $this->escapeHtmlAttr($adsTitle); ?>">
                             </div>
@@ -63,7 +63,7 @@
                                 <input type="number" step="any" class="form-control" id="ads-price" name="ads-price" placeholder="Ads price" value="<?php echo $this->escapeHtmlAttr($adsPrice); ?>">
                             </div>
                             <div class="form-group ads-form-description <?php echo $adsDescriptionError ? 'has-error' : ''; ?>">
-                                <label class="control-label" for="ads-description">Ads Description <small class="text-warning">(max character 160 allowed alphanumeric, space and .-_'"/,&())</small></label>
+                                <label class="control-label" for="ads-description">Ads Description <small class="text-warning">(max character 130)</small></label>
                                 <span class="help-block"><?php if($adsDescriptionError) echo $adsDescriptionError; ?></span>
                                 <textarea maxlength="160" class="description-input form-control" id="ads-description" name="ads-description" placeholder="Ads Description"><?php echo $this->escapeHtml($adsDescription); ?></textarea>
                             </div>

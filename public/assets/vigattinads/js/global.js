@@ -213,9 +213,10 @@ $(document).ready(function(e) {
         });
 
         function checkTitle() {
-            var reg = /^[a-zA-Z0-9_\s.\'"/,&()-]*$/;
+            //var reg = /^[a-zA-Z0-9_\s.\'"/,&()-]*$/;
+            var reg = /^*$/;
             var min = 6;
-            var max = 48;
+            var max = 30;
             var invalidCharMsg = 'Title has invalid character';
             var lengthErrorMsg = 'Title must be minimum of '+min+' and maximum of '+max+' character';
             var formGroup = $('.ads-form-title');
@@ -287,9 +288,10 @@ $(document).ready(function(e) {
         }
 
         function checkDescription() {
-            var reg = /^[a-zA-Z0-9_\s.\'"/,&()-]*$/;
+            //var reg = /^[a-zA-Z0-9_\s.\'"/,&()-]*$/;
+            var reg = /^*$/;
             var min = 0;
-            var max = 160;
+            var max = 130;
             var invalidCharMsg = 'Description has invalid character';
             var lengthErrorMsg = 'Description must be minimum of '+min+' and maximum of '+max+' character';
             var formGroup = $('.ads-form-description');

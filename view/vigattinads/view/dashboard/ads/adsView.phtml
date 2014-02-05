@@ -18,7 +18,7 @@
         <?php foreach($paginator as $key => $ads): ?>
         <tr>
             <td><?php echo $key+1; ?></td>
-            <td><?php echo $ads->get('adsTitle'); ?></td>
+            <td><?php echo $this->escapeHtml($ads->get('adsTitle')); ?></td>
             <td><?php switch($ads->get('status')):
                 case \VigattinAds\DomainModel\Ads::STATUS_APPROVED: ?>
                     <span class="text-success"><span class="glyphicon glyphicon-ok"></span> Approved</span>
@@ -36,9 +36,9 @@
                     <span class="text-warning"><span class="glyphicon glyphicon-search"></span> Reviewing</span>
                     <?php break;
             endswitch; ?></td>
-            <td><?php echo $ads->get('showIn'); ?></td>
-            <td><?php echo $ads->get('template'); ?></td>
-            <td><?php echo $ads->get('viewLimit'); ?></td>
+            <td><?php echo $this->escapeHtml($ads->get('showIn')); ?></td>
+            <td><?php echo $this->escapeHtml($ads->get('template')); ?></td>
+            <td><?php echo intval($ads->get('viewLimit')); ?></td>
             <td><a href="/vigattinads/dashboard/ads/edit/<?php echo $ads->get('id'); ?>"><span class="glyphicon glyphicon-edit"></span> Edit</a></td>
         </tr>
         <?php endforeach; ?>

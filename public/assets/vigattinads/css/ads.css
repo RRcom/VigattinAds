@@ -152,3 +152,50 @@ body {
 .trade-sidebar-ads .ads-frame .ads-divided-content .ads-frame-leftbar .ads-image-preview-container .ads-frame-image {
     width: 83px;
 }
+
+/****************** sidebar ads fbstyle *******************/
+
+.sidebar-ads-fbstyle {
+    width: 217px;
+    overflow: hidden;
+    margin: 4px 6px;
+    font-family: 'lucida grande',tahoma,verdana,arial,sans-serif;
+    font-size: 11px;
+}
+.sidebar-ads-fbstyle .ads-panel-title {
+    color: #6a7480;
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
+.sidebar-ads-fbstyle .ads-frame {
+    color: #333;
+    padding: 6px 0 6px 0;
+    border-top: 1px solid #d3d7dc;
+    display: block;
+}
+.sidebar-ads-fbstyle .ads-frame .ads-frame-title {
+    color: #3b5998;
+    font-weight: bold;
+}
+.sidebar-ads-fbstyle .ads-frame .ads-frame-price {
+    color: #999;
+}
+.sidebar-ads-fbstyle .ads-frame .ads-divided-content .ads-frame-leftbar, .sidebar-ads-fbstyle .ads-frame .ads-divided-content .ads-frame-rightbar {
+    display: inline-block;
+    vertical-align: top;
+}
+.sidebar-ads-fbstyle .ads-frame .ads-divided-content .ads-frame-leftbar {
+    width: 100px;
+    margin: 0 5px 5px 0;
+}
+.sidebar-ads-fbstyle .ads-frame .ads-divided-content .ads-frame-rightbar {
+    width: 112px;
+}
+.sidebar-ads-fbstyle .ads-frame .ads-divided-content .ads-frame-leftbar .ads-image-preview-container {
+    height: 72px;
+    overflow: hidden;
+}
+.sidebar-ads-fbstyle .ads-frame .ads-divided-content .ads-frame-leftbar .ads-image-preview-container .ads-frame-image {
+    width: 100px;
+}
