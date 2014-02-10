@@ -3,11 +3,13 @@ namespace VigattinAds\Controller\Dashboard\Ads;
 
 use Zend\View\Model\ViewModel;
 use VigattinAds\DomainModel\Validator;
+use VigattinAds\DomainModel\VigattinTrade\Category as TradeCategory;
 
 class AdsEditController extends AdsController
 {
     public function indexAction()
     {
+        $tradeCategory = new TradeCategory();
         $adsId = $this->params('param1', '');
         $adsViewCount = 0;
         $adsEntity = $this->adsUser->getSingleAds($adsId);
@@ -119,12 +121,13 @@ class AdsEditController extends AdsController
 
         $this->mainView->setVariable('title', 'Ads Edit');
         $actionContent = new ViewModel();
-        $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsEditView');
+        $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsEditWithCatView');
         $actionContent->setVariables($formError);
         $actionContent->setVariable('ads', $adsEntity);
         $actionContent->setVariable('userManager', $this->userManager);
         $actionContent->setVariable('adsUser', $this->adsUser);
         $actionContent->setVariable('adsViewCount', $adsViewCount);
+        $actionContent->setVariable('tradeCategoryList', $tradeCategory->getCategoryList());
 
         $this->mainView->addChild($actionContent, 'actionContent');
         return $this->mainView;
