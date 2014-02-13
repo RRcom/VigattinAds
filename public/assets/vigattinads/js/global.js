@@ -510,6 +510,7 @@ $(document).ready(function(e) {
                                                 '<div class="title-container"><a class="ads-title" target="_blank" href="'+$('<div/>').html(value.url).text()+'">'+$('<div/>').html(value.title).text()+'</a></div>'+
                                                 '<div class="price-container">Php <span class="ads-price">'+parseFloat(isNaN(value.price) ? 0 : value.price).toFixed(2)+'</span></div>'+
                                                 '<div class="ads-description">'+$('<div/>').html(value.description).text()+'</div>'+
+                                                '<input class="ads-keyword" type="hidden" value="'+$('<div/>').html(decodeArrayCategory(value.category, '')).text()+'" />'+
                                             '</div>'+
                                             '<div class="col-xs-2"><a class="ads-import-single-button" data-target="#adsPanel'+Start+'" href="javascript:" data-dismiss="modal"><span class="glyphicon glyphicon-star"></span> Promote</a></div>'+
                                         '</div>'+
@@ -529,10 +530,11 @@ $(document).ready(function(e) {
                 image: $(targetId+' .image-frame img').attr('src'),
                 description: $(targetId+' .ads-description').text(),
                 price: $(targetId+' .ads-price').text(),
-                url: $(targetId+' .ads-title').attr('href')
+                url: $(targetId+' .ads-title').attr('href'),
+                keyword: $(targetId+' .ads-keyword').val()
             };
             if(autoloadAdsImportList.length) {
-                submitInfo(data.title, data.url, data.image, '', data.description, data.price);
+                submitInfo(data.title, data.url, data.image, data.keyword, data.description, data.price);
                 return
             }
             var ratio = 0.66667;
@@ -548,6 +550,7 @@ $(document).ready(function(e) {
             $('#ads-url').val(data.url);
             $('#ads-description').val(data.description);
             $('#ads-price').val(data.price);
+            $('#ads-keyword').val(data.keyword);
             $('.ads-frame .ads-frame-title').text(data.title);
             $('.ads-frame .ads-frame-price .price-value').text(data.price);
             $('.ads-frame .ads-frame-description').text(data.description);
@@ -567,5 +570,27 @@ $(document).ready(function(e) {
             form.append($('<input type="hidden" name="action" value="save-session" />'));
             form.submit();
         }
+
+        function decodeArrayCategory(arrayCat, lastResult) {
+            switch(typeof arrayCat) {
+                case 'object':
+                    $.each(arrayCat, function(key, value) {
+                        lastResult += key+'|';
+                        lastResult = decodeArrayCategory(value, lastResult);
+                    });
+                    break;
+                case 'array':
+                    $.each(arrayCat, function(key, value) {
+                        lastResult += key+'|';
+                        lastResult = decodeArrayCategory(value, lastResult);
+                    });
+                    break;
+                default:
+                    lastResult += arrayCat;
+                    break;
+            }
+            return lastResult;
+        }
+
     })(jQuery);
 });
