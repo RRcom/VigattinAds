@@ -70,29 +70,17 @@
                         <span class="help-block"><?php if($adsUrlError) echo $adsUrlError; ?></span>
                         <input type="text" maxlength="256" class="form-control" id="ads-url" name="ads-url" required="true" placeholder="Ads URL" value="<?php echo $this->escapeHtmlAttr($adsUrl); ?>">
                     </div>
-                    <!--
-                    <div class="form-group ads-form-keyword <?php echo $adsKeywordError ? 'has-error' : ''; ?>">
-                        <label class="control-label" for="ads-keyword">Target Keyword <small class="text-warning">(max character 48 allowed alphanumeric, space and comma)</small></label>
+                    <div class="hide form-group ads-form-keyword <?php echo $adsKeywordError ? 'has-error' : ''; ?>">
+                        <label class="control-label" for="ads-keyword">Target Keyword <small class="text-warning">(max character 512)</small></label>
                         <span class="help-block"><?php if($adsKeywordError) echo $adsKeywordError; ?></span>
-                        <input type="text" maxlength="48" class="form-control" id="ads-keyword" name="ads-keyword" placeholder="Leave blank to target all" value="<?php echo $this->escapeHtmlAttr($adsKeyword); ?>">
+                        <input type="text" maxlength="512" class="form-control" id="ads-keyword" name="ads-keyword" placeholder="Leave blank to target all" value="<?php echo $this->escapeHtmlAttr($adsKeyword); ?>">
                     </div>
-                    -->
+
 
                     <div class="form-group">
                         <label class="control-label">Vigattintrade Category <small class="text-warning">(Choose which categories the ads will appear)</small></label>
-                        <ul class="list-group" id="tradeCategoryList">
-                            <?php $catListCount = 0; ?>
-                            <?php foreach($tradeCategoryList as $key => $mainCat): ?>
-                                <?php $catListCount++; ?>
-                                <li class="list-group-item">
-                                    <div data-toggle="collapse" data-target="#catlist<?php echo $catListCount; ?>"><strong><?php echo $key; ?></strong> <span class="glyphicon glyphicon-chevron-down pull-right"></span></div>
-                                    <ul class="list-unstyled collapse" id="catlist<?php echo $catListCount; ?>">
-                                        <?php foreach($mainCat as $key => $subCat): ?>
-                                            <li class=""><input class="trade-category-checkbox" type="checkbox" name="trade-category" value="<?php echo $subCat; ?>" /> <?php echo $key; ?></li>
-                                        <?php endforeach; ?>
-                                    </ul>
-                                </li>
-                            <?php endforeach; ?>
+                        <ul class="list-group list-unstyled" id="tradeCategoryList">
+
                         </ul>
                     </div>
 

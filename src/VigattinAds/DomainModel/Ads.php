@@ -67,7 +67,7 @@ class Ads extends AbstractEntity
     /**
      * Keywords for the ads to show
      * @var string
-     * @ORM\Column(name="keywords", type="string", length=255)
+     * @ORM\Column(name="keywords", type="string", length=512)
      */
     protected $keywords;
 

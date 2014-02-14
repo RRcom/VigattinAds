@@ -78,13 +78,13 @@ class Validator
         return '';
     }
 
-    static public function isKeywordValid($text, $min = 0, $max = 48)
+    static public function isKeywordValid($text, $min = 0, $max = 512)
     {
         $regex = new Regex(array('pattern' => self::$keywordPattern));
         $strlength = new StringLength();
         $strlength->setMin($min);
         $strlength->setMax($max);
-        if(!$regex->isValid($text)) return 'Keyword has invalid character';
+        //if(!$regex->isValid($text)) return 'Keyword has invalid character';
         if(!$strlength->isValid($text)) return 'Keyword must be minimum of '.$min.' and maximum of '.$max.' character';
         return '';
     }

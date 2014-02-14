@@ -557,6 +557,7 @@ $(document).ready(function(e) {
             $(window).resize(function(e) {
                 $('.ads-image-preview-container').height($('.ads-image-preview-container').width() * ratio);
             });
+            TradeCategory.init();
         }
 
         function submitInfo(adsTitle, adsUrl, adsImage, adsKeyword, adsDescription, adsPrice) {
@@ -593,4 +594,78 @@ $(document).ready(function(e) {
         }
 
     })(jQuery);
+
+    /* trade category */
+    var TradeCategory = new (function($) {
+        var catList
+
+        init();
+
+        function init() {
+            catList = $('#tradeCategoryList');
+            if(catList.length) {
+                generateList(catList);
+            }
+        }
+
+        this.init = function(){init();}
+
+        function generateList(catList) {
+            var keyword = $('#ads-keyword').val();
+            catList.html('');
+            if((typeof keyword) == 'string') {
+                var catArray = keyword.split('|');
+                var checked = true;
+                if((typeof catArray) == 'object') {
+                    catArray.unshift('All');
+                }
+                else catArray = new Array('All');
+                $.each(catArray, function(key, value) {
+                    if(value.charAt(0) == '^') {
+                        checked = false;
+                        value = value.replace('^', '');
+                    }
+                    if(checked) {
+                        catList.append('<li><input data-pos="'+key+'" class="trade-cat-checkbox-'+key+'" type="checkbox" checked="checked" style="margin-left: 10px" /> '+value+'</li>');
+                        //$('.trade-cat-checkbox-'+(key-1)).css({'opacity': 0.5});
+                    }
+                    else {
+                        catList.append('<li><input data-pos="'+key+'" class="trade-cat-checkbox-'+key+'" type="checkbox" style="margin-left: 10px" /> '+value+'</li>');
+                    }
+                });
+                $('input', catList).unbind('change').change(function(e) {
+                    var pos = $(e.currentTarget).attr('data-pos');
+                    rewriteCat(pos, catList);
+                });
+            }
+        }
+
+        function rewriteCat(filterPos, catList) {
+            var keyword = $('#ads-keyword').val();
+            var finalCat = '';
+            if((typeof keyword) == 'string') {
+                var catArray = keyword.split('|');
+                $.each(catArray, function(key, value) {
+                    value = value.replace('^', '');
+                    if(parseInt(filterPos) == (key)) value = '^'+value;
+                    if(key < (catArray.length-1)) value = value+'|'
+                    finalCat = finalCat+value;
+                });
+            }
+            $('#ads-keyword').val(finalCat);
+            generateList(catList)
+        }
+    })(jQuery);
 });
+
+
+
+
+
+
+
+
+
+
+
+
