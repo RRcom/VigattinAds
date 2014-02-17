@@ -7,6 +7,7 @@ use VigattinAds\DomainModel\AdsUser;
 use VigattinAds\DomainModel\SettingsManager;
 use Doctrine\ORM\NoResultException;
 use VigattinAds\DomainModel\AdsApproveLog;
+use Zend\Cache\StorageFactory;
 
 class AdsManager
 {
@@ -23,6 +24,9 @@ class AdsManager
     /** @var \VigattinAds\DomainModel\SettingsManager */
     protected $settingsManager;
 
+    /** @var  \Zend\Cache\Storage\Adapter\Filesystem */
+    protected $cache;
+
     /**
      * @param ServiceManager $serviceManager
      */
@@ -31,6 +35,18 @@ class AdsManager
         $this->serviceManager = $serviceManager;
         $this->settingsManager = new SettingsManager($this->serviceManager);
         $this->entityManager = $this->serviceManager->get('Doctrine\ORM\EntityManager');
+        $this->cache = StorageFactory::factory(
+            array(
+                'adapter' => array(
+                    'name' => 'filesystem'
+                ),
+                'plugins' => array(
+                    'exception_handler' => array(
+                        'throw_exceptions' => false
+                    ),
+                )
+            )
+        );
     }
 
     /**
@@ -69,8 +85,14 @@ class AdsManager
      */
     public function getRotationAds($showIn, $template, $keyword, $limit = 10)
     {
+        $success = false;
         $key = md5('global-rotate'.$showIn.$template.$keyword);
-        $start = $this->settingsManager->get($key);
+        //$start = $this->settingsManager->get($key);
+        $start = $this->cache->getItem($key, $success);
+        if(!$success) {
+            $start = 0;
+            $this->cache->setItem($key, $start);
+        }
         $total = $this->countAdsTotal($showIn, $template, $keyword);
 
         // Check if start is higher than total and if so, reset start
@@ -90,7 +112,8 @@ class AdsManager
             }
         }
         else $start = $start + $limit;
-        $this->settingsManager->set($key, $start);
+        //$this->settingsManager->set($key, $start);
+        $this->cache->setItem($key, $start);
         return $result;
     }
 
