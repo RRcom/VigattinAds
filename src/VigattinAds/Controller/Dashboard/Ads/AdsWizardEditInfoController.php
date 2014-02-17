@@ -61,7 +61,20 @@ class AdsWizardEditInfoController extends AdsController
 
         $this->mainView->setVariable('title', 'Edit Ads Info');
         $actionContent = new ViewModel();
-        $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsWizardEditInfoView');
+        switch(strtolower($this->sessionManager->getStorage()->tempAdsTemplate['showIn'])) {
+            case 'vigattintrade.com':
+                $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsWizardEditInfoView');
+                break;
+            case 'vigattintourism.com':
+                $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsWizardEditInfoNoCatView');
+                break;
+            case 'vigattin.com':
+                $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsWizardEditInfoNoCatView');
+                break;
+            default:
+                $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsWizardEditInfoNoCatView');
+                break;
+        }
         $actionContent->setVariables($formError);
         $this->mainView->addChild($actionContent, 'actionContent');
         return $this->mainView;

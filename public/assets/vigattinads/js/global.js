@@ -656,6 +656,43 @@ $(document).ready(function(e) {
             generateList(catList)
         }
     })(jQuery);
+
+    /* input auto count character */
+    (function($){
+        var inputClass = '.countable-character';
+        var maxCharAttr = 'data-max-char';
+        var targetDisplayClassAttr = 'data-target-display';
+
+        init();
+
+        $(inputClass).keyup(function(e) {
+            var max = $(e.currentTarget).attr(maxCharAttr);
+            var output = $($(e.currentTarget).attr(targetDisplayClassAttr));
+            var remaining = max - $(e.currentTarget).val().length;
+            output.html('remaining character '+remaining);
+            output.removeClass('text-danger');
+        });
+
+        $(inputClass).keydown(function(e) {
+            var max = $(e.currentTarget).attr(maxCharAttr);
+            var output = $($(e.currentTarget).attr(targetDisplayClassAttr));
+            var remaining = max - $(e.currentTarget).val().length;
+            if(!remaining) {
+                output.addClass('text-danger');
+            }
+        });
+
+        function init() {
+            $(inputClass).each(function(key, value) {
+                var max = $(value).attr(maxCharAttr);
+                var output = $($(value).attr(targetDisplayClassAttr));
+                var remaining = max - $(value).val().length;
+                output.html('remaining character '+remaining);
+                output.removeClass('text-danger');
+            });
+        }
+
+    })(jQuery);
 });
 
 

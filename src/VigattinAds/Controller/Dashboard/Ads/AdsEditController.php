@@ -119,7 +119,20 @@ class AdsEditController extends AdsController
 
         $this->mainView->setVariable('title', 'Ads Edit');
         $actionContent = new ViewModel();
-        $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsEditWithCatView');
+        switch(strtolower($adsEntity->get('showIn'))) {
+            case 'vigattintrade.com':
+                $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsEditWithCatView');
+                break;
+            case 'vigattintourism.com':
+                $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsEditView');
+                break;
+            case 'vigattin.com':
+                $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsEditView');
+                break;
+            default:
+                $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsEditView');
+                break;
+        }
         $actionContent->setVariables($formError);
         $actionContent->setVariable('ads', $adsEntity);
         $actionContent->setVariable('userManager', $this->userManager);
