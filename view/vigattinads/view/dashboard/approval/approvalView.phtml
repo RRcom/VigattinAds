@@ -3,8 +3,8 @@
     <div class="row">
         <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
             <div class="row ads-frame">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ads-frame-title"><?php echo $this->escapeHtmlAttr($ads->get('adsTitle')); ?></div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><div class="ads-image-preview-container"><img class="ads-frame-image" src="/repo<?php echo $ads->get('adsImage'); ?>"></div><span class="ads-frame-description"><?php echo $this->escapeHtml($ads->get('adsDescription')); ?></span></div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ads-frame-title"><a target="_blank" href="<?php echo $this->escapeHtmlAttr($ads->get('adsUrl')); ?>"><?php echo $this->escapeHtml($ads->get('adsTitle')); ?></a></div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><div class="ads-image-preview-container"><img class="ads-frame-image" src="/repo<?php echo $this->escapeHtmlAttr($ads->get('adsImage')); ?>"></div><span class="ads-frame-description"><?php echo $this->escapeHtml($ads->get('adsDescription')); ?></span></div>
             </div>
         </div>
     </div>
