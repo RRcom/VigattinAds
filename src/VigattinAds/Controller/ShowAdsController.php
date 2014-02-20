@@ -60,15 +60,24 @@ class ShowAdsController extends AbstractActionController
 
     public function indexAction()
     {
-        return $this->sidebarAction();
+        return $this->sidebarFbStyleAction();
     }
 
     public function sidebarAction()
     {
         // Create list of ads entities based on query param provided in the url
         $this->searchedAds = $this->generateAds();
-
         $this->viewModel->setTemplate('vigattinads/view/show-ads-sidebar');
+        $this->viewModel->setVariable('ads', $this->searchedAds);
+        return $this->viewModel;
+    }
+
+    public function sidebarFbStyleAction()
+    {
+        // Create list of ads entities based on query param provided in the url
+        $this->searchedAds = $this->generateAds();
+        $this->layout()->setTemplate('vigattinads/layout/ads-no-padding');
+        $this->viewModel->setTemplate('vigattinads/view/show-ads-sidebar-fbstyle');
         $this->viewModel->setVariable('ads', $this->searchedAds);
         return $this->viewModel;
     }

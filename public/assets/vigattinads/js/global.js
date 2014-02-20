@@ -1,4 +1,4 @@
-/* trade category map */
+/* trade category map v1.0 */
 var catMap = {
     "vehicles" : {
         "id" : 1,
