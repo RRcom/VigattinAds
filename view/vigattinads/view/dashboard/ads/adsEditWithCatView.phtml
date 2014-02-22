@@ -74,6 +74,7 @@
                         <label class="control-label" for="ads-keyword">Target Keyword <small class="text-warning">max character 512</small></label>
                         <span class="help-block"><?php if($adsKeywordError) echo $adsKeywordError; ?></span>
                         <input type="text" maxlength="512" class="form-control" id="ads-keyword" name="ads-keyword" placeholder="Leave blank to target all" value="<?php echo $this->escapeHtmlAttr($adsKeyword); ?>">
+                        <input type="hidden" id="ads-temp-keyword" name="ads-temp-keyword" value="<?php echo $this->escapeHtmlAttr($adsTempKeyword); ?>">
                     </div>
 
 

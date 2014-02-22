@@ -219,15 +219,15 @@ var tradeAds = new (function($) {
 
     function setIframe(category) {
         var keyword = '';
-        var root = '';
         var showIn = iframe.attr('data-showin');
         var template = iframe.attr('data-template');
         $.each(category, function(key, value) {
             if(value) {
-                root += jsTrim(value)+' ';
-                keyword += '('+jsTrim(root)+')';
+                keyword += jsTrim(value)+' ';
             }
         });
+        keyword = '('+jsTrim(keyword)+')';
+        console.log(keyword);
         iframe.attr('src', 'http://www.service.vigattin.com/vigattinads/showads?showin='+encodeURIComponent(showIn)+'&template='+encodeURIComponent(template)+'&limit=6&keyword='+encodeURIComponent(keyword));
     }
 
@@ -235,6 +235,7 @@ var tradeAds = new (function($) {
         var url = window.location.href;
         var category = [];
         var catObject = null;
+        category.push('homepage');
         catObject = this.getFirstCat(url, catMap);
         category.push((catObject != null) ? catObject.name : '');
         if(!catObject) return category;

@@ -419,7 +419,6 @@ $(document).ready(function(e) {
 
         function checkTitle() {
             //var reg = /^[a-zA-Z0-9_\s.\'"/,&()-]*$/;
-            var reg = /^*$/;
             var min = 6;
             var max = 30;
             var invalidCharMsg = 'Title has invalid character';
@@ -431,11 +430,13 @@ $(document).ready(function(e) {
                 $('.help-block', formGroup).html(lengthErrorMsg);
                 return false;
             }
+            /*
             if(!value.match(reg)) {
                 formGroup.removeClass('has-error').addClass('has-error');
                 $('.help-block', formGroup).html(invalidCharMsg);
                 return false;
             }
+            */
             formGroup.removeClass('has-error');
             $('.help-block', formGroup).html('');
             return true;
@@ -470,9 +471,9 @@ $(document).ready(function(e) {
         }
 
         function checkKeyword() {
-            var reg = /^[a-zA-Z0-9\s\,]*$/;
+            //var reg = /^[a-zA-Z0-9\s\,]*$/;
             var min = 0;
-            var max = 48;
+            var max = 512;
             var invalidCharMsg = 'Keyword has invalid character';
             var lengthErrorMsg = 'Keyword must be minimum of '+min+' and maximum of '+max+' character';
             var formGroup = $('.ads-form-keyword');
@@ -482,11 +483,13 @@ $(document).ready(function(e) {
                 $('.help-block', formGroup).html(lengthErrorMsg);
                 return false;
             }
+            /*
             if(!value.match(reg)) {
                 formGroup.removeClass('has-error').addClass('has-error');
                 $('.help-block', formGroup).html(invalidCharMsg);
                 return false;
             }
+            */
             formGroup.removeClass('has-error');
             $('.help-block', formGroup).html('');
             return true;
@@ -494,7 +497,6 @@ $(document).ready(function(e) {
 
         function checkDescription() {
             //var reg = /^[a-zA-Z0-9_\s.\'"/,&()-]*$/;
-            var reg = /^*$/;
             var min = 0;
             var max = 130;
             var invalidCharMsg = 'Description has invalid character';
@@ -506,11 +508,13 @@ $(document).ready(function(e) {
                 $('.help-block', formGroup).html(lengthErrorMsg);
                 return false;
             }
+            /*
             if(!value.match(reg)) {
                 formGroup.removeClass('has-error').addClass('has-error');
                 $('.help-block', formGroup).html(invalidCharMsg);
                 return false;
             }
+            */
             formGroup.removeClass('has-error');
             $('.help-block', formGroup).html('');
             return true;
@@ -715,7 +719,7 @@ $(document).ready(function(e) {
                                                 '<div class="title-container"><a class="ads-title" target="_blank" href="'+$('<div/>').html(value.url).text()+'">'+$('<div/>').html(value.title).text()+'</a></div>'+
                                                 '<div class="price-container">Php <span class="ads-price">'+parseFloat(isNaN(value.price) ? 0 : value.price).toFixed(2)+'</span></div>'+
                                                 '<div class="ads-description">'+$('<div/>').html(value.description).text()+'</div>'+
-                                                '<input class="ads-keyword" type="hidden" value="'+$('<div/>').html(decodeArrayCategory(value.category, '')).text()+'" />'+
+                                                '<input class="ads-keyword" type="hidden" value="'+$('<div/>').html('Homepage|'+decodeArrayCategory(value.category, '')).text()+'" />'+
                                             '</div>'+
                                             '<div class="col-xs-2"><a class="ads-import-single-button" data-target="#adsPanel'+Start+'" href="javascript:" data-dismiss="modal"><span class="glyphicon glyphicon-star"></span> Promote</a></div>'+
                                         '</div>'+
@@ -774,6 +778,7 @@ $(document).ready(function(e) {
             form.append($('<input type="hidden" name="ads-description" value="'+adsDescription+'" />'));
             form.append($('<input type="hidden" name="ads-price" value="'+adsPrice+'" />'));
             form.append($('<input type="hidden" name="action" value="save-session" />'));
+            $('body').append(form);
             form.submit();
         }
 
@@ -800,7 +805,7 @@ $(document).ready(function(e) {
 
     })(jQuery);
 
-    /* trade category */
+    /* trade category
     var TradeCategory = new (function($) {
         var catList
 
@@ -881,6 +886,106 @@ $(document).ready(function(e) {
             }
             $('#ads-keyword').val(finalCat);
             generateList(catList)
+        }
+    })(jQuery);
+    */
+
+    /* trade category */
+    var TradeCategory = new (function($) {
+        var catList
+        var tempKeyword = '';
+        var keywordsInput;
+
+        init();
+
+        function init() {
+            keywordsInput = $('#ads-keyword');
+            catList = $('#tradeCategoryList');
+            tempKeyword = $('#ads-temp-keyword').val();
+            if(catList.length) {
+                generateList(catList);
+            }
+        }
+
+        this.init = function(){init();}
+
+        function convertKeyword(keyword) {
+            var finalKeyword = '';
+            var splitedKeyword = keyword.split('|');
+            if(splitedKeyword) {
+                $.each(splitedKeyword, function(key, value) {
+                    finalKeyword += createAbsoluteCat(splitedKeyword, key);
+                });
+            }
+            return [finalKeyword, splitedKeyword];
+        }
+
+        function createAbsoluteCat(splitedKeyword, position) {
+            var absoluteCat = '';
+            if(splitedKeyword.length && (position < splitedKeyword.length)) {
+                for(var i = 0; i <= position; i++) {
+                    absoluteCat += splitedKeyword[i]+' ';
+                }
+                absoluteCat = absoluteCat.replace(/^\s+|\s+$/gm,'');
+                if(absoluteCat) absoluteCat = '('+absoluteCat+')';
+            }
+            return absoluteCat;
+        }
+
+        function generatePreviewUrl(splitedKeyword, position) {
+            var mainUrl = '//www.vigattintrade.com/results/browse/';
+            var currentMap;
+            if(splitedKeyword.length && (position < splitedKeyword.length)) {
+                $.each(splitedKeyword, function(key, value) {
+                    if(key <= position) {
+                        value = value.toLowerCase();
+                        switch(key) {
+                            case 0:
+                                break;
+                            case 1:
+                                currentMap = catMap[value]['cat'];
+                                mainUrl += catMap[value]['id']+'/';
+                                break;
+                            case 2:
+                                mainUrl += currentMap[value]['id']+'/';
+                                currentMap = currentMap[value]['cat'];
+                                break;
+                            case 3:
+                                mainUrl += '?service='+currentMap[value]['id'];
+                                break;
+                        }
+                    }
+                });
+            }
+            return mainUrl;
+        }
+
+        function generateList() {
+            var converted  = convertKeyword(tempKeyword);
+            $.each(converted[1], function(key, value) {
+                if(value) {
+                    catList.append('<li><a target="_blank" href="'+generatePreviewUrl(converted[1], key)+'">preview</a> <input class="trade-cat-checkbox" data-pos="'+key+'" type="checkbox" checked="checked" style="margin-left: 10px" /> '+value+'</li>');
+                }
+            });
+            keywordsInput.val(converted[0]);
+            $('.trade-cat-checkbox').unbind('change').change(onCheckChange);
+        }
+
+        function onCheckChange(e) {
+            var converted  = convertKeyword(tempKeyword);
+            var allAbsoluteKeyword = converted[0];
+            $('.trade-cat-checkbox').each(function(key, value) {
+                var checkBox =  $(value);
+                var position = parseInt(checkBox.attr('data-pos'));
+                if(!checkBox.is(":checked")) {
+                    allAbsoluteKeyword = allAbsoluteKeyword.replace(createAbsoluteCat(converted[1], position), '');
+                }
+                if($('.trade-cat-checkbox:checked').length <= 1) {
+                    $('.trade-cat-checkbox:checked').attr('disabled', 'disabled');
+                }
+                else $('.trade-cat-checkbox').removeAttr('disabled');
+            });
+            keywordsInput.val(allAbsoluteKeyword);
         }
     })(jQuery);
 

@@ -16,6 +16,10 @@ class LoginController extends AbstractActionController
 
     public function indexAction()
     {
+        // Redirect to vigattin login remove this code to go back to local login
+        header('Location: http://www.vigattin.com/signin/activating?redirect=http%3A%2F%2Fwww.service.vigattin.com%2Fvigattinads');
+        exit();
+
         $error = '';
         /** @var $post \Zend\Stdlib\Parameters */
         $post = $this->getRequest()->getPost();

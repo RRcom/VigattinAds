@@ -10,7 +10,7 @@ class LogoutController extends AbstractActionController
         /** @var $user \VigattinAds\Model\User\User */
         $userManager = $this->serviceLocator->get('VigattinAds\DomainModel\UserManager');
         $userManager->logout();
-        header('Location: /vigattinads');
+        header('Location: http://www.vigattin.com/signin/deactivating?redirect=http%3A%2F%2Fwww.service.vigattin.com%2Fvigattinads');
         exit();
     }
 }

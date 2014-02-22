@@ -23,6 +23,7 @@ class AdsWizardEditInfoController extends AdsController
                 'adsTitle' => $this->getRequest()->getPost('ads-title', ''),
                 'adsUrl' => $this->getRequest()->getPost('ads-url', ''),
                 'adsKeyword' => $this->getRequest()->getPost('ads-keyword', ''),
+                'adsTempKeyword' => $this->sessionManager->getStorage()->tempAdsKeyword,
                 'adsPrice' => $this->getRequest()->getPost('ads-price', ''),
                 'adsDescription' => $this->getRequest()->getPost('ads-description', ''),
                 'adsImageDataUrl' => $this->getRequest()->getPost('ads-image-data-url', ''),
@@ -35,7 +36,6 @@ class AdsWizardEditInfoController extends AdsController
             );
             $this->sessionManager->getStorage()->tempAdsTitle = $formError['adsTitle'];
             $this->sessionManager->getStorage()->tempAdsUrl = $formError['adsUrl'];
-            $this->sessionManager->getStorage()->tempAdsKeyword = $formError['adsKeyword'];
             $this->sessionManager->getStorage()->tempAdsPrice = $formError['adsPrice'];
             $this->sessionManager->getStorage()->tempAdsDescription = $formError['adsDescription'];
             if(!strlen($formError['adsImageError'].$formError['adsTitleError'].$formError['adsUrlError'].$formError['adsKeywordError'].$formError['adsPriceError'].$formError['adsDescriptionError'])) {
@@ -46,7 +46,8 @@ class AdsWizardEditInfoController extends AdsController
             $formError = array(
                 'adsTitle' => $this->sessionManager->getStorage()->tempAdsTitle,
                 'adsUrl' => $this->sessionManager->getStorage()->tempAdsUrl,
-                'adsKeyword' => $this->sessionManager->getStorage()->tempAdsKeyword,
+                'adsKeyword' => '',
+                'adsTempKeyword' => $this->sessionManager->getStorage()->tempAdsKeyword,
                 'adsPrice' => $this->sessionManager->getStorage()->tempAdsPrice,
                 'adsDescription' => $this->sessionManager->getStorage()->tempAdsDescription,
                 'adsImageDataUrl' => $this->sessionManager->getStorage()->tempAdsImageDataUrl,
@@ -104,7 +105,8 @@ class AdsWizardEditInfoController extends AdsController
                 $this->sessionManager->getStorage()->tempAdsTemplate['showIn'],
                 $this->sessionManager->getStorage()->tempAdsTemplate['template'],
                 $this->sessionManager->getStorage()->tempAdsKeyword,
-                $this->sessionManager->getStorage()->tempAdsPrice
+                $this->sessionManager->getStorage()->tempAdsPrice,
+                $this->sessionManager->getStorage()->tempAdsKeyword
             );
             $this->adsUser->flush();
             $this->clearTempData();

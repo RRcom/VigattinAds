@@ -58,6 +58,7 @@
                                 <label class="control-label" for="ads-keyword">Target Keyword <small class="text-warning">max character 512</small></label>
                                 <span class="help-block"><?php if($adsKeywordError) echo $adsKeywordError; ?></span>
                                 <input type="text" maxlength="512" class="form-control" id="ads-keyword" name="ads-keyword" placeholder="Leave blank to target all" value="<?php echo $this->escapeHtmlAttr($adsKeyword); ?>">
+                                <input type="hidden" id="ads-temp-keyword" name="ads-temp-keyword" value="<?php echo $this->escapeHtmlAttr($adsTempKeyword); ?>">
                             </div>
 
                             <div class="form-group">
@@ -67,7 +68,7 @@
                                 </ul>
                             </div>
 
-                            <div class="form-group ads-form-keyword <?php echo $adsPriceError ? 'has-error' : ''; ?>">
+                            <div class="form-group ads-form-price <?php echo $adsPriceError ? 'has-error' : ''; ?>">
                                 <label class="control-label" for="ads-price">Price Php <small class="text-warning">allowed decimal number only</small></label>
                                 <span class="help-block"><?php if($adsPriceError) echo $adsPriceError; ?></span>
                                 <input type="number" step="any" class="form-control" id="ads-price" name="ads-price" placeholder="Ads price" value="<?php echo $this->escapeHtmlAttr($adsPrice); ?>">

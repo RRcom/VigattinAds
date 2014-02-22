@@ -114,6 +114,13 @@ class Ads extends AbstractEntity
      */
     protected $deleted = false;
 
+    /**
+     * Category this ads belong
+     * @var string
+     * @ORM\Column(name="category", type="string", length=512)
+     */
+    protected $category = '';
+
     //==================================================================================================
 
     public function __construct(AdsUser $adsUser)
@@ -124,7 +131,7 @@ class Ads extends AbstractEntity
 
     /**
      * Get property value
-     * @param string $propertyName List of properties are id, adsTitle, adsUrl, adsDescription, adsPrice, showIn, template, keywords, adsImage, status, adsUser, adsView, reviewVersion and ServiceManager.
+     * @param string $propertyName List of properties are id, adsTitle, adsUrl, adsDescription, adsPrice, showIn, template, keywords, adsImage, status, adsUser, adsView, reviewVersion, category and ServiceManager.
      * @return mixed
      */
     public function get($propertyName)
@@ -135,7 +142,7 @@ class Ads extends AbstractEntity
 
     /**
      * Set property value
-     * @param string $propertyName List of properties are adsTitle, adsUrl, adsDescription, adsPrice, showIn, template, keywords, adsImage, status, reviewVersion and ServiceManager.
+     * @param string $propertyName List of properties are adsTitle, adsUrl, adsDescription, adsPrice, showIn, template, keywords, adsImage, status, reviewVersion, category and ServiceManager.
      * @param mixed $value
      * @return AdsUser
      */
