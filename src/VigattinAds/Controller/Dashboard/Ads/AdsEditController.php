@@ -125,7 +125,12 @@ class AdsEditController extends AdsController
         $actionContent = new ViewModel();
         switch(strtolower($adsEntity->get('showIn'))) {
             case 'vigattintrade.com':
-                $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsEditWithCatView');
+                if(strtolower($adsEntity->get('template')) == 'home-sidebar-left') {
+                    $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsEditWithCatView');
+                }
+                else {
+                    $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsEditView');
+                }
                 break;
             case 'vigattintourism.com':
                 $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsEditView');

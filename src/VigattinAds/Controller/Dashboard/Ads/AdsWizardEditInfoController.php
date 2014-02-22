@@ -64,7 +64,12 @@ class AdsWizardEditInfoController extends AdsController
         $actionContent = new ViewModel();
         switch(strtolower($this->sessionManager->getStorage()->tempAdsTemplate['showIn'])) {
             case 'vigattintrade.com':
-                $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsWizardEditInfoView');
+                if($this->sessionManager->getStorage()->tempAdsTemplate['template'] == 'home-sidebar-left') {
+                    $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsWizardEditInfoView');
+                }
+                else {
+                    $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsWizardEditInfoNoCatView');
+                }
                 break;
             case 'vigattintourism.com':
                 $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsWizardEditInfoNoCatView');
@@ -104,7 +109,7 @@ class AdsWizardEditInfoController extends AdsController
                 $this->sessionManager->getStorage()->tempAdsDescription,
                 $this->sessionManager->getStorage()->tempAdsTemplate['showIn'],
                 $this->sessionManager->getStorage()->tempAdsTemplate['template'],
-                $this->sessionManager->getStorage()->tempAdsKeyword,
+                $this->getRequest()->getPost('ads-keyword', ''),
                 $this->sessionManager->getStorage()->tempAdsPrice,
                 $this->sessionManager->getStorage()->tempAdsKeyword
             );
