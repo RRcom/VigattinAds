@@ -227,8 +227,12 @@ var tradeAds = new (function($) {
             }
         });
         keyword = '('+jsTrim(keyword)+')';
-        console.log(keyword);
-        iframe.attr('src', 'http://www.service.vigattin.com/vigattinads/showads?showin='+encodeURIComponent(showIn)+'&template='+encodeURIComponent(template)+'&limit=6&keyword='+encodeURIComponent(keyword));
+        if(window.location.hash.substr(1) == 'preview') {
+            iframe.attr('src', 'http://www.service.vigattin.com/vigattinads/showads?showin=preview');
+        }
+        else {
+            iframe.attr('src', 'http://www.service.vigattin.com/vigattinads/showads?showin='+encodeURIComponent(showIn)+'&template='+encodeURIComponent(template)+'&limit=6&keyword='+encodeURIComponent(keyword));
+        }
     }
 
     this.getCategory = function() {

@@ -1,0 +1,21 @@
+<div class="sidebar-ads-fbstyle">
+    <div class="ads-panel-title">VigattinAds</div>
+        <a href="#" target="_blank" class="ads-frame" id="">
+            <div class="ads-frame-title"></div>
+            <div class="ads-frame-price">
+            </div>
+            <div class="ads-divided-content"><div class="ads-frame-leftbar">
+                <div class="ads-image-preview-container"><img class="ads-frame-image" src=""></div>
+            </div><div class="ads-frame-rightbar">
+                <div class="ads-frame-description"></div>
+            </div></div>
+        </a>
+        <div class="ads-separator"></div>
+</div>
+<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+<script>
+    $('.ads-frame-title').text(localStorage.tempAdsTitle);
+    if(localStorage.tempAdsPrice) $('.ads-frame-price').text('php '+localStorage.tempAdsPrice);
+    $('.ads-frame-image').attr('src', localStorage.tempAdsImage);
+    $('.ads-frame-description').text(localStorage.tempAdsDescription);
+</script>

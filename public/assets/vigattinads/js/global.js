@@ -964,7 +964,7 @@ $(document).ready(function(e) {
             var converted  = convertKeyword(tempKeyword);
             $.each(converted[1], function(key, value) {
                 if(value) {
-                    catList.append('<li><a target="_blank" href="'+generatePreviewUrl(converted[1], key)+'">preview</a> <input class="trade-cat-checkbox" data-pos="'+key+'" type="checkbox" checked="checked" style="margin-left: 10px" /> '+value+'</li>');
+                    catList.append('<li><a class="ads-preview-link" target="_blank" href="'+generatePreviewUrl(converted[1], key)+'#preview">preview</a> <input class="trade-cat-checkbox" data-pos="'+key+'" type="checkbox" checked="checked" style="margin-left: 10px" /> '+value+'</li>');
                 }
             });
             keywordsInput.val(converted[0]);
@@ -1024,6 +1024,32 @@ $(document).ready(function(e) {
             });
         }
 
+    })(jQuery);
+
+    /* ads temp preview generator */
+    (function($){
+        var previewLink;
+        var adsContainer;
+
+        function init() {
+            previewLink = $('.ads-preview-link');
+            adsContainer = $('.ads-frame');
+            previewLink.unbind('click').click(function(e){onAdsLinkClick(e);});
+        }
+
+        function onAdsLinkClick(e) {
+            saveAdsToBrowser();
+        }
+
+        function saveAdsToBrowser() {
+            localStorage.tempAdsTitle = $('.ads-frame-title', adsContainer).text();
+            localStorage.tempAdsPrice = $('.price-value', adsContainer).text();
+            localStorage.tempAdsDescription = $('.ads-frame-description', adsContainer).text();
+            localStorage.tempAdsImage = $('.ads-frame-image', adsContainer).attr('src');
+            console.log(localStorage);
+        }
+
+        init();
     })(jQuery);
 });
 
