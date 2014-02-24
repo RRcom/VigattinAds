@@ -18,6 +18,12 @@ class AdsWizardEditInfoController extends AdsController
             header('Location: /vigattinads/dashboard/ads/template');
             exit();
         }
+        if(strtolower($this->getRequest()->getQuery('template', '')) == 'true') {
+            $this->sessionManager->getStorage()->tempAdsTemplate['showIn'] = '';
+            $this->sessionManager->getStorage()->tempAdsTemplate['template'] = '';
+            header('Location: /vigattinads/dashboard/ads/template');
+            exit();
+        }
         if(strtolower($this->getRequest()->getPost('submit', '')) == 'next') {
             $formError = array(
                 'adsTitle' => $this->getRequest()->getPost('ads-title', ''),
@@ -27,6 +33,8 @@ class AdsWizardEditInfoController extends AdsController
                 'adsPrice' => $this->getRequest()->getPost('ads-price', ''),
                 'adsDescription' => $this->getRequest()->getPost('ads-description', ''),
                 'adsImageDataUrl' => $this->getRequest()->getPost('ads-image-data-url', ''),
+                'adsShowIn' => $this->sessionManager->getStorage()->tempAdsTemplate['showIn'],
+                'adsTemplate' => $this->sessionManager->getStorage()->tempAdsTemplate['template'],
                 'adsImageError' => Validator::isImageString($this->getRequest()->getPost('ads-image-data-url', '')),
                 'adsTitleError' => Validator::isTitleValid($this->getRequest()->getPost('ads-title', '')),
                 'adsUrlError' => Validator::isUrlValid($this->getRequest()->getPost('ads-url', '')),
@@ -51,6 +59,8 @@ class AdsWizardEditInfoController extends AdsController
                 'adsPrice' => $this->sessionManager->getStorage()->tempAdsPrice,
                 'adsDescription' => $this->sessionManager->getStorage()->tempAdsDescription,
                 'adsImageDataUrl' => $this->sessionManager->getStorage()->tempAdsImageDataUrl,
+                'adsShowIn' => $this->sessionManager->getStorage()->tempAdsTemplate['showIn'],
+                'adsTemplate' => $this->sessionManager->getStorage()->tempAdsTemplate['template'],
                 'adsImageError' => '',
                 'adsTitleError' => '',
                 'adsUrlError' => '',
