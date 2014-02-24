@@ -102,7 +102,7 @@ class AdsManager
         $resultTotal = count($result);
 
         // Check if result is lower than limit output if so query again to the first row to fill the the remaining ads
-        if($resultTotal < $limit)
+        if(($resultTotal < $limit))
         {
             $result2 = $this->searchAds($showIn, $template, $keyword, 0, $limit - $resultTotal);
             $start = $limit - $resultTotal;

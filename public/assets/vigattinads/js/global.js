@@ -904,6 +904,7 @@ $(document).ready(function(e) {
             tempKeyword = $('#ads-temp-keyword').val();
             if(catList.length) {
                 generateList(catList);
+                onCheckChange(null);
             }
         }
 
@@ -960,14 +961,28 @@ $(document).ready(function(e) {
             return mainUrl;
         }
 
+        function isCatChecked(splitedKeyword, position) {
+            var keyword = $('#ads-keyword').val();
+            var absCat = createAbsoluteCat(splitedKeyword, position);
+            var regEx = new RegExp(absCat.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&"), 'g')
+            if(keyword.match(regEx)) return true;
+            return false;
+        }
+
         function generateList() {
             var converted  = convertKeyword(tempKeyword);
+            var checked = '';
             $.each(converted[1], function(key, value) {
                 if(value) {
-                    catList.append('<li><a class="ads-preview-link" target="_blank" href="'+generatePreviewUrl(converted[1], key)+'#preview">preview</a> <input class="trade-cat-checkbox" data-pos="'+key+'" type="checkbox" checked="checked" style="margin-left: 10px" /> '+value+'</li>');
+                    if(isCatChecked(converted[1], key)) checked = 'checked="checked"';
+                    else checked = '';
+                    catList.append('<li><a class="ads-preview-link" target="_blank" href="'+generatePreviewUrl(converted[1], key)+'#preview">preview</a> <input class="trade-cat-checkbox" data-pos="'+key+'" type="checkbox" '+checked+' style="margin-left: 10px" /> '+value+'</li>');
                 }
             });
-            keywordsInput.val(converted[0]);
+            if(!$('.trade-cat-checkbox:checked').length) {
+                keywordsInput.val(converted[0]);
+                $('.trade-cat-checkbox').attr('checked', 'checked');
+            }
             $('.trade-cat-checkbox').unbind('change').change(onCheckChange);
         }
 
