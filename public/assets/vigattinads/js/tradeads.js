@@ -221,6 +221,7 @@ var tradeAds = new (function($) {
         var keyword = '';
         var showIn = iframe.attr('data-showin');
         var template = iframe.attr('data-template');
+        var limit = (iframe.attr('data-limit')) ? iframe.attr('data-limit') : 6;
         $.each(category, function(key, value) {
             if(value) {
                 keyword += jsTrim(value)+' ';
@@ -231,7 +232,7 @@ var tradeAds = new (function($) {
             iframe.attr('src', 'http://www.service.vigattin.com/vigattinads/showads?showin=preview');
         }
         else {
-            iframe.attr('src', 'http://www.service.vigattin.com/vigattinads/showads?showin='+encodeURIComponent(showIn)+'&template='+encodeURIComponent(template)+'&limit=6&keyword='+encodeURIComponent(keyword));
+            iframe.attr('src', 'http://www.service.vigattin.com/vigattinads/showads?showin='+encodeURIComponent(showIn)+'&template='+encodeURIComponent(template)+'&limit='+encodeURIComponent(limit)+'&keyword='+encodeURIComponent(keyword));
         }
     }
 
