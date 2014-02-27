@@ -1066,6 +1066,65 @@ $(document).ready(function(e) {
 
         init();
     })(jQuery);
+
+    /* tourism directory*/
+    var TourismDirectory = new (function($) {
+        var dirList;
+        var keywordsInput;
+
+        function init() {
+            dirList = $('#tourismDirectoryList');
+            keywordsInput = $('#ads-keyword');
+            if(dirList.length) {
+                generateList();
+                if(!keywordsInput.val()) populateAbsolute();
+                initCheckboxStatus();
+            }
+        }
+
+        function populateAbsolute() {
+            var keywordArray = getTempKeyword();
+            keywordsInput.val(convertAllToAbsolute(keywordArray));
+        }
+
+        function generateList() {
+            $.each(getTempKeyword(), function(key, value) {
+                dirList.append('<li><a class="ads-preview-link" target="_blank" href="">preview</a> <input class="tourism-cat-checkbox" type="checkbox" style="margin-left: 10px" value="'+value+'" /> '+value+'</li>');
+            });
+        }
+
+        function initCheckboxStatus() {
+            $('.tourism-cat-checkbox').each(function(key, value) {
+                var regEx = new RegExp('\('+$(value).val()+'\)');
+                if(keywordsInput.val().match(regEx)) {
+                    $(value).attr('checked', 'checked');
+                }
+            });
+        }
+
+        function onCheckboxClick(e) {
+
+        }
+
+        function getTempKeyword() {
+            var tempKeyword = $('#ads-temp-keyword').val();
+            return tempKeyword.split('|');
+        }
+
+        function convertToAbsolute(keyWordArray, postion) {
+            return '('+keyWordArray[postion]+')';
+        }
+
+        function convertAllToAbsolute(keyWordArray, context) {
+            var all = '';
+            $.each(keyWordArray, function(key, value) {
+                all += convertToAbsolute(keyWordArray, key);
+            });
+            return all;
+        }
+
+        init();
+    })(jQuery);
 });
 
 

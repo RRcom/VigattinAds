@@ -1,0 +1,115 @@
+<!-- remove import ads from trade
+<div class="row">
+    <div class="col-xs-12">
+        <div class="dropdown">
+            <button title="Import data from external website" class="btn btn-primary dropdown-toggle tooltip-enable-right" type="button" id="adsImportDropdownButton" data-toggle="dropdown">
+                <span class="glyphicon glyphicon-import"></span> Import Ads <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="adsImportDropdownButton">
+                <li role="presentation"><a data-toggle="modal" data-target="#importAdsModal" role="menuitem" tabindex="-1" href="javascript:" name="vigattintrade">Vigattintrade.com</a></li>
+                <li role="presentation"><a data-toggle="modal" data-target="#importAdsModal" role="menuitem" tabindex="-1" href="javascript:" name="vigattin">Vigattin.com</a></li>
+                <li role="presentation"><a data-toggle="modal" data-target="#importAdsModal" role="menuitem" tabindex="-1" href="javascript:" name="test">Test.com</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+-->
+<div class="row">
+    <div class="col-xs-12">
+        <p></p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="panel panel-primary ">
+            <div class="panel-heading">Edit Ads Info</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <div class="alert alert-info">
+                            <div>These ads will be shown in</div>
+                            <span class="text-warning"><?php echo $this->escapeHtml($adsShowIn); ?> <?php echo $this->escapeHtml($adsTemplate); ?></span>
+                            <a class="" href="?template=true"><span class="glyphicon glyphicon-edit"></span> click here to change</a>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><strong>Ads Preview</strong><p></p></div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                            <div class="row ads-frame">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ads-frame-title"><?php echo $this->escapeHtmlAttr($adsTitle); ?></div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ads-frame-price">Php <span class="price-value"><?php echo $this->escapeHtmlAttr(number_format($adsPrice, 2, '.', '')); ?></span></div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><div class="ads-image-preview-container"><img src="<?php echo $this->escapeHtmlAttr($adsImageDataUrl); ?>" class="ads-frame-image" /></div><span class="ads-frame-description"><?php echo $this->escapeHtml($adsDescription); ?></span></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 small">
+                        <div class="form-group ads-form-image <?php echo $adsImageError ? 'has-error' : ''; ?>">
+                            <label class="control-label" for="ads-title">Choose an image</label>
+                            <span class="help-block"><?php if($adsImageError) echo $adsImageError; ?></span>
+                            <input type="file" id="ads-choose-image-input" name="ads-image" accept="image/*">
+                        </div>
+                        <form id="ads-form" role="form" action="" method="post" enctype="multipart/form-data">
+                            <div class="form-group ads-form-title <?php echo $adsTitleError ? 'has-error' : ''; ?>">
+                                <label class="control-label" for="ads-title">Ads Title <small id="adsTitleCountDisplay" class="text-warning"></small></label>
+                                <span class="help-block"><?php if($adsTitleError) echo $adsTitleError; ?></span>
+                                <input type="text" maxlength="30" class="form-control countable-character" data-max-char="30" data-target-display="#adsTitleCountDisplay" id="ads-title" name="ads-title" required="true" placeholder="Ads Title" value="<?php echo $this->escapeHtmlAttr($adsTitle); ?>">
+                            </div>
+                            <div class="form-group ads-form-url <?php echo $adsUrlError ? 'has-error' : ''; ?>">
+                                <label class="control-label" for="ads-url">Ads Url <small class="text-warning">allowed valid url</small></label>
+                                <span class="help-block"><?php if($adsUrlError) echo $adsUrlError; ?></span>
+                                <input type="text" maxlength="256" class="form-control" id="ads-url" name="ads-url" required="true" placeholder="Ads URL" value="<?php echo $this->escapeHtmlAttr($adsUrl); ?>">
+                            </div>
+                            <div class="hide form-group ads-form-keyword <?php echo $adsKeywordError ? 'has-error' : ''; ?>">
+                                <label class="control-label" for="ads-keyword">Target Keyword <small class="text-warning">max character 512</small></label>
+                                <span class="help-block"><?php if($adsKeywordError) echo $adsKeywordError; ?></span>
+                                <input type="text" maxlength="512" class="form-control" id="ads-keyword" name="ads-keyword" placeholder="Leave blank to target all" value="<?php echo $this->escapeHtmlAttr($adsKeyword); ?>">
+                                <input type="hidden" id="ads-temp-keyword" name="ads-temp-keyword" value="<?php echo $this->escapeHtmlAttr($adsTempKeyword); ?>">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">Vigattintourism Directory <small class="text-warning">Choose which directory the ads will appear</small></label>
+                                <ul class="list-group list-unstyled" id="tourismDirectoryList">
+
+                                </ul>
+                            </div>
+
+                            <div class="form-group ads-form-price <?php echo $adsPriceError ? 'has-error' : ''; ?>">
+                                <label class="control-label" for="ads-price">Price Php <small class="text-warning">allowed decimal number only</small></label>
+                                <span class="help-block"><?php if($adsPriceError) echo $adsPriceError; ?></span>
+                                <input type="number" step="any" class="form-control" id="ads-price" name="ads-price" placeholder="Ads price" value="<?php echo $this->escapeHtmlAttr($adsPrice); ?>">
+                            </div>
+                            <div class="form-group ads-form-description <?php echo $adsDescriptionError ? 'has-error' : ''; ?>">
+                                <label class="control-label" for="ads-description">Ads Description <small id="adsDescriptionCountDisplay" class="text-warning"></small></label>
+                                <span class="help-block"><?php if($adsDescriptionError) echo $adsDescriptionError; ?></span>
+                                <textarea maxlength="130" class="description-input form-control countable-character" data-max-char="130" data-target-display="#adsDescriptionCountDisplay" id="ads-description" name="ads-description" placeholder="Ads Description"><?php echo $this->escapeHtml($adsDescription); ?></textarea>
+                            </div>
+                            <input type="hidden" id="ads-image-data-url" name="ads-image-data-url" value="<?php echo $this->escapeHtml($adsImageDataUrl); ?>">
+                            <button type="submit" class="btn btn-primary" name="submit" value="next">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Import Modal -->
+<div class="modal fade" id="importAdsModal" tabindex="-1" role="dialog" aria-labelledby="importAdsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="importAdsModalLabel">Import Ads</h4>
+            </div>
+            <div class="modal-body">
+                <ul class="ads-import-list">
+
+                </ul>
+                <div class="text-center"><button type="button" class="btn btn-default import-ads-list-more-button">More</button><img  class="import-ads-list-progress" src="/assets/vigattinads/img/circle-preloader-2.gif" /></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

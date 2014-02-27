@@ -66,6 +66,23 @@ return array(
                     ),
                 ),
             ),
+            'vigattinads_dashboard_ads_create' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/vigattinads/dashboard/ads/create[/:controller][/:action][/:param]',
+                    'constraints' => array(
+                        'controller'    => '[a-zA-Z0-9_-]*',
+                        'action'        => '[a-zA-Z0-9_-]*',
+                        'param'         => '[a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'VigattinAds\Controller\Dashboard\Ads\Create',
+                        'controller'    => 'Create',
+                        'action'        => 'index',
+                        'param'         => '',
+                    ),
+                ),
+            ),
             'vigattinads_dashboard_ads' => array(
                 'type'    => 'segment',
                 'options' => array(
@@ -223,6 +240,10 @@ return array(
             'VigattinAds\Controller\Logout'   => 'VigattinAds\Controller\LogoutController',
             'VigattinAds\Controller\Dashboard' => 'VigattinAds\Controller\Dashboard\DashboardController',
             'VigattinAds\Controller\Dashboard\Ads'   => 'VigattinAds\Controller\Dashboard\Ads\AdsController',
+            'VigattinAds\Controller\Dashboard\Ads\Create\Create'   => 'VigattinAds\Controller\Dashboard\Ads\Create\CreateController',
+            'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite'   => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsiteController',
+            'VigattinAds\Controller\Dashboard\Ads\Create\ChooseDirectory'   => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseDirectoryController',
+            'VigattinAds\Controller\Dashboard\Ads\Create\ChooseCategory'   => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseCategoryController',
             'VigattinAds\Controller\Dashboard\Ads\Edit'   => 'VigattinAds\Controller\Dashboard\Ads\AdsEditController',
             'VigattinAds\Controller\Dashboard\Ads\Template'   => 'VigattinAds\Controller\Dashboard\Ads\AdsWizardChooseTemplateController',
             'VigattinAds\Controller\Dashboard\Ads\Info'   => 'VigattinAds\Controller\Dashboard\Ads\AdsWizardEditInfoController',
@@ -239,7 +260,13 @@ return array(
         ),
     ),
     'view_manager' => array(
+        'not_found_template'       => 'error/404',
+        'exception_template'       => 'error/index',
+        'doctype'                  => 'HTML5',
         'template_map' => array(
+            'layout/layout'           => __DIR__ . '/../view/vigattinads/layout/default.phtml',
+            'error/404'               => __DIR__ . '/../view/error/404.phtml',
+            'error/index'             => __DIR__ . '/../view/error/index.phtml',
             'vigattinads/layout/default'    => __DIR__ . '/../view/vigattinads/layout/default.phtml',
             'vigattinads/layout/active'    => __DIR__ . '/../view/vigattinads/layout/active.phtml',
             'vigattinads/view/index' => __DIR__ . '/../view/vigattinads/view/index.phtml',

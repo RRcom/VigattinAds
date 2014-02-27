@@ -1,0 +1,27 @@
+<div class="row">
+    <div class="col-xs-12"><h3>My ads will appear in this following directory...</h3></div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <span>Website: </span><span><?php echo $this->escapeHtml($website); ?></span>
+    </div>
+</div>
+<form method="post" action="choose-directory/next">
+    <div class="row">
+        <div class="col-xs-12">
+            <ul class="list-unstyled">
+                <li><input name="directory[]" value="homepage" type="checkbox" /> Homepage</li>
+                <li><input name="directory[]" value="destination" type="checkbox" /> Destination</li>
+                <li><input name="directory[]" value="articles" type="checkbox" /> Articles</li>
+                <li><input name="directory[]" value="tourist spots" type="checkbox" /> Tourist Spots</li>
+                <li><input name="directory[]" value="discussion" type="checkbox" /> Discussion</li>
+                <li><input name="directory[]" value="directory" type="checkbox" /> Directory</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <a class="btn btn-default" href="choose-website">Back</a> <input type="submit" value="Next" class="btn btn-default" />
+        </div>
+    </div>
+</form>
