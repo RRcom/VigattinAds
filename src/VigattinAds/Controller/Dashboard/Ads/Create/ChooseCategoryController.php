@@ -12,9 +12,10 @@ class ChooseCategoryController extends AdsController
     public function indexAction()
     {
         $actionContent = new ViewModel();
-        $this->mainView->setVariable('title', 'Step 2. Choose category');
+        $this->mainView->setVariable('title', 'Step 2. Show allowed category');
         $actionContent->setTemplate('vigattinads/view/dashboard/ads/create/chooseCategoryView');
         $actionContent->setVariable('website', $this->sessionManager->getStorage()->tempAdsTemplate['showIn']);
+        $actionContent->setVariable('categories', explode('|', $this->sessionManager->getStorage()->tempAdsKeyword));
         $this->mainView->addChild($actionContent, 'actionContent');
         return $this->mainView;
     }

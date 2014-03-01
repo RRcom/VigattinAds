@@ -8,6 +8,7 @@ class ChooseWebsiteController extends AdsController
 {
     public function indexAction()
     {
+        $this->saveImportedAdsToSession();
         $actionContent = new ViewModel();
         $this->mainView->setVariable('title', 'Step 1. Choose a website');
         $actionContent->setTemplate('vigattinads/view/dashboard/ads/create/chooseWebsiteView');
@@ -19,20 +20,32 @@ class ChooseWebsiteController extends AdsController
         $param = $this->params()->fromRoute('param', '');
         switch(strtolower($param)) {
             case 'tourism':
-                $this->sessionManager->getStorage()->tempAdsTemplate = array('showIn' => 'vigattintourism.com', 'template' => '');
+                $this->sessionManager->getStorage()->tempAdsTemplate = array('showIn' => 'vigattintourism.com', 'template' => 'home-sidebar-right');
                 return $this->redirect()->toRoute('vigattinads_dashboard_ads_create', array('controller' => 'choose-directory'));
                 break;
             case 'trade':
-                $this->sessionManager->getStorage()->tempAdsTemplate = array('showIn' => 'vigattintrade.com', 'template' => '');
+                $this->sessionManager->getStorage()->tempAdsTemplate = array('showIn' => 'vigattintrade.com', 'template' => 'home-sidebar-left');
                 return $this->redirect()->toRoute('vigattinads_dashboard_ads_create', array('controller' => 'choose-category'));
                 break;
-            case 'vigattin':
-                $this->sessionManager->getStorage()->tempAdsTemplate = array('showIn' => 'vigattin.com', 'template' => '');
+            case 'deals':
+                $this->sessionManager->getStorage()->tempAdsTemplate = array('showIn' => 'vigattindeals.com', 'template' => 'home-body');
                 return $this->redirect()->toRoute('vigattinads_dashboard_ads_create', array('controller' => 'choose-category'));
                 break;
             default:
                 return $this->redirect()->toRoute('vigattinads_dashboard_ads_create', array('controller' => 'choose-website'));
                 break;
+        }
+    }
+
+    public function saveImportedAdsToSession()
+    {
+        if($this->getRequest()->getPost('action', '') == 'save-session') {
+            $this->sessionManager->getStorage()->tempAdsTitle = $this->getRequest()->getPost('ads-title', '');
+            $this->sessionManager->getStorage()->tempAdsUrl = $this->getRequest()->getPost('ads-url', '');
+            $this->sessionManager->getStorage()->tempAdsKeyword = $this->getRequest()->getPost('ads-keyword', '');
+            $this->sessionManager->getStorage()->tempAdsDescription = $this->getRequest()->getPost('ads-description', '');
+            $this->sessionManager->getStorage()->tempAdsImageDataUrl = $this->getRequest()->getPost('ads-image-data-url', '');
+            $this->sessionManager->getStorage()->tempAdsPrice = $this->getRequest()->getPost('ads-price', '');
         }
     }
 }

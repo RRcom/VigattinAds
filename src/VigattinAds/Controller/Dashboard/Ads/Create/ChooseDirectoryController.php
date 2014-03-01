@@ -12,25 +12,12 @@ class ChooseDirectoryController extends AdsController
     public function indexAction()
     {
         $actionContent = new ViewModel();
-        $this->mainView->setVariable('title', 'Step 2. Choose directory');
+        $this->mainView->setVariable('title', 'Step 2. Show allowed category');
         $actionContent->setTemplate('vigattinads/view/dashboard/ads/create/chooseDirectoryView');
         $actionContent->setVariable('website', $this->sessionManager->getStorage()->tempAdsTemplate['showIn']);
+        $actionContent->setVariable('categories', explode('|', $this->sessionManager->getStorage()->tempAdsKeyword));
         $this->mainView->addChild($actionContent, 'actionContent');
         return $this->mainView;
-    }
-
-    public function nextAction()
-    {
-        $allAbsoluteKeywords = '';
-        $directories = $this->getRequest()->getPost('directory', array());
-        if(!count($directories)) return $this->redirect()->toRoute('vigattinads_dashboard_ads_create', array('controller' => 'choose-directory'));
-        foreach($directories as $directory) {
-            $allAbsoluteKeywords .= trim($directory).'|';
-        }
-        $allAbsoluteKeywords = trim($allAbsoluteKeywords, '|');
-        $this->sessionManager->getStorage()->tempAdsTemplate['template'] = 'home-sidebar-right';
-        $this->sessionManager->getStorage()->tempAdsKeyword = $allAbsoluteKeywords;
-        return $this->redirect()->toRoute('vigattinads_dashboard_ads_info');
     }
 
     public function onDispatch(MvcEvent $e)

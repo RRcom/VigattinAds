@@ -83,6 +83,8 @@ class AdsWizardEditInfoController extends AdsController
                 break;
             case 'vigattintourism.com':
                 $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsWizardEditInfoTourismView');
+                $formError['adsTempKeyword'] = 'Homepage|Destination|Articles|Tourist Spots|Discussion|Directory';
+                $formError['adsKeyword'] = '';
                 break;
             case 'vigattin.com':
                 $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsWizardEditInfoNoCatView');

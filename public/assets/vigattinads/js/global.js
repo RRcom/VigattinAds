@@ -203,6 +203,16 @@ var catMap = {
     }
 };
 
+/* tourism category map v1.0 */
+var catMapTourism = {
+    'homepage' : {'url' : '/vigattintourism.com'},
+    'destination' : {'url' : '/vigattintourism.com/tourism/destinations'},
+    'articles' : {'url' : '/vigattintourism.com/tourism/articles?page=1'},
+    'tourist spots' : {'url' : '/vigattintourism.com/tourism/tourist_spots'},
+    'discussion' : {'url' : '/vigattintourism.com/tourism/discussion'},
+    'directory' : {'url' : '/vigattintourism.com/tourism/destinations/91/directory'}
+};
+
 /* tools */
 function getBase64Image(img) {
     var canvas = document.createElement("canvas");
@@ -770,7 +780,7 @@ $(document).ready(function(e) {
         }
 
         function submitInfo(adsTitle, adsUrl, adsImage, adsKeyword, adsDescription, adsPrice) {
-            var form = $('<form method="post" action="/vigattinads/dashboard/ads/template"></form>');
+            var form = $('<form method="post" action="/vigattinads/dashboard/ads/create/choose-website"></form>');
             form.append($('<input type="hidden" name="ads-title" value="'+adsTitle+'" />'));
             form.append($('<input type="hidden" name="ads-url" value="'+adsUrl+'" />'));
             form.append($('<input type="hidden" name="ads-image-data-url" value="'+adsImage+'" />'));
@@ -1041,32 +1051,6 @@ $(document).ready(function(e) {
 
     })(jQuery);
 
-    /* ads temp preview generator */
-    (function($){
-        var previewLink;
-        var adsContainer;
-
-        function init() {
-            previewLink = $('.ads-preview-link');
-            adsContainer = $('.ads-frame');
-            previewLink.unbind('click').click(function(e){onAdsLinkClick(e);});
-        }
-
-        function onAdsLinkClick(e) {
-            saveAdsToBrowser();
-        }
-
-        function saveAdsToBrowser() {
-            localStorage.tempAdsTitle = $('.ads-frame-title', adsContainer).text();
-            localStorage.tempAdsPrice = $('.price-value', adsContainer).text();
-            localStorage.tempAdsDescription = $('.ads-frame-description', adsContainer).text();
-            localStorage.tempAdsImage = $('.ads-frame-image', adsContainer).attr('src');
-            console.log(localStorage);
-        }
-
-        init();
-    })(jQuery);
-
     /* tourism directory*/
     var TourismDirectory = new (function($) {
         var dirList;
@@ -1079,6 +1063,7 @@ $(document).ready(function(e) {
                 generateList();
                 if(!keywordsInput.val()) populateAbsolute();
                 initCheckboxStatus();
+                $('.tourism-cat-checkbox').unbind('change').change(onCheckboxClick);
             }
         }
 
@@ -1089,7 +1074,8 @@ $(document).ready(function(e) {
 
         function generateList() {
             $.each(getTempKeyword(), function(key, value) {
-                dirList.append('<li><a class="ads-preview-link" target="_blank" href="">preview</a> <input class="tourism-cat-checkbox" type="checkbox" style="margin-left: 10px" value="'+value+'" /> '+value+'</li>');
+                var category = catMapTourism[value.toLowerCase()];
+                dirList.append('<li><a class="ads-preview-link" target="_blank" href="http:/'+category.url+'#preview">preview</a> <input class="tourism-cat-checkbox" type="checkbox" style="margin-left: 10px" value="'+value+'" /> '+value+'</li>');
             });
         }
 
@@ -1103,7 +1089,23 @@ $(document).ready(function(e) {
         }
 
         function onCheckboxClick(e) {
-
+            var keywordValue;
+            var checkBoxes = $('.tourism-cat-checkbox');
+            populateAbsolute();
+            keywordValue = keywordsInput.val();
+            checkBoxes.each(function(key, value) {
+                var checkBox = $(value);
+                if(!checkBox.is(":checked")) {
+                    keywordValue = keywordValue.replace('('+checkBox.val()+')', '');
+                }
+            });
+            keywordsInput.val(keywordValue);
+            if($('.tourism-cat-checkbox:checked').length == 1) {
+                $('.tourism-cat-checkbox:checked').attr('disabled', 'disabled');
+            }
+            else {
+                checkBoxes.removeAttr('disabled');
+            }
         }
 
         function getTempKeyword() {
@@ -1127,8 +1129,31 @@ $(document).ready(function(e) {
     })(jQuery);
 });
 
+/* ads temp preview generator */
+(function($){
+    var previewLink;
+    var adsContainer;
 
+    function init() {
+        previewLink = $('.ads-preview-link');
+        adsContainer = $('.ads-frame');
+        previewLink.unbind('click').click(function(e){onAdsLinkClick(e);});
+    }
 
+    function onAdsLinkClick(e) {
+        saveAdsToBrowser();
+    }
+
+    function saveAdsToBrowser() {
+        localStorage.tempAdsTitle = $('.ads-frame-title', adsContainer).text();
+        localStorage.tempAdsPrice = $('.price-value', adsContainer).text();
+        localStorage.tempAdsDescription = $('.ads-frame-description', adsContainer).text();
+        localStorage.tempAdsImage = $('.ads-frame-image', adsContainer).attr('src');
+        console.log(localStorage);
+    }
+
+    init();
+})(jQuery);
 
 
 
