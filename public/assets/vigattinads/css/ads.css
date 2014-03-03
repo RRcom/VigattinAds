@@ -180,6 +180,8 @@ body {
 .sidebar-ads-fbstyle .ads-frame .ads-frame-title {
     color: #3b5998;
     font-weight: bold;
+    word-wrap: break-word;
+    padding-bottom: 2px;
 }
 .sidebar-ads-fbstyle .ads-frame .ads-frame-price {
     color: #666;

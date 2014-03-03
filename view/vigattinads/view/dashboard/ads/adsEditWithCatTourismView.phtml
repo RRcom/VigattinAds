@@ -70,11 +70,19 @@
                         <span class="help-block"><?php if($adsUrlError) echo $adsUrlError; ?></span>
                         <input type="text" maxlength="256" class="form-control" id="ads-url" name="ads-url" required="true" placeholder="Ads URL" value="<?php echo $this->escapeHtmlAttr($adsUrl); ?>">
                     </div>
-
                     <div class="hide form-group ads-form-keyword <?php echo $adsKeywordError ? 'has-error' : ''; ?>">
-                        <label class="control-label" for="ads-keyword">Target Keyword <small class="text-warning">max character 48 allowed alphanumeric, space and comma</small></label>
+                        <label class="control-label" for="ads-keyword">Target Keyword <small class="text-warning">max character 512</small></label>
                         <span class="help-block"><?php if($adsKeywordError) echo $adsKeywordError; ?></span>
-                        <input type="text" maxlength="48" class="form-control" id="ads-keyword" name="ads-keyword" placeholder="Leave blank to target all" value="<?php echo $this->escapeHtmlAttr($adsKeyword); ?>">
+                        <input type="text" maxlength="512" class="form-control" id="ads-keyword" name="ads-keyword" placeholder="Leave blank to target all" value="<?php echo $this->escapeHtmlAttr($adsKeyword); ?>">
+                        <input type="hidden" id="ads-temp-keyword" name="ads-temp-keyword" value="<?php echo $this->escapeHtmlAttr($adsTempKeyword); ?>">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="control-label">Vigattintourism Directory <small class="text-warning">Choose which directory the ads will appear</small></label>
+                        <ul class="list-group list-unstyled" id="tourismDirectoryList">
+
+                        </ul>
                     </div>
 
                     <div class="form-group ads-form-keyword <?php echo $adsPriceError ? 'has-error' : ''; ?>">

@@ -72,27 +72,29 @@ a:hover {
     font-size: 11px;
     padding: 10px 0;
     background-color: #EEEDDD;
+    width: 247px;
+    font-family: 'lucida grande',tahoma,verdana,arial,sans-serif;
 }
 .ads-frame .ads-frame-image {
-    width: 100%;
+    width: 100px;
 }
 .ads-frame .ads-frame-title {
+    color: #3b5998;
     font-weight: bold;
-    text-align: center;
     word-wrap: break-word;
+    padding-bottom: 2px;
 }
 .ads-frame .ads-frame-price {
-    font-weight: bold;
-    text-align: center;
-    padding-bottom: 3px;
+    color: #666;
     word-wrap: break-word;
 }
 .ads-frame .ads-frame-description {
     word-wrap: break-word;
+    display: inline-block;
+    width: 112px;
 }
 .ads-frame .ads-image-preview-container {
     display: inline-block;
-    width: 40%;
     margin-right: 5px;
     float: left;
 }

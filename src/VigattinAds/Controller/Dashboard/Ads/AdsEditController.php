@@ -133,7 +133,7 @@ class AdsEditController extends AdsController
                 }
                 break;
             case 'vigattintourism.com':
-                $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsEditView');
+                $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsEditWithCatTourismView');
                 break;
             case 'vigattin.com':
                 $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsEditView');

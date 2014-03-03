@@ -66,7 +66,7 @@ class Validator
         return '';
     }
 
-    static public function isTitleValid($name, $min = 6, $max = 30)
+    static public function isTitleValid($name, $min = 6, $max = 60)
     {
         $pattern = self::$titlePattern;
         $regex = new Regex(array('pattern' => $pattern));

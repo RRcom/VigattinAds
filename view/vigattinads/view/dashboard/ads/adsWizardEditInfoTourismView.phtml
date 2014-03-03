@@ -52,7 +52,7 @@
                             <div class="form-group ads-form-title <?php echo $adsTitleError ? 'has-error' : ''; ?>">
                                 <label class="control-label" for="ads-title">Ads Title <small id="adsTitleCountDisplay" class="text-warning"></small></label>
                                 <span class="help-block"><?php if($adsTitleError) echo $adsTitleError; ?></span>
-                                <input type="text" maxlength="30" class="form-control countable-character" data-max-char="30" data-target-display="#adsTitleCountDisplay" id="ads-title" name="ads-title" required="true" placeholder="Ads Title" value="<?php echo $this->escapeHtmlAttr($adsTitle); ?>">
+                                <input type="text" maxlength="60" class="form-control countable-character" data-max-char="60" data-target-display="#adsTitleCountDisplay" id="ads-title" name="ads-title" required="true" placeholder="Ads Title" value="<?php echo $this->escapeHtmlAttr($adsTitle); ?>">
                             </div>
                             <div class="form-group ads-form-url <?php echo $adsUrlError ? 'has-error' : ''; ?>">
                                 <label class="control-label" for="ads-url">Ads Url <small class="text-warning">allowed valid url</small></label>
@@ -74,7 +74,7 @@
                             </div>
 
                             <div class="form-group ads-form-price <?php echo $adsPriceError ? 'has-error' : ''; ?>">
-                                <label class="control-label" for="ads-price">Price Php <small class="text-warning">allowed decimal number only</small></label>
+                                <label class="control-label" for="ads-keyword">Price in Php <small class="text-warning">numbers only no special characters</small></label>
                                 <span class="help-block"><?php if($adsPriceError) echo $adsPriceError; ?></span>
                                 <input type="number" step="any" class="form-control" id="ads-price" name="ads-price" placeholder="Ads price" value="<?php echo $this->escapeHtmlAttr($adsPrice); ?>">
                             </div>
