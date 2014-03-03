@@ -123,7 +123,7 @@ class AdsWizardEditInfoController extends AdsController
                 $this->sessionManager->getStorage()->tempAdsTemplate['template'],
                 $this->getRequest()->getPost('ads-keyword', ''),
                 $this->sessionManager->getStorage()->tempAdsPrice,
-                $this->sessionManager->getStorage()->tempAdsKeyword
+                $this->getRequest()->getPost('ads-temp-keyword', '')
             );
             $this->adsUser->flush();
             $this->clearTempData();

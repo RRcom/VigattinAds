@@ -213,6 +213,31 @@ var catMapTourism = {
     'directory' : {'url' : '/vigattintourism.com/tourism/destinations/91/directory'}
 };
 
+/* ads temp preview generator */
+var tempPreview = new (function($){
+    var previewLink;
+    var adsContainer;
+
+    this.init = init;
+
+    function init() {
+        previewLink = $('.ads-preview-link');
+        adsContainer = $('.ads-frame');
+        previewLink.unbind('click').click(function(e){onAdsLinkClick(e);});
+    }
+
+    function onAdsLinkClick(e) {
+        saveAdsToBrowser();
+    }
+
+    function saveAdsToBrowser() {
+        localStorage.tempAdsTitle = $('.ads-frame-title', adsContainer).text();
+        localStorage.tempAdsPrice = $('.price-value', adsContainer).text();
+        localStorage.tempAdsDescription = $('.ads-frame-description', adsContainer).text();
+        localStorage.tempAdsImage = $('.ads-frame-image', adsContainer).attr('src');
+    }
+})(jQuery);
+
 /* tools */
 function getBase64Image(img) {
     var canvas = document.createElement("canvas");
@@ -915,6 +940,7 @@ $(document).ready(function(e) {
             if(catList.length) {
                 generateList(catList);
                 onCheckChange(null);
+                tempPreview.init();
             }
         }
 
@@ -1064,6 +1090,7 @@ $(document).ready(function(e) {
                 if(!keywordsInput.val()) populateAbsolute();
                 initCheckboxStatus();
                 $('.tourism-cat-checkbox').unbind('change').change(onCheckboxClick);
+                tempPreview.init();
             }
         }
 
@@ -1129,31 +1156,6 @@ $(document).ready(function(e) {
     })(jQuery);
 });
 
-/* ads temp preview generator */
-(function($){
-    var previewLink;
-    var adsContainer;
-
-    function init() {
-        previewLink = $('.ads-preview-link');
-        adsContainer = $('.ads-frame');
-        previewLink.unbind('click').click(function(e){onAdsLinkClick(e);});
-    }
-
-    function onAdsLinkClick(e) {
-        saveAdsToBrowser();
-    }
-
-    function saveAdsToBrowser() {
-        localStorage.tempAdsTitle = $('.ads-frame-title', adsContainer).text();
-        localStorage.tempAdsPrice = $('.price-value', adsContainer).text();
-        localStorage.tempAdsDescription = $('.ads-frame-description', adsContainer).text();
-        localStorage.tempAdsImage = $('.ads-frame-image', adsContainer).attr('src');
-        console.log(localStorage);
-    }
-
-    init();
-})(jQuery);
 
 
 

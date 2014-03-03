@@ -59,7 +59,7 @@
                                 <span class="help-block"><?php if($adsUrlError) echo $adsUrlError; ?></span>
                                 <input type="text" maxlength="256" class="form-control" id="ads-url" name="ads-url" required="true" placeholder="Ads URL" value="<?php echo $this->escapeHtmlAttr($adsUrl); ?>">
                             </div>
-                            <div class="form-group ads-form-keyword <?php echo $adsKeywordError ? 'has-error' : ''; ?>">
+                            <div class="hide form-group ads-form-keyword <?php echo $adsKeywordError ? 'has-error' : ''; ?>">
                                 <label class="control-label" for="ads-keyword">Target Keyword <small class="text-warning">max character 512</small></label>
                                 <span class="help-block"><?php if($adsKeywordError) echo $adsKeywordError; ?></span>
                                 <input type="text" maxlength="512" class="form-control" id="ads-keyword" name="ads-keyword" placeholder="Leave blank to target all" value="<?php echo $this->escapeHtmlAttr($adsKeyword); ?>">
