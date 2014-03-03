@@ -320,7 +320,7 @@ $(document).ready(function(e) {
     /* ads edit text */
     (function($) {
         function init() {
-            var price = isNaN($('#ads-price')) ? 0 : $('#ads-price').val();
+            var price = isNaN($('#ads-price').val()) ? 0 : $('#ads-price').val();
             if(price > 0) {
                 $('.ads-frame .ads-frame-price').show();
                 $('.ads-frame .ads-frame-price .price-value').text(parseFloat(price).toFixed(2));
