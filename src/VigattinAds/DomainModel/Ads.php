@@ -121,6 +121,12 @@ class Ads extends AbstractEntity
      */
     protected $category = '';
 
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @ORM\OneToMany(targetEntity="VigattinAds\DomainModel\AdsApproveLog", mappedBy="ads")
+     */
+    protected $adsApproveLog;
+
     //==================================================================================================
 
     public function __construct(AdsUser $adsUser)

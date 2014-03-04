@@ -34,3 +34,23 @@ $(document).ready(function() {
         $('.ads-sidebar-generic .ads-frame .ads-content .ads-image-preview-container').height($('.ads-sidebar-generic .ads-frame .ads-content .ads-image-preview-container').width() * ratio);
     });
 });
+
+/* ads auto refresh */
+$(document).ready(function() {
+    var refreshTime = 300; // in seconds
+    var activeTime = refreshTime;
+    var isFocus = true;
+    var timerObject = setInterval(function() {
+        if(isFocus) activeTime--;
+        if(activeTime < 0) {
+            activeTime = refreshTime;
+            window.location.reload();
+        }
+    }, 1000);
+    $(window).focus(function() {
+        isFocus = true;
+    });
+    $(window).blur(function(){
+        isFocus = false;
+    });
+});

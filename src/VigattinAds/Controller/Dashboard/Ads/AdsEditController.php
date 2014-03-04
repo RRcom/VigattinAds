@@ -14,6 +14,8 @@ class AdsEditController extends AdsController
 
         if($adsEntity instanceof \VigattinAds\DomainModel\Ads) {
             $adsViewCount = $adsEntity->get('adsView')->count();
+            /** @var \Doctrine\Common\Collections\ArrayCollection $adsApproveLog */
+            $adsApproveLog =  $adsEntity->get('adsApproveLog');
             if(strtolower($this->getRequest()->getPost('submit', '')) == 'next') {
                 $formError = array(
                     'adsTitle' => $this->getRequest()->getPost('ads-title', ''),
@@ -147,6 +149,7 @@ class AdsEditController extends AdsController
         $actionContent->setVariable('userManager', $this->userManager);
         $actionContent->setVariable('adsUser', $this->adsUser);
         $actionContent->setVariable('adsViewCount', $adsViewCount);
+        $actionContent->setVariable('adsReviewReason', $adsApproveLog->last()->get('reviewReason'));
 
         $this->mainView->addChild($actionContent, 'actionContent');
         return $this->mainView;

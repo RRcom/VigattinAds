@@ -419,10 +419,12 @@ $(document).ready(function(e) {
                 }
             });
         });
-        setTimeout(function(){
+        setTimeout(function() {
+            /* disabled auto hide alert box
             $(".alert.auto-hide").fadeOut(5000, function() {
                 $(".alert.auto-hide").alert('close');
             })
+            */
         }, 10000);
     })(jQuery);
 
@@ -867,91 +869,6 @@ $(document).ready(function(e) {
         }
 
     })(jQuery);
-
-    /* trade category
-    var TradeCategory = new (function($) {
-        var catList
-
-        init();
-
-        function init() {
-            catList = $('#tradeCategoryList');
-            if(catList.length) {
-                generateList(catList);
-            }
-        }
-
-        this.init = function(){init();}
-
-        function generateList(catList) {
-            var keyword = $('#ads-keyword').val();
-            catList.html('');
-            if((typeof keyword) == 'string') {
-                var catArray = keyword.split('|');
-                var checked = true;
-                var count = 0;
-                var preview = '';
-                var mapObject;
-                if((typeof catArray) == 'object') {
-                    catArray.unshift('All');
-                }
-                else catArray = new Array('All');
-                $.each(catArray, function(key, value) {
-                    if(value.charAt(0) == '^') {
-                        checked = false;
-                        value = value.replace('^', '');
-                    }
-                    switch(count) {
-                        case 0:
-                            preview = '//www.vigattintrade.com/results/browse/';
-                            break
-                        case 1:
-                            mapObject = catMap[value.toLowerCase()];
-                            preview += mapObject['id']+'/';
-                            break;
-                        case 2:
-                            mapObject = mapObject['cat'][value.toLowerCase()];
-                            preview += mapObject['id']+'/';
-                            break;
-                        case 3:
-                            mapObject = mapObject['cat'][value.toLowerCase()];
-                            preview += '?service='+mapObject['id'];
-                            break;
-                    }
-                    if(checked) {
-                        catList.append('<li><a target="_blank" href="'+preview+'">preview</a> <input data-pos="'+key+'" class="trade-cat-checkbox-'+key+'" type="checkbox" checked="checked" style="margin-left: 10px" /> '+value+'</li>');
-                        //$('.trade-cat-checkbox-'+(key-1)).css({'opacity': 0.5});
-                    }
-                    else {
-                        catList.append('<li><a target="_blank" href="'+preview+'">preview</a> <input data-pos="'+key+'" class="trade-cat-checkbox-'+key+'" type="checkbox" style="margin-left: 10px" /> '+value+'</li>');
-                    }
-                    count++;
-                });
-                $('input', catList).unbind('change').change(function(e) {
-                    var pos = $(e.currentTarget).attr('data-pos');
-                    rewriteCat(pos, catList);
-                });
-                console.log(count);
-            }
-        }
-
-        function rewriteCat(filterPos, catList) {
-            var keyword = $('#ads-keyword').val();
-            var finalCat = '';
-            if((typeof keyword) == 'string') {
-                var catArray = keyword.split('|');
-                $.each(catArray, function(key, value) {
-                    value = value.replace('^', '');
-                    if(parseInt(filterPos) == (key)) value = '^'+value;
-                    if(key < (catArray.length-1)) value = value+'|'
-                    finalCat = finalCat+value;
-                });
-            }
-            $('#ads-keyword').val(finalCat);
-            generateList(catList)
-        }
-    })(jQuery);
-    */
 
     /* trade category */
     var TradeCategory = new (function($) {

@@ -32,7 +32,7 @@ class AdsApproveLog extends AbstractEntity
 
     /**
      * @var \VigattinAds\DomainModel\AdsUser
-     * @ORM\ManyToOne(targetEntity="VigattinAds\DomainModel\Ads")
+     * @ORM\ManyToOne(targetEntity="VigattinAds\DomainModel\Ads", inversedBy="adsApproveLog")
      */
     protected $ads;
 
@@ -52,7 +52,7 @@ class AdsApproveLog extends AbstractEntity
      * @var String
      * @ORM\Column(name="review_reason", type="text")
      */
-    protected $reviewReason;
+    protected $reviewReason = '';
 
     /**
      * @var int
