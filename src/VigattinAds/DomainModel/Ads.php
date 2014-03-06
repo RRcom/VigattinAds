@@ -208,4 +208,14 @@ class Ads extends AbstractEntity
         $query->execute();
     }
 
+    /**
+     * Get the latest review reason if any
+     * @return string review reason
+     */
+    public function getLastReviewReason()
+    {
+        if(!$this->adsApproveLog->count()) return '';
+        return $this->adsApproveLog->last()->get('reviewReason');
+    }
+
 }

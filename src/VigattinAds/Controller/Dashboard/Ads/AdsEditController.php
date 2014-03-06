@@ -149,7 +149,7 @@ class AdsEditController extends AdsController
         $actionContent->setVariable('userManager', $this->userManager);
         $actionContent->setVariable('adsUser', $this->adsUser);
         $actionContent->setVariable('adsViewCount', $adsViewCount);
-        $actionContent->setVariable('adsReviewReason', $adsApproveLog->last()->get('reviewReason'));
+        $actionContent->setVariable('adsReviewReason', $adsEntity->getLastReviewReason());
 
         $this->mainView->addChild($actionContent, 'actionContent');
         return $this->mainView;

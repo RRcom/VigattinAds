@@ -235,6 +235,7 @@ var tempPreview = new (function($){
         localStorage.tempAdsPrice = $('.price-value', adsContainer).text();
         localStorage.tempAdsDescription = $('.ads-frame-description', adsContainer).text();
         localStorage.tempAdsImage = $('.ads-frame-image', adsContainer).attr('src');
+        localStorage.tempAdsUrl = $('#ads-url').val();
     }
 })(jQuery);
 
@@ -319,6 +320,8 @@ $(document).ready(function(e) {
 
     /* ads edit text */
     (function($) {
+        var titleMaxChar = $('#ads-title').attr('data-max-char');
+        var descriptionMaxChar = $('#ads-description').attr('data-max-char');
         function init() {
             var price = isNaN($('#ads-price').val()) ? 0 : $('#ads-price').val();
             if(price > 0) {
@@ -330,11 +333,19 @@ $(document).ready(function(e) {
                 $('.ads-frame .ads-frame-price').hide();
             }
         }
+        function textInputChange(sourceElement, targetElement, maxChar) {
+            var text = $(sourceElement).val();
+            $(targetElement).text(text.substr(0, maxChar));
+        }
         $('#ads-title').keyup(function(e) {
-            $('.ads-frame .ads-frame-title').text($(e.currentTarget).val());
+            textInputChange($(e.currentTarget), $('.ads-frame .ads-frame-title'), titleMaxChar);
+        }).change(function(e) {
+            textInputChange($(e.currentTarget), $('.ads-frame .ads-frame-title'), titleMaxChar);
         });
         $('#ads-description').keyup(function(e) {
-            $('.ads-frame .ads-frame-description').text($(e.currentTarget).val());
+            textInputChange($(e.currentTarget), $('.ads-frame .ads-frame-description'), descriptionMaxChar);
+        }).change(function(e){
+            textInputChange($(e.currentTarget), $('.ads-frame .ads-frame-description'), descriptionMaxChar);
         });
         $('#ads-price').change(function(e) {
             var price = isNaN($(e.currentTarget).val()) ? 0 : $(e.currentTarget).val();
@@ -1106,10 +1117,6 @@ $(document).ready(function(e) {
         init();
     })(jQuery);
 });
-
-
-
-
 
 
 

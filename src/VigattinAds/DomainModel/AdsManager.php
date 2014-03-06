@@ -87,12 +87,12 @@ class AdsManager
     {
         $success = false;
         $key = md5('global-rotate'.$showIn.$template.$keyword);
-        //$start = $this->settingsManager->get($key);
         $start = $this->cache->getItem($key, $success);
         if(!$success) {
             $start = 0;
             $this->cache->setItem($key, $start);
         }
+        //$start = 2;
         $total = $this->countAdsTotal($showIn, $template, $keyword);
 
         // Check if start is higher than total and if so, reset start
@@ -104,7 +104,8 @@ class AdsManager
         // Check if result is lower than limit output if so query again to the first row to fill the the remaining ads
         if(($resultTotal < $limit))
         {
-            $result2 = $this->searchAds($showIn, $template, $keyword, 0, $limit - $resultTotal);
+            if($total < $limit) $result2 = $this->searchAds($showIn, $template, $keyword, 0, $total - $resultTotal);
+            else $result2 = $this->searchAds($showIn, $template, $keyword, 0, $limit - $resultTotal);
             $start = $limit - $resultTotal;
             foreach($result2 as $tmpRes)
             {
@@ -112,7 +113,6 @@ class AdsManager
             }
         }
         else $start = $start + $limit;
-        //$this->settingsManager->set($key, $start);
         $this->cache->setItem($key, $start);
         return $result;
     }

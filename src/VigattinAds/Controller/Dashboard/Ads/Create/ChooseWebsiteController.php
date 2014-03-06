@@ -41,9 +41,12 @@ class ChooseWebsiteController extends AdsController
     {
         if($this->getRequest()->getPost('action', '') == 'save-session') {
             $this->sessionManager->getStorage()->tempAdsTitle = $this->getRequest()->getPost('ads-title', '');
+            $this->sessionManager->getStorage()->origAdsTitle = $this->getRequest()->getPost('ads-title', '');
             $this->sessionManager->getStorage()->tempAdsUrl = $this->getRequest()->getPost('ads-url', '');
+            $this->sessionManager->getStorage()->origAdsUrl = $this->getRequest()->getPost('ads-url', '');
             $this->sessionManager->getStorage()->tempAdsKeyword = $this->getRequest()->getPost('ads-keyword', '');
             $this->sessionManager->getStorage()->tempAdsDescription = $this->getRequest()->getPost('ads-description', '');
+            $this->sessionManager->getStorage()->origAdsDescription = $this->getRequest()->getPost('ads-description', '');
             $this->sessionManager->getStorage()->tempAdsImageDataUrl = $this->getRequest()->getPost('ads-image-data-url', '');
             $this->sessionManager->getStorage()->tempAdsPrice = $this->getRequest()->getPost('ads-price', '');
         }
