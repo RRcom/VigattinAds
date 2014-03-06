@@ -45,7 +45,7 @@
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 full-ads-column">
                             <?php if($origAdsTitle || $origAdsDescription): ?>
                                 <div class="full-ads-container">
-                                    <div class="full-ads-label">Original ads</div>
+                                    <div class="full-ads-label">Original title and description</div>
                                     <div class="full-title"><?php echo $this->escapeHtml($origAdsTitle); ?></div>
                                     <div class="full-description"><?php echo $this->escapeHtml($origAdsDescription); ?></div>
                                 </div>
@@ -60,7 +60,7 @@
                         </div>
                         <form id="ads-form" role="form" action="" method="post" enctype="multipart/form-data">
                             <div class="form-group ads-form-title <?php echo $adsTitleError ? 'has-error' : ''; ?>">
-                                <label class="control-label" for="ads-title">Ads Title <small id="adsTitleCountDisplay" class="text-warning"></small></label>
+                                <label class="control-label" for="ads-title">Edited Title <small id="adsTitleCountDisplay" class="text-warning"></small></label>
                                 <span class="help-block"><?php if($adsTitleError) echo $adsTitleError; ?></span>
                                 <input type="text" class="form-control countable-character" data-max-char="60" data-target-display="#adsTitleCountDisplay" id="ads-title" name="ads-title" required="true" placeholder="Ads Title" value="<?php echo $this->escapeHtmlAttr($adsTitle); ?>">
                             </div>
@@ -83,7 +83,7 @@
                                 <input type="number" step="any" class="form-control" id="ads-price" name="ads-price" placeholder="Ads price" value="<?php echo $this->escapeHtmlAttr($adsPrice); ?>">
                             </div>
                             <div class="form-group ads-form-description <?php echo $adsDescriptionError ? 'has-error' : ''; ?>">
-                                <label class="control-label" for="ads-description">Ads Description <small id="adsDescriptionCountDisplay" class="text-warning"></small></label>
+                                <label class="control-label" for="ads-description">Edited Description <small id="adsDescriptionCountDisplay" class="text-warning"></small></label>
                                 <span class="help-block"><?php if($adsDescriptionError) echo $adsDescriptionError; ?></span>
                                 <textarea class="description-input form-control countable-character" data-max-char="130" data-target-display="#adsDescriptionCountDisplay" id="ads-description" name="ads-description" placeholder="Ads Description"><?php echo $this->escapeHtml($adsDescription); ?></textarea>
                             </div>

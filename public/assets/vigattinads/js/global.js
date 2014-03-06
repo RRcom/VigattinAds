@@ -1008,7 +1008,7 @@ $(document).ready(function(e) {
             var max = $(e.currentTarget).attr(maxCharAttr);
             var output = $($(e.currentTarget).attr(targetDisplayClassAttr));
             var remaining = max - $(e.currentTarget).val().length;
-            output.html('remaining character '+remaining);
+            output.html('character(s) '+remaining);
             if(remaining > -1) {
                 output.removeClass('text-danger');
             }
@@ -1028,7 +1028,7 @@ $(document).ready(function(e) {
                 var max = $(value).attr(maxCharAttr);
                 var output = $($(value).attr(targetDisplayClassAttr));
                 var remaining = max - $(value).val().length;
-                output.html('remaining character '+remaining);
+                output.html('character(s) '+remaining);
                 output.removeClass('text-danger');
                 if(remaining < 0) {
                     output.addClass('text-danger');
