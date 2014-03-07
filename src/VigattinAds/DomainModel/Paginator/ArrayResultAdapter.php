@@ -44,7 +44,7 @@ class ArrayResultAdapter implements AdapterInterface
     public function count()
     {
         // TODO: Implement count() method.
-        $result = (int) $this->userManager->countUserList();
+        $result = (int) $this->userManager->countUserList($this->searchFiled, $this->searchValue);
         return $result;
     }
 

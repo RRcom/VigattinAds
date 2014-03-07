@@ -59,6 +59,8 @@ class AdminManageAccountController extends AdminController
             return $this->redirect()->toRoute('vigattinads_dashboard_admin_manageaccount');
         }
 
+        if(!$this->sessionManager->getStorage()->userSearchCategory) $this->sessionManager->getStorage()->userSearchCategory = 'Show All';
+
         $categoryMap = array(
             'username' => UserManager::SEARCH_BY_USERNAME,
             'email' => UserManager::SEARCH_BY_EMAIL,

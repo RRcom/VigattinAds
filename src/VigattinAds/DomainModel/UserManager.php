@@ -139,9 +139,33 @@ class UserManager
         return $result;
     }
 
-    public function countUserList()
+    public function countUserList($searchField = self::SEARCH_BY_ALL, $searchValue = '')
     {
-        $query = $this->entityManager->createQuery("SELECT COUNT(u.id) FROM VigattinAds\DomainModel\AdsUser u");
+        $searchField = intval($searchField);
+        if(($searchField > 5) || ($searchField < 0)) $searchField = self::SEARCH_BY_ALL;
+
+        $fieldName = array(
+            'id',
+            'email',
+            'username',
+            'firstName',
+            'lastName'
+        );
+
+        // count all
+        if(($searchField == self::SEARCH_BY_ALL) && $searchValue == '') {
+            $query = $this->entityManager->createQuery("SELECT COUNT(u.id) FROM VigattinAds\DomainModel\AdsUser u");
+        }
+        // count all field
+        elseif($searchField == self::SEARCH_BY_ALL) {
+            $query = $this->entityManager->createQuery("SELECT COUNT(u.id) FROM VigattinAds\DomainModel\AdsUser u WHERE u.email LIKE :searchValue OR u.username LIKE :searchValue OR u.firstName LIKE :searchValue OR u.lastName LIKE :searchValue");
+            $query->setParameter('searchValue', $searchValue.'%');
+        }
+        // count by field
+        else {
+            $query = $this->entityManager->createQuery("SELECT COUNT(u.id) FROM VigattinAds\DomainModel\AdsUser u WHERE u.".$fieldName[$searchField]." LIKE :searchValue");
+            $query->setParameter('searchValue', $searchValue.'%');
+        }
         $result = $query->getSingleScalarResult();
         return $result;
     }
