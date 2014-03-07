@@ -117,7 +117,7 @@ class AdsWizardEditInfoController extends AdsController
     public function createDefaultValue()
     {
         $formError = array(
-            'adsTitle' => '', //$this->sessionManager->getStorage()->tempAdsTitle,
+            'adsTitle' => $this->sessionManager->getStorage()->tempAdsTitle,
             'adsUrl' => $this->sessionManager->getStorage()->tempAdsUrl,
             'adsKeyword' => '',
             'adsTempKeyword' => $this->sessionManager->getStorage()->tempAdsKeyword,

@@ -1116,6 +1116,18 @@ $(document).ready(function(e) {
 
         init();
     })(jQuery);
+
+    (function($) {
+        function init() {
+            $('.search-form1 .dropdown-menu .item').click(function(e) {
+                var category = $(e.currentTarget).text();
+                $('.search-form1 .category-switch').html(category + ' <span class="caret">').val(category);
+                $('.search-form1 .category-hidden-input').val(category);
+            });
+        }
+
+        init();
+    })(jQuery);
 });
 
 

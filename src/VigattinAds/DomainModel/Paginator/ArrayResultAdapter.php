@@ -9,6 +9,10 @@ class ArrayResultAdapter implements AdapterInterface
     /** @var \VigattinAds\DomainModel\UserManager */
     protected $userManager;
 
+    protected $searchFiled = UserManager::SEARCH_BY_ALL;
+
+    protected $searchValue = '';
+
     public function __construct(UserManager $userManager)
     {
         $this->userManager = $userManager;
@@ -24,7 +28,7 @@ class ArrayResultAdapter implements AdapterInterface
     public function getItems($offset, $itemCountPerPage)
     {
         // TODO: Implement getItems() method.
-        $result = $this->userManager->getUserList(UserManager::SORT_BY_ID, UserManager::SORT_DIRECTION_ASC, $offset, $itemCountPerPage);
+        $result = $this->userManager->getUserList(UserManager::SORT_BY_ID, UserManager::SORT_DIRECTION_ASC, $offset, $itemCountPerPage, $this->searchFiled, $this->searchValue);
         return $result;
     }
 
@@ -42,5 +46,15 @@ class ArrayResultAdapter implements AdapterInterface
         // TODO: Implement count() method.
         $result = (int) $this->userManager->countUserList();
         return $result;
+    }
+
+    public function setSearchFiled($value)
+    {
+        $this->searchFiled = $value;
+    }
+
+    public function setSearchValue($value)
+    {
+        $this->searchValue = $value;
     }
 }

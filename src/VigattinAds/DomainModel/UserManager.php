@@ -19,6 +19,12 @@ class UserManager
     const SORT_BY_LAST_NAME = 4;
     const SORT_DIRECTION_ASC = 0;
     const SORT_DIRECTION_DESC = 1;
+    const SEARCH_BY_ID = 0;
+    const SEARCH_BY_EMAIL = 1;
+    const SEARCH_BY_USERNAME = 2;
+    const SEARCH_BY_FIRST_NAME = 3;
+    const SEARCH_BY_LAST_NAME = 4;
+    const SEARCH_BY_ALL = 5;
 
     /**
      * @var \Zend\ServiceManager\ServiceManager
@@ -87,20 +93,46 @@ class UserManager
         return $this->user;
     }
 
-    public function getUserList($sortBy = self::SORT_BY_ID, $sortDirection = self::SORT_DIRECTION_ASC, $start = 0, $limit = 30)
+    /**
+     * @param int $sortBy
+     * @param int $sortDirection
+     * @param int $start
+     * @param int $limit
+     * @param int $searchField
+     * @param string $searchValue
+     * @return array
+     */
+    public function getUserList($sortBy = self::SORT_BY_ID, $sortDirection = self::SORT_DIRECTION_ASC, $start = 0, $limit = 30, $searchField = self::SEARCH_BY_ALL, $searchValue = '')
     {
+        $searchField = intval($searchField);
+        if(($searchField > 5) || ($searchField < 0)) $searchField = self::SEARCH_BY_ALL;
+
         $fieldName = array(
             'id',
             'email',
             'username',
-            'first_name',
-            'last_name'
+            'firstName',
+            'lastName'
         );
         $direction = array(
             'ASC',
             'DESC'
         );
-        $query = $this->entityManager->createQuery("SELECT u FROM VigattinAds\DomainModel\AdsUser u ORDER BY u.".$fieldName[$sortBy]." ".$direction[$sortDirection]);
+
+        // list all
+        if(($searchField == self::SEARCH_BY_ALL) && $searchValue == '') {
+            $query = $this->entityManager->createQuery("SELECT u FROM VigattinAds\DomainModel\AdsUser u ORDER BY u.".$fieldName[$sortBy]." ".$direction[$sortDirection]);
+        }
+        // search all field
+        elseif($searchField == self::SEARCH_BY_ALL) {
+            $query = $this->entityManager->createQuery("SELECT u FROM VigattinAds\DomainModel\AdsUser u WHERE u.email LIKE :searchValue OR u.username LIKE :searchValue OR u.firstName LIKE :searchValue OR u.lastName LIKE :searchValue ORDER BY u.".$fieldName[$sortBy]." ".$direction[$sortDirection]);
+            $query->setParameter('searchValue', $searchValue.'%');
+        }
+        // search by field
+        else {
+            $query = $this->entityManager->createQuery("SELECT u FROM VigattinAds\DomainModel\AdsUser u WHERE u.".$fieldName[$searchField]." LIKE :searchValue ORDER BY u.".$fieldName[$sortBy]." ".$direction[$sortDirection]);
+            $query->setParameter('searchValue', $searchValue.'%');
+        }
         $query->setFirstResult($start);
         $query->setMaxResults($limit);
         $result = $query->getResult();

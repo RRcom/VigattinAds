@@ -11,6 +11,30 @@ class AdminManageAccountController extends AdminController
 {
     protected function currentTab(ViewModel $actionContent)
     {
+        $adminManageAccountView = new ViewModel();
+
+        // if request for delete user
+        $this->catchDeleteRequest();
+
+        // generate result
+        $resultGenerator = new ArrayResultAdapter($this->userManager);
+
+        // catch refine search request
+        $this->catchRefineSearch($resultGenerator, $adminManageAccountView);
+
+        // Paginator
+        $paginator = new Paginator($resultGenerator);
+        $paginator->setCurrentPageNumber(intval($this->params('page', 0)));
+        $paginator->setItemCountPerPage(10);
+        $paginator->setPageRange(7);
+
+        $adminManageAccountView->setTemplate('vigattinads/view/dashboard/admin/adminManageAccountView');
+        $adminManageAccountView->setVariable('paginator', $paginator);
+        $actionContent->addChild($adminManageAccountView);
+    }
+
+    public function catchDeleteRequest()
+    {
         if($this->params('param1') == 'delete') {
             $user = $this->userManager->getUser($this->params('param2'));
             if($user instanceof \VigattinAds\DomainModel\AdsUser) {
@@ -21,16 +45,36 @@ class AdminManageAccountController extends AdminController
                 }
             }
         }
+    }
 
-        // Paginator
-        $paginator = new Paginator(new ArrayResultAdapter($this->userManager));
-        $paginator->setCurrentPageNumber(intval($this->params('page', 0)));
-        $paginator->setItemCountPerPage(10);
-        $paginator->setPageRange(7);
+    function catchRefineSearch(ArrayResultAdapter $resultGenerator, ViewModel $adminManageAccountView)
+    {
+        if($this->getRequest()->getPost('userSearch', '')) {
+            $this->sessionManager->getStorage()->userSearchCategory = $this->getRequest()->getPost('userSearchCategory', 'Show All');
+            $this->sessionManager->getStorage()->userSearchValue = $this->getRequest()->getPost('userSearchValue', '');
+        }
+        elseif(strtolower($this->params('param1')) == 'reset') {
+            $this->sessionManager->getStorage()->userSearchCategory = $this->getRequest()->getPost('userSearchCategory', 'Show All');
+            $this->sessionManager->getStorage()->userSearchValue = $this->getRequest()->getPost('userSearchValue', '');
+            return $this->redirect()->toRoute('vigattinads_dashboard_admin_manageaccount');
+        }
 
-        $adminManageAccountView = new ViewModel();
-        $adminManageAccountView->setTemplate('vigattinads/view/dashboard/admin/adminManageAccountView');
-        $adminManageAccountView->setVariable('paginator', $paginator);
-        $actionContent->addChild($adminManageAccountView);
+        $categoryMap = array(
+            'username' => UserManager::SEARCH_BY_USERNAME,
+            'email' => UserManager::SEARCH_BY_EMAIL,
+            'first name' => UserManager::SEARCH_BY_FIRST_NAME,
+            'last name' => UserManager::SEARCH_BY_LAST_NAME,
+            'id' => UserManager::SEARCH_BY_ID,
+            'show all' => UserManager::SEARCH_BY_ALL,
+        );
+
+        $category = empty($categoryMap[strtolower($this->sessionManager->getStorage()->userSearchCategory)]) ? UserManager::SEARCH_BY_ALL : $categoryMap[strtolower($this->sessionManager->getStorage()->userSearchCategory)];
+
+        $resultGenerator->setSearchFiled($category);
+        $resultGenerator->setSearchValue($this->sessionManager->getStorage()->userSearchValue);
+
+        $adminManageAccountView->setVariable('userSearchCategory', $this->sessionManager->getStorage()->userSearchCategory);
+        $adminManageAccountView->setVariable('userSearchValue', $this->sessionManager->getStorage()->userSearchValue);
+        return true;
     }
 }
