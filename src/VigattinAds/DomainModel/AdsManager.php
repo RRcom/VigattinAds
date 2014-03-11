@@ -11,6 +11,24 @@ use Zend\Cache\StorageFactory;
 
 class AdsManager
 {
+    const SORT_BY_ID = 0;
+    const SORT_BY_TITLE = 1;
+    const SORT_BY_EMAIL = 2;
+    const SORT_BY_USERNAME = 3;
+    const SORT_BY_FIRST_NAME = 4;
+    const SORT_BY_LAST_NAME = 5;
+
+    const SORT_DIRECTION_ASC = 0;
+    const SORT_DIRECTION_DESC = 1;
+
+    const SEARCH_BY_ID = 0;
+    const SEARCH_BY_TITLE = 1;
+    const SEARCH_BY_EMAIL = 2;
+    const SEARCH_BY_USERNAME = 3;
+    const SEARCH_BY_FIRST_NAME = 4;
+    const SEARCH_BY_LAST_NAME = 5;
+    const SEARCH_BY_ALL = 6;
+
     /**
      * @var \Zend\ServiceManager\ServiceManager
      */
@@ -170,6 +188,86 @@ class AdsManager
         } catch(NoResultException $ex) {
             return array();
         }
+        return $result;
+    }
+
+    /**
+     * Search all ads used by admin panel
+     * @param int $searchField
+     * @param string $searchValue
+     * @param int $sortBy
+     * @param int $sortDirection
+     * @param int $start
+     * @param int $limit
+     * @return array
+     */
+    public function adminSearchAds($searchField = self::SEARCH_BY_ALL, $searchValue = '', $sortBy = self::SORT_BY_ID, $sortDirection = self::SORT_DIRECTION_ASC, $start = 0, $limit = 30)
+    {
+        $searchField = intval($searchField);
+        if(($searchField > 6) || ($searchField < 0)) $searchField = self::SEARCH_BY_ALL;
+
+        $fieldName = array(
+            'id',
+            'adsTitle',
+            'userEmail',
+            'userUsername',
+            'userFirstName',
+            'userLastName'
+        );
+        $direction = array(
+            'ASC',
+            'DESC'
+        );
+
+        // list all
+        if(($searchField == self::SEARCH_BY_ALL) && $searchValue == '') {
+            $query = $this->entityManager->createQuery("SELECT a FROM VigattinAds\DomainModel\Ads a ORDER BY a.".$fieldName[$sortBy]." ".$direction[$sortDirection]);
+        }
+        // search match all field
+        elseif($searchField == self::SEARCH_BY_ALL) {
+            $query = $this->entityManager->createQuery("SELECT a FROM VigattinAds\DomainModel\Ads a WHERE a.adsTitle LIKE :searchValue OR a.userEmail LIKE :searchValue OR a.userUsername LIKE :searchValue OR a.userFirstName LIKE :searchValue OR a.userLastName LIKE :searchValue ORDER BY a.".$fieldName[$sortBy]." ".$direction[$sortDirection]);
+            $query->setParameter('searchValue', $searchValue.'%');
+        }
+        // search by field
+        else {
+            $query = $this->entityManager->createQuery("SELECT a FROM VigattinAds\DomainModel\Ads a WHERE a.".$fieldName[$searchField]." LIKE :searchValue ORDER BY a.".$fieldName[$sortBy]." ".$direction[$sortDirection]);
+            $query->setParameter('searchValue', $searchValue.'%');
+        }
+        $query->setFirstResult($start);
+        $query->setMaxResults($limit);
+        $result = $query->getResult();
+        return $result;
+    }
+
+    public function adminCountAds($searchField = self::SEARCH_BY_ALL, $searchValue = '')
+    {
+        $searchField = intval($searchField);
+        if(($searchField > 6) || ($searchField < 0)) $searchField = self::SEARCH_BY_ALL;
+
+        $fieldName = array(
+            'id',
+            'adsTitle',
+            'userEmail',
+            'userUsername',
+            'userFirstName',
+            'userLastName'
+        );
+
+        // count all
+        if(($searchField == self::SEARCH_BY_ALL) && $searchValue == '') {
+            $query = $this->entityManager->createQuery("SELECT COUNT(a.id) FROM VigattinAds\DomainModel\Ads a");
+        }
+        // search match all field
+        elseif($searchField == self::SEARCH_BY_ALL) {
+            $query = $this->entityManager->createQuery("SELECT COUNT(a.id) FROM VigattinAds\DomainModel\Ads a WHERE a.adsTitle LIKE :searchValue OR a.userEmail LIKE :searchValue OR a.userUsername LIKE :searchValue OR a.userFirstName LIKE :searchValue OR a.userLastName LIKE :searchValue");
+            $query->setParameter('searchValue', $searchValue.'%');
+        }
+        // search by field
+        else {
+            $query = $this->entityManager->createQuery("SELECT COUNT(a.id) FROM VigattinAds\DomainModel\Ads a WHERE a.".$fieldName[$searchField]." LIKE :searchValue");
+            $query->setParameter('searchValue', $searchValue.'%');
+        }
+        $result = $query->getSingleScalarResult();
         return $result;
     }
 

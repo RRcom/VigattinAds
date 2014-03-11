@@ -1,29 +1,25 @@
 <br />
-<div class="row">
-    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-        <button type="button" class="btn btn-primary account-create-new" data-toggle="modal" data-target="#accountForm">Create New</button>
-    </div>
-</div>
-<hr>
+<br />
 <div class="row">
     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-        <form action="/vigattinads/dashboard/admin/manageaccount" method="post" class="search-form1">
+        <form action="/vigattinads/dashboard/admin/manageads" method="post" class="search-form1">
             <div class="input-group">
                 <div class="input-group-btn">
-                    <button class="btn btn-default dropdown-toggle category-switch" data-toggle="dropdown"><?php echo $this->escapeHtml($userSearchCategory); ?> <span class="caret"></span></button>
+                    <button class="btn btn-default dropdown-toggle category-switch" data-toggle="dropdown"><?php echo $this->escapeHtml($adsSearchCategory); ?> <span class="caret"></span></button>
                     <ul class="dropdown-menu">
-                        <li><a class="item" href="/vigattinads/dashboard/admin/manageaccount/reset">Show All</a></li>
+                        <li><a class="item" href="/vigattinads/dashboard/admin/manageads/reset">Show All</a></li>
+                        <li><a class="item" href="javascript:">Title</a></li>
                         <li><a class="item" href="javascript:">Username</a></li>
                         <li><a class="item" href="javascript:">Email</a></li>
                         <li><a class="item" href="javascript:">First Name</a></li>
                         <li><a class="item" href="javascript:">Last Name</a></li>
                     </ul>
                 </div>
-                <input type="text" class="form-control search-input" placeholder="type text here" name="userSearchValue" value="<?php echo $this->escapeHtmlAttr($userSearchValue); ?>">
-                <input class="category-hidden-input" type="hidden" name="userSearchCategory" value="<?php echo $this->escapeHtmlAttr($userSearchCategory); ?>">
+                <input type="text" class="form-control search-input" placeholder="type text here" name="adsSearchValue" value="<?php echo $this->escapeHtmlAttr($adsSearchValue); ?>">
+                <input class="category-hidden-input" type="hidden" name="adsSearchCategory" value="<?php echo $this->escapeHtmlAttr($adsSearchCategory); ?>">
                 <span class="input-group-btn">
-                    <button class="btn btn-default" type="submit" name="userSearch" value="user">Search</button>
+                    <button class="btn btn-default" type="submit" name="adsSearch" value="user">Search</button>
                 </span>
             </div>
         </form>
@@ -35,41 +31,68 @@
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="table-responsive">
-            <div>Account list</div>
+            <div>Ads List</div>
             <table class="table table-bordered">
                 <thead>
                     <tr>
                         <th>#</th>
+                        <th>Status</th>
+                        <th>Title</th>
+                        <th>Reserve</th>
                         <th>Username</th>
                         <th>Email</th>
                         <th>First name</th>
                         <th>Last name</th>
-                        <th>Gold</th>
-                        <th>Privilege</th>
                         <th>Options</th>
                     </tr>
                 </thead>
-                <tbody class="account-list-tbody">
-                <?php foreach($paginator as $key => $account): ?>
-                    <tr id="<?php echo $account->get('id'); ?>">
+                <tbody class="ads-list-tbody">
+                    <?php foreach($paginator as $key => $ads): ?>
+                    <tr id="<?php echo $ads->get('id'); ?>">
                         <td><?php echo $key+1; ?></td>
-                        <td class="data-username"><?php echo $this->escapeHtml($account->get('username')); ?></td>
-                        <td class="data-email"><?php echo $this->escapeHtml($account->get('email')); ?></td>
-                        <td class="data-first-name"><?php echo ucwords(strtolower($this->escapeHtml($account->get('firstName')))); ?></td>
-                        <td class="data-last-name"><?php echo ucwords(strtolower($this->escapeHtml($account->get('lastName')))); ?></td>
-                        <td><span class="text-warning data-gold"><?php echo $account->get('credit'); ?></span></td>
-                        <td class="data-privilege"><?php echo strtoupper($account->get('privilege')); ?></td>
-                        <td><a href="javascript:" class="option-edit-account" data-toggle="modal" data-target="#accountForm" target-id="<?php echo $account->get('id'); ?>"><span class="glyphicon glyphicon-edit"></span> Edit</a></td>
+                        <td class="data-status">
+                            <?php switch(intval($ads->get('status'))):
+                                case \VigattinAds\DomainModel\Ads::STATUS_APPROVED: ?>
+                                    <span class="text-success"><span class="glyphicon glyphicon-ok"></span></span>
+                                    <?php break;
+                                case \VigattinAds\DomainModel\Ads::STATUS_PENDING: ?>
+                                    <span class="text-warning"><span class="glyphicon glyphicon-warning-sign"></span></span>
+                                    <?php break;
+                                case \VigattinAds\DomainModel\Ads::STATUS_DISAPPROVED: ?>
+                                    <span class="text-danger"><span class="glyphicon glyphicon-ban-circle"></span></span>
+                                    <?php break;
+                                case \VigattinAds\DomainModel\Ads::STATUS_PAUSED: ?>
+                                    <span class="text-warning"><span class="glyphicon glyphicon-pause"></span></span>
+                                    <?php break;
+                                case \VigattinAds\DomainModel\Ads::STATUS_REVIEWING: ?>
+                                    <span class="text-warning"><span class="glyphicon glyphicon-search"></span></span>
+                                    <?php break;
+                            endswitch; ?>
+                        </td>
+                        <td class="data-last-title"><?php echo $this->escapeHtml($ads->get('adsTitle')); ?></td>
+                        <td class="data-reserve"><?php echo intval($ads->get('viewLimit')); ?></td>
+                        <td class="data-username"><?php echo $this->escapeHtml($ads->get('userUsername')); ?></td>
+                        <td class="data-email"><?php echo $this->escapeHtml($ads->get('userEmail')); ?></td>
+                        <td class="data-first-name"><?php echo ucwords(strtolower($this->escapeHtml($ads->get('userFirstName')))); ?></td>
+                        <td class="data-last-name"><?php echo ucwords(strtolower($this->escapeHtml($ads->get('userLastName')))); ?></td>
+                        <td><a href="javascript:" class="option-view-ads" data-toggle="modal" data-target="#adsForm" target-id="<?php echo $ads->get('id'); ?>"><span class="glyphicon glyphicon-edit"></span> View</a></td>
                     </tr>
-                <?php endforeach; ?>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
+            <div class="legend">
+                <span class="text-success"><span class="glyphicon glyphicon-ok"></span> Approve</span>&nbsp;&nbsp;
+                <span class="text-warning"><span class="glyphicon glyphicon-warning-sign"></span> Pending</span>&nbsp;
+                <span class="text-warning"><span class="glyphicon glyphicon-search"></span> Reviewing</span>&nbsp;
+                <span class="text-danger"><span class="glyphicon glyphicon-ban-circle"></span> Disapprove</span>&nbsp;
+                <span class="text-warning"><span class="glyphicon glyphicon-pause"></span> Paused</span>
+            </div>
         </div>
     </div>
 </div>
 
 <div class="text-center">
-    <?php echo $this->paginationControl($paginator, 'Sliding', 'vigattinads/view/paginator/bootstrapPagination', array('route' => 'vigattinads_dashboard_admin_manageaccount')); ?>
+    <?php echo $this->paginationControl($paginator, 'Sliding', 'vigattinads/view/paginator/bootstrapPagination', array('route' => 'vigattinads_dashboard_admin_manageads')); ?>
 </div>
 
 <!-- Modal Create new account -->

@@ -252,3 +252,6 @@ a:hover {
     word-wrap: break-word;
     margin-bottom: 2px;
 }
+.legend {
+    font-size: 0.85em;
+}

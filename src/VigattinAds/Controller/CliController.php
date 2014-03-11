@@ -38,7 +38,7 @@ class CliController extends AbstractActionController
 
     public function indexAction()
     {
-        return "vigattinads newuser\nvigattinads changepass";
+        return "vigattinads newuser\nvigattinads changepass\nupdatesearchads\n";
     }
 
     public function newuserAction()
@@ -75,7 +75,7 @@ class CliController extends AbstractActionController
         $username = $this->request->getParam('username', '');
         $password = $this->request->getParam('password', '');
         $msg = '';
-        if((!$email && !$username) || !$password) return "require email or username\nex --email myemail@mail.sample or --username myusername\nrequire password ex. --password mypassword";
+        if((!$email && !$username) || !$password) return "require email or username\nex --email myemail@mail.sample or --username myusername\nrequire password ex. --password mypassword\n";
         $user = $email ? $email : $username;
         return $this->userManager->changePassword($user, $password);
     }
@@ -99,6 +99,6 @@ class CliController extends AbstractActionController
             }
             $this->userManager->flush();
         }
-        echo "$batchStart user(s) successfully updated";
+        echo "$batchStart user(s) successfully updated\n";
     }
 }
