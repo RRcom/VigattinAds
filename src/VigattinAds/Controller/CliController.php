@@ -5,6 +5,12 @@ use Zend\Mvc\Controller\AbstractActionController;
 use VigattinAds\DomainModel\UserManager;
 use Zend\Mvc\MvcEvent;
 
+/*
+ * Command line system tools
+ * Example: php index.php vigattinads
+ * Example ads user: php index.php vigattinads newuser --email test@mail.com --username testuser --password 123456 --first-name myfirstname --last-name mylastname
+ */
+
 class CliController extends AbstractActionController
 {
     /**
@@ -72,5 +78,27 @@ class CliController extends AbstractActionController
         if((!$email && !$username) || !$password) return "require email or username\nex --email myemail@mail.sample or --username myusername\nrequire password ex. --password mypassword";
         $user = $email ? $email : $username;
         return $this->userManager->changePassword($user, $password);
+    }
+
+    public function updatesearchadsAction()
+    {
+        $batchStart = 0;
+        $batchLimit = 30;
+
+        $force = $this->request->getParam('force', 'false');
+        if(strtolower($force) != 'true') {
+            return "Tools to update all ads user info for search optimize\nex. vigattinads updatesearchads --force true\n";
+        }
+        echo "Updating ".$this->userManager->countUserList()." user(s) started\n";
+        $updated = 0;
+        while(count($users = $this->userManager->getUserList(UserManager::SORT_BY_ID, UserManager::SORT_DIRECTION_ASC, $batchStart, $batchLimit))) {
+            foreach($users as $user) {
+                $user->updateAdsSearch();
+                $user->persistSelf();
+                $batchStart++;
+            }
+            $this->userManager->flush();
+        }
+        echo "$batchStart user(s) successfully updated";
     }
 }

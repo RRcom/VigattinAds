@@ -191,10 +191,28 @@ class AdsUser extends AbstractEntity
             ->set('adsPrice', $adsPrice)
             ->set('status', Ads::STATUS_PENDING)
             ->set('category', $category)
-            ->set('reviewVersion', uniqid());
+            ->set('reviewVersion', uniqid())
+            ->set('userUsername', $this->get('username'))
+            ->set('userEmail', $this->get('email'))
+            ->set('userFirstName', $this->get('firstName'))
+            ->set('userLastName', $this->get('lastName'));
         $this->ads->add($ads);
         $this->entityManager->persist($ads);
         return $ads;
+    }
+
+    /**
+     * Update user info in ads, used for search optimize
+     */
+    public function updateAdsSearch()
+    {
+        $query = $this->entityManager->createQuery("UPDATE VigattinAds\DomainModel\Ads a SET a.userUsername = :username, a.userEmail = :email, a.userFirstName = :firstName, a.userLastName = :lastName WHERE a.adsUser = :id");
+        $query->setParameter('username', $this->get('username'));
+        $query->setParameter('email', $this->get('email'));
+        $query->setParameter('firstName', $this->get('firstName'));
+        $query->setParameter('lastName', $this->get('lastName'));
+        $query->setParameter('id', $this->get('id'));
+        $query->execute();
     }
 
     /**

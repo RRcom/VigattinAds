@@ -10,7 +10,12 @@ use VigattinAds\DomainModel\AdsView;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="ads", indexes={@ORM\Index(name="search_index", columns={"ads_title", "show_in", "template", "keywords", "status"}), @ORM\Index(name="version_index", columns={"review_version"})})
+ * @ORM\Table(name="ads",
+ * indexes={
+ *  @ORM\Index(name="search_index", columns={"ads_title", "show_in", "template", "keywords", "status"}),
+ *  @ORM\Index(name="version_index", columns={"review_version"}),
+ *  @ORM\Index(name="usersearch_index", columns={"user_username", "user_email", "user_firstname", "user_lastname"})
+ * })
  */
 class Ads extends AbstractEntity
 {
@@ -127,6 +132,32 @@ class Ads extends AbstractEntity
      */
     protected $adsApproveLog;
 
+    /* For search optimize used */
+
+    /**
+     * @ORM\Column(name="user_username", type="string", length=255)
+     * @var string
+     */
+    protected $userUsername = '';
+
+    /**
+     * @ORM\Column(name="user_email", type="string", length=255)
+     * @var string
+     */
+    protected $userEmail = '';
+
+    /**
+     * @ORM\Column(name="user_firstname", type="string", length=255)
+     * @var string
+     */
+    protected $userFirstName = '';
+
+    /**
+     * @ORM\Column(name="user_lastname", type="string", length=255)
+     * @var string
+     */
+    protected $userLastName = '';
+
     //==================================================================================================
 
     public function __construct(AdsUser $adsUser)
@@ -137,7 +168,7 @@ class Ads extends AbstractEntity
 
     /**
      * Get property value
-     * @param string $propertyName List of properties are id, adsTitle, adsUrl, adsDescription, adsPrice, showIn, template, keywords, adsImage, status, adsUser, adsView, reviewVersion, category and ServiceManager.
+     * @param string $propertyName List of properties are id, adsTitle, adsUrl, adsDescription, adsPrice, showIn, template, keywords, adsImage, status, adsUser, adsView, reviewVersion, userUsername, userEmail, userFirsName, userLastName, category and ServiceManager.
      * @return mixed
      */
     public function get($propertyName)
@@ -148,7 +179,7 @@ class Ads extends AbstractEntity
 
     /**
      * Set property value
-     * @param string $propertyName List of properties are adsTitle, adsUrl, adsDescription, adsPrice, showIn, template, keywords, adsImage, status, reviewVersion, category and ServiceManager.
+     * @param string $propertyName List of properties are adsTitle, adsUrl, adsDescription, adsPrice, showIn, template, keywords, adsImage, status, reviewVersion, userUsername, userEmail, userFirsName, userLastName, category and ServiceManager.
      * @param mixed $value
      * @return AdsUser
      */

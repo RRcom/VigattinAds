@@ -324,6 +324,15 @@ return array(
                         )
                     )
                 ),
+                'vigattinads-update-searchads' => array(
+                    'options' => array(
+                        'route'    => 'vigattinads updatesearchads [--force=]',
+                        'defaults' => array(
+                            'controller' => 'VigattinAds\Controller\Cli',
+                            'action'     => 'updatesearchads',
+                        )
+                    )
+                ),
             )
         )
     ),

@@ -337,6 +337,7 @@ class UserManager
         $user->set('lastName', $lastName);
         $user->set('credit', floatval($gold));
         $user->set('privilege', strtolower(strval($privilege)));
+        $user->updateAdsSearch();
         $user->persistSelf();
         $user->flush();
         $errors['status'] = 'success';

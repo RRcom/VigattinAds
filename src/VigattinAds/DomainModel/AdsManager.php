@@ -70,7 +70,11 @@ class AdsManager
             ->set('showIn', $showIn)
             ->set('template', $template)
             ->set('keyword', $keyword)
-            ->set('status', Ads::STATUS_PENDING);
+            ->set('status', Ads::STATUS_PENDING)
+            ->set('userUsername', $adsUser->get('username'))
+            ->set('userEmail', $adsUser->get('email'))
+            ->set('userFirstName', $adsUser->get('firstName'))
+            ->set('userLastName', $adsUser->get('lastName'));
         $this->entityManager->persist($ads);
         return $ads;
     }

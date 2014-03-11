@@ -31,6 +31,11 @@ class Module
     {
         $e->getApplication()->getEventManager()->attach(MvcEvent::EVENT_ROUTE,function(MvcEvent $e)
         {
+            /* skip if call from command line */
+            if($e->getRequest() instanceof \Zend\Console\Request) {
+                return;
+            }
+
             if(!preg_match('/^vigattinads*/', $e->getRouteMatch()->getMatchedRouteName())) return;
             switch(strtolower($e->getRouteMatch()->getParam('controller'))) {
                 // if show ads only
