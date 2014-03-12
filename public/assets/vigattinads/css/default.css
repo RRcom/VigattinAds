@@ -104,6 +104,9 @@ a:hover {
     margin-right: 5px;
     float: left;
 }
+.ads-frame .ads-frame-url {
+    word-wrap: break-word;
+}
 /*
  * Off Canvas
  * --------------------------------------------------
@@ -254,4 +257,14 @@ a:hover {
 }
 .legend {
     font-size: 0.85em;
+}
+
+/* Admin ads manage modal form */
+
+#adminAdsForm {
+
+}
+#adminAdsForm textarea {
+    width: 300px;
+    min-height: 100px;
 }

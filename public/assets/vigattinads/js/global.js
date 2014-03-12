@@ -1,3 +1,4 @@
+
 /* trade category map v1.0 */
 var catMap = {
     "vehicles" : {
@@ -289,8 +290,14 @@ $(document).ready(function(e) {
     })(jQuery);
 
     /* ads image choose preview */
-    (function($) {
+    var imageChooseEvent = new (function($) {
         var ratio = 0.66667;
+        function resizeImage() {
+            $('.ads-image-preview-container').height($('.ads-image-preview-container').width() * ratio);
+        }
+        this.resizeImage = function() {
+            resizeImage();
+        };
         $('#ads-choose-image-input').change(function(e) {
             var fileReader = new FileReader();
             var file = e.currentTarget.files;
@@ -314,7 +321,7 @@ $(document).ready(function(e) {
         });
         $('.ads-image-preview-container').css({'overflow':'hidden'}).height($('.ads-image-preview-container').width() * ratio);
         $(window).resize(function(e) {
-            $('.ads-image-preview-container').height($('.ads-image-preview-container').width() * ratio);
+            resizeImage();
         });
     })(jQuery);
 
@@ -1117,6 +1124,7 @@ $(document).ready(function(e) {
         init();
     })(jQuery);
 
+    /* search form dropdown */
     (function($) {
         function init() {
             $('.search-form1 .dropdown-menu .item').click(function(e) {
@@ -1127,6 +1135,48 @@ $(document).ready(function(e) {
         }
 
         init();
+    })(jQuery);
+
+    /* admin manage ads */
+    (function($) {
+        var STATUS_DISAPPROVED = -1;
+        var STATUS_PENDING = 0;
+        var STATUS_APPROVED = 1;
+        var STATUS_PAUSED = 2;
+        var STATUS_REVIEWING = 3;
+
+        function populateModal(currentView) {
+            var clickedElement = $(currentView);
+            var price = isNaN(clickedElement.attr('adsPrice')) ? 0 : clickedElement.attr('adsPrice');
+            var image = $('<img />');
+            image.load(function(e) {
+                imageChooseEvent.resizeImage();})
+                .attr('src', '/repo/'+clickedElement.attr('adsImage'))
+                .addClass('ads-frame-image');
+            $('.ads-frame .ads-frame-title').text(clickedElement.attr('adsTitle'));
+            $('.ads-frame .ads-image-preview-container').html('').append(image);
+            $('.ads-frame .ads-frame-description').text(clickedElement.attr('adsDescription'));
+            if(price) {
+                if(price > 0) {
+                    $('.ads-frame .ads-frame-price').show();
+                    $('.ads-frame .ads-frame-price .price-value').text(parseFloat(price).toFixed(2));
+                }
+                else {
+                    $('.ads-frame .ads-frame-price .price-value').text('');
+                    $('.ads-frame .ads-frame-price').hide();
+                }
+            }
+            $('#adminAdsForm .status-radio').prop('checked', false);
+            $('#adminAdsForm .status-radio.status'+clickedElement.attr('adsStatus')).prop('checked', true);
+        }
+
+        $('.option-manage-ads').unbind('click').click(function(e) {
+            populateModal(e.currentTarget);
+        });
+
+        $('#adminAdsForm').on('shown.bs.modal', function(e) {
+            imageChooseEvent.resizeImage();
+        });
     })(jQuery);
 });
 

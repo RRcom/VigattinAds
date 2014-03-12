@@ -48,7 +48,7 @@
                 </thead>
                 <tbody class="ads-list-tbody">
                     <?php foreach($paginator as $key => $ads): ?>
-                    <tr id="<?php echo $ads->get('id'); ?>">
+                    <tr id="adsrow<?php echo $ads->get('id'); ?>">
                         <td><?php echo $key+1; ?></td>
                         <td class="data-status">
                             <?php switch(intval($ads->get('status'))):
@@ -75,7 +75,22 @@
                         <td class="data-email"><?php echo $this->escapeHtml($ads->get('userEmail')); ?></td>
                         <td class="data-first-name"><?php echo ucwords(strtolower($this->escapeHtml($ads->get('userFirstName')))); ?></td>
                         <td class="data-last-name"><?php echo ucwords(strtolower($this->escapeHtml($ads->get('userLastName')))); ?></td>
-                        <td><a href="javascript:" class="option-view-ads" data-toggle="modal" data-target="#adsForm" target-id="<?php echo $ads->get('id'); ?>"><span class="glyphicon glyphicon-edit"></span> View</a></td>
+                        <td>
+                            <a
+                                href="javascript:"
+                                class="option-manage-ads"
+                                data-toggle="modal"
+                                data-target="#adminAdsForm"
+                                target-id="#adsrow<?php echo $ads->get('id'); ?>"
+                                adsId="<?php echo $ads->get('id'); ?>"
+                                adsTitle="<?php echo $this->escapeHtmlAttr($ads->get('adsTitle')); ?>"
+                                adsDescription="<?php echo $this->escapeHtmlAttr($ads->get('adsDescription')); ?>"
+                                adsStatus="<?php echo intval($ads->get('status')); ?>"
+                                adsImage="<?php echo $this->escapeHtmlAttr($ads->get('adsImage')); ?>"
+                                adsUrl="<?php echo $this->escapeHtmlAttr($ads->get('adsUrl')); ?>"
+                                adsPrice="<?php echo $this->escapeHtmlAttr($ads->get('adsPrice')); ?>"
+                            ><span class="glyphicon glyphicon-edit"></span> View</a>
+                        </td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -95,55 +110,52 @@
     <?php echo $this->paginationControl($paginator, 'Sliding', 'vigattinads/view/paginator/bootstrapPagination', array('route' => 'vigattinads_dashboard_admin_manageads')); ?>
 </div>
 
-<!-- Modal Create new account -->
-<div class="modal fade" id="accountForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!-- Modal Edit Ads -->
+<div class="modal fade" id="adminAdsForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel"><span class="dynamic-title">Account Form</span> <img style="display: none;" class="account-form-progress" src="/assets/vigattinads/img/circle-preloader-2.gif" /></h4>
+                <h4 class="modal-title" id="myModalLabel"><span class="dynamic-title">Manage Ads</span> <img style="display: none;" class="account-form-progress" src="/assets/vigattinads/img/circle-preloader-2.gif" /></h4>
             </div>
             <form role="form">
                 <div class="modal-body">
-                    <div class="form-group">
-                        <div class="form-error form-error-email text-danger"><small></small></div>
-                        <input title="Email" type="email" class="form-control tooltip-enable-right" id="inputEmail1" placeholder="Email">
+                    <div class="row admin-ads-manage-preview">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ads-live-preview-label"><strong>Ads Preview</strong><p></p></div>
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
+                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                <div class="row ads-frame">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ads-frame-title">Ads Title</div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ads-frame-price">Php <span class="price-value">100.00</span></div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><div class="ads-image-preview-container"></div><span class="ads-frame-description">Ads description</span></div>
+                                    <div class="clearfix"></div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><a class="ads-frame-url" href="http://test.com">http://test.com</a></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <div class="form-error form-error-username text-danger"><small></small></div>
-                        <input title="Username" type="text" class="form-control tooltip-enable-right" id="inputUsername1" placeholder="Username">
+                    <hr>
+                    <div class="row">
+                        <div class="col-xs-12 text-center">Change ads status</div>
+                        <div class="col-xs-12 text-center">
+                            <input class="status-radio status1" type="radio" name="status" value="0"> <span class="text-success"><span class="glyphicon glyphicon-ok"></span></span>&nbsp;&nbsp;
+                            <input class="status-radio status0" type="radio" name="status" value="1"> <span class="text-warning"><span class="glyphicon glyphicon-warning-sign"></span></span>&nbsp;&nbsp;
+                            <input class="status-radio status-1" type="radio" name="status" value="2"> <span class="text-danger"><span class="glyphicon glyphicon-ban-circle"></span></span>&nbsp;&nbsp;
+                            <input class="status-radio status2" type="radio" name="status" value="3"> <span class="text-warning"><span class="glyphicon glyphicon-pause"></span></span>
+                        </div>
+                        <p></p>
+                        <div class="col-xs-12 text-center">
+                            <textarea placeholder="notice about the change"></textarea>
+                        </div>
+                        <p></p>
+                        <div class="col-xs-12 text-center">
+                            <button type="button" class="btn btn-default" value="apply">Apply</button>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <div class="form-error form-error-password text-danger"><small></small></div>
-                        <input title="Password" type="password" class="form-control tooltip-enable-right" id="inputPassword1" placeholder="Password">
-                    </div>
-                    <div class="form-group">
-                        <div class="form-error form-error-repeat-password text-danger"><small></small></div>
-                        <input title="Repeat password" type="password" class="form-control tooltip-enable-right" id="inputRepeatPassword1" placeholder="Repeat password">
-                    </div>
-                    <div class="form-group">
-                        <div class="form-error form-error-first-name text-danger"><small></small></div>
-                        <input title="First name" type="text" class="form-control tooltip-enable-right" id="inputFirstName1" placeholder="First name">
-                    </div>
-                    <div class="form-group">
-                        <div class="form-error form-error-last-name text-danger"><small></small></div>
-                        <input title="Last name" type="text" class="form-control tooltip-enable-right" id="inputLastName1" placeholder="Last name">
-                    </div>
-                    <div class="form-group">
-                        <div class="form-error form-error-gold text-danger"><small></small></div>
-                        <input title="Gold" type="number" class="form-control tooltip-enable-right" id="inputGold1" placeholder="Gold" value="0">
-                    </div>
-                    <div class="form-group">
-                        <p><input type="checkbox" id="inputPrivilegeB1" disabled="disabled"> <small>(B) Basic usage</small></p>
-                        <p><input type="checkbox" id="inputPrivilegeA1"> <small>(A) Admin</small></p>
-                        <p><input type="checkbox" id="inputPrivilegeP1"> <small>(P) Approve ads</small></p>
-                    </div>
-                    <input type="hidden" name="id" id="inputId1" class="form-control">
-                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary submit-action" id="inputSubmit1">Create</button>
-                    <button type="button" class="btn btn-danger delete-action" id="inputDelete1">Delete</button>
                 </div>
             </form>
         </div><!-- /.modal-content -->
