@@ -1,14 +1,20 @@
 <?php
 namespace VigattinAds\Controller;
 
+use VigattinAds\DomainModel\AdsManager;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Validator\InArray;
 use Zend\View\Model\JsonModel;
 use VigattinAds\DomainModel\SettingsManager;
+use VigattinAds\DomainModel\Ads;
 
 class JsonServiceController extends AbstractActionController
 {
     /** @var \VigattinAds\DomainModel\UserManager */
     protected $userManager;
+
+    /** @var  \VigattinAds\DomainModel\AdsManager */
+    protected $adsManager;
 
     /**
      * @var \Zend\View\Model\JsonModel
@@ -190,9 +196,62 @@ class JsonServiceController extends AbstractActionController
         return $this->jsonView;
     }
 
+    public function getAdsHistoryAction()
+    {
+        $user = $this->userManager->getCurrentUser();
+        if(!$user->hasPermit($user::PERMIT_ADMIN_ACCESS)) {
+            $this->jsonView->setVariable('error', 'no access');
+        }
+        $adsManager = $this->adsManager;
+        $id = $this->request['id'];
+        $start = $this->request['start'];
+        $limit = $this->request['limit'];
+        $adsArray = $adsManager->searchAdsByIds(array($id));
+        $result = array();
+        if(count($adsArray)) {
+            $ads = $adsArray[0];
+            $result = $ads->getAdsHistory($start, $limit);
+        }
+        $this->jsonView->setVariables($result);
+        return $this->jsonView;
+    }
+
+    public function adsChangeStatusAction()
+    {
+        $user = $this->userManager->getCurrentUser();
+        if(!$user->hasPermit($user::PERMIT_ADMIN_ACCESS)) {
+            $this->jsonView->setVariable('error', 'no access');
+        }
+        $adsManager = $this->adsManager;
+        $id = $this->request['id'];
+        $status = $this->request['status'];
+        $reason = $this->request['reason'];
+        $adsArray = $adsManager->searchAdsByIds(array($id));
+        $result = array();
+        if(count($adsArray)) {
+            $ads = $adsArray[0];
+            switch(strtolower($status)) {
+                case 'pending':
+                    $ads->set('reviewVersion', uniqid());
+                    $ads->set('status', Ads::STATUS_PENDING);
+                    $ads->persistSelf();
+                    $ads->flush();
+                    $result = array('status' => 'success', 'request' => 'pending', 'id' => $id);
+                    break;
+                case 'approve':
+                    break;
+                case 'disapprove':
+                    break;
+            }
+        }
+        $this->jsonView->setVariables($result);
+        return $this->jsonView;
+    }
+
     public function onDispatch(\Zend\Mvc\MvcEvent $e)
     {
         $this->userManager = $this->serviceLocator->get('VigattinAds\DomainModel\UserManager');
+        $this->adsManager = $this->serviceLocator->get('VigattinAds\DomainModel\AdsManager');
         if(strtolower($this->params('param1')) == 'post') $this->request = $this->getRequest()->getPost();
         else $this->request = $this->getRequest()->getQuery();
         return parent::onDispatch($e);

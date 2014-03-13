@@ -1144,6 +1144,7 @@ $(document).ready(function(e) {
         var STATUS_APPROVED = 1;
         var STATUS_PAUSED = 2;
         var STATUS_REVIEWING = 3;
+        var currentAdsId;
 
         function populateModal(currentView) {
             var clickedElement = $(currentView);
@@ -1153,6 +1154,7 @@ $(document).ready(function(e) {
                 imageChooseEvent.resizeImage();})
                 .attr('src', '/repo/'+clickedElement.attr('adsImage'))
                 .addClass('ads-frame-image');
+            currentAdsId = clickedElement.attr('adsId');
             $('.ads-frame .ads-frame-title').text(clickedElement.attr('adsTitle'));
             $('.ads-frame .ads-image-preview-container').html('').append(image);
             $('.ads-frame .ads-frame-description').text(clickedElement.attr('adsDescription'));
@@ -1168,14 +1170,80 @@ $(document).ready(function(e) {
             }
             $('#adminAdsForm .status-radio').prop('checked', false);
             $('#adminAdsForm .status-radio.status'+clickedElement.attr('adsStatus')).prop('checked', true);
+            if((clickedElement.attr('adsStatus') == STATUS_PENDING) || (clickedElement.attr('adsStatus') == STATUS_REVIEWING)) {
+                $('.admin-change-status-container .status-apply').attr('disabled', 'disabled');
+            }
+            else {
+                $('.admin-change-status-container .status-apply').removeAttr('disabled');
+            }
+        }
+
+        function getHistory(adsId,start, limit) {
+            $.ajax( {
+                type: 'POST',
+                data: {
+                    "id":adsId,
+                    "start":start,
+                    "limit":limit
+                },
+                url: '/vigattinads/json-service/get-ads-history/post',
+                dataType: 'json',
+                beforeSend: function(jqXHR, settings) {
+                    $('.ads-history-container .ads-history-control .account-form-progress').show();
+                },
+                complete: function(jqXHR, textStatus) {
+                    $('.ads-history-container .ads-history-control .account-form-progress').hide();
+                    if(textStatus != 'success') {}
+                },
+                success: function(data, textStatus, jqXHR) {
+                    $.each(data, function(key, value) {
+                        $('.ads-history-container .ads-history-log').append(value+'\n-\n');
+                    });
+                }
+            });
+        }
+
+        function updateStatus(adsId, newStatus, reason) {
+            $.ajax( {
+                type: 'POST',
+                data: {
+                    "id":adsId,
+                    "status":newStatus,
+                    "reason":reason
+                },
+                url: '/vigattinads/json-service/ads-change-status/post',
+                dataType: 'json',
+                beforeSend: function(jqXHR, settings) {
+                },
+                complete: function(jqXHR, textStatus) {
+                    //$('.admin-change-status-container .account-form-progress').hide();
+                    //$('.admin-change-status-container .status-apply').show();
+                    if(textStatus != 'success') {}
+                },
+                success: function(data, textStatus, jqXHR) {
+                    window.location.reload();
+                }
+            });
+        }
+
+        function onApplyClick(e) {
+            $(e.currentTarget).hide();
+            $('.admin-change-status-container .account-form-progress').show();
+            var status = $(e.currentTarget).val();
+            var reason = $('.admin-change-status-container .status-reason').val();
+            updateStatus(currentAdsId, status, reason);
         }
 
         $('.option-manage-ads').unbind('click').click(function(e) {
+            $('.ads-history-container .ads-history-log').html('');
             populateModal(e.currentTarget);
+            $('.admin-change-status-container .status-apply').unbind('click');
         });
 
         $('#adminAdsForm').on('shown.bs.modal', function(e) {
             imageChooseEvent.resizeImage();
+            $('.admin-change-status-container .status-apply').click(function(e){onApplyClick(e);});
+            getHistory(currentAdsId, 0, 30);
         });
     })(jQuery);
 });

@@ -195,7 +195,8 @@ class AdsUser extends AbstractEntity
             ->set('userUsername', $this->get('username'))
             ->set('userEmail', $this->get('email'))
             ->set('userFirstName', $this->get('firstName'))
-            ->set('userLastName', $this->get('lastName'));
+            ->set('userLastName', $this->get('lastName'))
+            ->set('createdTime', time());
         $this->ads->add($ads);
         $this->entityManager->persist($ads);
         return $ads;

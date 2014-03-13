@@ -92,7 +92,8 @@ class AdsManager
             ->set('userUsername', $adsUser->get('username'))
             ->set('userEmail', $adsUser->get('email'))
             ->set('userFirstName', $adsUser->get('firstName'))
-            ->set('userLastName', $adsUser->get('lastName'));
+            ->set('userLastName', $adsUser->get('lastName'))
+            ->set('createdTime', time());
         $this->entityManager->persist($ads);
         return $ads;
     }
@@ -316,6 +317,7 @@ class AdsManager
                 $ads->set('status', Ads::STATUS_APPROVED);
                 $log->set('reviewReason', $reason);
                 $log->set('reviewResult', Ads::STATUS_APPROVED);
+                $log->set('approvedTime', time());
                 $ads->persistSelf();
                 $log->persistSelf();
                 $log->flush();
@@ -324,6 +326,7 @@ class AdsManager
                 $ads->set('status', Ads::STATUS_DISAPPROVED);
                 $log->set('reviewReason', $reason);
                 $log->set('reviewResult', Ads::STATUS_DISAPPROVED);
+                $log->set('approvedTime', time());
                 $ads->persistSelf();
                 $log->persistSelf();
                 $log->flush();
@@ -450,6 +453,7 @@ class AdsManager
         $log->set('reviewVersion', $reviewVersion);
         $log->set('reviewResult', $reviewResult);
         $log->set('reviewReason', $reviewReason);
+        $log->set('approvedTime', time());
         $log->persistSelf();
         return $log;
     }

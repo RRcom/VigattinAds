@@ -268,3 +268,26 @@ a:hover {
     width: 300px;
     min-height: 100px;
 }
+
+/* ads history container */
+.ads-history-container {
+    font-size: 0.9em;
+}
+.ads-history-container .ads-history-title {
+    color: #777;
+}
+.ads-history-container .ads-history-log {
+    min-height: 50px;
+    border: 1px solid #DDD;
+    white-space: pre-line;
+    word-wrap: break-word;
+    font-size: 0.9em;
+    max-height: 300px;
+    overflow: auto;
+    padding: 10px;
+    color: #666;
+}
+.ads-history-container .ads-history-control {
+    padding: 10px;
+
+}

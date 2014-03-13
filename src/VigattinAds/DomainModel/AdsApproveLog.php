@@ -59,9 +59,4 @@ class AdsApproveLog extends AbstractEntity
      * @ORM\Column(name="approved_time", type="integer", options={"unsigned"=true})
      */
     protected $approvedTime;
-
-    public function __construct()
-    {
-        $this->approvedTime = time();
-    }
 }

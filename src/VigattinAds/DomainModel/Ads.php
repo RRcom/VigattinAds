@@ -13,13 +13,12 @@ use VigattinAds\DomainModel\AdsView;
  * @ORM\Table(name="ads",
  * indexes={
  *  @ORM\Index(name="search_index", columns={"ads_title", "show_in", "template", "keywords", "status"}),
- *  @ORM\Index(name="version_index", columns={"review_version"}),
+ *  @ORM\Index(name="version_index", columns={"review_version", "created_time"}),
  *  @ORM\Index(name="usersearch_index", columns={"user_username", "user_email", "user_firstname", "user_lastname"})
  * })
  */
 class Ads extends AbstractEntity
 {
-
     const STATUS_DISAPPROVED = -1;
     const STATUS_PENDING = 0;
     const STATUS_APPROVED = 1;
@@ -158,6 +157,12 @@ class Ads extends AbstractEntity
      */
     protected $userLastName = '';
 
+    /**
+     * @var int
+     * @ORM\Column(name="created_time", type="integer", options={"unsigned"=true})
+     */
+    protected $createdTime;
+
     //==================================================================================================
 
     public function __construct(AdsUser $adsUser)
@@ -247,6 +252,35 @@ class Ads extends AbstractEntity
     {
         if(!$this->adsApproveLog->count()) return '';
         return $this->adsApproveLog->last()->get('reviewReason');
+    }
+
+    /**
+     * @param int $start
+     * @param int $limit
+     * @return array
+     */
+    public function getAdsHistory($start = 0, $limit = 10)
+    {
+        $list = array();
+        if($start == 0) {
+            $list[] = date('M. t, o h:i a', $this->createdTime).': Ads created initial status PENDING';
+        }
+        $statusCode = array(
+            strval(self::STATUS_APPROVED) => 'APPROVED',
+            strval(self::STATUS_DISAPPROVED) => 'DISAPPROVED',
+            strval(self::STATUS_PENDING) => 'PENDING',
+            strval(self::STATUS_REVIEWING) => 'REVIEWING',
+            strval(self::STATUS_PAUSED) => 'PAUSED',
+        );
+        $query = $this->entityManager->createQuery("SELECT l FROM VigattinAds\DomainModel\AdsApproveLog l WHERE l.ads = ".$this->id." ORDER BY l.id ASC");
+        $query->setFirstResult($start);
+        $query->setMaxResults($limit);
+        $results = $query->getResult();
+        foreach($results as $result) {
+            $approver = $result->get('approver');
+            $list[] = date('M. t, o h:i a', $result->get('approvedTime')).': Status change to '.$statusCode[strval($result->get('reviewResult'))].' Committed by '.$approver->get('firstName').' '.$approver->get('lastName').'. Reason: '.$result->get('reviewReason');
+        }
+        return $list;
     }
 
 }

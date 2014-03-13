@@ -116,7 +116,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel"><span class="dynamic-title">Manage Ads</span> <img style="display: none;" class="account-form-progress" src="/assets/vigattinads/img/circle-preloader-2.gif" /></h4>
+                <h4 class="modal-title" id="myModalLabel"><span class="dynamic-title">Manage Ads</span></h4>
             </div>
             <form role="form">
                 <div class="modal-body">
@@ -137,21 +137,35 @@
                         </div>
                     </div>
                     <hr>
-                    <div class="row">
+                    <div class="row admin-change-status-container">
+                        <!--
                         <div class="col-xs-12 text-center">Change ads status</div>
                         <div class="col-xs-12 text-center">
-                            <input class="status-radio status1" type="radio" name="status" value="0"> <span class="text-success"><span class="glyphicon glyphicon-ok"></span></span>&nbsp;&nbsp;
-                            <input class="status-radio status0" type="radio" name="status" value="1"> <span class="text-warning"><span class="glyphicon glyphicon-warning-sign"></span></span>&nbsp;&nbsp;
-                            <input class="status-radio status-1" type="radio" name="status" value="2"> <span class="text-danger"><span class="glyphicon glyphicon-ban-circle"></span></span>&nbsp;&nbsp;
-                            <input class="status-radio status2" type="radio" name="status" value="3"> <span class="text-warning"><span class="glyphicon glyphicon-pause"></span></span>
+                            <input class="status-radio status1" type="radio" name="status" value="1"> <span class="text-success"><span class="glyphicon glyphicon-ok"></span></span>&nbsp;&nbsp;
+                            <input class="status-radio status0" type="radio" name="status" value="0"> <span class="text-warning"><span class="glyphicon glyphicon-warning-sign"></span></span>&nbsp;&nbsp;
+                            <input class="status-radio status-1" type="radio" name="status" value="-1"> <span class="text-danger"><span class="glyphicon glyphicon-ban-circle"></span></span>&nbsp;&nbsp;
+                            <input class="status-radio status2" type="radio" name="status" value="2"> <span class="text-warning"><span class="glyphicon glyphicon-pause"></span></span>
                         </div>
+                        <!--
                         <p></p>
                         <div class="col-xs-12 text-center">
-                            <textarea placeholder="notice about the change"></textarea>
+                            <textarea class="status-reason" placeholder="reason about the change"></textarea>
                         </div>
+                        -->
                         <p></p>
                         <div class="col-xs-12 text-center">
-                            <button type="button" class="btn btn-default" value="apply">Apply</button>
+                            <button type="button" class="btn btn-warning status-apply" value="pending">Change to Pending</button>
+                            <img style="display: none;" class="account-form-progress" src="/assets/vigattinads/img/circle-preloader-2.gif" />
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-xs-10 col-xs-offset-1 ads-history-container">
+                            <div class="ads-history-title">History</div>
+                            <div class="ads-history-log"></div>
+                            <div class="ads-history-control text-center">
+                                <img style="display: none;" class="account-form-progress" src="/assets/vigattinads/img/circle-preloader-2.gif" />
+                            </div>
                         </div>
                     </div>
                 <div class="modal-footer">
