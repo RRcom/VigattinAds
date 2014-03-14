@@ -247,6 +247,16 @@ return array(
                     ),
                 ),
             ),
+            'vigattinads_comm' => array(
+                'type'    => 'literal',
+                'options' => array(
+                    'route'    => '/vigattinads/comm',
+                    'defaults' => array(
+                        'controller'    => 'VigattinAds\Controller\Comm',
+                        'action'        => 'index',
+                    ),
+                ),
+            ),
         ),
     ),
     'controllers' => array(
@@ -273,6 +283,7 @@ return array(
             'VigattinAds\Controller\JsonService'   => 'VigattinAds\Controller\JsonServiceController',
             'VigattinAds\Controller\ShowAds'   => 'VigattinAds\Controller\ShowAdsController',
             'VigattinAds\Controller\PageBlock\BlockNoGold'   => 'VigattinAds\Controller\PageBlock\BlockNoGoldController',
+            'VigattinAds\Controller\Comm'   => 'VigattinAds\Controller\CommController',
         ),
     ),
     'view_manager' => array(
