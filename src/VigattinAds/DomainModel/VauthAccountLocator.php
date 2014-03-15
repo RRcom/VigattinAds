@@ -45,6 +45,12 @@ class VauthAccountLocator extends AbstractEntity
         return $result;
     }
 
+    /**
+     * Add account to locator list
+     * @param $vauthId
+     * @param $adsUserId
+     * @return mixed
+     */
     public function addAccount($vauthId, $adsUserId)
     {
         $locator = new VauthAccountLocator();
@@ -54,5 +60,17 @@ class VauthAccountLocator extends AbstractEntity
         $locator->persistSelf();
         $locator->flush();
         return $locator->get('id');
+    }
+
+    /**
+     * Remove account to the locator list
+     * @param $adsUserId
+     * @return mixed
+     */
+    public function removeAccount($adsUserId)
+    {
+        $query = $this->entityManager->createQuery("DELETE VigattinAds\DomainModel\VauthAccountLocator l WHERE l.adsUserId = :userId");
+        $query->setParameter('userId', $adsUserId);
+        return $query->execute();
     }
 }

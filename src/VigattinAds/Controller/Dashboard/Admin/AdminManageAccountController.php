@@ -6,6 +6,7 @@ use VigattinAds\DomainModel\UserManager;
 use Zend\Paginator\Paginator;
 use Zend\Paginator\Adapter\Iterator;
 use VigattinAds\DomainModel\Paginator\ArrayResultAdapter;
+use VigattinAds\DomainModel\VauthAccountLocator;
 
 class AdminManageAccountController extends AdminController
 {
@@ -40,6 +41,9 @@ class AdminManageAccountController extends AdminController
             if($user instanceof \VigattinAds\DomainModel\AdsUser) {
                 // check if not same user as the current login user
                 if($user->get('id') != $this->adsUser->get('id')) {
+                    $vauthAccountLocator = new VauthAccountLocator();
+                    $vauthAccountLocator->set('serviceManager', $this->serviceLocator);
+                    $vauthAccountLocator->removeAccount($user->get('id'));
                     $this->userManager->deleteUser($user);
                     $this->userManager->flush();
                 }

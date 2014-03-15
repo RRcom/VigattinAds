@@ -42,6 +42,10 @@ class Module
                 case strtolower('VigattinAds\Controller\ShowAds'):
                     break;
 
+                // if comm controller call
+                case strtolower('VigattinAds\Controller\Comm'):
+                    break;
+
                 // if show ads only
                 case strtolower('VigattinAds\Controller\PageBlock\BlockNoGold'):
                     break;
@@ -68,10 +72,12 @@ class Module
                     // if basic user only
                     if(!$currentUser->hasPermit($currentUser::PERMIT_ADMIN_ACCESS) && !$currentUser->hasPermit($currentUser::PERMIT_TO_APPROVE_ADS)) {
                         // if no gold redirect to no gold page block
+                        /*
                         if(!$currentUser->get('credit')) {
                             Header('Location: /vigattinads/pageblock');
                             exit();
                         }
+                        */
                     }
 
                     break;

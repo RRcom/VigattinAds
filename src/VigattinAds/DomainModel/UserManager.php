@@ -298,6 +298,7 @@ class UserManager
         }
         if(count($finalError)) return $finalError;
         $user = new AdsUser();
+        $user->set('serviceManager', $this->serviceManager);
         $user->set('email', $email);
         $user->set('username', $username);
         $salt = $this->makePassSalt($password);
