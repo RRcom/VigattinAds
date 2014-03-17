@@ -5,7 +5,7 @@
             <div class="ads-frame-title"><?php echo $this->escapeHtml($ad->get('adsTitle')); ?></div>
             <div class="ads-frame-price">
                 <?php if(floatval($ad->get('adsPrice'))): ?>
-                    Php <?php echo $this->escapeHtml(number_format($ad->get('adsPrice'), 2, '.', '')); ?>
+                    Php <span class="price-value"><?php echo $this->escapeHtml(number_format($ad->get('adsPrice'), 2, '.', '')); ?></span>
                 <?php endif; ?>
             </div>
             <div class="ads-divided-content"><div class="ads-frame-leftbar">
