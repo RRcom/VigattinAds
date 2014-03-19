@@ -267,6 +267,7 @@ return array(
             'VigattinAds\Controller\Dashboard\Ads'   => 'VigattinAds\Controller\Dashboard\Ads\AdsController',
             'VigattinAds\Controller\Dashboard\Ads\Create\Create'   => 'VigattinAds\Controller\Dashboard\Ads\Create\CreateController',
             'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite'   => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsiteController',
+            'VigattinAds\Controller\Dashboard\Ads\Create\ChooseVigDirectory'   => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseVigDirectoryController',
             'VigattinAds\Controller\Dashboard\Ads\Create\ChooseDirectory'   => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseDirectoryController',
             'VigattinAds\Controller\Dashboard\Ads\Create\ChooseCategory'   => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseCategoryController',
             'VigattinAds\Controller\Dashboard\Ads\Edit'   => 'VigattinAds\Controller\Dashboard\Ads\AdsEditController',

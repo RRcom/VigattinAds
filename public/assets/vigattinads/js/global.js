@@ -214,6 +214,11 @@ var catMapTourism = {
     'directory' : {'url' : '/vigattintourism.com/tourism/destinations/91/directory'}
 };
 
+/* vigattin category map v1.0 */
+var catMapVigattin = {
+    'homepage' : {'url' : '/vigattin.com'}
+};
+
 /* ads temp preview generator */
 var tempPreview = new (function($){
     var previewLink;
@@ -1047,6 +1052,16 @@ $(document).ready(function(e) {
             }
         });
 
+        $(inputClass).change(function(e) {
+            var max = $(e.currentTarget).attr(maxCharAttr);
+            var output = $($(e.currentTarget).attr(targetDisplayClassAttr));
+            var remaining = max - $(e.currentTarget).val().length;
+            output.html('character(s) '+remaining);
+            if(remaining > -1) {
+                output.removeClass('text-danger');
+            }
+        });
+
         function init() {
             $(inputClass).each(function(key, value) {
                 var max = $(value).attr(maxCharAttr);
@@ -1088,6 +1103,85 @@ $(document).ready(function(e) {
         function generateList() {
             $.each(getTempKeyword(), function(key, value) {
                 var category = catMapTourism[value.toLowerCase()];
+                dirList.append('<li><a class="ads-preview-link" target="_blank" href="http:/'+category.url+'#preview">preview</a> <input class="tourism-cat-checkbox" type="checkbox" style="margin-left: 10px" value="'+value+'" /> '+value+'</li>');
+            });
+        }
+
+        function initCheckboxStatus() {
+            $('.tourism-cat-checkbox').each(function(key, value) {
+                var regEx = new RegExp('\('+$(value).val()+'\)');
+                if(keywordsInput.val().match(regEx)) {
+                    $(value).attr('checked', 'checked');
+                }
+            });
+        }
+
+        function onCheckboxClick(e) {
+            var keywordValue;
+            var checkBoxes = $('.tourism-cat-checkbox');
+            populateAbsolute();
+            keywordValue = keywordsInput.val();
+            checkBoxes.each(function(key, value) {
+                var checkBox = $(value);
+                if(!checkBox.is(":checked")) {
+                    keywordValue = keywordValue.replace('('+checkBox.val()+')', '');
+                }
+            });
+            keywordsInput.val(keywordValue);
+            if($('.tourism-cat-checkbox:checked').length == 1) {
+                $('.tourism-cat-checkbox:checked').attr('disabled', 'disabled');
+            }
+            else {
+                checkBoxes.removeAttr('disabled');
+            }
+        }
+
+        function getTempKeyword() {
+            var tempKeyword = $('#ads-temp-keyword').val();
+            return tempKeyword.split('|');
+        }
+
+        function convertToAbsolute(keyWordArray, postion) {
+            return '('+keyWordArray[postion]+')';
+        }
+
+        function convertAllToAbsolute(keyWordArray, context) {
+            var all = '';
+            $.each(keyWordArray, function(key, value) {
+                all += convertToAbsolute(keyWordArray, key);
+            });
+            return all;
+        }
+
+        init();
+    })(jQuery);
+
+    /* vigattin directory*/
+    var TourismDirectory = new (function($) {
+        var dirList;
+        var keywordsInput;
+
+        function init() {
+            dirList = $('#vigattinDirectoryList');
+            keywordsInput = $('#ads-keyword');
+            if(dirList.length) {
+                generateList();
+                if(!keywordsInput.val()) populateAbsolute();
+                initCheckboxStatus();
+                $('.tourism-cat-checkbox').unbind('change').change(onCheckboxClick);
+                tempPreview.init();
+                onCheckboxClick(e);
+            }
+        }
+
+        function populateAbsolute() {
+            var keywordArray = getTempKeyword();
+            keywordsInput.val(convertAllToAbsolute(keywordArray));
+        }
+
+        function generateList() {
+            $.each(getTempKeyword(), function(key, value) {
+                var category = catMapVigattin[value.toLowerCase()];
                 dirList.append('<li><a class="ads-preview-link" target="_blank" href="http:/'+category.url+'#preview">preview</a> <input class="tourism-cat-checkbox" type="checkbox" style="margin-left: 10px" value="'+value+'" /> '+value+'</li>');
             });
         }

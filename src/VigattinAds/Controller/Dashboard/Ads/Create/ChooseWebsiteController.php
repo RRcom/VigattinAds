@@ -19,17 +19,21 @@ class ChooseWebsiteController extends AdsController
     public function chooseAction() {
         $param = $this->params()->fromRoute('param', '');
         switch(strtolower($param)) {
-            case 'tourism':
-                $this->sessionManager->getStorage()->tempAdsTemplate = array('showIn' => 'vigattintourism.com', 'template' => 'home-sidebar-right');
-                return $this->redirect()->toRoute('vigattinads_dashboard_ads_create', array('controller' => 'choose-directory'));
+            case 'vigattin':
+                $this->sessionManager->getStorage()->tempAdsTemplate = array('showIn' => 'vigattin.com', 'template' => 'home');
+                return $this->redirect()->toRoute('vigattinads_dashboard_ads_create', array('controller' => 'choose-vig-directory'));
                 break;
             case 'trade':
                 $this->sessionManager->getStorage()->tempAdsTemplate = array('showIn' => 'vigattintrade.com', 'template' => 'home-sidebar-left');
                 return $this->redirect()->toRoute('vigattinads_dashboard_ads_create', array('controller' => 'choose-category'));
                 break;
+            case 'tourism':
+                $this->sessionManager->getStorage()->tempAdsTemplate = array('showIn' => 'vigattintourism.com', 'template' => 'home-sidebar-right');
+                return $this->redirect()->toRoute('vigattinads_dashboard_ads_create', array('controller' => 'choose-directory'));
+                break;
             case 'deals':
                 $this->sessionManager->getStorage()->tempAdsTemplate = array('showIn' => 'vigattindeals.com', 'template' => 'home-body');
-                return $this->redirect()->toRoute('vigattinads_dashboard_ads_create', array('controller' => 'choose-category'));
+                return $this->redirect()->toRoute('vigattinads_dashboard_ads_create', array('controller' => 'choose-website'));
                 break;
             default:
                 return $this->redirect()->toRoute('vigattinads_dashboard_ads_create', array('controller' => 'choose-website'));

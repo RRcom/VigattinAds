@@ -49,7 +49,9 @@ class AdsWizardEditInfoController extends AdsController
                 $formError['adsKeyword'] = '';
                 break;
             case 'vigattin.com':
-                $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsWizardEditInfoNoCatView');
+                $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsWizardEditInfoVigattinView');
+                $formError['adsTempKeyword'] = 'Homepage';
+                $formError['adsKeyword'] = '';
                 break;
             default:
                 $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsWizardEditInfoNoCatView');
