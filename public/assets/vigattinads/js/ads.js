@@ -70,5 +70,7 @@ $(document).ready(function() {
 
 /* Convert price to number format with comma */
 $(document).ready(function() {
-    $('.ads-frame .price-value').text(addCommas($('.ads-frame .price-value').text()));
+    $('.ads-frame .price-value').each(function(key, value) {
+        $(value).text(addCommas($(value).text()));
+    });
 });
