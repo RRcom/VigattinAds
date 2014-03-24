@@ -57,7 +57,7 @@ class Validator
 
     static public function isNameValid($name, $min = 6, $max = 48, $title = 'name')
     {
-        $regex = new Regex(array('pattern' => '#^[a-zA-Z0-9_-][a-zA-Z0-9_\s-]+$#'));
+        $regex = new Regex(array('pattern' => '#^[a-zA-Z0-9_-][a-zA-Z0-9_\s-.]+$#'));
         $strlength = new StringLength();
         $strlength->setMin($min);
         $strlength->setMax($max);

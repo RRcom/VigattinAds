@@ -299,6 +299,13 @@ function addCommas(nStr) {
     return x1 + x2;
 }
 
+/** Remove comma from number **/
+function removeCommas(nStr) {
+    nStr = nStr.replace(/\,/g,'');
+    console.log(nStr);
+    return parseFloat(nStr);
+}
+
 $(document).ready(function(e) {
 
     /* toggle hide show side menu */
@@ -817,6 +824,7 @@ $(document).ready(function(e) {
                     $('.import-ads-list-progress').hide();
                     $.each(data.list, function(key, value) {
                         Start++;
+                        if((typeof value.price) == 'string') value.price = removeCommas(value.price);
                         var list =  '<li>' +
                                         '<div id="adsPanel'+Start+'" class="row ads-list-panel">'+
                                             '<div class="col-xs-3 image-frame"><img alt="ads image" onerror="this.src=\'/assets/vigattinads/img/no-image.jpg\';" src="'+$('<div/>').html(value.image).text()+'"></div>'+

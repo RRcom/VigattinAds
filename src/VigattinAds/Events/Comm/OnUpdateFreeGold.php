@@ -7,6 +7,15 @@ use VigattinAds\DomainModel\VauthAccountLocator;
 class OnUpdateFreeGold implements MessageInterface
 {
 
+    protected $allowedIp = array(
+        '54.251.240.140',   // vigattindeals.com
+        '54.251.34.3',      // vigattintrade.com
+        '54.251.103.124',   // vigattin.com
+        '127.0.0.1',        // localhost
+    );
+
+    protected $enableIpFilter = true;
+
     protected $message;
 
     protected $status;
@@ -16,10 +25,16 @@ class OnUpdateFreeGold implements MessageInterface
     protected $accountLocator;
 
     /**
+     * @var \Zend\Http\PhpEnvironment\Request
+     */
+    protected $request;
+
+    /**
      * @var \VigattinAds\DomainModel\UserManager
      */
     protected $userManager;
 
+    /** @var \Zend\ServiceManager\ServiceManager */
     protected $serviceManager;
 
     public function __construct()
@@ -59,16 +74,38 @@ class OnUpdateFreeGold implements MessageInterface
      */
     public function onReceived()
     {
-        // TODO: Implement onReceived() method.
-        if($this->status == 'ok') {
+        // Create default response
+        $response = array(
+            'status' => $this->status,
+            'beforeGold' => 0,
+        );
+
+        // Check ip
+        $clientIp = $this->request->getServer('REMOTE_ADDR');
+        if($this->enableIpFilter) {
+            foreach($this->allowedIp as $ip) {
+                if($ip == $clientIp) {
+                    $response['status'] = $this->status;
+                    break;
+                }
+                $response['status'] = 'Sorry your not allowed to access this API';
+            }
+        }
+
+        // Check message status
+        if($response['status'] == 'ok') {
             $adsUserId = $this->accountLocator->hasAccount($this->message['id']);
+
             // if already have account in VigattinAds
             if($adsUserId) {
                 $user = $this->userManager->getUser($adsUserId);
+                $response['beforeGold'] = $user->get('credit');
                 $user->set('credit', $user->get('credit')+floatval($this->message['gold']));
                 $user->persistSelf();
                 $user->flush();
             }
+
+            // create new account
             else {
                 $user = $this->userManager->createUser(
                     $this->message['email'],
@@ -84,7 +121,15 @@ class OnUpdateFreeGold implements MessageInterface
                     $user->flush();
                 }
             }
+
+            // create response
+            $response['clientIp'] = $this->request->getServer('REMOTE_ADDR');
+            $response['addedGold'] = $this->message['gold'];
+            $response['newGold'] = $user->get('credit');
         }
+
+        // return response
+        return array('OnUpdateFreeGold' => $response);
     }
 
     /**
@@ -95,6 +140,12 @@ class OnUpdateFreeGold implements MessageInterface
         // TODO: Implement injectDependencies() method.
         $this->userManager = $dependencies['userManager'];
         $this->serviceManager = $dependencies['serviceManager'];
+        $this->request = $this->serviceManager->get('request');
         $this->accountLocator->set('serviceManager', $dependencies['serviceManager']);
+    }
+
+    public function isIpAllowed()
+    {
+
     }
 }
