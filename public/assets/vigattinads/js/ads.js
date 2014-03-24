@@ -54,10 +54,12 @@ $(document).ready(function() {
     var activeTime = refreshTime;
     var isFocus = true;
     var timerObject = setInterval(function() {
-        if(isFocus) activeTime--;
+        activeTime--;
         if(activeTime < 0) {
-            activeTime = refreshTime;
-            window.location.reload();
+            if(isFocus) {
+                activeTime = refreshTime;
+                window.location.reload();
+            }
         }
     }, 1000);
     $(window).focus(function() {
