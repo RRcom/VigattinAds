@@ -64,10 +64,10 @@ class LoginController extends AbstractActionController
             else {
                 $user = $this->userManager->createUser(
                     $this->vauth->get_email(),
-                    $this->vauth->get_username() ? $this->vauth->get_username() : uniqid(),
+                    $this->vauth->get_username() ? trim($this->vauth->get_username()) : uniqid(),
                     uniqid(),
-                    $this->vauth->get_first_name() ? $this->vauth->get_first_name() : 'no first name',
-                    $this->vauth->get_last_name() ? $this->vauth->get_last_name() : 'no last name'
+                    $this->vauth->get_first_name() ? trim($this->vauth->get_first_name()) : 'no first name',
+                    $this->vauth->get_last_name() ? trim($this->vauth->get_last_name()) : 'no last name'
                 );
                 if($user instanceof \VigattinAds\DomainModel\AdsUser) {
                     $vauthLocator->addAccount($this->vauth->get_vigid(), $user->get('id'));
@@ -79,7 +79,7 @@ class LoginController extends AbstractActionController
                     }
                 }
                 echo '<!-- '.\VigattinAds\DomainModel\Validator::isNameValid('').' -->';
-                //else echo '<!-- firstname: '.$this->vauth->get_first_name().' lastname: '.$this->vauth->get_last_name().' '.print_r($user, true).' -->';
+                echo '<!-- firstname: '.$this->vauth->get_first_name().' lastname: '.$this->vauth->get_last_name().' '.print_r($user, true).' -->';
             }
         }
     }

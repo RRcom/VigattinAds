@@ -9,9 +9,9 @@ use VigattinAds\DomainModel\Image;
 
 class Validator
 {
-    static $titlePattern = '#^[a-zA-Z0-9_-\s.\'"/,&()]*$#';
+    static $titlePattern = '#^[a-zA-Z0-9_\s.\'"/,&()-]*$#';
     static $keywordPattern = '#^[a-zA-Z0-9\s\,]*$#';
-    static $descriptionPattern = '#^[a-zA-Z0-9_-\s.\'"/,&()]*$#';
+    static $descriptionPattern = '#^[a-zA-Z0-9_\s.\'"/,&()-]*$#';
 
     static public function isDigitValid($digit)
     {
@@ -35,7 +35,7 @@ class Validator
 
     static public function isUsernameValid($name, $min = 4, $max = 48)
     {
-        $regex = new Regex(array('pattern' => '#^[a-zA-Z0-9_-][a-zA-Z0-9_]+$#'));
+        $regex = new Regex(array('pattern' => '#^[a-zA-Z0-9_-][a-zA-Z0-9_.-]+$#'));
         $strlength = new StringLength();
         $strlength->setMin($min);
         $strlength->setMax($max);
@@ -57,7 +57,7 @@ class Validator
 
     static public function isNameValid($name, $min = 6, $max = 48, $title = 'name')
     {
-        $regex = new Regex(array('pattern' => '#^[a-zA-Z0-9_-][a-zA-Z0-9_\s-.]+$#'));
+        $regex = new Regex(array('pattern' => '#^[a-zA-Z0-9_-][a-zA-Z0-9_\s.-]+$#'));
         $strlength = new StringLength();
         $strlength->setMin($min);
         $strlength->setMax($max);
