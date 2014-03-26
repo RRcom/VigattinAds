@@ -234,11 +234,25 @@ a:hover {
 }
 .change-template-container .template-website, .change-template-container .template-position {
 }
+.label1 {
+    font-weight: bold;
+    color: #999;
+    font-size: 12px;
+}
+.label2 {
+    font-weight: bold;
+    color: #666;
+    font-size: 14px;
+}
+.with-underline {
+    padding-bottom: 5px;
+    border-bottom: 1px solid #DDD;
+}
 .full-ads-container {
     font-size: 0.9em;
     padding: 10px;
     border: 1px solid #DDD;
-    margin: 20px 0px;
+    margin: 5px 0 20px 0;
     color: #444;
     min-height: 200px;
     max-height: 300px;
@@ -290,4 +304,66 @@ a:hover {
 .ads-history-container .ads-history-control {
     padding: 10px;
 
+}
+
+/***************** ads vigattin tiles *****************/
+
+.ads-vigattin-tiles {
+    width: auto;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.ads-vigattin-tiles .ads-panel-title {
+    font-weight: bold;
+    margin: 5px 5px 0 5px;
+}
+.ads-vigattin-tiles a:hover {
+    text-decoration: none;
+}
+.ads-vigattin-tiles .ads-frame {
+    width: 223px;
+    display: inline-block;
+    background-color: #E0E0E0;
+    margin: 5px;
+    overflow: hidden;
+    vertical-align: top;
+    transition: background-color 0.3s;
+    padding: 0;
+}
+.ads-vigattin-tiles .ads-frame:hover {
+    background-color: #F5F5F5;
+}
+.ads-vigattin-tiles .ads-frame .ads-image-preview-container {
+    height: 150px;
+    margin: 5px;
+    overflow: hidden;
+    line-height: 160px;
+    text-align: center;
+    display: block;
+    float: none;
+}
+.ads-vigattin-tiles .ads-frame .ads-image-preview-container .ads-frame-image {
+    max-width: 222px;
+    max-height: 150px;
+    width: auto;
+}
+.ads-vigattin-tiles .ads-frame .ads-frame-title {
+    text-align: center;
+    height: 40px;
+    overflow: hidden;
+    margin: 0 5px;
+    color: #000;
+    vertical-align: top;
+    word-wrap: break-word;
+    font-size: 13px;
+    font-weight: normal;
+}
+.ads-vigattin-tiles .ads-frame .ads-frame-price {
+    height: 35px;
+    background-color: #000;
+    color: #CCC;
+    line-height: 35px;
+    text-align: center;
+    font-size: 12px;
+    overflow: hidden;
+    padding: 0 5px;
 }

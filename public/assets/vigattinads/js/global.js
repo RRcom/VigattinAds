@@ -319,6 +319,7 @@ $(document).ready(function(e) {
     var imageChooseEvent = new (function($) {
         var ratio = 0.66667;
         function resizeImage() {
+            if($('.ads-image-preview-container').hasClass('no-resize')) return;
             $('.ads-image-preview-container').height($('.ads-image-preview-container').width() * ratio);
         }
         this.resizeImage = function() {
@@ -335,17 +336,21 @@ $(document).ready(function(e) {
                     $(image).addClass('ads-frame-image');
                     $('.ads-image-preview-container')
                         .html('')
-                        .append(image)
-                        .height($('.ads-image-preview-container').width() * ratio);
-
+                        .append(image);
+                    if(!$('.ads-image-preview-container').hasClass('no-resize')) {
+                        $('.ads-image-preview-container').height($('.ads-image-preview-container').width() * ratio);
+                    }
                     $(window).resize(function(e) {
+                        if($('.ads-image-preview-container').hasClass('no-resize')) return;
                         $('.ads-image-preview-container').height($('.ads-image-preview-container').width() * ratio);
                     });
                 }
                 fileReader.readAsDataURL(file[0]);
             }
         });
-        $('.ads-image-preview-container').css({'overflow':'hidden'}).height($('.ads-image-preview-container').width() * ratio);
+        if(!$('.ads-image-preview-container').hasClass('no-resize')) {
+            $('.ads-image-preview-container').css({'overflow':'hidden'}).height($('.ads-image-preview-container').width() * ratio);
+        }
         $(window).resize(function(e) {
             resizeImage();
         });
