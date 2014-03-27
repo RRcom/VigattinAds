@@ -364,8 +364,7 @@ $(document).ready(function(e) {
             var price = isNaN($('#ads-price').val()) ? 0 : $('#ads-price').val();
             if(price > 0) {
                 $('.ads-frame .ads-frame-price').show();
-                $('.ads-frame .ads-frame-price .price-value').text(parseFloat(price).toFixed(2));
-                $('.ads-frame .price-value').text(addCommas($('.ads-frame .price-value').text()));
+                $('.ads-frame .ads-frame-price .price-value').text(addCommas(parseFloat(price).toFixed(2)));
             }
             else {
                 $('.ads-frame .ads-frame-price .price-value').text('');
@@ -390,8 +389,7 @@ $(document).ready(function(e) {
             var price = isNaN($(e.currentTarget).val()) ? 0 : $(e.currentTarget).val();
             if(price > 0) {
                 $('.ads-frame .ads-frame-price').show();
-                $('.ads-frame .ads-frame-price .price-value').text(parseFloat(price).toFixed(2));
-                $('.ads-frame .price-value').text(addCommas($('.ads-frame .price-value').text()));
+                $('.ads-frame .ads-frame-price .price-value').text(addCommas(parseFloat(price).toFixed(2)));
             }
             else {
                 $('.ads-frame .ads-frame-price .price-value').text('');
@@ -402,8 +400,7 @@ $(document).ready(function(e) {
             var price = isNaN($(e.currentTarget).val()) ? 0 : $(e.currentTarget).val();
             if(price > 0) {
                 $('.ads-frame .ads-frame-price').show();
-                $('.ads-frame .ads-frame-price .price-value').text(parseFloat(price).toFixed(2));
-                $('.ads-frame .price-value').text(addCommas($('.ads-frame .price-value').text()));
+                $('.ads-frame .ads-frame-price .price-value').text(addCommas(parseFloat(price).toFixed(2)));
             }
             else {
                 $('.ads-frame .ads-frame-price .price-value').text('');

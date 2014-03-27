@@ -367,3 +367,106 @@ a:hover {
     overflow: hidden;
     padding: 0 5px;
 }
+
+/***************** trade featured ads *****************/
+.trade-featured-ads {
+    width: auto;
+}
+.trade-featured-ads .ads-frame {
+    display: inline-block;
+    background-color: #f3ebe0;
+    vertical-align: top;
+    margin: 2px;
+    padding: 0;
+}
+.trade-featured-ads .ads-frame:hover {
+    background-color: #ffffff;
+    text-decoration: none;
+}
+.trade-featured-ads .ads-frame .ads-image-preview-container {
+    width: 120px;
+    height: 106px;
+    margin: 32px 62px 32px 62px;
+    text-align: center;
+    background-color: #eaeaea;
+    line-height: 106px;
+    overflow: hidden;
+    display: block;
+    float: none;
+}
+.trade-featured-ads .ads-frame .ads-image-preview-container .ads-frame-image {
+    width: 120px;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+}
+.trade-featured-ads .ads-frame .ads-frame-title {
+    width: 220px;
+    margin: 12px 12px 0 12px;
+    word-wrap: break-word;
+    text-align: center;
+    color: #433c2d;
+    height: 34px;
+    font-weight: bold;
+    font-size: 12px;
+}
+.trade-featured-ads .ads-frame .ads-frame-price {
+    height: 30px;
+    background-color: #70644c;
+    text-align: center;
+    font-size: 14px;
+    line-height: 30px;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+/***************** trade ads listing *****************/
+.trade-ads-listing {
+    display: block;
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 0;
+}
+.trade-ads-listing .ads-frame {
+    display: block;
+    width: auto;
+    height: auto;
+    padding: 0;
+    margin: 0;
+    background-color: #f3ebe0;
+    border-bottom: 1px solid #b9aa8b;
+    border-left: 1px solid #f3ebe0;
+    border-right: 1px solid #f3ebe0;
+    border-top: 1px solid #f3ebe0;
+    font-family: Tahoma;
+}
+.trade-ads-listing .ads-frame:hover {
+
+}
+.trade-ads-listing .ads-frame .ads-image-preview-container {
+    float: none;
+    margin: 0;
+    padding: 8px;
+    display: inline-block;
+    vertical-align: top;
+}
+.trade-ads-listing .ads-frame .ads-image-preview-container .ads-frame-image {
+
+}
+.trade-ads-listing .ads-frame .title-container {
+    display: inline-block;
+    vertical-align: top;
+    padding-top: 8px;
+}
+.trade-ads-listing .ads-frame .price-container {
+    display: inline-block;
+    vertical-align: top;
+}
+.trade-ads-listing .ads-frame .title-container .ads-frame-title {
+
+}
+.trade-ads-listing .ads-frame .title-container .ads-frame-price {
+
+}

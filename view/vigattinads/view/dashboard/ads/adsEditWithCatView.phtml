@@ -47,18 +47,46 @@
             endswitch; ?></div>
             <div class="panel-body">
             <div class="row">
+                <!-- Left Panel -->
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ads-live-preview-label"><strong>Ads Preview</strong><p></p></div>
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                        <div class="row ads-frame">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ads-frame-title"><?php echo $this->escapeHtmlAttr($ads->get('adsTitle')); ?></div>
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ads-frame-price">Php <span class="price-value"><?php echo $this->escapeHtmlAttr(number_format($ads->get('adsPrice'), 2, '.', '')); ?></span></div>
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><div class="ads-image-preview-container"><img class="ads-frame-image" src="/repo<?php echo $ads->get('adsImage'); ?>"></div><span class="ads-frame-description"><?php echo $this->escapeHtml($ads->get('adsDescription')); ?></span></div>
+
+                    <!-- Live Preview -->
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 label2">Ads Type</div>
+                    <br/>
+
+                    <!-- Sidebar Ads -->
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ads-preview-column">
+                        <div class="label1 with-underline">Left Side</div><p></p>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                            <div class="row ads-frame">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ads-frame-title"><?php echo $this->escapeHtml($ads->get('adsTitle')); ?></div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ads-frame-price">Php <span class="price-value"><?php echo $this->escapeHtml(number_format($ads->get('adsPrice'), 2, '.', '')); ?></span></div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><div class="ads-image-preview-container"><img class="ads-frame-image" src="/repo<?php echo $ads->get('adsImage'); ?>"></div><span class="ads-frame-description"><?php echo $this->escapeHtml($ads->get('adsDescription')); ?></span></div>
+                            </div>
                         </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
+                        <div class="clearfix"></div>
                     </div>
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
+
+                    <br />
+
+                    <!-- Trade Featured Ads -->
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ads-preview-column">
+                        <div class="label1 with-underline">Featured Ads</div><p></p>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 trade-featured-ads">
+                            <div class="ads-frame">
+                                <div class="ads-image-preview-container no-resize"><img class="ads-frame-image" src="/repo<?php echo $ads->get('adsImage'); ?>"></div>
+                                <div class="ads-frame-title"><?php echo $this->escapeHtml($ads->get('adsTitle')); ?></div>
+                                <div class="ads-frame-price">Php <span class="price-value"><?php echo $this->escapeHtml(number_format($ads->get('adsPrice'), 2, '.', '')); ?></span></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
+                        <div class="clearfix"></div>
+                    </div>
                 </div>
+                <!-- Right Panel -->
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                     <div class="form-group ads-form-title <?php echo $adsTitleError ? 'has-error' : ''; ?>">
                         <label class="control-label" for="ads-title">Edited Title <small id="adsTitleCountDisplay" class="text-warning"></small></label>
@@ -97,7 +125,7 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            <a href="<?php echo $this->escapeHtmlAttr($_SERVER['HTTP_REFERER']); ?>" class="btn btn-default tooltip-enable-top" title="Cancel change and back to ads list">Back</a>
+                            <a href="<?php echo isset($_SERVER['HTTP_REFERER']) ? $this->escapeHtmlAttr($_SERVER['HTTP_REFERER']) : ''; ?>" class="btn btn-default tooltip-enable-top" title="Cancel change and back to ads list">Back</a>
                             <button type="submit" class="btn btn-default tooltip-enable-top" title="Apply change made to ads info" name="submit" value="next">Apply</button>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right">
