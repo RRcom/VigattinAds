@@ -38,7 +38,7 @@ class AdsEditController extends AdsController
 
                     $adsEntity->set('adsTitle', $formError['adsTitle']);
                     $adsEntity->set('adsUrl', $formError['adsUrl']);
-                    $adsEntity->set('keywords', $formError['adsKeyword']);
+                    $adsEntity->set('keywords', $this->processTradeAdditionalAdsPosition());
                     $adsEntity->set('adsPrice', $formError['adsPrice']);
                     $adsEntity->set('adsDescription', $formError['adsDescription']);
                     if($oldValue !== $newValue) {
@@ -150,8 +150,27 @@ class AdsEditController extends AdsController
         $actionContent->setVariable('adsUser', $this->adsUser);
         $actionContent->setVariable('adsViewCount', $adsViewCount);
         $actionContent->setVariable('adsReviewReason', $adsEntity->getLastReviewReason());
+        $actionContent->setVariable('request', $this->getRequest());
 
         $this->mainView->addChild($actionContent, 'actionContent');
         return $this->mainView;
+    }
+
+    public function processTradeAdditionalAdsPosition()
+    {
+        $adsKeyword = $this->getRequest()->getPost('ads-keyword', '');
+        $adsKeyword = str_replace('(Featured Ads Homepage)', '', $adsKeyword);
+        $adsKeyword = str_replace('(Ads Listing Homepage)', '', $adsKeyword);
+        $adsKeyword = str_replace('(Ads Listing Other Items)', '', $adsKeyword);
+        if($this->getRequest()->getPost('featured-homepage', '')) {
+            $adsKeyword .= '(Featured Ads Homepage)';
+        }
+        if($this->getRequest()->getPost('listing-homepage', '')) {
+            $adsKeyword .= '(Ads Listing Homepage)';
+        }
+        if($this->getRequest()->getPost('listing-others', '')) {
+            $adsKeyword .= '(Ads Listing Other Items)';
+        }
+        return $adsKeyword;
     }
 }

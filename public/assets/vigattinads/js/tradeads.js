@@ -218,22 +218,30 @@ var tradeAds = new (function($) {
     }
 
     function setIframe(category) {
-        var keyword = '';
-        var showIn = iframe.attr('data-showin');
-        var template = iframe.attr('data-template');
-        var limit = (iframe.attr('data-limit')) ? iframe.attr('data-limit') : 6;
-        $.each(category, function(key, value) {
-            if(value) {
-                keyword += jsTrim(value)+' ';
+        $(iframe).each(function(key, element){
+            var iframe = $(element);
+            var keyword = '';
+            var showIn = iframe.attr('data-showin');
+            var template = iframe.attr('data-template');
+            var limit = (iframe.attr('data-limit')) ? iframe.attr('data-limit') : 6;
+            var fixedKeyword = iframe.attr('fixed-keyword');
+            var src = iframe.attr('src');
+            if(!fixedKeyword) {
+                $.each(category, function(key, value) {
+                    if(value) {
+                        keyword += jsTrim(value)+' ';
+                    }
+                });
+                keyword = '('+jsTrim(keyword)+')';
+            }
+            else keyword = fixedKeyword;
+            if(window.location.hash.substr(1) == 'preview') {
+                iframe.attr('src', 'http://www.service.vigattin.com/vigattinads/showads?showin=preview');
+            }
+            else {
+                if(!src) iframe.attr('src', 'http://www.service.vigattin.com/vigattinads/showads?showin='+encodeURIComponent(showIn)+'&template='+encodeURIComponent(template)+'&limit='+encodeURIComponent(limit)+'&keyword='+encodeURIComponent(keyword));
             }
         });
-        keyword = '('+jsTrim(keyword)+')';
-        if(window.location.hash.substr(1) == 'preview') {
-            iframe.attr('src', 'http://www.service.vigattin.com/vigattinads/showads?showin=preview');
-        }
-        else {
-            iframe.attr('src', 'http://www.service.vigattin.com/vigattinads/showads?showin='+encodeURIComponent(showIn)+'&template='+encodeURIComponent(template)+'&limit='+encodeURIComponent(limit)+'&keyword='+encodeURIComponent(keyword));
-        }
     }
 
     this.getCategory = function() {

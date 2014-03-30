@@ -133,12 +133,19 @@
                             <!-- Dynamic Category -->
                             <div class="form-group">
                                 <label class="control-label">Vigattintrade Category <small class="text-warning">Choose which categories the ads will appear</small></label>
-                                <ul class="list-group list-unstyled" id="tradeCategoryList2">
-                                    <li><a class="ads-preview-link" target="_blank" href="//www.vigattintrade.com#preview">preview</a> <input class="trade-cat-checkbox2" data-pos="0" type="checkbox" style="margin-left: 10px" checked="checked"> Featured Ads</li>
-                                    <li><a class="ads-preview-link" target="_blank" href="//www.vigattintrade.com#preview">preview</a> <input class="trade-cat-checkbox2" data-pos="0" type="checkbox" style="margin-left: 10px" checked="checked"> Ads Listing</li>
-                                </ul>
+                                <br /><br />
+                                <strong>Left Side</strong>
                                 <ul class="list-group list-unstyled" id="tradeCategoryList">
 
+                                </ul>
+                                <strong>Featured Ads</strong>
+                                <ul class="list-group list-unstyled" id="tradeCategoryList2">
+                                    <li><a class="ads-preview-link" target="_blank" href="//www.vigattintrade.com#preview">preview</a> <input name="featured-homepage" value="1" class="trade-cat-checkbox2" data-pos="0" type="checkbox" style="margin-left: 10px" <?php echo $request->getPost('featured-homepage', '') ? 'checked="checked"' : '' ?>> Homepage</li>
+                                </ul>
+                                <strong>Ads Listing</strong>
+                                <ul class="list-group list-unstyled" id="tradeCategoryList3">
+                                    <li><a class="ads-preview-link" target="_blank" href="//www.vigattintrade.com#preview">preview</a> <input name="listing-homepage" value="1" class="trade-cat-checkbox3" data-pos="0" type="checkbox" style="margin-left: 10px" <?php echo $request->getPost('listing-homepage', '') ? 'checked="checked"' : '' ?>> Homepage</li>
+                                    <li><a class="ads-preview-link" target="_blank" href="//www.vigattintrade.com#preview">preview</a> <input name="listing-others" value="1" class="trade-cat-checkbox3" data-pos="0" type="checkbox" style="margin-left: 10px" <?php echo $request->getPost('listing-others', '') ? 'checked="checked"' : '' ?>> Other Items</li>
                                 </ul>
                             </div>
 

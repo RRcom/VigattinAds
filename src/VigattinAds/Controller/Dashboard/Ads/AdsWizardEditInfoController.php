@@ -12,6 +12,8 @@ class AdsWizardEditInfoController extends AdsController
     const IMAGE_QUALITY = 75;
     const IMAGE_PROGRESSIVE = true;
 
+    protected $adsKeyword = '';
+
     public function indexAction()
     {
         // redirect to choose template wizard if has no template in session
@@ -22,6 +24,7 @@ class AdsWizardEditInfoController extends AdsController
 
         // if user submit the form
         if(strtolower($this->getRequest()->getPost('submit', '')) == 'next') {
+            $this->adsKeyword = $this->processTradeAdditionalAdsPosition();
             $formError = $this->onSubmit();
         }
         // default action refresh or just enter page
@@ -63,6 +66,7 @@ class AdsWizardEditInfoController extends AdsController
         $actionContent->setVariable('origAdsTitle', $this->sessionManager->getStorage()->origAdsTitle);
         $actionContent->setVariable('origAdsDescription', $this->sessionManager->getStorage()->origAdsDescription);
         $actionContent->setVariable('origAdsUrl', $this->sessionManager->getStorage()->origAdsUrl);
+        $actionContent->setVariable('request', $this->getRequest());
 
         // append final view to main view
         $this->mainView->addChild($actionContent, 'actionContent');
@@ -92,7 +96,7 @@ class AdsWizardEditInfoController extends AdsController
         $formError = array(
             'adsTitle' => $this->getRequest()->getPost('ads-title', ''),
             'adsUrl' => $this->getRequest()->getPost('ads-url', ''),
-            'adsKeyword' => $this->getRequest()->getPost('ads-keyword', ''),
+            'adsKeyword' => $this->adsKeyword,
             'adsTempKeyword' => $this->sessionManager->getStorage()->tempAdsKeyword,
             'adsPrice' => $this->getRequest()->getPost('ads-price', ''),
             'adsDescription' => $this->getRequest()->getPost('ads-description', ''),
@@ -161,7 +165,7 @@ class AdsWizardEditInfoController extends AdsController
                 $this->sessionManager->getStorage()->tempAdsDescription,
                 $this->sessionManager->getStorage()->tempAdsTemplate['showIn'],
                 $this->sessionManager->getStorage()->tempAdsTemplate['template'],
-                $this->getRequest()->getPost('ads-keyword', ''),
+                $this->adsKeyword,
                 $this->sessionManager->getStorage()->tempAdsPrice,
                 $this->getRequest()->getPost('ads-temp-keyword', '')
             );
@@ -182,5 +186,23 @@ class AdsWizardEditInfoController extends AdsController
         $this->sessionManager->getStorage()->tempAdsKeyword = null;
         $this->sessionManager->getStorage()->tempAdsPrice = null;
         $this->sessionManager->getStorage()->tempAdsImageDataUrl = null;
+    }
+
+    public function processTradeAdditionalAdsPosition()
+    {
+        $adsKeyword = $this->getRequest()->getPost('ads-keyword', '');
+        $adsKeyword = str_replace('(Featured Ads Homepage)', '', $adsKeyword);
+        $adsKeyword = str_replace('(Ads Listing Homepage)', '', $adsKeyword);
+        $adsKeyword = str_replace('(Ads Listing Other Items)', '', $adsKeyword);
+        if($this->getRequest()->getPost('featured-homepage', '')) {
+            $adsKeyword .= '(Featured Ads Homepage)';
+        }
+        if($this->getRequest()->getPost('listing-homepage', '')) {
+            $adsKeyword .= '(Ads Listing Homepage)';
+        }
+        if($this->getRequest()->getPost('listing-others', '')) {
+            $adsKeyword .= '(Ads Listing Other Items)';
+        }
+        return $adsKeyword;
     }
 }

@@ -262,3 +262,62 @@ body {
     overflow: hidden;
     padding: 0 5px;
 }
+
+/***************** trade ads listing *****************/
+.trade-ads-listing {
+    display: block;
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 0;
+}
+.trade-ads-listing .ads-frame {
+    display: block;
+    width: auto;
+    height: auto;
+    padding: 0;
+    margin: 0;
+    background-color: #f3ebe0;
+    border-bottom: 1px solid #b9aa8b;
+    border-left: 1px solid #f3ebe0;
+    border-right: 1px solid #f3ebe0;
+    border-top: 1px solid #f3ebe0;
+    font-family: Tahoma;
+}
+.trade-ads-listing .ads-frame:hover {
+
+}
+.trade-ads-listing .ads-frame .ads-image-preview-container {
+    float: none;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    border: 1px solid #b2a896;
+    width: 119px;
+    height: 93px;
+    text-align: center;
+    padding: 2px;
+    vertical-align: middle;
+}
+.trade-ads-listing .ads-frame .ads-image-preview-container .ads-frame-image {
+    width: auto;
+    height: 100%;
+    max-width: 100%;
+    display: inline-block;
+    vertical-align: middle;
+}
+.trade-ads-listing .ads-frame .title-container {
+    display: inline-block;
+    vertical-align: top;
+    padding-top: 8px;
+}
+.trade-ads-listing .ads-frame .price-container {
+    display: inline-block;
+    vertical-align: top;
+}
+.trade-ads-listing .ads-frame .title-container .ads-frame-title {
+
+}
+.trade-ads-listing .ads-frame .title-container .ads-frame-price {
+
+}

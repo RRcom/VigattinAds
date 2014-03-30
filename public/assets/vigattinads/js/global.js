@@ -237,10 +237,14 @@ var tempPreview = new (function($){
     }
 
     function saveAdsToBrowser() {
-        localStorage.tempAdsTitle = $('.ads-frame-title', adsContainer).text();
-        localStorage.tempAdsPrice = $('.price-value', adsContainer).text();
-        localStorage.tempAdsDescription = $('.ads-frame-description', adsContainer).text();
-        localStorage.tempAdsImage = $('.ads-frame-image', adsContainer).attr('src');
+        var priceElement =  $('.price-value', adsContainer)[0];
+        var titleElement =  $('.ads-frame-title', adsContainer)[0];
+        var descriptionElement =  $('.ads-frame-description', adsContainer)[0];
+        var imageElement =  $('.ads-frame-image', adsContainer)[0];
+        localStorage.tempAdsTitle = $(titleElement).text();
+        localStorage.tempAdsPrice = $(priceElement).text();
+        localStorage.tempAdsDescription = $(descriptionElement).text();
+        localStorage.tempAdsImage = $(imageElement).attr('src');
         localStorage.tempAdsUrl = $('#ads-url').val();
     }
 })(jQuery);
