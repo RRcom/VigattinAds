@@ -111,20 +111,30 @@ class ShowAdsController extends AbstractActionController
 
     public function tradeFeaturedAdsAction()
     {
+        $this->layout()->setTemplate('vigattinads/layout/ads-no-padding');
+        if(strtolower($this->request->getQuery('showin', '')) == 'preview') {
+            $this->viewModel->setTemplate('vigattinads/view/show-preview-trade-featured-ads');
+            return $this->viewModel;
+        }
+        $this->viewModel->setTemplate('vigattinads/view/show-trade-featured-ads');
+
         // Create list of ads entities based on query param provided in the url
         $this->searchedAds = $this->generateAds();
-        $this->layout()->setTemplate('vigattinads/layout/ads-no-padding');
-        $this->viewModel->setTemplate('vigattinads/view/show-trade-featured-ads');
         $this->viewModel->setVariable('ads', $this->searchedAds);
         return $this->viewModel;
     }
 
     public function tradeAdsListingAction()
     {
+        $this->layout()->setTemplate('vigattinads/layout/ads-no-padding');
+        if(strtolower($this->request->getQuery('showin', '')) == 'preview') {
+            $this->viewModel->setTemplate('vigattinads/view/show-preview-trade-ads-listing');
+            return $this->viewModel;
+        }
+        $this->viewModel->setTemplate('vigattinads/view/show-trade-ads-listing');
+
         // Create list of ads entities based on query param provided in the url
         $this->searchedAds = $this->generateAds();
-        $this->layout()->setTemplate('vigattinads/layout/ads-no-padding');
-        $this->viewModel->setTemplate('vigattinads/view/show-trade-ads-listing');
         $this->viewModel->setVariable('ads', $this->searchedAds);
         return $this->viewModel;
     }

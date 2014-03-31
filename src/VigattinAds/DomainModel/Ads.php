@@ -163,6 +163,12 @@ class Ads extends AbstractEntity
      */
     protected $createdTime;
 
+    /**
+     * @var string
+     * @ORM\Column(name="date", type="string", length=255)
+     */
+    protected $date = '';
+
     //==================================================================================================
 
     public function __construct(AdsUser $adsUser)
@@ -173,7 +179,7 @@ class Ads extends AbstractEntity
 
     /**
      * Get property value
-     * @param string $propertyName List of properties are id, adsTitle, adsUrl, adsDescription, adsPrice, showIn, template, keywords, adsImage, status, adsUser, adsView, reviewVersion, userUsername, userEmail, userFirsName, userLastName, category and ServiceManager.
+     * @param string $propertyName List of properties are id, date, adsTitle, adsUrl, adsDescription, adsPrice, showIn, template, keywords, adsImage, status, adsUser, adsView, reviewVersion, userUsername, userEmail, userFirsName, userLastName, category and ServiceManager.
      * @return mixed
      */
     public function get($propertyName)
@@ -184,7 +190,7 @@ class Ads extends AbstractEntity
 
     /**
      * Set property value
-     * @param string $propertyName List of properties are adsTitle, adsUrl, adsDescription, adsPrice, showIn, template, keywords, adsImage, status, reviewVersion, userUsername, userEmail, userFirsName, userLastName, category and ServiceManager.
+     * @param string $propertyName List of properties are adsTitle, date, adsUrl, adsDescription, adsPrice, showIn, template, keywords, adsImage, status, reviewVersion, userUsername, userEmail, userFirsName, userLastName, category and ServiceManager.
      * @param mixed $value
      * @return AdsUser
      */

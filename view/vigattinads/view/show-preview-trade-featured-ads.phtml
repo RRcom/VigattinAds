@@ -1,0 +1,15 @@
+<div class="trade-featured-ads"><a href="" class="ads-frame">
+    <div class="ads-image-preview-container"><img class="ads-frame-image" src=""></div>
+    <div class="ads-frame-title"></div>
+    <div class="ads-frame-price"></div>
+</a></div>
+
+<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+<script>
+    $('.ads-frame').attr('href', localStorage.tempAdsUrl);
+    $('.ads-frame-title').text(localStorage.tempAdsTitle);
+    if(localStorage.tempAdsPrice) $('.ads-frame-price').text('php '+localStorage.tempAdsPrice);
+    $('.ads-frame-image').attr('src', localStorage.tempAdsImage);
+    $('.ads-frame-description').text(localStorage.tempAdsDescription);
+</script>
+

@@ -432,8 +432,8 @@ a:hover {
 .trade-ads-listing .ads-frame {
     display: block;
     width: auto;
-    height: auto;
-    padding: 0;
+    height: 111px;
+    padding: 7px;
     margin: 0;
     background-color: #f3ebe0;
     border-bottom: 1px solid #b9aa8b;
@@ -441,32 +441,66 @@ a:hover {
     border-right: 1px solid #f3ebe0;
     border-top: 1px solid #f3ebe0;
     font-family: Tahoma;
+    overflow: hidden;
 }
 .trade-ads-listing .ads-frame:hover {
-
+    text-decoration: none;
 }
 .trade-ads-listing .ads-frame .ads-image-preview-container {
     float: none;
     margin: 0;
-    padding: 8px;
+    padding: 0;
     display: inline-block;
-    vertical-align: top;
+    border: 1px solid #b2a896;
+    width: 121px;
+    height: 95px;
+    text-align: center;
+    padding: 2px;
+    vertical-align: middle;
 }
 .trade-ads-listing .ads-frame .ads-image-preview-container .ads-frame-image {
-
+    width: auto;
+    height: 100%;
+    max-width: 100%;
+    display: inline-block;
+    vertical-align: middle;
 }
 .trade-ads-listing .ads-frame .title-container {
     display: inline-block;
     vertical-align: top;
-    padding-top: 8px;
+    padding-left: 3px;
+    max-width: 400px;
+}
+.trade-ads-listing .ads-frame .title-container .ads-frame-title {
+    color: #433c2d;
+    text-decoration: none;
+    font-weight: bold;
+}
+.trade-ads-listing .ads-frame .title-container .ads-frame-title:hover {
+    text-decoration: underline;
+}
+.trade-ads-listing .ads-frame .title-container .ads-frame-description {
+    color: #70644C;
+    font-size: 11px;
+    max-width: 150px;
+    word-wrap: break-word;
+    padding-left: 2px;
 }
 .trade-ads-listing .ads-frame .price-container {
     display: inline-block;
     vertical-align: top;
+    float: right;
+    padding-right: 10px;
+    padding-top: 40px;
 }
-.trade-ads-listing .ads-frame .title-container .ads-frame-title {
-
+.trade-ads-listing .ads-frame .price-container .ads-frame-price {
+    color: #cf8e49;
+    font-size: 20px;
+    font-family: Arial;
+    font-weight: bold;
 }
-.trade-ads-listing .ads-frame .title-container .ads-frame-price {
-
+.trade-ads-listing .ads-frame .price-container .ads-frame-date {
+    font-size: 12px;
+    color: #70644C;
+    text-align: right;
 }

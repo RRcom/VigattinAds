@@ -56,7 +56,7 @@
 
                         <!-- Sidebar Ads -->
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ads-preview-column">
-                            <div class="label1 with-underline">Right Side</div><p></p>
+                            <div class="label1 with-underline">Left Side</div><p></p>
                             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
                             <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                                 <div class="row ads-frame">
@@ -96,9 +96,11 @@
                                     <div class="ads-image-preview-container no-resize"><img class="ads-frame-image" src="<?php echo $this->escapeHtmlAttr($adsImageDataUrl); ?>"></div>
                                     <div class="title-container">
                                         <div class="ads-frame-title"><?php echo $this->escapeHtml($adsTitle); ?></div>
+                                        <div class="ads-frame-description"><?php echo $this->escapeHtml($adsDescription); ?></div>
                                     </div>
                                     <div class="price-container">
                                         <div class="ads-frame-price">Php <span class="price-value"><?php echo $this->escapeHtml(number_format($adsPrice, 2, '.', '')); ?></span></div>
+                                        <div class="ads-frame-date"><?php echo $this->escapeHtml($adsDate); ?></div>
                                     </div>
                                 </div>
                             </div>
@@ -140,12 +142,12 @@
                                 </ul>
                                 <strong>Featured Ads</strong>
                                 <ul class="list-group list-unstyled" id="tradeCategoryList2">
-                                    <li><a class="ads-preview-link" target="_blank" href="//www.vigattintrade.com#preview">preview</a> <input name="featured-homepage" value="1" class="trade-cat-checkbox2" data-pos="0" type="checkbox" style="margin-left: 10px" <?php echo $request->getPost('featured-homepage', '') ? 'checked="checked"' : '' ?>> Homepage</li>
+                                    <li><a class="ads-preview-link" target="_blank" href="//www.vigattintrade.com#preview">preview</a> <input name="featured-homepage" value="1" class="trade-cat-checkbox2" data-pos="0" type="checkbox" style="margin-left: 10px" checked="checked"> Homepage</li>
                                 </ul>
                                 <strong>Ads Listing</strong>
                                 <ul class="list-group list-unstyled" id="tradeCategoryList3">
-                                    <li><a class="ads-preview-link" target="_blank" href="//www.vigattintrade.com#preview">preview</a> <input name="listing-homepage" value="1" class="trade-cat-checkbox3" data-pos="0" type="checkbox" style="margin-left: 10px" <?php echo $request->getPost('listing-homepage', '') ? 'checked="checked"' : '' ?>> Homepage</li>
-                                    <li><a class="ads-preview-link" target="_blank" href="//www.vigattintrade.com#preview">preview</a> <input name="listing-others" value="1" class="trade-cat-checkbox3" data-pos="0" type="checkbox" style="margin-left: 10px" <?php echo $request->getPost('listing-others', '') ? 'checked="checked"' : '' ?>> Other Items</li>
+                                    <li><a class="ads-preview-link" target="_blank" href="//www.vigattintrade.com#preview">preview</a> <input name="listing-homepage" value="1" class="trade-cat-checkbox3" data-pos="0" type="checkbox" style="margin-left: 10px" checked="checked"> Homepage</li>
+                                    <li><a class="ads-preview-link" target="_blank" href="//www.vigattintrade.com#preview">preview</a> <input name="listing-others" value="1" class="trade-cat-checkbox3" data-pos="0" type="checkbox" style="margin-left: 10px" checked="checked"> Other Items</li>
                                 </ul>
                             </div>
 

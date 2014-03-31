@@ -85,6 +85,27 @@
                         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
                         <div class="clearfix"></div>
                     </div>
+
+                    <br />
+
+                    <!-- Trade Ads Listing -->
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ads-preview-column">
+                        <div class="label1 with-underline">Ads Listing</div><p></p>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 trade-ads-listing">
+                            <div class="ads-frame">
+                                <div class="ads-image-preview-container no-resize"><img class="ads-frame-image" src="/repo<?php echo $ads->get('adsImage'); ?>"></div>
+                                <div class="title-container">
+                                    <div class="ads-frame-title"><?php echo $this->escapeHtml($ads->get('adsTitle')); ?></div>
+                                    <div class="ads-frame-description"><?php echo $this->escapeHtml($ads->get('adsDescription')); ?></div>
+                                </div>
+                                <div class="price-container">
+                                    <div class="ads-frame-price">Php <span class="price-value"><?php echo $this->escapeHtml(number_format($ads->get('adsPrice'), 2, '.', '')); ?></span></div>
+                                    <div class="ads-frame-date"><?php echo $this->escapeHtml($ads->get('date')); ?></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 <!-- Right Panel -->
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">

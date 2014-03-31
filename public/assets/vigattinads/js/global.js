@@ -241,11 +241,13 @@ var tempPreview = new (function($){
         var titleElement =  $('.ads-frame-title', adsContainer)[0];
         var descriptionElement =  $('.ads-frame-description', adsContainer)[0];
         var imageElement =  $('.ads-frame-image', adsContainer)[0];
+        var adsDate = $('.ads-frame-date').length ? $($('.ads-frame-date')[0]).text() : '';
         localStorage.tempAdsTitle = $(titleElement).text();
         localStorage.tempAdsPrice = $(priceElement).text();
         localStorage.tempAdsDescription = $(descriptionElement).text();
         localStorage.tempAdsImage = $(imageElement).attr('src');
         localStorage.tempAdsUrl = $('#ads-url').val();
+        localStorage.tempAdsDate = adsDate;
     }
 })(jQuery);
 
@@ -323,8 +325,10 @@ $(document).ready(function(e) {
     var imageChooseEvent = new (function($) {
         var ratio = 0.66667;
         function resizeImage() {
-            if($('.ads-image-preview-container').hasClass('no-resize')) return;
-            $('.ads-image-preview-container').height($('.ads-image-preview-container').width() * ratio);
+            $('.ads-image-preview-container').each(function(key, element) {
+                if($(element).hasClass('no-resize')) return;
+                $(element).height($(element).width() * ratio);
+            });
         }
         this.resizeImage = function() {
             resizeImage();
@@ -341,20 +345,19 @@ $(document).ready(function(e) {
                     $('.ads-image-preview-container')
                         .html('')
                         .append(image);
-                    if(!$('.ads-image-preview-container').hasClass('no-resize')) {
-                        $('.ads-image-preview-container').height($('.ads-image-preview-container').width() * ratio);
-                    }
+                    resizeImage();
                     $(window).resize(function(e) {
-                        if($('.ads-image-preview-container').hasClass('no-resize')) return;
-                        $('.ads-image-preview-container').height($('.ads-image-preview-container').width() * ratio);
+                        resizeImage();
                     });
                 }
                 fileReader.readAsDataURL(file[0]);
             }
         });
-        if(!$('.ads-image-preview-container').hasClass('no-resize')) {
-            $('.ads-image-preview-container').css({'overflow':'hidden'}).height($('.ads-image-preview-container').width() * ratio);
-        }
+        $('.ads-image-preview-container').each(function(key, element) {
+            if(!$(element).hasClass('no-resize')) {
+                $(element).css({'overflow':'hidden'}).height($(element).width() * ratio);
+            }
+        });
         $(window).resize(function(e) {
             resizeImage();
         });
@@ -839,6 +842,7 @@ $(document).ready(function(e) {
                                                 '<div class="price-container">Php <span class="ads-price">'+parseFloat(isNaN(value.price) ? 0 : value.price).toFixed(2)+'</span></div>'+
                                                 '<div class="ads-description">'+$('<div/>').html(value.description).text()+'</div>'+
                                                 '<input class="ads-keyword" type="hidden" value="'+$('<div/>').html('Homepage|'+decodeArrayCategory(value.category, '')).text()+'" />'+
+                                                '<input class="ads-date" type="hidden" value="'+$('<div/>').html(value.date).text()+'" />'+
                                             '</div>'+
                                             '<div class="col-xs-2"><a class="ads-import-single-button" data-target="#adsPanel'+Start+'" href="javascript:" data-dismiss="modal"><span class="glyphicon glyphicon-star"></span> Promote</a></div>'+
                                         '</div>'+
@@ -859,10 +863,11 @@ $(document).ready(function(e) {
                 description: $(targetId+' .ads-description').text(),
                 price: $(targetId+' .ads-price').text(),
                 url: $(targetId+' .ads-title').attr('href'),
-                keyword: $(targetId+' .ads-keyword').val()
+                keyword: $(targetId+' .ads-keyword').val(),
+                date: $(targetId+' .ads-date').val()
             };
             if(autoloadAdsImportList.length) {
-                submitInfo(data.title, data.url, data.image, data.keyword, data.description, data.price);
+                submitInfo(data.title, data.url, data.image, data.keyword, data.description, data.price, data.date);
                 return
             }
             var ratio = 0.66667;
@@ -888,7 +893,7 @@ $(document).ready(function(e) {
             TradeCategory.init();
         }
 
-        function submitInfo(adsTitle, adsUrl, adsImage, adsKeyword, adsDescription, adsPrice) {
+        function submitInfo(adsTitle, adsUrl, adsImage, adsKeyword, adsDescription, adsPrice, date) {
             var form = $('<form method="post" action="/vigattinads/dashboard/ads/create/choose-website"></form>');
             form.append($('<input type="hidden" name="ads-title" value="'+adsTitle+'" />'));
             form.append($('<input type="hidden" name="ads-url" value="'+adsUrl+'" />'));
@@ -896,6 +901,7 @@ $(document).ready(function(e) {
             form.append($('<input type="hidden" name="ads-keyword" value="'+adsKeyword+'"></input>'));
             form.append($('<input type="hidden" name="ads-description" value="'+adsDescription+'" />'));
             form.append($('<input type="hidden" name="ads-price" value="'+adsPrice+'" />'));
+            form.append($('<input type="hidden" name="ads-date" value="'+date+'" />'));
             form.append($('<input type="hidden" name="action" value="save-session" />'));
             $('body').append(form);
             form.submit();
@@ -1372,6 +1378,7 @@ $(document).ready(function(e) {
         });
     })(jQuery);
 });
+
 
 
 

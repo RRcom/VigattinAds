@@ -103,6 +103,7 @@ class AdsWizardEditInfoController extends AdsController
             'adsImageDataUrl' => $this->getRequest()->getPost('ads-image-data-url', ''),
             'adsShowIn' => $this->sessionManager->getStorage()->tempAdsTemplate['showIn'],
             'adsTemplate' => $this->sessionManager->getStorage()->tempAdsTemplate['template'],
+            'adsDate' => $this->sessionManager->getStorage()->tempAdsDate,
             'adsImageError' => Validator::isImageString($this->getRequest()->getPost('ads-image-data-url', '')),
             'adsTitleError' => Validator::isTitleValid($this->getRequest()->getPost('ads-title', '')),
             'adsUrlError' => Validator::isUrlValid($this->getRequest()->getPost('ads-url', '')),
@@ -132,6 +133,7 @@ class AdsWizardEditInfoController extends AdsController
             'adsImageDataUrl' => $this->sessionManager->getStorage()->tempAdsImageDataUrl,
             'adsShowIn' => $this->sessionManager->getStorage()->tempAdsTemplate['showIn'],
             'adsTemplate' => $this->sessionManager->getStorage()->tempAdsTemplate['template'],
+            'adsDate' => $this->sessionManager->getStorage()->tempAdsDate,
             'adsImageError' => '',
             'adsTitleError' => '',
             'adsUrlError' => '',
@@ -167,7 +169,8 @@ class AdsWizardEditInfoController extends AdsController
                 $this->sessionManager->getStorage()->tempAdsTemplate['template'],
                 $this->adsKeyword,
                 $this->sessionManager->getStorage()->tempAdsPrice,
-                $this->getRequest()->getPost('ads-temp-keyword', '')
+                $this->getRequest()->getPost('ads-temp-keyword', ''),
+                $this->sessionManager->getStorage()->tempAdsDate
             );
             $this->adsUser->flush();
             $this->clearTempData();

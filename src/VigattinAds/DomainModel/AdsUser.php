@@ -178,8 +178,9 @@ class AdsUser extends AbstractEntity
      * @param string $keyword
      * @return Ads
      */
-    public function createAds($adsTitle, $adsUrl, $adsImage, $adsDescription, $showIn, $template, $keyword = '', $adsPrice = 0, $category = '')
+    public function createAds($adsTitle, $adsUrl, $adsImage, $adsDescription, $showIn, $template, $keyword = '', $adsPrice = 0, $category = '', $date = '')
     {
+        $date = strtotime($date) ? $date : '';
         $ads = new Ads($this);
         $ads->set('adsTitle', $adsTitle)
             ->set('adsUrl', $adsUrl)
@@ -196,7 +197,8 @@ class AdsUser extends AbstractEntity
             ->set('userEmail', $this->get('email'))
             ->set('userFirstName', $this->get('firstName'))
             ->set('userLastName', $this->get('lastName'))
-            ->set('createdTime', time());
+            ->set('createdTime', time())
+            ->set('date', $date);
         $this->ads->add($ads);
         $this->entityManager->persist($ads);
         return $ads;

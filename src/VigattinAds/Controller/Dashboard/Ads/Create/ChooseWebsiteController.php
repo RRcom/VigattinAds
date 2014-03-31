@@ -53,6 +53,7 @@ class ChooseWebsiteController extends AdsController
             $this->sessionManager->getStorage()->origAdsDescription = $this->getRequest()->getPost('ads-description', '');
             $this->sessionManager->getStorage()->tempAdsImageDataUrl = $this->getRequest()->getPost('ads-image-data-url', '');
             $this->sessionManager->getStorage()->tempAdsPrice = $this->getRequest()->getPost('ads-price', '');
+            $this->sessionManager->getStorage()->tempAdsDate = $this->getRequest()->getPost('ads-date', '');
         }
     }
 }

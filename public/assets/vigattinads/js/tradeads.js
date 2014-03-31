@@ -236,7 +236,11 @@ var tradeAds = new (function($) {
             }
             else keyword = fixedKeyword;
             if(window.location.hash.substr(1) == 'preview') {
-                iframe.attr('src', 'http://www.service.vigattin.com/vigattinads/showads?showin=preview');
+                if(!src) iframe.attr('src', 'http://www.service.vigattin.com/vigattinads/showads?showin=preview');
+                else {
+                    var newSrc = iframe.attr('src').split('?');
+                    iframe.attr('src', newSrc[0]+'?showin=preview');
+                }
             }
             else {
                 if(!src) iframe.attr('src', 'http://www.service.vigattin.com/vigattinads/showads?showin='+encodeURIComponent(showIn)+'&template='+encodeURIComponent(template)+'&limit='+encodeURIComponent(limit)+'&keyword='+encodeURIComponent(keyword));
