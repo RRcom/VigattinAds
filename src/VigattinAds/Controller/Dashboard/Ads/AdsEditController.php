@@ -3,6 +3,7 @@ namespace VigattinAds\Controller\Dashboard\Ads;
 
 use Zend\View\Model\ViewModel;
 use VigattinAds\DomainModel\Validator;
+use VigattinAds\Controller\Dashboard\Ads\AdsWizardEditInfoController;
 
 class AdsEditController extends AdsController
 {
@@ -32,13 +33,17 @@ class AdsEditController extends AdsController
                 );
                 if(!strlen($formError['adsTitleError'].$formError['adsUrlError'].$formError['adsKeywordError'].$formError['adsPriceError'].$formError['adsDescriptionError'])) {
 
+                    $adsKeyword = $this->getRequest()->getPost('ads-keyword', '');
+                    $featuredAds = $this->getRequest()->getPost('featuredAds', array());
+                    $adsListing = $this->getRequest()->getPost('adsListing', array());
+
                     // check some value that need to verify first if change happen
                     $oldValue = strtolower($adsEntity->get('adsTitle').$adsEntity->get('adsUrl').$adsEntity->get('adsDescription'));
                     $newValue = strtolower($formError['adsTitle'].$formError['adsUrl'].$formError['adsDescription']);
 
                     $adsEntity->set('adsTitle', $formError['adsTitle']);
                     $adsEntity->set('adsUrl', $formError['adsUrl']);
-                    $adsEntity->set('keywords', $this->processTradeAdditionalAdsPosition());
+                    $adsEntity->set('keywords', AdsWizardEditInfoController::processTradeAdditionalAdsPosition($adsKeyword, $featuredAds, $adsListing));
                     $adsEntity->set('adsPrice', $formError['adsPrice']);
                     $adsEntity->set('adsDescription', $formError['adsDescription']);
                     if($oldValue !== $newValue) {

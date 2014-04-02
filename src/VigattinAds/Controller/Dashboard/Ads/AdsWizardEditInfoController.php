@@ -24,7 +24,10 @@ class AdsWizardEditInfoController extends AdsController
 
         // if user submit the form
         if(strtolower($this->getRequest()->getPost('submit', '')) == 'next') {
-            $this->adsKeyword = $this->processTradeAdditionalAdsPosition();
+            $adsKeyword = $this->getRequest()->getPost('ads-keyword', '');
+            $featuredAds = $this->getRequest()->getPost('featuredAds', array());
+            $adsListing = $this->getRequest()->getPost('adsListing', array());
+            $this->adsKeyword = $this->processTradeAdditionalAdsPosition($adsKeyword, $featuredAds, $adsListing);
             $formError = $this->onSubmit();
         }
         // default action refresh or just enter page
@@ -191,21 +194,49 @@ class AdsWizardEditInfoController extends AdsController
         $this->sessionManager->getStorage()->tempAdsImageDataUrl = null;
     }
 
-    public function processTradeAdditionalAdsPosition()
+    /**
+     * add additional keyword to ads
+     * @param string $adsKeyword the original keyword
+     * @param array $featuredAds added keyword
+     * @param array $adsListing added keyword
+     * @return mixed|string new keyword
+     */
+    static public function processTradeAdditionalAdsPosition($adsKeyword, $featuredAds, $adsListing)
     {
-        $adsKeyword = $this->getRequest()->getPost('ads-keyword', '');
-        $adsKeyword = str_replace('(Featured Ads Homepage)', '', $adsKeyword);
-        $adsKeyword = str_replace('(Ads Listing Homepage)', '', $adsKeyword);
-        $adsKeyword = str_replace('(Ads Listing Other Items)', '', $adsKeyword);
-        if($this->getRequest()->getPost('featured-homepage', '')) {
-            $adsKeyword .= '(Featured Ads Homepage)';
+        $featuredAdsAll = array(
+            '(featured ads vehicles)',
+            '(featured ads real estate)',
+            '(featured ads vehicles motorcycles & scooters)',
+            '(featured ads general category)',
+        );
+        $adsListingAll = array(
+            '(ads listing homepage)',
+            '(ads listing other items)',
+        );
+        // reset featured ads
+        foreach($featuredAdsAll as $ads) {
+            $adsKeyword = str_replace($ads, '', $adsKeyword);
         }
-        if($this->getRequest()->getPost('listing-homepage', '')) {
-            $adsKeyword .= '(Ads Listing Homepage)';
+        //reset ads listing
+        foreach($adsListingAll as $ads) {
+            $adsKeyword = str_replace($ads, '', $adsKeyword);
         }
-        if($this->getRequest()->getPost('listing-others', '')) {
-            $adsKeyword .= '(Ads Listing Other Items)';
+        //set featured ads
+        foreach($featuredAds as $ads) {
+            $adsKeyword .= $ads;
+        }
+        //set featured ads
+        foreach($adsListing as $ads) {
+            $adsKeyword .= $ads;
         }
         return $adsKeyword;
+    }
+
+    static public function isCatMatch($allowedCat, $cat)
+    {
+        $allowedCat = strtolower($allowedCat);
+        $cat = strtolower(trim($cat, '()'));
+        if(strpos($allowedCat, $cat) !== false) return true;
+        else return false;
     }
 }
