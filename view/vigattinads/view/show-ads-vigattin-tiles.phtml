@@ -1,4 +1,4 @@
-<div class="ads-vigattin-tiles"
+<div class="ads-vigattin-tiles" <?php echo (!empty($containerWidth)) ? 'style="width: '.$containerWidth.'px;"' : ''; ?>
     ><!--<div class="ads-panel-title">VigattinAds</div>--><?php
     foreach($ads as $key => $ad): ?><a href="<?php echo $this->escapeHtmlAttr($ad->get('adsUrl')); ?>" target="_blank" class="ads-frame <?php echo (count($ads) == ($key+1)) ? 'last' : '';  ?>" id="<?php echo $ad->get('id'); ?>">
             <div class="ads-image-preview-container"><img class="ads-frame-image" src="/repo<?php echo $this->escapeHtmlAttr($ad->get('adsImage')); ?>"></div>

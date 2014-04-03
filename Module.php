@@ -50,7 +50,7 @@ class Module
                 case strtolower('VigattinAds\Controller\PageBlock\BlockNoGold'):
                     break;
 
-                // if enter accounthome controller
+                // if enter account home controller
                 case strtolower('VigattinAds\Controller\Login'):
                     /** @var \VigattinAds\DomainModel\UserManager $userManager */
                     $userManager = $e->getApplication()->getServiceManager()->get('VigattinAds\DomainModel\UserManager');

@@ -6,7 +6,7 @@ use Vigattin\Vauth\Vauth;
 use VigattinAds\DomainModel\UserManager;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class VauthSuccessListener implements EventAwareInterface
+class VauthSuccessLogoutListener implements EventAwareInterface
 {
     /**
      * @var \Zend\ServiceManager\ServiceLocatorInterface
@@ -26,6 +26,7 @@ class VauthSuccessListener implements EventAwareInterface
 
     public function onEventTrigger(Vauth $vauth)
     {
-        echo "Success login event triggered\n";
+        $this->userManager->logout();
+        echo "Success logout event triggered\n";
     }
 }

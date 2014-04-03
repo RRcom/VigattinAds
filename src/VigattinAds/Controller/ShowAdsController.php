@@ -65,12 +65,15 @@ class ShowAdsController extends AbstractActionController
 
     public function vigattinTilesAction()
     {
+        $containerWidth = $this->request->getQuery('container-width', '');
         $this->layout()->setTemplate('vigattinads/layout/ads-no-padding');
         if(strtolower($this->request->getQuery('showin', '')) == 'preview') {
             $this->viewModel->setTemplate('vigattinads/view/show-preview-ads-vigattin-tiles');
+            $this->viewModel->setVariable('containerWidth', $containerWidth);
             return $this->viewModel;
         }
         $this->viewModel->setTemplate('vigattinads/view/show-ads-vigattin-tiles');
+        $this->viewModel->setVariable('containerWidth', $containerWidth);
 
         // Create list of ads entities based on query param provided in the url
         $this->searchedAds = $this->generateAds();
