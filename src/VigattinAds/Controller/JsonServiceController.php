@@ -121,6 +121,15 @@ class JsonServiceController extends AbstractActionController
         $jsonResult['reason'] = '';
         $jsonResult['gold'] = $user->get('credit');
         $jsonResult['views'] = $ads->get('viewLimit');
+
+        // Update session
+        $entityManager = $this->serviceLocator->get('Doctrine\ORM\EntityManager');
+        $sessionManager = $this->serviceLocator->get('Zend\Session\SessionManager');
+        $user->set('serviceManager', null);
+        $user->set('entityManager', null);
+        $entityManager->detach($user);
+        $sessionManager->getStorage()->user = $user;
+
         return $this->jsonView->setVariables($jsonResult);
     }
 
