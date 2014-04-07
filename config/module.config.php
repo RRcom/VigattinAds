@@ -366,7 +366,10 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(
+            'Zend\Session\SessionManager' => 'VigattinAds\DomainModel\SessionManagerServiceFactory',
             'Vigattin\Vauth\Vauth' => 'VigattinAds\DomainModel\VauthServiceFactory',
+            'VigattinAds\DomainModel\UserManager' => 'VigattinAds\DomainModel\UserManagerServiceFactory',
+            'VigattinAds\DomainModel\AdsManager' => 'VigattinAds\DomainModel\AdsManagerServiceFactory',
         ),
     ),
 );
