@@ -14,11 +14,22 @@ class LoginController extends AbstractActionController
     /** @var \Vigattin\Vauth\Vauth */
     protected $vauth;
 
+    /** @var null|array */
+    protected $createAccountError = null;
+
     public function indexAction()
     {
         // Redirect to vigattin login remove this code to go back to local login
-        header('Location: http://www.vigattin.com/signin/activating?redirect=http%3A%2F%2Fwww.service.vigattin.com%2Fvigattinads');
-        exit();
+        if($this->createAccountError === null) {
+            header('Location: http://www.vigattin.com/signin/activating?redirect=http%3A%2F%2Fwww.service.vigattin.com%2Fvigattinads');
+            exit();
+        }
+        else {
+            $viewModel = new ViewModel();
+            $viewModel->setVariable('errors', $this->createAccountError);
+            $viewModel->setTemplate('vigattinads/view/error');
+            return $viewModel;
+        }
 
         $error = '';
         /** @var $post \Zend\Stdlib\Parameters */
@@ -78,8 +89,9 @@ class LoginController extends AbstractActionController
                         exit();
                     }
                 }
-                echo '<!-- '.\VigattinAds\DomainModel\Validator::isNameValid('').' -->';
-                echo '<!-- firstname: '.$this->vauth->get_first_name().' lastname: '.$this->vauth->get_last_name().' '.print_r($user, true).' -->';
+                else {
+                    $this->createAccountError = $user;
+                }
             }
         }
     }
