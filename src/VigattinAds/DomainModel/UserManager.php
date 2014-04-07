@@ -436,8 +436,9 @@ class UserManager
     protected function getEntityFromSession()
     {
         $user = $this->sessionManager->getStorage()->user;
-        $user = $this->entityManager->merge($user);
-        $user->set('serviceManager', $this->serviceManager);
+        //$user = $this->entityManager->merge($user);
+        $user = $this->entityManager->find('VigattinAds\DomainModel\AdsUser', $user->get('id'));
+        //$user->set('serviceManager', $this->serviceManager);
         return $user;
     }
 
