@@ -27,7 +27,7 @@ class AdsWizardEditInfoController extends AdsController
             $adsKeyword = $this->getRequest()->getPost('ads-keyword', '');
             $featuredAds = $this->getRequest()->getPost('featuredAds', array());
             $adsListing = $this->getRequest()->getPost('adsListing', array());
-            $this->adsKeyword = $this->processTradeAdditionalAdsPosition($adsKeyword, $featuredAds, $adsListing);
+            $this->adsKeyword = $this->processTradeAdditionalAdsPosition($this->getRequest()->getPost('selectedKeyword', array()));
             $formError = $this->onSubmit();
         }
         // default action refresh or just enter page
@@ -201,33 +201,11 @@ class AdsWizardEditInfoController extends AdsController
      * @param array $adsListing added keyword
      * @return mixed|string new keyword
      */
-    static public function processTradeAdditionalAdsPosition($adsKeyword, $featuredAds, $adsListing)
+    static public function processTradeAdditionalAdsPosition($selectedKeywordArray)
     {
-        $featuredAdsAll = array(
-            '(featured ads vehicles)',
-            '(featured ads real estate)',
-            '(featured ads vehicles motorcycles & scooters)',
-            '(featured ads general category)',
-        );
-        $adsListingAll = array(
-            '(ads listing homepage)',
-            '(ads listing other items)',
-        );
-        // reset featured ads
-        foreach($featuredAdsAll as $ads) {
-            $adsKeyword = str_replace($ads, '', $adsKeyword);
-        }
-        //reset ads listing
-        foreach($adsListingAll as $ads) {
-            $adsKeyword = str_replace($ads, '', $adsKeyword);
-        }
-        //set featured ads
-        foreach($featuredAds as $ads) {
-            $adsKeyword .= $ads;
-        }
-        //set featured ads
-        foreach($adsListing as $ads) {
-            $adsKeyword .= $ads;
+        $adsKeyword = '';
+        foreach($selectedKeywordArray as $value) {
+            $adsKeyword .= $value;
         }
         return $adsKeyword;
     }

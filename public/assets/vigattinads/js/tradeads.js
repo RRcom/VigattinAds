@@ -223,6 +223,8 @@ var tradeAds = new (function($) {
             var keyword = '';
             var showIn = iframe.attr('data-showin');
             var template = iframe.attr('data-template');
+            var action = iframe.attr('data-action');
+            var rootKeyword = iframe.attr('data-root-keyword');
             var limit = (iframe.attr('data-limit')) ? iframe.attr('data-limit') : 6;
             var fixedKeyword = iframe.attr('fixed-keyword');
             var src = iframe.attr('src');
@@ -232,18 +234,25 @@ var tradeAds = new (function($) {
                         keyword += jsTrim(value)+' ';
                     }
                 });
-                keyword = '('+jsTrim(keyword)+')';
+                if(rootKeyword) keyword = '('+rootKeyword+' '+jsTrim(keyword)+')';
+                else keyword = '('+jsTrim(keyword)+')';
             }
             else keyword = fixedKeyword;
             if(window.location.hash.substr(1) == 'preview') {
-                if(!src) iframe.attr('src', 'http://www.service.vigattin.com/vigattinads/showads?showin=preview');
+                if(!src) {
+                    if(action) iframe.attr('src', 'http://www.service.vigattin.com/vigattinads/showads/'+action+'?showin=preview');
+                    else iframe.attr('src', 'http://www.service.vigattin.com/vigattinads/showads?showin=preview');
+                }
                 else {
                     var newSrc = iframe.attr('src').split('?');
                     iframe.attr('src', newSrc[0]+'?showin=preview');
                 }
             }
             else {
-                if(!src) iframe.attr('src', 'http://www.service.vigattin.com/vigattinads/showads?showin='+encodeURIComponent(showIn)+'&template='+encodeURIComponent(template)+'&limit='+encodeURIComponent(limit)+'&keyword='+encodeURIComponent(keyword));
+                if(!src) {
+                    if(action) iframe.attr('src', 'http://www.service.vigattin.com/vigattinads/showads/'+action+'?showin='+encodeURIComponent(showIn)+'&template='+encodeURIComponent(template)+'&limit='+encodeURIComponent(limit)+'&keyword='+encodeURIComponent(keyword));
+                    else iframe.attr('src', 'http://www.service.vigattin.com/vigattinads/showads?showin='+encodeURIComponent(showIn)+'&template='+encodeURIComponent(template)+'&limit='+encodeURIComponent(limit)+'&keyword='+encodeURIComponent(keyword));
+                }
             }
         });
     }

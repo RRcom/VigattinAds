@@ -154,6 +154,9 @@ class ShowAdsController extends AbstractActionController
 
     public function validateAction()
     {
+
+        $startT = microtime(true);
+
         $jsonView = new JsonModel();
         $status = '';
 
@@ -190,6 +193,7 @@ class ShowAdsController extends AbstractActionController
         }
         $this->adsManager->flush();
         $jsonView->setVariable('status', 'success');
+        $jsonView->setVariable('time', microtime(true) - $startT);
         return $jsonView;
     }
 

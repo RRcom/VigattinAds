@@ -1,9 +1,9 @@
 <?php /** @var $ad \VigattinAds\Entity\Ads */ ?>
 <div class="ads-sidebar-generic">
     <?php foreach($ads as $ad): ?>
-        <a href="<?php echo $this->escapeHtmlAttr($ad->get('adsUrl')); ?>" target="_parent" class="ads-frame" id="<?php echo $ad->get('id'); ?>">
-            <div class="ads-frame-title"><?php echo $this->escapeHtml($ad->get('adsTitle')); ?></div>
-            <div class="ads-content"><div class="ads-image-preview-container"><img class="ads-frame-image" src="/repo<?php echo $this->escapeHtmlAttr($ad->get('adsImage')); ?>"></div><span class="ads-frame-description"><?php echo $this->escapeHtml($ad->get('adsDescription')); ?></span></div>
+        <a href="<?php echo $this->escapeHtmlAttr($ad['adsUrl']); ?>" target="_parent" class="ads-frame" id="<?php echo $ad['id']; ?>">
+            <div class="ads-frame-title"><?php echo $this->escapeHtml($ad['adsTitle']); ?></div>
+            <div class="ads-content"><div class="ads-image-preview-container"><img class="ads-frame-image" src="/repo<?php echo $this->escapeHtmlAttr($ad['adsImage']); ?>"></div><span class="ads-frame-description"><?php echo $this->escapeHtml($ad['adsDescription']); ?></span></div>
             <div class="clear-float"></div>
         </a>
         <div class="ads-separator"></div>

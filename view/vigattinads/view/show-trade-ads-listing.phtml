@@ -1,17 +1,17 @@
-<div class="trade-ads-listing"><?php foreach($ads as $ad): ?><a href="<?php echo $this->escapeHtmlAttr($ad->get('adsUrl')); ?>" target="_blank" class="ads-frame" id="<?php echo $ad->get('id'); ?>">
-            <div class="ads-image-preview-container"><img alt="<?php echo $this->escapeHtmlAttr($ad->get('adsTitle')); ?>" class="ads-frame-image" src="/repo<?php echo $this->escapeHtmlAttr($ad->get('adsImage')); ?>"></div>
+<div class="trade-ads-listing"><?php foreach($ads as $ad): ?><a href="<?php echo $this->escapeHtmlAttr($ad['adsUrl']); ?>" target="_blank" class="ads-frame" id="<?php echo $ad['id']; ?>">
+            <div class="ads-image-preview-container"><img alt="<?php echo $this->escapeHtmlAttr($ad['adsTitle']); ?>" class="ads-frame-image" src="/repo<?php echo $this->escapeHtmlAttr($ad['adsImage']); ?>"></div>
             <div class="title-container">
-                <div class="ads-frame-title"><?php echo $this->escapeHtml($ad->get('adsTitle')); ?></div>
-                <div class="ads-frame-description"><?php echo $this->escapeHtml($ad->get('adsDescription')); ?></div>
+                <div class="ads-frame-title"><?php echo $this->escapeHtml($ad['adsTitle']); ?></div>
+                <div class="ads-frame-description"><?php echo $this->escapeHtml($ad['adsDescription']); ?></div>
             </div>
             <div class="price-container">
                 <div class="ads-frame-price">
-                    <?php if(floatval($ad->get('adsPrice'))): ?>
-                        Php <?php echo $this->escapeHtml(number_format($ad->get('adsPrice'), 2, '.', ',')); ?>
+                    <?php if(floatval($ad['adsPrice'])): ?>
+                        Php <?php echo $this->escapeHtml(number_format($ad['adsPrice'], 2, '.', ',')); ?>
                     <?php endif; ?>
                 </div>
                 <div class="ads-frame-date">
-                    <?php echo $this->escapeHtml($ad->get('date')); ?>
+                    <?php echo $this->escapeHtml($ad['date']); ?>
                 </div>
             </div>
 </a><?php endforeach; ?></div>

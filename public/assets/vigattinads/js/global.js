@@ -1017,7 +1017,7 @@ $(document).ready(function(e) {
                 if(value) {
                     if(isCatChecked(converted[1], key)) checked = 'checked="checked"';
                     else checked = '';
-                    catList.append('<li><a class="ads-preview-link" target="_blank" href="'+generatePreviewUrl(converted[1], key)+'#preview">preview</a> <input class="trade-cat-checkbox" data-pos="'+key+'" type="checkbox" '+checked+' style="margin-left: 10px" /> '+value+'</li>');
+                    catList.append('<li><a class="ads-preview-link" target="_blank" href="'+generatePreviewUrl(converted[1], key)+'#preview">preview</a> <input class="trade-cat-checkbox" data-pos="'+key+'" type="checkbox" '+checked+' style="margin-left: 10px" /> '+((key == 0) ? 'All Category' : value)+'</li>');
                 }
             });
             if(!$('.trade-cat-checkbox:checked').length) {
@@ -1043,6 +1043,21 @@ $(document).ready(function(e) {
             });
             keywordsInput.val(allAbsoluteKeyword);
         }
+    })(jQuery);
+
+    /* must have one checked */
+    (function($){
+        function validateCheckbox() {
+            var totalChecked = 0;
+            $('.must-have-one-checked:enabled').each(function(key, element) {
+                if($(element).is(':checked')) totalChecked++;
+            });
+            return totalChecked;
+        }
+        $('.must-have-one-checked:enabled').change(function(e) {
+            if(!validateCheckbox()) $(e.currentTarget).prop('checked', true);
+        });
+        validateCheckbox();
     })(jQuery);
 
     /* input auto count character */
@@ -1377,6 +1392,9 @@ $(document).ready(function(e) {
             getHistory(currentAdsId, 0, 30);
         });
     })(jQuery);
+
+    /* activate preview link */
+    tempPreview.init();
 });
 
 

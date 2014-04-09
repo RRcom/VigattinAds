@@ -45,6 +45,9 @@ class AdsManager
     /** @var  \Zend\Cache\Storage\Adapter\Filesystem */
     protected $cache;
 
+    /** @var  \Zend\Cache\Storage\Adapter\Filesystem */
+    protected $cacheQuickExpire;
+
     /**
      * @param ServiceManager $serviceManager
      */
@@ -56,7 +59,20 @@ class AdsManager
         $this->cache = StorageFactory::factory(
             array(
                 'adapter' => array(
-                    'name' => 'filesystem'
+                    'name' => 'filesystem',
+                ),
+                'plugins' => array(
+                    'exception_handler' => array(
+                        'throw_exceptions' => false
+                    ),
+                )
+            )
+        );
+        $this->cacheQuickExpire = StorageFactory::factory(
+            array(
+                'adapter' => array(
+                    'name' => 'filesystem',
+                    'options' => array('ttl' => 60),
                 ),
                 'plugins' => array(
                     'exception_handler' => array(
@@ -149,6 +165,9 @@ class AdsManager
      */
     public function countAdsTotal($showIn, $template, $keyword)
     {
+        $queryKey = md5('countAdsTotal'.$showIn.$template.$keyword);
+        $result = $this->cacheQuickExpire->getItem($queryKey);
+        if($result) return $result;
         if($keyword)
         {
             $query = $this->entityManager->createQuery("SELECT COUNT(a.id) FROM VigattinAds\DomainModel\Ads a WHERE a.deleted = 0 AND a.status = 1 AND a.showIn = :showIn AND a.template = :template AND a.keywords LIKE :keyword AND a.viewLimit > 0");
@@ -159,7 +178,9 @@ class AdsManager
             $query = $this->entityManager->createQuery("SELECT COUNT(a.id) FROM VigattinAds\DomainModel\Ads a WHERE a.deleted = 0 AND a.status = 1 AND a.showIn = :showIn AND a.template = :template AND a.viewLimit > 0");
             $query->setParameters(array('showIn' => $showIn, 'template' => $template));
         }
-        return $query->getSingleScalarResult();
+        $result = $query->getSingleScalarResult();
+        $this->cacheQuickExpire->addItem($queryKey, $result);
+        return $result;
     }
 
     /**
@@ -172,6 +193,9 @@ class AdsManager
      */
     public function searchAds($showIn, $template, $keyword, $start = 0, $limit = 10)
     {
+        $queryKey = md5('searchAds'.$showIn.$template.$keyword.$start.$limit);
+        $result = $this->cacheQuickExpire->getItem($queryKey);
+        if($result) return unserialize($result);
         if($keyword)
         {
             $query = $this->entityManager->createQuery("SELECT a FROM VigattinAds\DomainModel\Ads a WHERE a.deleted = 0 AND a.status = 1 AND a.showIn = :showIn AND a.template = :template AND a.keywords LIKE :keyword AND a.viewLimit > 0");
@@ -182,13 +206,14 @@ class AdsManager
             $query = $this->entityManager->createQuery("SELECT a FROM VigattinAds\DomainModel\Ads a WHERE a.deleted = 0 AND a.status = 1 AND a.showIn = :showIn AND a.template = :template AND a.viewLimit > 0");
             $query->setParameters(array('showIn' => $showIn, 'template' => $template));
         }
-        $query->setFirstResult($start);
-        $query->setMaxResults($limit);
+        $query->setFirstResult(intval($start));
+        $query->setMaxResults(intval($limit));
         try {
-            $result = $query->getResult();
+            $result = $query->getArrayResult();
         } catch(NoResultException $ex) {
             return array();
         }
+        $this->cacheQuickExpire->addItem($queryKey, serialize($result));
         return $result;
     }
 
