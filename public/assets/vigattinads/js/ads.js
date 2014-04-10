@@ -1,3 +1,26 @@
+function verticalCenterImage(containerSelector) {
+    $(containerSelector).each(function(key, element) {
+        var imgContainer = $(element);
+        var imgSrc = $('img', imgContainer).attr('src');
+        var newImg = new Image();
+        imgContainer.html('')
+        $(newImg).attr('src', imgSrc);
+        $(newImg).load(function(e) {
+            $(e.currentTarget).attr('src', imgSrc);
+            $(e.currentTarget).addClass('ads-frame-image');
+            imgContainer.append(e.currentTarget);
+            var marginTop = function() {
+                var pad = 0;
+                var remain = imgContainer.height() - $(e.currentTarget).height();
+                if(remain) pad = remain / 2;
+                return pad;
+            }
+            console.log(marginTop);
+            $(e.currentTarget).css({"margin-top": marginTop()});
+        })
+    });
+}
+
 /* count views */
 (function() {
     $(document).ready(function() {
@@ -75,4 +98,9 @@ $(document).ready(function() {
     $('.ads-frame .price-value').each(function(key, value) {
         $(value).text(addCommas($(value).text()));
     });
+});
+
+/* Vertical center ads image */
+$(document).ready(function() {
+    verticalCenterImage('.vertical-center-img');
 });
