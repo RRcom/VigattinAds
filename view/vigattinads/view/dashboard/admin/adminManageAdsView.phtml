@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-        <form action="/vigattinads/dashboard/admin/manageads" method="post" class="search-form1">
+        <form action="/vigattinads/dashboard/admin/manageads" method="post" class="form-horizontal search-form1">
             <div class="input-group">
                 <div class="input-group-btn">
                     <button class="btn btn-default dropdown-toggle category-switch" data-toggle="dropdown"><?php echo $this->escapeHtml($adsSearchCategory); ?> <span class="caret"></span></button>
@@ -21,6 +21,23 @@
                 <span class="input-group-btn">
                     <button class="btn btn-default" type="submit" name="adsSearch" value="user">Search</button>
                 </span>
+            </div>
+            <div class="input-group">
+                <label class="checkbox-inline">
+                    <input type="checkbox" name="searchFilter[]" value="<?php echo \VigattinAds\DomainModel\Ads::STATUS_APPROVED; ?>" class="" title="Search filter"> <span class="text-success legend">Approved</span>
+                </label>
+                <label class="checkbox-inline">
+                    <input type="checkbox" name="searchFilter[]" value="<?php echo \VigattinAds\DomainModel\Ads::STATUS_PENDING; ?>" class="" title="Search filter"> <span class="text-warning legend">Pending</span>
+                </label>
+                <label class="checkbox-inline">
+                    <input type="checkbox" name="searchFilter[]" value="<?php echo \VigattinAds\DomainModel\Ads::STATUS_REVIEWING; ?>" class="" title="Search filter"> <span class="text-warning legend">Reviewing</span>
+                </label>
+                <label class="checkbox-inline">
+                    <input type="checkbox" name="searchFilter[]" value="<?php echo \VigattinAds\DomainModel\Ads::STATUS_DISAPPROVED; ?>" class="" title="Search filter"> <span class="text-danger legend">Disapprove</span>
+                </label>
+                <label class="checkbox-inline">
+                    <input type="checkbox" name="searchFilter[]" value="<?php echo \VigattinAds\DomainModel\Ads::STATUS_PAUSED; ?>" class="" title="Search filter"> <span class="text-warning legend">Paused</span>
+                </label>
             </div>
         </form>
     </div>
