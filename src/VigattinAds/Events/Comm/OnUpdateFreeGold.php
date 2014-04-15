@@ -78,6 +78,7 @@ class OnUpdateFreeGold implements MessageInterface
         $response = array(
             'status' => $this->status,
             'beforeGold' => 0,
+            'createAccountError' => '',
         );
 
         // Check ip
@@ -120,12 +121,14 @@ class OnUpdateFreeGold implements MessageInterface
                     $user->persistSelf();
                     $user->flush();
                 }
+                else $response['createAccountError'] = $user;
             }
 
             // create response
             $response['clientIp'] = $this->request->getServer('REMOTE_ADDR');
             $response['addedGold'] = $this->message['gold'];
             $response['newGold'] = $user->get('credit');
+            $response['clientMessage'] = $this->message;
         }
 
         // return response
