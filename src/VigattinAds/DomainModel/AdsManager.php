@@ -316,7 +316,7 @@ class AdsManager
             }
             // with filter
             else {
-                $query = $this->entityManager->createQuery("SELECT a FROM VigattinAds\DomainModel\Ads a WHERE a.status = $filterStatusBy AND a.adsTitle LIKE :searchValue OR a.userEmail LIKE :searchValue OR a.userUsername LIKE :searchValue OR a.userFirstName LIKE :searchValue OR a.userLastName LIKE :searchValue ORDER BY a.".$fieldName[$sortBy]." ".$direction[$sortDirection]);
+                $query = $this->entityManager->createQuery("SELECT a FROM VigattinAds\DomainModel\Ads a WHERE a.status = $filterStatusBy AND (a.adsTitle LIKE :searchValue OR a.userEmail LIKE :searchValue OR a.userUsername LIKE :searchValue OR a.userFirstName LIKE :searchValue OR a.userLastName LIKE :searchValue) ORDER BY a.".$fieldName[$sortBy]." ".$direction[$sortDirection]);
             }
             $query->setParameter('searchValue', $searchValue.'%');
         }
@@ -328,7 +328,7 @@ class AdsManager
             }
             // with filter
             else {
-                $query = $this->entityManager->createQuery("SELECT a FROM VigattinAds\DomainModel\Ads a WHERE a.status = $filterStatusBy AND a.".$fieldName[$searchField]." LIKE :searchValue ORDER BY a.".$fieldName[$sortBy]." ".$direction[$sortDirection]);
+                $query = $this->entityManager->createQuery("SELECT a FROM VigattinAds\DomainModel\Ads a WHERE a.status = $filterStatusBy AND (a.".$fieldName[$searchField]." LIKE :searchValue) ORDER BY a.".$fieldName[$sortBy]." ".$direction[$sortDirection]);
             }
             $query->setParameter('searchValue', $searchValue.'%');
         }
@@ -405,7 +405,7 @@ class AdsManager
             }
             // with filter
             else {
-                $query = $this->entityManager->createQuery("SELECT COUNT(a.id) FROM VigattinAds\DomainModel\Ads a WHERE a.status = $filterStatusBy AND a.adsTitle LIKE :searchValue OR a.userEmail LIKE :searchValue OR a.userUsername LIKE :searchValue OR a.userFirstName LIKE :searchValue OR a.userLastName LIKE :searchValue");
+                $query = $this->entityManager->createQuery("SELECT COUNT(a.id) FROM VigattinAds\DomainModel\Ads a WHERE a.status = $filterStatusBy AND (a.adsTitle LIKE :searchValue OR a.userEmail LIKE :searchValue OR a.userUsername LIKE :searchValue OR a.userFirstName LIKE :searchValue OR a.userLastName LIKE :searchValue)");
             }
             $query->setParameter('searchValue', $searchValue.'%');
         }
@@ -416,7 +416,7 @@ class AdsManager
                 $query = $this->entityManager->createQuery("SELECT COUNT(a.id) FROM VigattinAds\DomainModel\Ads a WHERE a.".$fieldName[$searchField]." LIKE :searchValue");
             }
             else {
-                $query = $this->entityManager->createQuery("SELECT COUNT(a.id) FROM VigattinAds\DomainModel\Ads a WHERE a.status = $filterStatusBy AND a.".$fieldName[$searchField]." LIKE :searchValue");
+                $query = $this->entityManager->createQuery("SELECT COUNT(a.id) FROM VigattinAds\DomainModel\Ads a WHERE a.status = $filterStatusBy AND (a.".$fieldName[$searchField]." LIKE :searchValue)");
             }
             $query->setParameter('searchValue', $searchValue.'%');
         }

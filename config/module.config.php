@@ -90,7 +90,7 @@ return array(
                     'constraints' => array(
                         'controller'    => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'action'        => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'page'          => '[0-9]',
+                        'page'          => '[0-9]*',
                     ),
                     'defaults' => array(
                         'controller'    => 'VigattinAds\Controller\Dashboard\Ads',
@@ -192,7 +192,7 @@ return array(
                     'constraints' => array(
                         'param1'        => '[a-zA-Z0-9_-]*',
                         'param2'        => '[a-zA-Z0-9_-]*',
-                        'page'          => '[0-9]'
+                        'page'          => '[0-9]*'
                     ),
                     'defaults' => array(
                         'controller'    => 'VigattinAds\Controller\Dashboard\Admin\ManageAccount',
@@ -207,7 +207,7 @@ return array(
                     'constraints' => array(
                         'param1'        => '[a-zA-Z0-9_-]*',
                         'param2'        => '[a-zA-Z0-9_-]*',
-                        'page'          => '[0-9]'
+                        'page'          => '[0-9]*'
                     ),
                     'defaults' => array(
                         'controller'    => 'VigattinAds\Controller\Dashboard\Admin\ManageAds',
