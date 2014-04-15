@@ -277,6 +277,10 @@ class UserManager
     public function createUser($email, $username, $password, $firstName, $lastName, $gold = 0, $privilege = 'b')
     {
         $password = strval($password);
+        $email = trim($email);
+        $username = trim($username);
+        $firstName = trim($firstName);
+        $lastName = trim($lastName);
         $finalError = array();
         $error = array();
         $error['email'] = SafeValidator::isEmailValid($email);

@@ -43,14 +43,17 @@ class AdminManageAdsController extends AdminController
         if($this->getRequest()->getPost('adsSearch', '')) {
             $this->sessionManager->getStorage()->adsSearchCategory = $this->getRequest()->getPost('adsSearchCategory', 'Show All');
             $this->sessionManager->getStorage()->adsSearchValue = $this->getRequest()->getPost('adsSearchValue', '');
+            $this->sessionManager->getStorage()->adsSearchFilter = $this->getRequest()->getPost('searchFilter', 100);
         }
         elseif(strtolower($this->params('param1')) == 'reset') {
             $this->sessionManager->getStorage()->adsSearchCategory = $this->getRequest()->getPost('adsSearchCategory', 'Show All');
             $this->sessionManager->getStorage()->adsSearchValue = $this->getRequest()->getPost('adsSearchValue', '');
+            $this->sessionManager->getStorage()->adsSearchFilter = $this->getRequest()->getPost('searchFilter', 100);
             return $this->redirect()->toRoute('vigattinads_dashboard_admin_manageads');
         }
 
         if(!$this->sessionManager->getStorage()->adsSearchCategory) $this->sessionManager->getStorage()->adsSearchCategory = 'Show All';
+        if($this->sessionManager->getStorage()->adsSearchFilter === null) $this->sessionManager->getStorage()->adsSearchFilter = 100;
 
         $categoryMap = array(
             'title' => AdsManager::SEARCH_BY_TITLE,
@@ -66,9 +69,11 @@ class AdminManageAdsController extends AdminController
 
         $resultGenerator->setSearchFiled($category);
         $resultGenerator->setSearchValue($this->sessionManager->getStorage()->adsSearchValue);
+        $resultGenerator->setSearchFilter($this->sessionManager->getStorage()->adsSearchFilter);
 
         $adminManageAdsView->setVariable('adsSearchCategory', $this->sessionManager->getStorage()->adsSearchCategory);
         $adminManageAdsView->setVariable('adsSearchValue', $this->sessionManager->getStorage()->adsSearchValue);
+        $adminManageAdsView->setVariable('adsSearchFilter', $this->sessionManager->getStorage()->adsSearchFilter);
         return true;
     }
 }

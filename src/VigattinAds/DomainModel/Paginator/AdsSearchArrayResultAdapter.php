@@ -13,6 +13,8 @@ class AdsSearchArrayResultAdapter implements AdapterInterface
 
     protected $searchValue = '';
 
+    protected $filterStatusBy = 100;
+
     public function __construct(AdsManager $adsManager)
     {
         $this->adsManager = $adsManager;
@@ -28,7 +30,7 @@ class AdsSearchArrayResultAdapter implements AdapterInterface
     public function getItems($offset, $itemCountPerPage)
     {
         // TODO: Implement getItems() method.
-        $result = $this->adsManager->adminSearchAds($this->searchFiled, $this->searchValue, AdsManager::SORT_BY_ID, AdsManager::SORT_DIRECTION_ASC, $offset, $itemCountPerPage);
+        $result = $this->adsManager->adminSearchAds2($this->searchFiled, $this->searchValue, $this->filterStatusBy, AdsManager::SORT_BY_ID, AdsManager::SORT_DIRECTION_ASC, $offset, $itemCountPerPage);
         return $result;
     }
 
@@ -44,7 +46,7 @@ class AdsSearchArrayResultAdapter implements AdapterInterface
     public function count()
     {
         // TODO: Implement count() method.
-        $result = (int) $this->adsManager->adminCountAds($this->searchFiled, $this->searchValue);
+        $result = (int) $this->adsManager->adminCountAds2($this->searchFiled, $this->searchValue, $this->filterStatusBy);
         return $result;
     }
 
@@ -56,5 +58,10 @@ class AdsSearchArrayResultAdapter implements AdapterInterface
     public function setSearchValue($value)
     {
         $this->searchValue = $value;
+    }
+
+    public function setSearchFilter($value)
+    {
+        $this->filterStatusBy = $value;
     }
 }

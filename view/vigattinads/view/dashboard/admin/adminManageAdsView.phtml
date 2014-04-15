@@ -24,19 +24,22 @@
             </div>
             <div class="input-group">
                 <label class="checkbox-inline">
-                    <input type="checkbox" name="searchFilter[]" value="<?php echo \VigattinAds\DomainModel\Ads::STATUS_APPROVED; ?>" class="" title="Search filter"> <span class="text-success legend">Approved</span>
+                    <input type="radio" name="searchFilter" value="100" <?php if($adsSearchFilter == 100) echo 'checked="checked"'; ?> class="" title="Search filter"> <span class="text-success legend">All</span>
                 </label>
                 <label class="checkbox-inline">
-                    <input type="checkbox" name="searchFilter[]" value="<?php echo \VigattinAds\DomainModel\Ads::STATUS_PENDING; ?>" class="" title="Search filter"> <span class="text-warning legend">Pending</span>
+                    <input type="radio" name="searchFilter" value="<?php echo \VigattinAds\DomainModel\Ads::STATUS_APPROVED; ?>" <?php if($adsSearchFilter == \VigattinAds\DomainModel\Ads::STATUS_APPROVED) echo 'checked="checked"'; ?> class="" title="Search filter"> <span class="text-success legend">Approved</span>
                 </label>
                 <label class="checkbox-inline">
-                    <input type="checkbox" name="searchFilter[]" value="<?php echo \VigattinAds\DomainModel\Ads::STATUS_REVIEWING; ?>" class="" title="Search filter"> <span class="text-warning legend">Reviewing</span>
+                    <input type="radio" name="searchFilter" value="<?php echo \VigattinAds\DomainModel\Ads::STATUS_PENDING; ?>" <?php if($adsSearchFilter == \VigattinAds\DomainModel\Ads::STATUS_PENDING) echo 'checked="checked"'; ?> class="" title="Search filter"> <span class="text-warning legend">Pending</span>
                 </label>
                 <label class="checkbox-inline">
-                    <input type="checkbox" name="searchFilter[]" value="<?php echo \VigattinAds\DomainModel\Ads::STATUS_DISAPPROVED; ?>" class="" title="Search filter"> <span class="text-danger legend">Disapprove</span>
+                    <input type="radio" name="searchFilter" value="<?php echo \VigattinAds\DomainModel\Ads::STATUS_REVIEWING; ?>" <?php if($adsSearchFilter == \VigattinAds\DomainModel\Ads::STATUS_REVIEWING) echo 'checked="checked"'; ?> class="" title="Search filter"> <span class="text-warning legend">Reviewing</span>
                 </label>
                 <label class="checkbox-inline">
-                    <input type="checkbox" name="searchFilter[]" value="<?php echo \VigattinAds\DomainModel\Ads::STATUS_PAUSED; ?>" class="" title="Search filter"> <span class="text-warning legend">Paused</span>
+                    <input type="radio" name="searchFilter" value="<?php echo \VigattinAds\DomainModel\Ads::STATUS_DISAPPROVED; ?>" <?php if($adsSearchFilter == \VigattinAds\DomainModel\Ads::STATUS_DISAPPROVED) echo 'checked="checked"'; ?> class="" title="Search filter"> <span class="text-danger legend">Disapprove</span>
+                </label>
+                <label class="checkbox-inline">
+                    <input type="radio" name="searchFilter" value="<?php echo \VigattinAds\DomainModel\Ads::STATUS_PAUSED; ?>" <?php if($adsSearchFilter == \VigattinAds\DomainModel\Ads::STATUS_PAUSED) echo 'checked="checked"'; ?> class="" title="Search filter"> <span class="text-warning legend">Paused</span>
                 </label>
             </div>
         </form>
@@ -54,6 +57,7 @@
                     <tr>
                         <th>#</th>
                         <th>Status</th>
+                        <th>Website</th>
                         <th>Title</th>
                         <th>Reserve</th>
                         <th>Username</th>
@@ -86,6 +90,7 @@
                                     <?php break;
                             endswitch; ?>
                         </td>
+                        <td class="data-website"><?php echo $this->escapeHtml($ads->get('showIn')); ?></td>
                         <td class="data-last-title"><?php echo $this->escapeHtml($ads->get('adsTitle')); ?></td>
                         <td class="data-reserve"><?php echo intval($ads->get('viewLimit')); ?></td>
                         <td class="data-username"><?php echo $this->escapeHtml($ads->get('userUsername')); ?></td>
@@ -106,7 +111,7 @@
                                 adsImage="<?php echo $this->escapeHtmlAttr($ads->get('adsImage')); ?>"
                                 adsUrl="<?php echo $this->escapeHtmlAttr($ads->get('adsUrl')); ?>"
                                 adsPrice="<?php echo $this->escapeHtmlAttr($ads->get('adsPrice')); ?>"
-                            ><span class="glyphicon glyphicon-edit"></span> View</a>
+                            >Review</a>
                         </td>
                     </tr>
                     <?php endforeach; ?>
