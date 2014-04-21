@@ -287,7 +287,7 @@ class Ads extends AbstractEntity
         foreach($results as $result) {
             $approver = $result->get('approver');
             if($result->get('reviewResult') == Ads::STATUS_VALUE_CHANGED) $list[] = date('M. t, o h:i a', $result->get('approvedTime')).': Status change to '.$statusCode[strval($result->get('reviewResult'))].' Committed by owner';
-            else $list[] = date('M. t, o h:i a', $result->get('approvedTime')).': Status change to '.$statusCode[strval($result->get('reviewResult'))].' Committed by '.$approver->get('firstName').' '.$approver->get('lastName').'. Reason: '.$result->get('reviewReason');
+            else $list[] = date('M. t, o h:i a', $result->get('approvedTime')).': Status change to '.$statusCode[strval($result->get('reviewResult'))].' Committed by '.$approver->get('firstName').' '.$approver->get('lastName').' ('.$approver->get('username').'). Reason: '.$result->get('reviewReason');
         }
         return $list;
     }

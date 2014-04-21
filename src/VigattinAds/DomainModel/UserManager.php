@@ -125,8 +125,9 @@ class UserManager
         }
         // search all field
         elseif($searchField == self::SEARCH_BY_ALL) {
-            $query = $this->entityManager->createQuery("SELECT u FROM VigattinAds\DomainModel\AdsUser u WHERE u.email LIKE :searchValue OR u.username LIKE :searchValue OR u.firstName LIKE :searchValue OR u.lastName LIKE :searchValue ORDER BY u.".$fieldName[$sortBy]." ".$direction[$sortDirection]);
+            $query = $this->entityManager->createQuery("SELECT u FROM VigattinAds\DomainModel\AdsUser u WHERE u.email LIKE :searchValue OR u.username LIKE :searchValue OR u.firstName LIKE :searchValue OR u.lastName LIKE :searchValue OR CONCAT(u.firstName, ' ', u.lastName) LIKE :fullName ORDER BY u.".$fieldName[$sortBy]." ".$direction[$sortDirection]);
             $query->setParameter('searchValue', $searchValue.'%');
+            $query->setParameter('fullName', $searchValue.'%');
         }
         // search by field
         else {
@@ -158,8 +159,9 @@ class UserManager
         }
         // count all field
         elseif($searchField == self::SEARCH_BY_ALL) {
-            $query = $this->entityManager->createQuery("SELECT COUNT(u.id) FROM VigattinAds\DomainModel\AdsUser u WHERE u.email LIKE :searchValue OR u.username LIKE :searchValue OR u.firstName LIKE :searchValue OR u.lastName LIKE :searchValue");
+            $query = $this->entityManager->createQuery("SELECT COUNT(u.id) FROM VigattinAds\DomainModel\AdsUser u WHERE u.email LIKE :searchValue OR u.username LIKE :searchValue OR u.firstName LIKE :searchValue OR u.lastName LIKE :searchValue OR CONCAT(u.firstName, ' ', u.lastName) LIKE :fullName");
             $query->setParameter('searchValue', $searchValue.'%');
+            $query->setParameter('fullName', $searchValue.'%');
         }
         // count by field
         else {

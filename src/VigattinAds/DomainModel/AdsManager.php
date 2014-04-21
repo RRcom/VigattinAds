@@ -312,13 +312,14 @@ class AdsManager
         elseif($searchField == self::SEARCH_BY_ALL) {
             // no filter
             if($filterStatusBy > 3) {
-                $query = $this->entityManager->createQuery("SELECT a FROM VigattinAds\DomainModel\Ads a WHERE a.adsTitle LIKE :searchValue OR a.userEmail LIKE :searchValue OR a.userUsername LIKE :searchValue OR a.userFirstName LIKE :searchValue OR a.userLastName LIKE :searchValue ORDER BY a.".$fieldName[$sortBy]." ".$direction[$sortDirection]);
+                $query = $this->entityManager->createQuery("SELECT a FROM VigattinAds\DomainModel\Ads a WHERE a.adsTitle LIKE :searchValue OR a.userEmail LIKE :searchValue OR a.userUsername LIKE :searchValue OR a.userFirstName LIKE :searchValue OR a.userLastName LIKE :searchValue OR CONCAT(a.userFirstName, ' ', a.userLastName) LIKE :fullName ORDER BY a.".$fieldName[$sortBy]." ".$direction[$sortDirection]);
             }
             // with filter
             else {
-                $query = $this->entityManager->createQuery("SELECT a FROM VigattinAds\DomainModel\Ads a WHERE a.status = $filterStatusBy AND (a.adsTitle LIKE :searchValue OR a.userEmail LIKE :searchValue OR a.userUsername LIKE :searchValue OR a.userFirstName LIKE :searchValue OR a.userLastName LIKE :searchValue) ORDER BY a.".$fieldName[$sortBy]." ".$direction[$sortDirection]);
+                $query = $this->entityManager->createQuery("SELECT a FROM VigattinAds\DomainModel\Ads a WHERE a.status = $filterStatusBy AND (a.adsTitle LIKE :searchValue OR a.userEmail LIKE :searchValue OR a.userUsername LIKE :searchValue OR a.userFirstName LIKE :searchValue OR a.userLastName LIKE :searchValue OR CONCAT(a.userFirstName, ' ', a.userLastName) LIKE :fullName) ORDER BY a.".$fieldName[$sortBy]." ".$direction[$sortDirection]);
             }
             $query->setParameter('searchValue', $searchValue.'%');
+            $query->setParameter('fullName', $searchValue.'%');
         }
         // search by field
         else {
@@ -401,13 +402,14 @@ class AdsManager
         elseif($searchField == self::SEARCH_BY_ALL) {
             // no filter
             if($filterStatusBy > 3) {
-                $query = $this->entityManager->createQuery("SELECT COUNT(a.id) FROM VigattinAds\DomainModel\Ads a WHERE a.adsTitle LIKE :searchValue OR a.userEmail LIKE :searchValue OR a.userUsername LIKE :searchValue OR a.userFirstName LIKE :searchValue OR a.userLastName LIKE :searchValue");
+                $query = $this->entityManager->createQuery("SELECT COUNT(a.id) FROM VigattinAds\DomainModel\Ads a WHERE a.adsTitle LIKE :searchValue OR a.userEmail LIKE :searchValue OR a.userUsername LIKE :searchValue OR a.userFirstName LIKE :searchValue OR a.userLastName LIKE :searchValue OR CONCAT(a.userFirstName, ' ', a.userLastName) LIKE :fullName");
             }
             // with filter
             else {
-                $query = $this->entityManager->createQuery("SELECT COUNT(a.id) FROM VigattinAds\DomainModel\Ads a WHERE a.status = $filterStatusBy AND (a.adsTitle LIKE :searchValue OR a.userEmail LIKE :searchValue OR a.userUsername LIKE :searchValue OR a.userFirstName LIKE :searchValue OR a.userLastName LIKE :searchValue)");
+                $query = $this->entityManager->createQuery("SELECT COUNT(a.id) FROM VigattinAds\DomainModel\Ads a WHERE a.status = $filterStatusBy AND (a.adsTitle LIKE :searchValue OR a.userEmail LIKE :searchValue OR a.userUsername LIKE :searchValue OR a.userFirstName LIKE :searchValue OR a.userLastName LIKE :searchValue OR CONCAT(a.userFirstName, ' ', a.userLastName) LIKE :fullName)");
             }
             $query->setParameter('searchValue', $searchValue.'%');
+            $query->setParameter('fullName', $searchValue.'%');
         }
         // search by field
         else {

@@ -17,7 +17,7 @@
         <tbody>
         <?php foreach($paginator as $key => $ads): ?>
         <tr>
-            <td><?php echo $key+1; ?></td>
+            <td><?php echo ($key+1) ?></td>
             <td><?php echo $this->escapeHtml($ads->get('adsTitle')); ?></td>
             <td><?php switch($ads->get('status')):
                 case \VigattinAds\DomainModel\Ads::STATUS_APPROVED: ?>

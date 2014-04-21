@@ -11,13 +11,16 @@ use Zend\Paginator\Adapter\Iterator;
 class AdsController extends DashboardController
 {
 
+    const PAGINATION_PAGE = 10;
+
     public function indexAction()
     {
         /** @var \Doctrine\Common\Collections\ArrayCollection $adsList */
+        $currentPage = $this->params()->fromRoute('page');
         $adsList = $this->adsUser->get('ads');
         $paginator = new Paginator(new Iterator($adsList->getIterator()));
-        $paginator->setCurrentPageNumber($this->params()->fromRoute('page'));
-        $paginator->setItemCountPerPage(10);
+        $paginator->setCurrentPageNumber($currentPage);
+        $paginator->setItemCountPerPage(self::PAGINATION_PAGE);
         $paginator->setPageRange(7);
 
         $this->mainView->setVariable('title', 'Ads');
