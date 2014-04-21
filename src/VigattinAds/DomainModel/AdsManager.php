@@ -557,7 +557,7 @@ class AdsManager
         $ads = $this->getAdsByReviewVersion($log->get('reviewVersion'));
         if(!($ads instanceof Ads))
         {
-            $log->set('reviewResult', $log::STATUS_GONE);
+            $log->set('reviewResult', Ads::STATUS_VALUE_CHANGED);
             $log->persistSelf();
             $log->flush();
             return null;

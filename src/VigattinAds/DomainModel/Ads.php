@@ -19,6 +19,7 @@ use VigattinAds\DomainModel\AdsView;
  */
 class Ads extends AbstractEntity
 {
+    const STATUS_VALUE_CHANGED = -2;
     const STATUS_DISAPPROVED = -1;
     const STATUS_PENDING = 0;
     const STATUS_APPROVED = 1;
@@ -277,6 +278,7 @@ class Ads extends AbstractEntity
             strval(self::STATUS_PENDING) => 'PENDING',
             strval(self::STATUS_REVIEWING) => 'REVIEWING',
             strval(self::STATUS_PAUSED) => 'PAUSED',
+            strval(self::STATUS_VALUE_CHANGED) => 'RE-EDIT',
         );
         $query = $this->entityManager->createQuery("SELECT l FROM VigattinAds\DomainModel\AdsApproveLog l WHERE l.ads = ".$this->id." ORDER BY l.id ASC");
         $query->setFirstResult($start);
@@ -284,7 +286,8 @@ class Ads extends AbstractEntity
         $results = $query->getResult();
         foreach($results as $result) {
             $approver = $result->get('approver');
-            $list[] = date('M. t, o h:i a', $result->get('approvedTime')).': Status change to '.$statusCode[strval($result->get('reviewResult'))].' Committed by '.$approver->get('firstName').' '.$approver->get('lastName').'. Reason: '.$result->get('reviewReason');
+            if($result->get('reviewResult') == Ads::STATUS_VALUE_CHANGED) $list[] = date('M. t, o h:i a', $result->get('approvedTime')).': Status change to '.$statusCode[strval($result->get('reviewResult'))].' Committed by owner';
+            else $list[] = date('M. t, o h:i a', $result->get('approvedTime')).': Status change to '.$statusCode[strval($result->get('reviewResult'))].' Committed by '.$approver->get('firstName').' '.$approver->get('lastName').'. Reason: '.$result->get('reviewReason');
         }
         return $list;
     }

@@ -43,6 +43,16 @@ class EditController extends AdsController
                     $adsEntity->set('adsPrice', $formError['adsPrice']);
                     $adsEntity->set('adsDescription', $formError['adsDescription']);
                     if($oldValue !== $newValue) {
+                        // Change log to RE-EDIT status
+                        /** @var \VigattinAds\DomainModel\AdsApproveLog $log */
+                        $log = $this->adsManager->getLogByReviewVersion($adsEntity->get('reviewVersion'));
+                        $log->set('reviewResult', $adsEntity::STATUS_VALUE_CHANGED);
+                        $log->set('approvedTime', time());
+                        $log->persistSelf();
+                        $log->flush();
+
+                        // Create new log status
+                        $this->adsManager->changeAdsStatus($adsEntity->get('reviewVersion'), $adsEntity::STATUS_VALUE_CHANGED, '');
                         $adsEntity->set('reviewVersion', uniqid());
                         $adsEntity->set('status', $adsEntity::STATUS_PENDING);
                     }
