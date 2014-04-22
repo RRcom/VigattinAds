@@ -270,7 +270,7 @@ class Ads extends AbstractEntity
     {
         $list = array();
         if($start == 0) {
-            $list[] = date('M. t, o h:i a', $this->createdTime).': Ads created initial status PENDING';
+            $list[] = date('M. d, o h:i a', $this->createdTime).': Ads created initial status PENDING';
         }
         $statusCode = array(
             strval(self::STATUS_APPROVED) => 'APPROVED',
@@ -286,8 +286,8 @@ class Ads extends AbstractEntity
         $results = $query->getResult();
         foreach($results as $result) {
             $approver = $result->get('approver');
-            if($result->get('reviewResult') == Ads::STATUS_VALUE_CHANGED) $list[] = date('M. t, o h:i a', $result->get('approvedTime')).': Status change to '.$statusCode[strval($result->get('reviewResult'))].' Committed by owner';
-            else $list[] = date('M. t, o h:i a', $result->get('approvedTime')).': Status change to '.$statusCode[strval($result->get('reviewResult'))].' Committed by '.$approver->get('firstName').' '.$approver->get('lastName').' ('.$approver->get('username').'). Reason: '.$result->get('reviewReason');
+            if($result->get('reviewResult') == Ads::STATUS_VALUE_CHANGED) $list[] = date('M. d, o h:i a', $result->get('approvedTime')).': Status change to '.$statusCode[strval($result->get('reviewResult'))].' Committed by owner';
+            else $list[] = date('M. d, o h:i a', $result->get('approvedTime')).': Status change to '.$statusCode[strval($result->get('reviewResult'))].' Committed by '.$approver->get('firstName').' '.$approver->get('lastName').' ('.$approver->get('username').'). Reason: '.$result->get('reviewReason');
         }
         return $list;
     }

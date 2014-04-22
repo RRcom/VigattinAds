@@ -10,8 +10,12 @@ use VigattinAds\DomainModel\VauthAccountLocator;
 
 class AdminManageAccountController extends AdminController
 {
+    const PAGINATION_PAGE = 10;
+
     protected function currentTab(ViewModel $actionContent)
     {
+        $currentPage = intval($this->params('page', 1));
+
         $adminManageAccountView = new ViewModel();
 
         // if request for delete user
@@ -25,12 +29,13 @@ class AdminManageAccountController extends AdminController
 
         // Paginator
         $paginator = new Paginator($resultGenerator);
-        $paginator->setCurrentPageNumber(intval($this->params('page', 0)));
-        $paginator->setItemCountPerPage(10);
+        $paginator->setCurrentPageNumber($currentPage);
+        $paginator->setItemCountPerPage(self::PAGINATION_PAGE);
         $paginator->setPageRange(7);
 
         $adminManageAccountView->setTemplate('vigattinads/view/dashboard/admin/adminManageAccountView');
         $adminManageAccountView->setVariable('paginator', $paginator);
+        $adminManageAccountView->setVariable('paginationCount', ($currentPage - 1) * self::PAGINATION_PAGE);
         $actionContent->addChild($adminManageAccountView);
     }
 

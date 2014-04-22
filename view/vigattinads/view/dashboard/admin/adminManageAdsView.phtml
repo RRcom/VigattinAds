@@ -70,7 +70,7 @@
                 <tbody class="ads-list-tbody">
                     <?php foreach($paginator as $key => $ads): ?>
                     <tr id="adsrow<?php echo $ads->get('id'); ?>">
-                        <td><?php echo $key+1; ?></td>
+                        <td><?php echo $paginationCount + ($key + 1); ?></td>
                         <td class="data-status">
                             <?php switch(intval($ads->get('status'))):
                                 case \VigattinAds\DomainModel\Ads::STATUS_APPROVED: ?>

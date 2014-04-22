@@ -52,7 +52,7 @@
                 <tbody class="account-list-tbody">
                 <?php foreach($paginator as $key => $account): ?>
                     <tr id="<?php echo $account->get('id'); ?>">
-                        <td><?php echo $key+1; ?></td>
+                        <td><?php echo $paginationCount + ($key + 1); ?></td>
                         <td class="data-username"><?php echo $this->escapeHtml($account->get('username')); ?></td>
                         <td class="data-email"><?php echo $this->escapeHtml($account->get('email')); ?></td>
                         <td class="data-first-name"><?php echo ucwords(strtolower($this->escapeHtml($account->get('firstName')))); ?></td>

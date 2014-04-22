@@ -9,8 +9,12 @@ use VigattinAds\DomainModel\Paginator\AdsSearchArrayResultAdapter;
 
 class AdminManageAdsController extends AdminController
 {
+    const PAGINATION_PAGE = 10;
+
     protected function currentTab(ViewModel $actionContent)
     {
+        $currentPage = intval($this->params('page', 1));
+
         $adminManageAdsView = new ViewModel();
 
         // if request for delete user
@@ -24,12 +28,13 @@ class AdminManageAdsController extends AdminController
 
         // Paginator
         $paginator = new Paginator($resultGenerator);
-        $paginator->setCurrentPageNumber(intval($this->params('page', 0)));
-        $paginator->setItemCountPerPage(10);
+        $paginator->setCurrentPageNumber($currentPage);
+        $paginator->setItemCountPerPage(self::PAGINATION_PAGE);
         $paginator->setPageRange(7);
 
         $adminManageAdsView->setTemplate('vigattinads/view/dashboard/admin/adminManageAdsView');
         $adminManageAdsView->setVariable('paginator', $paginator);
+        $adminManageAdsView->setVariable('paginationCount', ($currentPage - 1) * self::PAGINATION_PAGE);
         $actionContent->addChild($adminManageAdsView);
     }
 
