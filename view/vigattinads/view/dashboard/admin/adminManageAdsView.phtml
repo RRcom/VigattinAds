@@ -51,7 +51,7 @@
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="table-responsive">
-            <div>Ads List</div>
+            <div>Ads list (<?php echo $paginator->getTotalItemCount(); ?>)</div>
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -168,15 +168,18 @@
                             <input class="status-radio status-1" type="radio" name="status" value="-1"> <span class="text-danger"><span class="glyphicon glyphicon-ban-circle"></span></span>&nbsp;&nbsp;
                             <input class="status-radio status2" type="radio" name="status" value="2"> <span class="text-warning"><span class="glyphicon glyphicon-pause"></span></span>
                         </div>
-                        <!--
+                        -->
+
                         <p></p>
                         <div class="col-xs-12 text-center">
                             <textarea class="status-reason" placeholder="reason about the change"></textarea>
                         </div>
-                        -->
+
                         <p></p>
                         <div class="col-xs-12 text-center">
-                            <button type="button" class="btn btn-warning status-apply" value="pending">Change to Pending</button>
+                            <button type="button" class="btn btn-warning status-apply pending" value="pending">Change to Pending</button>
+                            <button type="button" class="btn btn-success status-apply approved" value="approve">Approve</button>
+                            <button type="button" class="btn btn-danger status-apply disapproved" value="disapprove">Disapprove</button>
                             <img style="display: none;" class="account-form-progress" src="/assets/vigattinads/img/circle-preloader-2.gif" />
                         </div>
                     </div>

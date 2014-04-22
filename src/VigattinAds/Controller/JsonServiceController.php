@@ -241,15 +241,38 @@ class JsonServiceController extends AbstractActionController
             $ads = $adsArray[0];
             switch(strtolower($status)) {
                 case 'pending':
-                    $ads->set('reviewVersion', uniqid());
+                    $version = uniqid();
+                    $ads->set('reviewVersion', $version);
                     $ads->set('status', Ads::STATUS_PENDING);
                     $ads->persistSelf();
                     $ads->flush();
                     $result = array('status' => 'success', 'request' => 'pending', 'id' => $id);
                     break;
                 case 'approve':
+                    $version = uniqid();
+                    $ads->set('reviewVersion', $version);
+                    $ads->set('status', Ads::STATUS_REVIEWING);
+                    $ads->persistSelf();
+                    $ads->flush();
+
+                    $adsManager->createReviewLog($user, $ads, $version, Ads::STATUS_REVIEWING, '');
+                    $adsManager->flush();
+
+                    $adsManager->changeAdsStatus($version, Ads::STATUS_APPROVED, $reason);
+                    $result = array('status' => 'success', 'request' => 'approve', 'id' => $id);
                     break;
                 case 'disapprove':
+                    $version = uniqid();
+                    $ads->set('reviewVersion', $version);
+                    $ads->set('status', Ads::STATUS_REVIEWING);
+                    $ads->persistSelf();
+                    $ads->flush();
+
+                    $adsManager->createReviewLog($user, $ads, $version, Ads::STATUS_REVIEWING, '');
+                    $adsManager->flush();
+
+                    $adsManager->changeAdsStatus($version, Ads::STATUS_DISAPPROVED, $reason);
+                    $result = array('status' => 'success', 'request' => 'disapprove', 'id' => $id);
                     break;
             }
         }

@@ -489,6 +489,28 @@ class AdsManager
     }
 
     /**
+     * @param AdsUser $approver
+     * @param Ads $ads
+     * @param $reviewVersion
+     * @param int $reviewResult
+     * @param string $reviewReason
+     * @return AdsApproveLog
+     */
+    public  function createReviewLog(AdsUser $approver, Ads $ads, $reviewVersion, $reviewResult = Ads::STATUS_REVIEWING, $reviewReason = '')
+    {
+        $log = new AdsApproveLog();
+        $log->set('entityManager', $this->entityManager);
+        $log->set('approver', $approver);
+        $log->set('ads', $ads);
+        $log->set('reviewVersion', $reviewVersion);
+        $log->set('reviewResult', $reviewResult);
+        $log->set('reviewReason', $reviewReason);
+        $log->set('approvedTime', time());
+        $log->persistSelf();
+        return $log;
+    }
+
+    /**
      * Flush to database all insert to view
      */
     public function flush()
@@ -528,6 +550,14 @@ class AdsManager
         } catch(NoResultException $ex) {
             $result = null;
         }
+        return $result;
+    }
+
+    public function countPendingAds()
+    {
+        $query = $this->entityManager->createQuery("SELECT COUNT(a.id) FROM VigattinAds\DomainModel\Ads a WHERE a.status = :status");
+        $query->setParameter('status', Ads::STATUS_PENDING);
+        $result = $query->getSingleScalarResult();
         return $result;
     }
 
@@ -588,27 +618,5 @@ class AdsManager
             return $result;
         }
         return null;
-    }
-
-    /**
-     * @param AdsUser $approver
-     * @param Ads $ads
-     * @param $reviewVersion
-     * @param int $reviewResult
-     * @param string $reviewReason
-     * @return AdsApproveLog
-     */
-    protected  function createReviewLog(AdsUser $approver, Ads $ads, $reviewVersion, $reviewResult = Ads::STATUS_REVIEWING, $reviewReason = '')
-    {
-        $log = new AdsApproveLog();
-        $log->set('entityManager', $this->entityManager);
-        $log->set('approver', $approver);
-        $log->set('ads', $ads);
-        $log->set('reviewVersion', $reviewVersion);
-        $log->set('reviewResult', $reviewResult);
-        $log->set('reviewReason', $reviewReason);
-        $log->set('approvedTime', time());
-        $log->persistSelf();
-        return $log;
     }
 }

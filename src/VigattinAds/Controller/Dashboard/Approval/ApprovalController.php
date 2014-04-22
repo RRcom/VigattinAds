@@ -27,6 +27,7 @@ class ApprovalController extends DashboardController
             $this->adsManager->changeAdsStatus($this->getRequest()->getPost('version', ''), Ads::STATUS_DISAPPROVED, $this->getRequest()->getPost('review_reason', ''));
         }
         $actionContent->setVariable('ads', $this->adsManager->fetchAdsToReview($this->adsUser));
+        $actionContent->setVariable('totalPending', $this->adsManager->countPendingAds());
         $this->mainView->addChild($actionContent, 'actionContent');
         return $this->mainView;
     }

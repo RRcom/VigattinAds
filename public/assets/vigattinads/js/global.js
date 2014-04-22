@@ -1316,11 +1316,19 @@ $(document).ready(function(e) {
             }
             $('#adminAdsForm .status-radio').prop('checked', false);
             $('#adminAdsForm .status-radio.status'+clickedElement.attr('adsStatus')).prop('checked', true);
-            if((clickedElement.attr('adsStatus') == STATUS_PENDING) || (clickedElement.attr('adsStatus') == STATUS_REVIEWING)) {
-                $('.admin-change-status-container .status-apply').attr('disabled', 'disabled');
-            }
-            else {
-                $('.admin-change-status-container .status-apply').removeAttr('disabled');
+
+            $('.admin-change-status-container .status-apply').removeAttr('disabled');
+
+            switch(parseInt(clickedElement.attr('adsStatus'))) {
+                case STATUS_PENDING:
+                    $('.admin-change-status-container .status-apply.pending').attr('disabled', 'disabled');
+                    break;
+                case STATUS_APPROVED:
+                    $('.admin-change-status-container .status-apply.approved').attr('disabled', 'disabled');
+                    break;
+                case STATUS_DISAPPROVED:
+                    $('.admin-change-status-container .status-apply.disapproved').attr('disabled', 'disabled');
+                    break;
             }
         }
 
@@ -1373,7 +1381,7 @@ $(document).ready(function(e) {
         }
 
         function onApplyClick(e) {
-            $(e.currentTarget).hide();
+            $('.status-apply').hide();
             $('.admin-change-status-container .account-form-progress').show();
             var status = $(e.currentTarget).val();
             var reason = $('.admin-change-status-container .status-reason').val();
