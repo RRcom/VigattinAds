@@ -188,6 +188,7 @@ class ShowAdsController extends AbstractActionController
                 );
                 $adsView->persistSelf();
                 $adsEntity->set('viewLimit', $adsViewLimit - 1);
+                $adsEntity->set('viewCount', $adsEntity->get('viewCount') + 1);
                 $adsEntity->persistSelf();
             }
         }

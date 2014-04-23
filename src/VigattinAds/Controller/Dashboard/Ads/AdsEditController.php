@@ -43,7 +43,8 @@ class AdsEditController extends AdsController
 
                     $adsEntity->set('adsTitle', $formError['adsTitle']);
                     $adsEntity->set('adsUrl', $formError['adsUrl']);
-                    $adsEntity->set('keywords', AdsWizardEditInfoController::processTradeAdditionalAdsPosition($this->getRequest()->getPost('selectedKeyword', array())));
+                    if(strtolower($adsEntity->get('showIn')) == 'vigattintrade.com') $adsEntity->set('keywords', AdsWizardEditInfoController::processTradeAdditionalAdsPosition($this->getRequest()->getPost('selectedKeyword', array())));
+                    else $adsEntity->set('keywords', $formError['adsKeyword']);
                     $adsEntity->set('adsPrice', $formError['adsPrice']);
                     $adsEntity->set('adsDescription', $formError['adsDescription']);
                     if($oldValue !== $newValue) {

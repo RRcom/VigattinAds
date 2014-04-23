@@ -27,7 +27,8 @@ class AdsWizardEditInfoController extends AdsController
             $adsKeyword = $this->getRequest()->getPost('ads-keyword', '');
             $featuredAds = $this->getRequest()->getPost('featuredAds', array());
             $adsListing = $this->getRequest()->getPost('adsListing', array());
-            $this->adsKeyword = $this->processTradeAdditionalAdsPosition($this->getRequest()->getPost('selectedKeyword', array()));
+            if(strtolower($this->sessionManager->getStorage()->tempAdsTemplate['showIn']) == 'vigattintrade.com') $this->adsKeyword = $this->processTradeAdditionalAdsPosition($this->getRequest()->getPost('selectedKeyword', array()));
+            else $this->adsKeyword = $adsKeyword;
             $formError = $this->onSubmit();
         }
         // default action refresh or just enter page
