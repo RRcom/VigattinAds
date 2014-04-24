@@ -42,7 +42,7 @@ function verticalCenterImage(containerSelector) {
                     }
                 },
                 success: function(data, textStatus, jqXHR) {
-                    console.log(data);
+                    //console.log(data);
                 }
             });
         }, 1000);

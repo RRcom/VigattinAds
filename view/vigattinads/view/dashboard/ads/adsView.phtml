@@ -1,3 +1,10 @@
+<div class="row">
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+        <div>Current Gold <img style="display: none" class="current-gold-progress" src="/assets/vigattinads/img/circle-preloader-2.gif" /><span style="display: none" class="glyphicon glyphicon-ok text-success current-gold-success"></span></div>
+        <span class="big-font-3em text-warning current-gold middle-align"><?php echo $adsUser->get('credit'); ?></span> <a href="#" data-toggle="modal" data-target="#addGoldCredit" class="middle-align inline-block hover-do-underline tooltip-enable-right" data-toggle="tooltip" title="Add credit to your gold"><span class="glyphicon glyphicon-plus-sign top-align"></span> <small class="top-align">add gold</small></a>
+    </div>
+</div>
+<hr>
 <div>
     <p><a href="/vigattinads/dashboard" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Create New Ads Wizard</a></p>
 </div>
@@ -12,12 +19,13 @@
             <th>Show In</th>
             <th>Position</th>
             <th>Reserve</th>
+            <th>Views</th>
             <th>Options</th>
         </tr>
         </thead>
         <tbody>
         <?php foreach($paginator as $key => $ads): ?>
-        <tr>
+        <tr data-ads-id="<?php echo $ads->get('id'); ?>">
             <td><?php echo ($key+1) ?></td>
             <td><?php echo $this->escapeHtml($ads->get('adsTitle')); ?></td>
             <td><?php switch($ads->get('status')):
@@ -39,7 +47,8 @@
             endswitch; ?></td>
             <td><?php echo $this->escapeHtml($ads->get('showIn')); ?></td>
             <td><?php echo $this->escapeHtml($ads->get('template')); ?></td>
-            <td><?php echo intval($ads->get('viewLimit')); ?></td>
+            <td class="ads-inline-edit-views"><?php echo intval($ads->get('viewLimit')); ?></td>
+            <td><?php echo intval($ads->get('viewCount')); ?></td>
             <td><a href="/vigattinads/dashboard/ads/edit/<?php echo $ads->get('id'); ?>"><span class="glyphicon glyphicon-edit"></span> Edit</a></td>
         </tr>
         <?php endforeach; ?>

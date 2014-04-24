@@ -26,6 +26,7 @@ class AdsController extends DashboardController
         $this->mainView->setVariable('title', 'Ads');
         $actionContent = new ViewModel();
         $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsView');
+        $actionContent->setVariable('adsUser', $this->adsUser);
         $actionContent->setVariable('adsList', $adsList);
         $actionContent->setVariable('userManager', $this->userManager);
         $actionContent->setVariable('paginator', $paginator);

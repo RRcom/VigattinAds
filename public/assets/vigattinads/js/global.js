@@ -1401,6 +1401,90 @@ $(document).ready(function(e) {
         });
     })(jQuery);
 
+    /* Views inline update */
+    (function($) {
+        var viewElement = $('.ads-inline-edit-views');
+
+        function apiChangeReserve(newReserve, adsId, currentViewElement) {
+            $.ajax( {
+                type: 'POST',
+                data: {"requestViews":newReserve, "adsId":adsId},
+                url: '/vigattinads/json-service/add-view-credit/post',
+                dataType: 'json',
+                beforeSend: function(jqXHR, settings) {
+                },
+                complete: function(jqXHR, textStatus) {
+                    $('.views-remaining-progress').hide();
+                    $('.current-gold-progress').hide();
+                    if(textStatus != 'success') {
+                        $('.alert-box').html('<div class="alert alert-danger fade in"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><strong>Failed!</strong> Network error</div>');
+                        $(".alert").alert();
+                    }
+                },
+                success: function(data, textStatus, jqXHR) {
+                    if(data.status == 'success') {
+                        $('.current-gold').html(data.gold);
+                        $('.remaining-views').html(data.views);
+                        $('.current-gold-success').show().fadeOut(1000);
+                        $('.views-remaining-success').show().fadeOut(1000);
+                        currentViewElement.html(data.views);
+                    }
+                    else {
+                        $('.alert-box').html('<div class="alert alert-danger fade in"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><strong>'+data.status.charAt(0).toUpperCase()+data.status.slice(1)+'!</strong> '+data.reason.charAt(0).toUpperCase()+data.reason.slice(1)+'</div>');
+                        $(".alert").alert();
+                    }
+                }
+            });
+        }
+
+        function resetEditView() {
+            $('.ads-inline-edit-views.edit-active').each(function(key, element) {
+                var currentViewElement = $(element);
+                var oldValue = currentViewElement.attr('data-old-value');
+                currentViewElement.html(oldValue);
+            });
+            viewElement.removeClass('edit-active');
+            viewElement.unbind('click').click(function(e) {
+                onEditViewClick(e);
+            });
+        }
+
+        function onEditInputApply(e) {
+            var currentInputElement = $(e.currentTarget);
+            switch(e.which) {
+                case 13: //enter
+                    currentInputElement.unbind('keydown');
+                    apiChangeReserve(currentInputElement.val(), currentInputElement.attr('data-ads-id'), currentInputElement.parent());
+                    resetEditView();
+                    break;
+                case 27: // esc
+                    currentInputElement.unbind('keydown');
+                    resetEditView();
+                    break;
+            }
+        }
+
+        function onEditViewClick(e) {
+            var currentViewElement = $(e.currentTarget);
+            var value = currentViewElement.text();
+            var inputElement = $('<input data-ads-id="'+currentViewElement.parent().attr('data-ads-id')+'" title="press Enter to apply Esc to cancel" type="number" value="'+value+'" min="0" style="width:80px;" data-toggle="tooltip" data-placement="left" />');
+            resetEditView();
+            currentViewElement.attr('data-old-value', value);
+            currentViewElement.addClass('edit-active');
+            currentViewElement.unbind('click');
+            currentViewElement.html('').append(inputElement);
+            inputElement.tooltip();
+            inputElement.focus();
+            inputElement.keydown(function(e) {
+                onEditInputApply(e);
+            });
+        }
+
+        viewElement.click(function(e) {
+           onEditViewClick(e);
+        });
+    })(jQuery);
+
     /* activate preview link */
     tempPreview.init();
 });
