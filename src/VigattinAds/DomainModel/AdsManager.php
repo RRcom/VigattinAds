@@ -469,6 +469,7 @@ class AdsManager
         {
             case Ads::STATUS_APPROVED:
                 $ads->set('status', Ads::STATUS_APPROVED);
+                $ads->set('adsLastNote', $reason);
                 $log->set('reviewReason', $reason);
                 $log->set('reviewResult', Ads::STATUS_APPROVED);
                 $log->set('approvedTime', time());
@@ -478,6 +479,7 @@ class AdsManager
                 break;
             case Ads::STATUS_DISAPPROVED:
                 $ads->set('status', Ads::STATUS_DISAPPROVED);
+                $ads->set('adsLastNote', $reason);
                 $log->set('reviewReason', $reason);
                 $log->set('reviewResult', Ads::STATUS_DISAPPROVED);
                 $log->set('approvedTime', time());

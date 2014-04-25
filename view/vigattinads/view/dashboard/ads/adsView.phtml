@@ -28,7 +28,7 @@
         <tr data-ads-id="<?php echo $ads->get('id'); ?>">
             <td><?php echo ($key+1) ?></td>
             <td><?php echo $this->escapeHtml($ads->get('adsTitle')); ?></td>
-            <td><?php switch($ads->get('status')):
+            <td <?php if($ads->get('status') == \VigattinAds\DomainModel\Ads::STATUS_DISAPPROVED) echo 'title="'.$this->escapeHtmlAttr($ads->get('adsLastNote')).'"'; ?>><?php switch($ads->get('status')):
                 case \VigattinAds\DomainModel\Ads::STATUS_APPROVED: ?>
                     <span class="text-success"><span class="glyphicon glyphicon-ok"></span> Approved</span>
                     <?php break;

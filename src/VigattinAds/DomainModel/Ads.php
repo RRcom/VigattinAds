@@ -176,6 +176,11 @@ class Ads extends AbstractEntity
      */
     protected $date = '';
 
+    /**
+     * @ORM\Column(name="ads_last_note", type="text")
+     */
+    protected $adsLastNote = '';
+
     //==================================================================================================
 
     public function __construct(AdsUser $adsUser)
@@ -186,7 +191,7 @@ class Ads extends AbstractEntity
 
     /**
      * Get property value
-     * @param string $propertyName List of properties are id, date, adsTitle, adsUrl, adsDescription, adsPrice, showIn, template, keywords, adsImage, status, adsUser, adsView, viewLimit, viewCount, reviewVersion, userUsername, userEmail, userFirsName, userLastName, category and ServiceManager.
+     * @param string $propertyName List of properties are id, adsLastNote, date, adsTitle, adsUrl, adsDescription, adsPrice, showIn, template, keywords, adsImage, status, adsUser, adsView, viewLimit, viewCount, reviewVersion, userUsername, userEmail, userFirsName, userLastName, category and ServiceManager.
      * @return mixed
      */
     public function get($propertyName)
@@ -197,7 +202,7 @@ class Ads extends AbstractEntity
 
     /**
      * Set property value
-     * @param string $propertyName List of properties are adsTitle, date, adsUrl, adsDescription, adsPrice, showIn, template, keywords, adsImage, status, reviewVersion, viewCount, userUsername, userEmail, userFirsName, userLastName, category and ServiceManager.
+     * @param string $propertyName List of properties are adsTitle, adsLastNote, date, adsUrl, adsDescription, adsPrice, showIn, template, keywords, adsImage, status, reviewVersion, viewCount, userUsername, userEmail, userFirsName, userLastName, category and ServiceManager.
      * @param mixed $value
      * @return AdsUser
      */

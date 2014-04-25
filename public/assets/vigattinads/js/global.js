@@ -1406,17 +1406,27 @@ $(document).ready(function(e) {
         var viewElement = $('.ads-inline-edit-views');
 
         function apiChangeReserve(newReserve, adsId, currentViewElement) {
+            var image;
+            var oldValue = 0;
+
+            currentViewElement.removeClass('edit-active');
+
             $.ajax( {
                 type: 'POST',
                 data: {"requestViews":newReserve, "adsId":adsId},
                 url: '/vigattinads/json-service/add-view-credit/post',
                 dataType: 'json',
                 beforeSend: function(jqXHR, settings) {
+                    image = new Image();
+                    image.src = '/assets/vigattinads/img/circle-preloader-2.gif';
+                    oldValue = currentViewElement.attr('data-old-value');
+                    currentViewElement.html(image);
                 },
                 complete: function(jqXHR, textStatus) {
                     $('.views-remaining-progress').hide();
                     $('.current-gold-progress').hide();
                     if(textStatus != 'success') {
+                        currentViewElement.text(oldValue);
                         $('.alert-box').html('<div class="alert alert-danger fade in"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><strong>Failed!</strong> Network error</div>');
                         $(".alert").alert();
                     }
@@ -1430,6 +1440,7 @@ $(document).ready(function(e) {
                         currentViewElement.html(data.views);
                     }
                     else {
+                        currentViewElement.text(oldValue);
                         $('.alert-box').html('<div class="alert alert-danger fade in"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><strong>'+data.status.charAt(0).toUpperCase()+data.status.slice(1)+'!</strong> '+data.reason.charAt(0).toUpperCase()+data.reason.slice(1)+'</div>');
                         $(".alert").alert();
                     }
