@@ -1437,7 +1437,7 @@ $(document).ready(function(e) {
                         $('.remaining-views').html(data.views);
                         $('.current-gold-success').show().fadeOut(1000);
                         $('.views-remaining-success').show().fadeOut(1000);
-                        currentViewElement.html(data.views);
+                        currentViewElement.html(data.views+'<a title="edit reserve" href="javascript:" class="pull-right"><span class="glyphicon glyphicon-edit"></span></a>');
                     }
                     else {
                         currentViewElement.text(oldValue);
@@ -1452,7 +1452,7 @@ $(document).ready(function(e) {
             $('.ads-inline-edit-views.edit-active').each(function(key, element) {
                 var currentViewElement = $(element);
                 var oldValue = currentViewElement.attr('data-old-value');
-                currentViewElement.html(oldValue);
+                currentViewElement.html(oldValue+'<a title="edit reserve" href="javascript:" class="pull-right"><span class="glyphicon glyphicon-edit"></span></a>');
             });
             viewElement.removeClass('edit-active');
             viewElement.unbind('click').click(function(e) {

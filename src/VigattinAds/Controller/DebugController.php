@@ -56,6 +56,7 @@ class DebugController extends AbstractActionController
 
     public function onDispatch(MvcEvent $e) {
         $this->layout()->setTemplate('vigattinads/layout/default');
+        $this->layout()->setVariable('config', $this->serviceLocator->get('config'));
         return parent::onDispatch($e);
     }
 }

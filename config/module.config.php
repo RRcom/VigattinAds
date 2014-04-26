@@ -1,5 +1,8 @@
 <?php
 return array(
+    'vigattinads' => array(
+        'assets_version' => 13,
+    ),
     'router' => array(
         'routes' => array(
             'vigattinads' => array(

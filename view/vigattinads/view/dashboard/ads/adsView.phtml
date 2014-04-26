@@ -47,7 +47,7 @@
             endswitch; ?></td>
             <td><?php echo $this->escapeHtml($ads->get('showIn')); ?></td>
             <td><?php echo $this->escapeHtml($ads->get('template')); ?></td>
-            <td class="ads-inline-edit-views"><?php echo intval($ads->get('viewLimit')); ?></td>
+            <td class="ads-inline-edit-views"><?php echo intval($ads->get('viewLimit')); ?><a title="edit reserve" href="javascript:" class="pull-right"><span class="glyphicon glyphicon-edit"></span></a></td>
             <td><?php echo intval($ads->get('viewCount')); ?></td>
             <td><a href="/vigattinads/dashboard/ads/edit/<?php echo $ads->get('id'); ?>"><span class="glyphicon glyphicon-edit"></span> Edit</a></td>
         </tr>

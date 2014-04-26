@@ -14,7 +14,8 @@ class EditController extends AdsController
         $adsEntity = $this->adsUser->getSingleAds($adsId);
 
         if($adsEntity instanceof \VigattinAds\DomainModel\Ads) {
-            $adsViewCount = $adsEntity->get('adsView')->count();
+            // $adsViewCount = $adsEntity->get('adsView')->count(); old count
+            $adsViewCount = $adsEntity->get('viewCount');
             /** @var \Doctrine\Common\Collections\ArrayCollection $adsApproveLog */
             $adsApproveLog =  $adsEntity->get('adsApproveLog');
             if(strtolower($this->getRequest()->getPost('submit', '')) == 'next') {

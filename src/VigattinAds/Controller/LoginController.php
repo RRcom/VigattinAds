@@ -53,6 +53,7 @@ class LoginController extends AbstractActionController
     public function onDispatch(MvcEvent $e) {
         $this->userManager = $this->serviceLocator->get('VigattinAds\DomainModel\UserManager');
         $this->layout()->setTemplate('vigattinads/layout/default');
+        $this->layout()->setVariable('config', $this->serviceLocator->get('config'));
         $this->vauth = $this->serviceLocator->get('Vigattin\Vauth\Vauth');
         $this->ProcessVauthLogin();
         return parent::onDispatch($e);
