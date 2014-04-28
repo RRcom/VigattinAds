@@ -62,7 +62,6 @@ class DashboardController extends AbstractActionController
         // Set global layout
         $this->layout()->setTemplate('vigattinads/layout/active');
         $this->layout()->setVariable('js', 'var viewToGoldRate = '.$this->settingsManager->get('viewToGoldRate').';');
-        $this->layout()->setVariable('config', $this->serviceLocator->get('config'));
 
         // set main layout
         $this->mainView = new ViewModel();

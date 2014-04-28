@@ -35,7 +35,7 @@ class DebugController extends AbstractActionController
 
 
         $viewModel = new ViewModel();
-        $viewModel->setTemplate('vigattinads/view/index');
+        $viewModel->setTemplate('vigattinads/view/debug');
         return $viewModel;
     }
 
@@ -56,7 +56,6 @@ class DebugController extends AbstractActionController
 
     public function onDispatch(MvcEvent $e) {
         $this->layout()->setTemplate('vigattinads/layout/default');
-        $this->layout()->setVariable('config', $this->serviceLocator->get('config'));
         return parent::onDispatch($e);
     }
 }

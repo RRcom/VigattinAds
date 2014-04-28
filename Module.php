@@ -6,12 +6,15 @@ use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Session\Container;
 use VigattinAds\Events\OrmEventListener;
+use VigattinAds\Events\OnViewRender;
+use VigattinAds\Events\OnErrorViewRender;
 
 class Module
 {
     public function onBootstrap(MvcEvent $e)
     {
         date_default_timezone_set('Asia/Manila');
+        $this->initRenderEvents($e);
         $application = $e->getApplication();
         $eventManager = $application->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
@@ -127,5 +130,17 @@ class Module
         /** @var $entityManager \Doctrine\ORM\EntityManager */
         $entityManager = $serviceManager->get('Doctrine\ORM\EntityManager');
         $ormEventListener = new OrmEventListener($serviceManager, $entityManager->getEventManager());
+    }
+
+    public function initRenderEvents(MvcEvent $e)
+    {
+        $e->getApplication()->getEventManager()->attach(MvcEvent::EVENT_RENDER, function(MvcEvent $e)
+        {
+            new OnViewRender($e);
+        });
+        $e->getApplication()->getEventManager()->attach(MvcEvent::EVENT_RENDER_ERROR, function(MvcEvent $e)
+        {
+            new OnErrorViewRender($e);
+        });
     }
 }
