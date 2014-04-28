@@ -5,7 +5,7 @@ use Zend\Db\Sql\Predicate\Literal;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Session\Container;
-use VigattinAds\DomainModel\OrmEventListener;
+use VigattinAds\Events\OrmEventListener;
 
 class Module
 {

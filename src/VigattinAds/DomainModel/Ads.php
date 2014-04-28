@@ -177,6 +177,7 @@ class Ads extends AbstractEntity
     protected $date = '';
 
     /**
+     * @var string if the ads is disapproved, this is the message about the reason for disapproving this ads.
      * @ORM\Column(name="ads_last_note", type="text")
      */
     protected $adsLastNote = '';

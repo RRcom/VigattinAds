@@ -1,5 +1,5 @@
 <?php
-namespace VigattinAds\DomainModel;
+namespace VigattinAds\Events;
 
 use Vigattin\Events\EventAwareInterface;
 use Vigattin\Vauth\Vauth;

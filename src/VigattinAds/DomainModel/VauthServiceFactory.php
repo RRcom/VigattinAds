@@ -5,8 +5,8 @@ use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Vigattin\Vauth\Vauth;
 use Vigattin\Events\Events;
-use VigattinAds\DomainModel\VauthSuccessListener;
-use VigattinAds\DomainModel\VauthSuccessLogoutListener;
+use VigattinAds\Events\VauthSuccessListener;
+use VigattinAds\Events\VauthSuccessLogoutListener;
 
 class VauthServiceFactory implements FactoryInterface
 {

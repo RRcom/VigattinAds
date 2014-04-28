@@ -1,5 +1,5 @@
 <?php
-namespace VigattinAds\DomainModel;
+namespace VigattinAds\Events;
 
 use Zend\ServiceManager\ServiceManager;
 use Doctrine\Common\EventManager;
