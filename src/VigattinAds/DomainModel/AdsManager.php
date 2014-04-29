@@ -68,31 +68,8 @@ class AdsManager
         $this->serviceManager = $serviceManager;
         $this->settingsManager = new SettingsManager($this->serviceManager);
         $this->entityManager = $this->serviceManager->get('Doctrine\ORM\EntityManager');
-        $this->cache = StorageFactory::factory(
-            array(
-                'adapter' => array(
-                    'name' => 'filesystem',
-                ),
-                'plugins' => array(
-                    'exception_handler' => array(
-                        'throw_exceptions' => false
-                    ),
-                )
-            )
-        );
-        $this->cacheQuickExpire = StorageFactory::factory(
-            array(
-                'adapter' => array(
-                    'name' => 'filesystem',
-                    'options' => array('ttl' => 60),
-                ),
-                'plugins' => array(
-                    'exception_handler' => array(
-                        'throw_exceptions' => false
-                    ),
-                )
-            )
-        );
+        $this->cache = $this->serviceManager->get('VigattinAds\DomainModel\LongCache');
+        $this->cacheQuickExpire = $this->serviceManager->get('VigattinAds\DomainModel\ShortCache');
     }
 
     /**

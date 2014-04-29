@@ -4,6 +4,7 @@ namespace VigattinAds\DomainModel;
 use Doctrine\ORM\Mapping as ORM;
 use VigattinAds\DomainModel\AbstractEntity;
 use Doctrine\ORM\NoResultException;
+use Zend\Cache\StorageFactory;
 
 /**
  * @ORM\Entity
@@ -29,6 +30,9 @@ class VauthAccountLocator extends AbstractEntity
      * @ORM\Column(name="ads_user_id", type="integer", options={"unsigned"=true});
      */
     protected $adsUserId;
+
+    /** @var  \Zend\Cache\Storage\Adapter\Filesystem */
+    protected $cache;
 
     //==================================================================================================
 

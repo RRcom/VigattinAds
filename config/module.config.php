@@ -373,6 +373,8 @@ return array(
             'Vigattin\Vauth\Vauth' => 'VigattinAds\DomainModel\VauthServiceFactory',
             'VigattinAds\DomainModel\UserManager' => 'VigattinAds\DomainModel\UserManagerServiceFactory',
             'VigattinAds\DomainModel\AdsManager' => 'VigattinAds\DomainModel\AdsManagerServiceFactory',
+            'VigattinAds\DomainModel\LongCache' => 'VigattinAds\DomainModel\LongCacheServiceFactory',
+            'VigattinAds\DomainModel\ShortCache' => 'VigattinAds\DomainModel\ShortCacheServiceFactory',
         ),
     ),
 );

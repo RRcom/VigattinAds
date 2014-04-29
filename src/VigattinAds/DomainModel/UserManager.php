@@ -46,12 +46,16 @@ class UserManager
      */
     protected $user;
 
+    /** @var  \Zend\Cache\Storage\Adapter\Filesystem */
+    protected $cache;
+
     public function __construct(ServiceManager $serviceManager)
     {
         $this->serviceManager = $serviceManager;
         $this->entityManager = $this->serviceManager->get('Doctrine\ORM\EntityManager');
         $this->sessionManager = $this->serviceManager->get('Zend\Session\SessionManager');
         if($this->sessionManager->getStorage()->user) $this->user = $this->getEntityFromSession();
+        $this->cache = $this->serviceManager->get('VigattinAds\DomainModel\LongCache');
     }
 
     /**
@@ -394,7 +398,7 @@ class UserManager
         try {
             $result = $query->getSingleResult();
         } catch(NoResultException $ex) {
-            $result = null;
+            $result = 0;
         }
         return $result;
     }
