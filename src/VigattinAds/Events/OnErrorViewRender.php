@@ -19,7 +19,16 @@ class OnErrorViewRender
     public function doEvent()
     {
         if(get_class($this->event->getViewModel()) == 'Zend\View\Model\ViewModel') {
+            /** @var \VigattinAds\DomainModel\UserManager $userManager */
+            $userManager = $this->event->getApplication()->getServiceManager()->get('VigattinAds\DomainModel\UserManager');
+
+            // set config var
             $this->event->getViewModel()->setVariable('config', $this->event->getApplication()->getServiceManager()->get('config'));
+
+            //set vauth ID var
+            if($userManager->isLogin()) {
+                $this->event->getViewModel()->setVariable('vauthId', $userManager->getCurrentUser()->getVauthId());
+            }
         }
     }
 }

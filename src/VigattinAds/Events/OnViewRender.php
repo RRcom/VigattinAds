@@ -20,6 +20,7 @@ class OnViewRender
     public function doEvent()
     {
         if(get_class($this->event->getViewModel()) == 'Zend\View\Model\ViewModel') {
+            /** @var \VigattinAds\DomainModel\UserManager $userManager */
             $userManager = $this->event->getApplication()->getServiceManager()->get('VigattinAds\DomainModel\UserManager');
 
             // set config var
@@ -27,23 +28,7 @@ class OnViewRender
 
             //set vauth ID var
             if($userManager->isLogin()) {
-                $cache = $this->event->getApplication()->getServiceManager()->get('VigattinAds\DomainModel\LongCache');
-                $user = $userManager->getCurrentUser();
-                $cacheKey = md5('vauthId_'.$user->get('id'));
-                $vauthId = $cache->getItem($cacheKey);
-                if($vauthId) {
-                    $this->event->getViewModel()->setVariable('vauthId', $vauthId);
-                }
-                else {
-                    $vauthAccountLocator = $userManager->getVauthAccountLocator($user->get('id'));
-                    if($vauthAccountLocator instanceof VauthAccountLocator) {
-                        $vauthId = $vauthAccountLocator->get('vauthId');
-                    }
-                    else $vauthId = 0;
-
-                    $cache->addItem($cacheKey, $vauthId);
-                    $this->event->getViewModel()->setVariable('vauthId', $vauthId);
-                }
+                $this->event->getViewModel()->setVariable('vauthId', $userManager->getCurrentUser()->getVauthId());
             }
         }
     }

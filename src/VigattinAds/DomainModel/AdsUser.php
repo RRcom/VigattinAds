@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use VigattinAds\DomainModel\AbstractEntity;
 use VigattinAds\DomainModel\Ads;
+use VigattinAds\DomainModel\VauthAccountLocator;
 
 /**
  * @ORM\Entity
@@ -227,6 +228,26 @@ class AdsUser extends AbstractEntity
     {
         if(strpos($this->privilege, $permit) === false) return false;
         return true;
+    }
+
+    /**
+     * @return int vauth ID
+     */
+    public function getVauthId()
+    {
+        // from cache
+        $cacheKey = md5('vauthId_'.$this->id);
+        $vauthId = $this->serviceManager->get('VigattinAds\DomainModel\LongCache')->getItem($cacheKey);
+        if($vauthId) return $vauthId;
+
+        // from database
+        $vauthAccountLocator = $this->serviceManager->get('VigattinAds\DomainModel\UserManager')->getVauthAccountLocator($this->id);
+        if($vauthAccountLocator instanceof VauthAccountLocator) {
+            $vauthId = $vauthAccountLocator->get('vauthId');
+        }
+        else $vauthId = 0;
+        $this->serviceManager->get('VigattinAds\DomainModel\LongCache')->addItem($cacheKey, $vauthId);
+        return $vauthId;
     }
 
 }

@@ -12,8 +12,7 @@ class AdsImportController extends AdsController
         $name = $this->params('name', '');
         $start = $this->params('start', 0);
         $limit = 10;
-        $vauthAccountLocator = $this->userManager->getVauthAccountLocator($this->adsUser->get('id'));
-        $data = $adsImporter->importAds($name, $start, $limit, $vauthAccountLocator->get('vauthId'));
+        $data = $adsImporter->importAds($name, $start, $limit, $this->adsUser->getVauthId());
 
         $total = !empty($data['total']) ? $data['total'] : 0;
         $list = (!empty($data['list']) && is_array($data['list'])) ? $data['list'] : array();
