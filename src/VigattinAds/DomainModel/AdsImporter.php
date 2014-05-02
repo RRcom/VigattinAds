@@ -18,6 +18,14 @@ class AdsImporter
         $this->validator = new Validator();
     }
 
+    /**
+     * Use consume json data from import ads server
+     * @param $page
+     * @param int $offset
+     * @param int $limit
+     * @param string $id
+     * @return array|mixed
+     */
     public function importAds($page, $offset = 0, $limit = 10, $id = '')
     {
         //$id = 605;

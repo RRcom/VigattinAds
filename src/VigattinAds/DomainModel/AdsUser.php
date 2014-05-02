@@ -140,6 +140,7 @@ class AdsUser extends AbstractEntity
     }
 
     /**
+     * Search the ads array collection object by using criteria object
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function getApprovedAds()
@@ -150,6 +151,7 @@ class AdsUser extends AbstractEntity
     }
 
     /**
+     * Search the ads array collection object by using criteria object
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function getPendingAds()
@@ -160,6 +162,7 @@ class AdsUser extends AbstractEntity
     }
 
     /**
+     * Search the ads array collection object by using criteria object
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function getDisapprovedAds()
@@ -232,6 +235,7 @@ class AdsUser extends AbstractEntity
     }
 
     /**
+     * Get Vauth ID from database or cache
      * @return int vauth ID
      */
     public function getVauthId()

@@ -152,6 +152,10 @@ class ShowAdsController extends AbstractActionController
         return $this->viewModel;
     }
 
+    /**
+     * Add view count to the ads being viewed
+     * @return JsonModel
+     */
     public function validateAction()
     {
 
@@ -182,7 +186,7 @@ class ShowAdsController extends AbstractActionController
             if($adsViewLimit)
             {
                 $adsView = $adsEntity->addView(
-                    $_SERVER['HTTP_REFERER'],
+                    isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '',
                     $_SERVER['REMOTE_ADDR'].'_'.$_COOKIE[self::COOKIE_NAME_VIEWS],
                     $isClicked = false
                 );
@@ -198,6 +202,10 @@ class ShowAdsController extends AbstractActionController
         return $jsonView;
     }
 
+    /**
+     * Initialize session
+     * @return string
+     */
     public function initViewSession()
     {
         if(isset($_COOKIE[self::COOKIE_NAME_VIEWS])) return $_COOKIE[self::COOKIE_NAME_VIEWS];
@@ -206,6 +214,10 @@ class ShowAdsController extends AbstractActionController
         return $id;
     }
 
+    /**
+     * Generate ads from the supplied request data
+     * @return \VigattinAds\DomainModel\Ads[]
+     */
     public function generateAds()
     {
         $showIn = $this->request->getQuery('showin', '');

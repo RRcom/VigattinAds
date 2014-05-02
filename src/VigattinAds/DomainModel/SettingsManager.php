@@ -5,6 +5,10 @@ use VigattinAds\DomainModel\Settings;
 use Doctrine\ORM\NoResultException;
 use Zend\ServiceManager\ServiceManager;
 
+/**
+ * Class SettingsManager
+ * @package VigattinAds\DomainModel
+ */
 class SettingsManager
 {
     const CACHE_PREFIX = 'vigatttinads_settings';
@@ -28,6 +32,11 @@ class SettingsManager
         $this->cache = $this->serviceManager->get('VigattinAds\DomainModel\LongCache');
     }
 
+    /**
+     * Create or update setting
+     * @param string $key
+     * @param $value
+     */
     public function set($key, $value)
     {
         $cacheKey = $this->createCacheKey($key);
@@ -46,6 +55,12 @@ class SettingsManager
         $this->cache->setItem($cacheKey, $value);
     }
 
+    /**
+     * Get the value of setting based on key name
+     * @param $key
+     * @param string $defaultValue
+     * @return mixed|string
+     */
     public function get($key, $defaultValue = '')
     {
         $cacheKey = $this->createCacheKey($key);
@@ -62,12 +77,22 @@ class SettingsManager
         return $result;
     }
 
+    /**
+     * Check if the setting exist
+     * @param string $key
+     * @return bool
+     */
     public function has($key)
     {
         $cacheKey = $this->createCacheKey($key);
         return $this->cache->hasItem($cacheKey);
     }
 
+    /**
+     * Create an incremental integer value that will persist in the database
+     * @param string $key name of the incremental integer
+     * @return int
+     */
     public function getIncrement($key)
     {
         $increment = intval($this->get($key, 0));
@@ -75,6 +100,11 @@ class SettingsManager
         return $increment;
     }
 
+    /**
+     * Delete setting from database and cache
+     * @param $key
+     * @return mixed
+     */
     public function delete($key)
     {
         $cacheKey = $this->createCacheKey($key);
@@ -85,6 +115,11 @@ class SettingsManager
 
     }
 
+    /**
+     * Generate md5 hash key
+     * @param $key
+     * @return string
+     */
     public function createCacheKey($key)
     {
         return md5(self::CACHE_PREFIX.$key);
