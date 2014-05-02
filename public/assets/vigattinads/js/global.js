@@ -1608,6 +1608,7 @@ $(document).ready(function(e) {
                 url: '/vigattinads/json-service/add-view-credit/post',
                 dataType: 'json',
                 beforeSend: function(jqXHR, settings) {
+                    $('.reserve-value', currentViewElement).text(newReserve);
                 },
                 complete: function(jqXHR, textStatus) {
                     if(textStatus != 'success') {
