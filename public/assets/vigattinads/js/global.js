@@ -795,10 +795,11 @@ $(document).ready(function(e) {
 
         if(autoloadAdsImportList.length) {
             $('.import-ads-list-more-button').unbind('click').click(function(e) {
-                getData(autoloadAdsImportList.attr('target-page'));
+                getJsonpData();
             });
             $('.import-ads-list-more-button').hide();
-            getData(autoloadAdsImportList.attr('target-page'));
+            //getData(autoloadAdsImportList.attr('target-page'));
+            getJsonpData();
         }
 
         $('#importAdsModal').on('show.bs.modal', function(E) {
@@ -847,6 +848,51 @@ $(document).ready(function(e) {
                                             '<div class="col-xs-2"><a class="ads-import-single-button" data-target="#adsPanel'+Start+'" href="javascript:" data-dismiss="modal"><span class="glyphicon glyphicon-star"></span> Promote</a></div>'+
                                         '</div>'+
                                     '</li>';
+                        $('.ads-import-list', e.currentTarget).append(list);
+                    });
+                    $('.ads-list-panel .ads-import-single-button').unbind('click').click(onImportSingleClick);
+                    if(Start < data.total) $('.import-ads-list-more-button').show();
+                }
+            });
+        }
+
+        function getJsonpData() {
+            var callback = 'callback';
+            var offset = Start;
+            var limit = 10;
+
+            $.ajax( {
+                type: 'POST',
+                data: {},
+                url: 'http://www.vigattintrade.com/adsservice?id='+vauthId+'&page=vigattintrade&offset='+offset+'&limit='+limit,
+                dataType: 'jsonp',
+                jsonp: callback,
+                beforeSend: function(jqXHR, settings) {
+                    $('.import-ads-list-progress').show();
+                    $('.import-ads-list-more-button').hide();
+                },
+                complete: function(jqXHR, textStatus) {
+                    if(textStatus != 'success') {
+                    }
+                },
+                success: function(data, textStatus, jqXHR) {
+                    $('.import-ads-list-progress').hide();
+                    $.each(data.list, function(key, value) {
+                        Start++;
+                        if((typeof value.price) == 'string') value.price = removeCommas(value.price);
+                        var list =  '<li>' +
+                            '<div id="adsPanel'+Start+'" class="row ads-list-panel">'+
+                            '<div class="col-xs-3 image-frame"><img alt="ads image" onerror="this.src=\'/assets/vigattinads/img/no-image.jpg\';" src="'+$('<div/>').html(value.image).text()+'"></div>'+
+                            '<div class="col-xs-7">'+
+                            '<div class="title-container"><a class="ads-title" target="_blank" href="'+$('<div/>').html(value.url).text()+'">'+$('<div/>').html(value.title).text()+'</a></div>'+
+                            '<div class="price-container">Php <span class="ads-price">'+parseFloat(isNaN(value.price) ? 0 : value.price).toFixed(2)+'</span></div>'+
+                            '<div class="ads-description">'+$('<div/>').html(value.description).text()+'</div>'+
+                            '<input class="ads-keyword" type="hidden" value="'+$('<div/>').html('Homepage|'+decodeArrayCategory(value.category, '')).text()+'" />'+
+                            '<input class="ads-date" type="hidden" value="'+$('<div/>').html(value.date).text()+'" />'+
+                            '</div>'+
+                            '<div class="col-xs-2"><a class="ads-import-single-button" data-target="#adsPanel'+Start+'" href="javascript:" data-dismiss="modal"><span class="glyphicon glyphicon-star"></span> Promote</a></div>'+
+                            '</div>'+
+                            '</li>';
                         $('.ads-import-list', e.currentTarget).append(list);
                     });
                     $('.ads-list-panel .ads-import-single-button').unbind('click').click(onImportSingleClick);

@@ -18,6 +18,7 @@ class AdsUser extends AbstractEntity
     const PERMIT_BASIC_ACCESS = 'b';
     const PERMIT_TO_APPROVE_ADS = 'p';
     const PERMIT_ADMIN_ACCESS = 'a';
+    const PERMIT_VIEW_ADMIN = 'v';
 
     /**
      * Table primary key
