@@ -7,6 +7,8 @@ use Zend\ServiceManager\ServiceManager;
 
 class SettingsManager
 {
+    const CACHE_PREFIX = 'vigatttinads_settings';
+
     /**
      * @var \Doctrine\ORM\EntityManager
      */
@@ -14,14 +16,21 @@ class SettingsManager
 
     protected $serviceManager;
 
+    /**
+     * @var  \Zend\Cache\Storage\Adapter\Filesystem
+     */
+    protected $cache;
+
     public function __construct(ServiceManager $serviceManager)
     {
         $this->serviceManager = $serviceManager;
         $this->entityManager = $this->serviceManager->get('Doctrine\ORM\EntityManager');
+        $this->cache = $this->serviceManager->get('VigattinAds\DomainModel\LongCache');
     }
 
     public function set($key, $value)
     {
+        $cacheKey = $this->createCacheKey($key);
         $query = $this->entityManager->createQuery("SELECT s FROM VigattinAds\DomainModel\Settings s WHERE s.key = :key");
         $query->setParameter('key', $key);
         try {
@@ -34,10 +43,13 @@ class SettingsManager
         }
         $this->entityManager->persist($result);
         $this->entityManager->flush();
+        $this->cache->setItem($cacheKey, $value);
     }
 
     public function get($key, $defaultValue = '')
     {
+        $cacheKey = $this->createCacheKey($key);
+        if($this->cache->hasItem($cacheKey)) return $this->cache->getItem($cacheKey);
         $query = $this->entityManager->createQuery("SELECT s.value FROM VigattinAds\DomainModel\Settings s WHERE s.key = :key");
         $query->setParameter('key', $key);
         try {
@@ -46,14 +58,14 @@ class SettingsManager
             $this->set($key, $defaultValue);
             $result = $defaultValue;
         }
+        $this->cache->addItem($cacheKey, $defaultValue);
         return $result;
     }
 
     public function has($key)
     {
-        $query = $this->entityManager->createQuery("SELECT COUNT(s.id) FROM VigattinAds\DomainModel\Settings s WHERE s.key = :key");
-        $query->setParameter('key', $key);
-        return $query->getSingleScalarResult() ? true : false;
+        $cacheKey = $this->createCacheKey($key);
+        return $this->cache->hasItem($cacheKey);
     }
 
     public function getIncrement($key)
@@ -65,8 +77,16 @@ class SettingsManager
 
     public function delete($key)
     {
+        $cacheKey = $this->createCacheKey($key);
+        $this->cache->removeItem($cacheKey);
         $query = $this->entityManager->createQuery("DELETE VigattinAds\DomainModel\Settings s WHERE s.key = :key");
         $query->setParameter('key', $key);
         return $query->execute();
+
+    }
+
+    public function createCacheKey($key)
+    {
+        return md5(self::CACHE_PREFIX.$key);
     }
 }
