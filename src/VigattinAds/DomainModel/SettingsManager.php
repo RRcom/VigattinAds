@@ -64,7 +64,8 @@ class SettingsManager
     public function get($key, $defaultValue = '')
     {
         $cacheKey = $this->createCacheKey($key);
-        if($this->cache->hasItem($cacheKey)) return $this->cache->getItem($cacheKey);
+        $result = $this->cache->getItem($cacheKey);
+        if($result != '') return $result;
         $query = $this->entityManager->createQuery("SELECT s.value FROM VigattinAds\DomainModel\Settings s WHERE s.key = :key");
         $query->setParameter('key', $key);
         try {
@@ -85,7 +86,8 @@ class SettingsManager
     public function has($key)
     {
         $cacheKey = $this->createCacheKey($key);
-        return $this->cache->hasItem($cacheKey);
+        $result = $this->cache->getItem($cacheKey);
+        return ($result != '') ? true : false;
     }
 
     /**
