@@ -341,12 +341,24 @@ class UserManager
     {
         $user = $this->getUser($user);
         $errors = $this->validateForm($user, $email, $username, $firstName, $lastName);
+        $errors['old_email'] = $user->get('email');
+        $errors['old_username'] = $user->get('username');
+        $errors['old_firstName'] = $user->get('firstName');
+        $errors['old_lastName'] = $user->get('lastName');
+        $errors['old_credit'] = $user->get('credit');
+        $errors['old_privilege'] = $user->get('privilege');
+        $errors['new_email'] = $email;
+        $errors['new_username'] = $username;
+        $errors['new_firstName'] = $firstName;
+        $errors['new_lastName'] = $lastName;
+        $errors['new_credit'] = (is_numeric($gold) ? floatval($gold) : 0);
+        $errors['new_privilege'] = $privilege;
         if($errors['status'] == 'failed') return $errors;
         $user->set('email', $email);
         $user->set('username', $username);
         $user->set('firstName', $firstName);
         $user->set('lastName', $lastName);
-        $user->set('credit', floatval($gold));
+        $user->set('credit', (is_numeric($gold)) ? floatval($gold) : 0);
         $user->set('privilege', strtolower(strval($privilege)));
         $user->updateAdsSearch();
         $user->persistSelf();

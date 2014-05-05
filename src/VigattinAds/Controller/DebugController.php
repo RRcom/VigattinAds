@@ -1,6 +1,7 @@
 <?php
 namespace VigattinAds\Controller;
 
+use VigattinAds\DomainModel\CommonLog;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
@@ -24,18 +25,18 @@ class DebugController extends AbstractActionController
         /** @var $user \VigattinAds\DomainModel\AdsUser; */
         $user = $userManager->getCurrentUser();
 
-        $adsManager = new AdsManager($sm);
+        //$adsManager = new AdsManager($sm);
 
-        $ads = $adsManager->fetchAdsToReview($user);
+        /** @var \VigattinAds\DomainModel\LogManager $logManager */
+        $logManager = $sm->get('VigattinAds\DomainModel\LogManager');
 
-        if($ads instanceof Ads)
-        {
-            echo $ads->get('adsTitle');
-        }
-
+        //$logMessage = $user->get('username').','.$user->get('firstName').' '.$user->get('lastName').','.$user->get('email').',Debug create log success';
+        //$commonLog = $logManager->createCommonLog($user, CommonLog::LOG_TYPE_ALTER_GOLD, $logMessage, true);
+        //$commonLog->flushSelf();
 
         $viewModel = new ViewModel();
-        $viewModel->setTemplate('vigattinads/view/debug');
+        $viewModel->setTemplate('vigattinads/view/debugView');
+        $viewModel->setVariable('logArray', $logManager->fetchCommonLogByUser($user, 0, 10, $logManager::SORT_DESC));
         return $viewModel;
     }
 
@@ -57,5 +58,20 @@ class DebugController extends AbstractActionController
     public function onDispatch(MvcEvent $e) {
         $this->layout()->setTemplate('vigattinads/layout/default');
         return parent::onDispatch($e);
+    }
+
+    public function cacheTestAction()
+    {
+        /** @var \Zend\Cache\Storage\Adapter\Filesystem $cache */
+        $cache = $this->serviceLocator->get('VigattinAds\DomainModel\LongCache');
+
+        $viewModel = new ViewModel();
+        $viewModel->setTemplate('vigattinads/view/debugView');
+        $viewModel->setVariable('logArray', array(
+            'cache_size' => $cache->getAvailableSpace(),
+            'cache_dir' => $cache->getOptions()->getCacheDir(),
+            'cache_ttl' => $cache->getOptions()->getTtl(),
+        ));
+        return $viewModel;
     }
 }

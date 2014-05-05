@@ -375,6 +375,7 @@ return array(
             'VigattinAds\DomainModel\AdsManager' => 'VigattinAds\DomainModel\AdsManagerServiceFactory',
             'VigattinAds\DomainModel\LongCache' => 'VigattinAds\DomainModel\LongCacheServiceFactory',
             'VigattinAds\DomainModel\ShortCache' => 'VigattinAds\DomainModel\ShortCacheServiceFactory',
+            'VigattinAds\DomainModel\LogManager' => 'VigattinAds\DomainModel\LogManagerServiceFactory',
         ),
     ),
 );

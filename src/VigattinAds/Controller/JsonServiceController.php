@@ -2,6 +2,8 @@
 namespace VigattinAds\Controller;
 
 use VigattinAds\DomainModel\AdsManager;
+use VigattinAds\DomainModel\AdsUser;
+use VigattinAds\DomainModel\CommonLog;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Validator\InArray;
 use Zend\View\Model\JsonModel;
@@ -25,6 +27,9 @@ class JsonServiceController extends AbstractActionController
      * @var array;
      */
     protected $request;
+
+    /** @var \VigattinAds\DomainModel\LogManager */
+    protected $logManager;
 
     public function __construct()
     {
@@ -149,6 +154,48 @@ class JsonServiceController extends AbstractActionController
         $privilege = $this->request['privilege'];
         $gold = $this->request['gold'];
         $result = $this->userManager->updateUser($id, $email, $username, $firstName, $lastName, $gold, $privilege);
+
+        if($result['status'] == 'success') {
+            // Create log info
+            $logInfo = $user->get('username').','.$user->get('firstName').' '.$user->get('lastName').','.$user->get('email').',';
+
+            // Log edit email
+            if($result['old_email'] != $result['new_email']) {
+                $logMessage = $logInfo.'User email altered. Old value '.$result['old_email'].' new value '.$result['new_email'];
+                $this->logManager->createCommonLog($user, CommonLog::LOG_TYPE_ALTER_EMAIL, $logMessage, $id, true);
+            }
+
+            // Log edit username
+            if($result['old_username'] != $result['new_username']) {
+                $logMessage = $logInfo.'User username altered. Old value '.$result['old_username'].' new value '.$result['new_username'];
+                $this->logManager->createCommonLog($user, CommonLog::LOG_TYPE_ALTER_USERNAME, $logMessage, $id, true);
+            }
+
+            // Log edit firstName
+            if($result['old_firstName'] != $result['new_firstName']) {
+                $logMessage = $logInfo.'User first name altered. Old value '.$result['old_firstName'].' new value '.$result['new_firstName'];
+                $this->logManager->createCommonLog($user, CommonLog::LOG_TYPE_ALTER_FIRST_NAME, $logMessage, $id, true);
+            }
+
+            // Log edit lastName
+            if($result['old_lastName'] != $result['new_lastName']) {
+                $logMessage = $logInfo.'User last name altered. Old value '.$result['old_lastName'].' new value '.$result['new_lastName'];
+                $this->logManager->createCommonLog($user, CommonLog::LOG_TYPE_ALTER_LAST_NAME, $logMessage, $id, true);
+            }
+
+            // Log edit privilege
+            if(strtolower($result['old_privilege']) != strtolower($result['new_privilege'])) {
+                $logMessage = $logInfo.'User privilege altered. Old value '.$result['old_privilege'].' new value '.$result['new_privilege'];
+                $this->logManager->createCommonLog($user, CommonLog::LOG_TYPE_ALTER_PRIVILEGE, $logMessage, $id, true);
+            }
+
+            // Log edit credit
+            if($result['old_credit'] != $result['new_credit']) {
+                $logMessage = $logInfo.'User gold altered. Old value '.$result['old_credit'].' new value '.$result['new_credit'];
+                $this->logManager->createCommonLog($user, CommonLog::LOG_TYPE_ALTER_GOLD, $logMessage, $id, true);
+            }
+        }
+
         if($password) {
             if($password != $repeatPassword) {
                 $result['repeatPassword'] = 'repeat password not match';
@@ -158,6 +205,11 @@ class JsonServiceController extends AbstractActionController
                 if($passResult != 'success') {
                     $result['password'] = $passResult;
                     $result['status'] = 'failed';
+                }
+                else {
+                    // Log edit password
+                    $logMessage = $logInfo.'User password altered.';
+                    $this->logManager->createCommonLog($user, CommonLog::LOG_TYPE_ALTER_PASSWORD, $logMessage, $id, true);
                 }
             }
 
@@ -225,6 +277,23 @@ class JsonServiceController extends AbstractActionController
         return $this->jsonView;
     }
 
+    public function getAccountHistoryAction()
+    {
+        $user = $this->userManager->getCurrentUser();
+        if(!$user->hasPermit($user::PERMIT_ADMIN_ACCESS)) {
+            $this->jsonView->setVariable('error', 'no access');
+            return $this->jsonView;
+        }
+        $targetUser = $this->userManager->getUser($this->request['id']);
+        if(!($targetUser instanceof AdsUser)) {
+            $this->jsonView->setVariable('error', 'cant find target user');
+            return $this->jsonView;
+        }
+        $historyArray = $this->logManager->fetchCommonLogByUser($targetUser, $this->request['start'], $this->request['limit']);
+        $this->jsonView->setVariable('result', $historyArray);
+        return $this->jsonView;
+    }
+
     public function adsChangeStatusAction()
     {
         $user = $this->userManager->getCurrentUser();
@@ -284,6 +353,7 @@ class JsonServiceController extends AbstractActionController
     {
         $this->userManager = $this->serviceLocator->get('VigattinAds\DomainModel\UserManager');
         $this->adsManager = $this->serviceLocator->get('VigattinAds\DomainModel\AdsManager');
+        $this->logManager = $this->serviceLocator->get('VigattinAds\DomainModel\LogManager');
         if(strtolower($this->params('param1')) == 'post') $this->request = $this->getRequest()->getPost();
         else $this->request = $this->getRequest()->getQuery();
         return parent::onDispatch($e);
