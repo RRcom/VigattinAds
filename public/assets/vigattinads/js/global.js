@@ -667,8 +667,56 @@ $(document).ready(function(e) {
 
     /* modal account form */
     (function($) {
+        var start = 0;
+        var limit = 10;
+        var userId;
+
+        function onLogScroll(e) {
+            if((e.currentTarget.offsetHeight - 50) <= e.currentTarget.scrollTop) {
+                console.log('trigger');
+                fetchLog();
+            }
+        }
+
+        function fetchLog() {
+            var historyLog = $('.history-log-wrapper');
+            var loader = $('<div class="loader-container text-center"><img class=account-history-progress" src="/assets/vigattinads/img/circle-preloader-2.gif" /></div>');
+
+            $.ajax( {
+                type: 'POST',
+                data: {
+                    "id":userId,
+                    "start":start,
+                    "limit":limit
+                },
+                url: '/vigattinads/json-service/get-account-history/post',
+                dataType: 'json',
+                beforeSend: function(jqXHR, settings) {
+                    historyLog.unbind('scroll');
+                    $(loader).remove();
+                    historyLog.append(loader);
+                },
+                complete: function(jqXHR, textStatus) {
+                    $(loader).remove();
+                    if(textStatus != 'success') {}
+                },
+                success: function(data, textStatus, jqXHR) {
+                    if(!data.result.length) return;
+                    $.each(data.result, function(key, value) {
+                        var date = new Date(parseInt(value.timeCreated)*1000);
+                        historyLog.append(date.toLocaleDateString()+' '+date.toLocaleTimeString()+'\n'+value.logMessage+'\n-\n');
+                    });
+                    if(data.result.length == limit) {
+                        start += limit;
+                        historyLog.scroll(function(e) {onLogScroll(e)});
+                    }
+                }
+            });
+        }
+
         $('.option-edit-account').click(function(e) {
             var tableRow = $('tr#'+$(e.currentTarget).attr('target-id'));
+            userId = $(e.currentTarget).attr('target-id');
             $('#accountForm .form-control').val('');
             $('#accountForm .form-error').html('');
             $('#accountForm .dynamic-title').html('Edit Account');
@@ -683,13 +731,15 @@ $(document).ready(function(e) {
             $('#accountForm #inputId1').val($(e.currentTarget).attr('target-id'));
             if($('.data-privilege', tableRow).text().indexOf('B') === -1) $('#accountForm #inputPrivilegeB1').prop('checked', false);
             else $('#accountForm #inputPrivilegeB1').removeAttr('checked').prop('checked', true);
-            console.log($('.data-privilege', tableRow).text());
             if($('.data-privilege', tableRow).text().indexOf('A') === -1) $('#accountForm #inputPrivilegeA1').prop('checked', false);
             else $('#accountForm #inputPrivilegeA1').prop('checked', true);
             if($('.data-privilege', tableRow).text().indexOf('P') === -1) $('#accountForm #inputPrivilegeP1').prop('checked', false);
             else $('#accountForm #inputPrivilegeP1').prop('checked', true);
             $('#accountForm #inputDelete1').attr('target-id', $(e.currentTarget).attr('target-id'));
             $('#accountForm #inputDelete1').show();
+            $('.history-log-wrapper').html('');
+            start = 0;
+            fetchLog();
         });
 
         $('.account-create-new').click(function(e) {
