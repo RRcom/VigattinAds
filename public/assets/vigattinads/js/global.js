@@ -672,7 +672,7 @@ $(document).ready(function(e) {
         var userId;
 
         function onLogScroll(e) {
-            if((e.currentTarget.offsetHeight - 50) <= e.currentTarget.scrollTop) {
+            if(e.currentTarget.scrollHeight <= ((e.currentTarget.offsetHeight + e.currentTarget.scrollTop)+50)) {
                 console.log('trigger');
                 fetchLog();
             }
