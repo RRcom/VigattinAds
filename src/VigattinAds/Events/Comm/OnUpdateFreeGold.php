@@ -3,6 +3,7 @@ namespace VigattinAds\Events\Comm;
 
 use Vigattin\Communicate\MessageInterface;
 use VigattinAds\DomainModel\VauthAccountLocator;
+use VigattinAds\DomainModel\CommonLog;
 
 class OnUpdateFreeGold implements MessageInterface
 {
@@ -36,6 +37,9 @@ class OnUpdateFreeGold implements MessageInterface
 
     /** @var \Zend\ServiceManager\ServiceManager */
     protected $serviceManager;
+
+    /** @var \VigattinAds\DomainModel\LogManager */
+    protected $logManager;
 
     public function __construct()
     {
@@ -104,6 +108,12 @@ class OnUpdateFreeGold implements MessageInterface
                 $user->set('credit', $user->get('credit')+floatval($this->message['gold']));
                 $user->persistSelf();
                 $user->flush();
+
+                // Log edit credit
+                $apiRequestFrom = isset($this->message['from']) ? $this->message['from'] : 'undefined';
+                $logMessage = $apiRequestFrom.' API client added '.floatval($this->message['gold']).' to this accout. Old value '.$response['beforeGold'].' new value '.$user->get('credit');
+                $this->logManager->createCommonLog($user, CommonLog::LOG_TYPE_ALTER_GOLD, $logMessage, $user->get('id'), true);
+
             }
 
             // create new account
@@ -115,11 +125,17 @@ class OnUpdateFreeGold implements MessageInterface
                     $this->message['firstName'] ? $this->message['firstName'] : 'no first name',
                     $this->message['lastName'] ? $this->message['lastName'] : 'no last name'
                 );
+                $response['beforeGold'] = 0;
                 if($user instanceof \VigattinAds\DomainModel\AdsUser) {
                     $this->accountLocator->addAccount($this->message['id'], $user->get('id'));;
                     $user->set('credit', $user->get('credit')+floatval($this->message['gold']));
                     $user->persistSelf();
                     $user->flush();
+
+                    // Log edit credit
+                    $apiRequestFrom = isset($this->message['from']) ? $this->message['from'] : 'undefined';
+                    $logMessage = $apiRequestFrom.' API client added '.floatval($this->message['gold']).' to this accout. Old value '.$response['beforeGold'].' new value '.$user->get('credit');
+                    $this->logManager->createCommonLog($user, CommonLog::LOG_TYPE_ALTER_GOLD, $logMessage, $user->get('id'), true);
                 }
                 else $response['createAccountError'] = $user;
             }
@@ -145,6 +161,7 @@ class OnUpdateFreeGold implements MessageInterface
         $this->serviceManager = $dependencies['serviceManager'];
         $this->request = $this->serviceManager->get('request');
         $this->accountLocator->set('serviceManager', $dependencies['serviceManager']);
+        $this->logManager = $this->serviceManager->get('VigattinAds\DomainModel\LogManager');
     }
 
     public function isIpAllowed()
