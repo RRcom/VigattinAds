@@ -57,8 +57,8 @@ class LogManager
     public function fetchCommonLogByUser(AdsUser $user, $start = 0, $limit = 10, $sortDirection = self::SORT_ASC)
     {
         $sortDirection = ($sortDirection == self::SORT_ASC || $sortDirection == self::SORT_DESC) ? $sortDirection : self::SORT_ASC;
-        $dql = $this->entityManager->createQuery("SELECT l FROM VigattinAds\DomainModel\CommonLog l WHERE l.userId = :userId ORDER BY l.id $sortDirection");
-        $dql->setParameter('userId', $user->get('id'));
+        $dql = $this->entityManager->createQuery("SELECT l FROM VigattinAds\DomainModel\CommonLog l WHERE l.targetUserId = :targetUserId ORDER BY l.id $sortDirection");
+        $dql->setParameter('targetUserId', $user->get('id'));
         $dql->setFirstResult($start);
         $dql->setMaxResults($limit);
         try {
