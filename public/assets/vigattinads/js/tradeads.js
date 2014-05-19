@@ -215,6 +215,34 @@ var tradeAds = new (function($) {
         var category = this.getCategory();
         iframe = $('.vigattinads-frame');
         setIframe(category);
+        autoSetCatFromSearch('.browseads_container .vigattinads-frame', '.browseads_container .adsbox');
+    }
+
+    function autoSetCatFromSearch(iframeSelector, resultSelector) {
+        var iframe = $(iframeSelector);
+        var result = $(resultSelector);
+        var url = window.location.href;
+        var catArray;
+        var category = '';
+        var finalCat = '';
+        var finalUrl = '';
+        if(url.match(/results\?search/)) {
+            if(result.length) {
+                category = $(result[0]).attr('data-category');
+                catArray = category.split('|');
+                finalCat = '(Ads Listing homepage ';
+                $.each(catArray, function(key, value) {
+                    if(value) {
+                        finalCat += value+' ';
+                    }
+                });
+                finalCat = jsTrim(finalCat);
+                finalCat += ')';
+                finalUrl = 'http://www.service.vigattin.com/vigattinads/showads/trade-ads-listing?showin=vigattintrade.com&template=home-sidebar-left&limit=1&keyword='+encodeURIComponent(finalCat.toLowerCase());
+                $(iframe[0]).attr('src', finalUrl);
+            }
+        }
+
     }
 
     function setIframe(category) {
