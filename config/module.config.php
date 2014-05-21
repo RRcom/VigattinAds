@@ -218,6 +218,21 @@ return array(
                     ),
                 ),
             ),
+            'vigattinads_dashboard_admin_historylog' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/vigattinads/dashboard/admin/historylog[/:page][/:param1][/:param2]',
+                    'constraints' => array(
+                        'param1'        => '[a-zA-Z0-9_-]*',
+                        'param2'        => '[a-zA-Z0-9_-]*',
+                        'page'          => '[0-9]*'
+                    ),
+                    'defaults' => array(
+                        'controller'    => 'VigattinAds\Controller\Dashboard\Admin\HistoryLog',
+                        'action'        => 'index',
+                    ),
+                ),
+            ),
             'vigattinads_dashboard_approval' => array(
                 'type'    => 'segment',
                 'options' => array(
@@ -281,6 +296,7 @@ return array(
             'VigattinAds\Controller\Dashboard\Admin'   => 'VigattinAds\Controller\Dashboard\Admin\AdminController',
             'VigattinAds\Controller\Dashboard\Admin\ManageAccount'   => 'VigattinAds\Controller\Dashboard\Admin\AdminManageAccountController',
             'VigattinAds\Controller\Dashboard\Admin\ManageAds'   => 'VigattinAds\Controller\Dashboard\Admin\AdminManageAdsController',
+            'VigattinAds\Controller\Dashboard\Admin\HistoryLog'   => 'VigattinAds\Controller\Dashboard\Admin\AdminHistoryLogController',
             'VigattinAds\Controller\Dashboard\Approval'   => 'VigattinAds\Controller\Dashboard\Approval\ApprovalController',
             'VigattinAds\Controller\Debug' => 'VigattinAds\Controller\DebugController',
             'VigattinAds\Controller\Cli'   => 'VigattinAds\Controller\CliController',

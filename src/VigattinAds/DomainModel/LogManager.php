@@ -69,8 +69,36 @@ class LogManager
         return $result;
     }
 
-    public function fetchCommonLogByLogId($logId)
+    public function searchCommonLog($searchValue = '', $start = 0, $limit = 30)
     {
-
+        if($searchValue) {
+            $dql = $this->entityManager->createQuery("SELECT l FROM VigattinAds\DomainModel\CommonLog l WHERE l.logMessage LIKE :logMessage ORDER BY l.id DESC");
+            $dql->setParameter('logMessage', '%'.$searchValue.'%');
+        }
+        else {
+            $dql = $this->entityManager->createQuery("SELECT l FROM VigattinAds\DomainModel\CommonLog l ORDER BY l.id DESC");
+        }
+        $dql->setFirstResult($start);
+        $dql->setMaxResults($limit);
+        try {
+            $result = $dql->getArrayResult();
+        } catch(NoResultException $ex) {
+            $result = array();
+        }
+        return $result;
     }
+
+    public function totalSearchCommonLog($searchValue = '')
+    {
+        if($searchValue) {
+            $dql = $this->entityManager->createQuery("SELECT COUNT(l.id) FROM VigattinAds\DomainModel\CommonLog l WHERE l.logMessage LIKE :logMessage");
+            $dql->setParameter('logMessage', '%'.$searchValue.'%');
+        }
+        else {
+            $dql = $this->entityManager->createQuery("SELECT COUNT(l.id) FROM VigattinAds\DomainModel\CommonLog l");
+        }
+
+        return $dql->getSingleScalarResult();
+    }
+
 }
