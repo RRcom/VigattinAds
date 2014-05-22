@@ -153,6 +153,8 @@ class JsonServiceController extends AbstractActionController
         $lastName = $this->request['lastName'];
         $privilege = $this->request['privilege'];
         $gold = $this->request['gold'];
+        $targetUser = $this->userManager->getUser($id);
+        $targetUserEmail = ($targetUser instanceof AdsUser) ? $targetUser->get('email') : '';
         $result = $this->userManager->updateUser($id, $email, $username, $firstName, $lastName, $gold, $privilege);
 
         if($result['status'] == 'success') {
@@ -161,37 +163,37 @@ class JsonServiceController extends AbstractActionController
 
             // Log edit email
             if($result['old_email'] != $result['new_email']) {
-                $logMessage = $logInfo.'User email altered. Old value '.$result['old_email'].' new value '.$result['new_email'];
+                $logMessage = $logInfo.'User email altered. Old value '.$result['old_email'].' new value '.$result['new_email'].','.$targetUserEmail;
                 $this->logManager->createCommonLog($user, CommonLog::LOG_TYPE_ALTER_EMAIL, $logMessage, $id, true);
             }
 
             // Log edit username
             if($result['old_username'] != $result['new_username']) {
-                $logMessage = $logInfo.'User username altered. Old value '.$result['old_username'].' new value '.$result['new_username'];
+                $logMessage = $logInfo.'User username altered. Old value '.$result['old_username'].' new value '.$result['new_username'].','.$targetUserEmail;
                 $this->logManager->createCommonLog($user, CommonLog::LOG_TYPE_ALTER_USERNAME, $logMessage, $id, true);
             }
 
             // Log edit firstName
             if($result['old_firstName'] != $result['new_firstName']) {
-                $logMessage = $logInfo.'User first name altered. Old value '.$result['old_firstName'].' new value '.$result['new_firstName'];
+                $logMessage = $logInfo.'User first name altered. Old value '.$result['old_firstName'].' new value '.$result['new_firstName'].','.$targetUserEmail;
                 $this->logManager->createCommonLog($user, CommonLog::LOG_TYPE_ALTER_FIRST_NAME, $logMessage, $id, true);
             }
 
             // Log edit lastName
             if($result['old_lastName'] != $result['new_lastName']) {
-                $logMessage = $logInfo.'User last name altered. Old value '.$result['old_lastName'].' new value '.$result['new_lastName'];
+                $logMessage = $logInfo.'User last name altered. Old value '.$result['old_lastName'].' new value '.$result['new_lastName'].','.$targetUserEmail;
                 $this->logManager->createCommonLog($user, CommonLog::LOG_TYPE_ALTER_LAST_NAME, $logMessage, $id, true);
             }
 
             // Log edit privilege
             if(strtolower($result['old_privilege']) != strtolower($result['new_privilege'])) {
-                $logMessage = $logInfo.'User privilege altered. Old value '.$result['old_privilege'].' new value '.$result['new_privilege'];
+                $logMessage = $logInfo.'User privilege altered. Old value '.$result['old_privilege'].' new value '.$result['new_privilege'].','.$targetUserEmail;
                 $this->logManager->createCommonLog($user, CommonLog::LOG_TYPE_ALTER_PRIVILEGE, $logMessage, $id, true);
             }
 
             // Log edit credit
             if($result['old_credit'] != $result['new_credit']) {
-                $logMessage = $logInfo.'User gold altered. Old value '.$result['old_credit'].' new value '.$result['new_credit'];
+                $logMessage = $logInfo.'User gold altered. Old value '.$result['old_credit'].' new value '.$result['new_credit'].','.$targetUserEmail;
                 $this->logManager->createCommonLog($user, CommonLog::LOG_TYPE_ALTER_GOLD, $logMessage, $id, true);
             }
         }
@@ -208,7 +210,7 @@ class JsonServiceController extends AbstractActionController
                 }
                 else {
                     // Log edit password
-                    $logMessage = $logInfo.'User password altered.';
+                    $logMessage = $logInfo.'User password altered.'.','.$targetUserEmail;
                     $this->logManager->createCommonLog($user, CommonLog::LOG_TYPE_ALTER_PASSWORD, $logMessage, $id, true);
                 }
             }

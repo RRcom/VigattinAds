@@ -111,7 +111,7 @@ class OnUpdateFreeGold implements MessageInterface
 
                 // Log edit credit
                 $apiRequestFrom = isset($this->message['from']) ? $this->message['from'] : 'undefined';
-                $logMessage = $apiRequestFrom.' API client added '.floatval($this->message['gold']).' to this accout. Old value '.$response['beforeGold'].' new value '.$user->get('credit');
+                $logMessage = ','.','.$apiRequestFrom.',API client added '.floatval($this->message['gold']).' to this accout. Old value '.$response['beforeGold'].' new value '.$user->get('credit').','.$user->get('email');
                 $this->logManager->createCommonLog($user, CommonLog::LOG_TYPE_ALTER_GOLD, $logMessage, $user->get('id'), true);
 
             }
@@ -134,7 +134,7 @@ class OnUpdateFreeGold implements MessageInterface
 
                     // Log edit credit
                     $apiRequestFrom = isset($this->message['from']) ? $this->message['from'] : 'undefined';
-                    $logMessage = $apiRequestFrom.' API client added '.floatval($this->message['gold']).' to this accout. Old value '.$response['beforeGold'].' new value '.$user->get('credit');
+                    $logMessage = ','.','.$apiRequestFrom.',API client added '.floatval($this->message['gold']).' to this accout. Old value '.$response['beforeGold'].' new value '.$user->get('credit').','.$user->get('email');
                     $this->logManager->createCommonLog($user, CommonLog::LOG_TYPE_ALTER_GOLD, $logMessage, $user->get('id'), true);
                 }
                 else $response['createAccountError'] = $user;

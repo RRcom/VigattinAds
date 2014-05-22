@@ -11,6 +11,8 @@ class LogManager
     const SORT_DESC = 'DESC';
     const SORT_ASC = 'ASC';
 
+    const SEARCH_COMMON_LOG_ID_START = 213;
+
     /**
      * @var \Zend\ServiceManager\ServiceManager
      */
@@ -72,12 +74,13 @@ class LogManager
     public function searchCommonLog($searchValue = '', $start = 0, $limit = 30)
     {
         if($searchValue) {
-            $dql = $this->entityManager->createQuery("SELECT l FROM VigattinAds\DomainModel\CommonLog l WHERE l.logMessage LIKE :logMessage ORDER BY l.id DESC");
+            $dql = $this->entityManager->createQuery("SELECT l FROM VigattinAds\DomainModel\CommonLog l WHERE l.id > :id AND (l.logMessage LIKE :logMessage) ORDER BY l.id DESC");
             $dql->setParameter('logMessage', '%'.$searchValue.'%');
         }
         else {
-            $dql = $this->entityManager->createQuery("SELECT l FROM VigattinAds\DomainModel\CommonLog l ORDER BY l.id DESC");
+            $dql = $this->entityManager->createQuery("SELECT l FROM VigattinAds\DomainModel\CommonLog l WHERE l.id > :id ORDER BY l.id DESC");
         }
+        $dql->setParameter('id', self::SEARCH_COMMON_LOG_ID_START);
         $dql->setFirstResult($start);
         $dql->setMaxResults($limit);
         try {
@@ -91,12 +94,13 @@ class LogManager
     public function totalSearchCommonLog($searchValue = '')
     {
         if($searchValue) {
-            $dql = $this->entityManager->createQuery("SELECT COUNT(l.id) FROM VigattinAds\DomainModel\CommonLog l WHERE l.logMessage LIKE :logMessage");
+            $dql = $this->entityManager->createQuery("SELECT COUNT(l.id) FROM VigattinAds\DomainModel\CommonLog l WHERE l.id > :id AND (l.logMessage LIKE :logMessage)");
             $dql->setParameter('logMessage', '%'.$searchValue.'%');
         }
         else {
-            $dql = $this->entityManager->createQuery("SELECT COUNT(l.id) FROM VigattinAds\DomainModel\CommonLog l");
+            $dql = $this->entityManager->createQuery("SELECT COUNT(l.id) FROM VigattinAds\DomainModel\CommonLog l WHERE l.id > :id");
         }
+        $dql->setParameter('id', self::SEARCH_COMMON_LOG_ID_START);
 
         return $dql->getSingleScalarResult();
     }
