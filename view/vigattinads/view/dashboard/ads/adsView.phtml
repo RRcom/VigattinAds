@@ -1,4 +1,4 @@
-<?php echo $this->headTitle('Ads'); ?>
+<?php $this->headTitle('Ads'); ?>
 <div class="row">
     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
         <div>Current Gold <img style="display: none" class="current-gold-progress" src="/assets/vigattinads/img/circle-preloader-2.gif" /><span style="display: none" class="glyphicon glyphicon-ok text-success current-gold-success"></span></div>
@@ -7,7 +7,7 @@
 </div>
 <hr>
 <div>
-    <p><a href="/vigattinads/dashboard" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Create New Ads Wizard</a></p>
+    <p><a href="<?php echo $this->url('vigattinads_dashboard_ads_create'); ?>" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Create New Ads Wizard</a></p>
 </div>
 <div class="table-responsive">
     <div>My ads (<?php echo $paginator->getTotalItemCount(); ?>)</div>

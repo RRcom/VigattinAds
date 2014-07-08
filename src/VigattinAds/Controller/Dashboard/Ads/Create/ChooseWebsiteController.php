@@ -35,6 +35,10 @@ class ChooseWebsiteController extends AdsController
                 $this->sessionManager->getStorage()->tempAdsTemplate = array('showIn' => 'vigattindeals.com', 'template' => 'home-body');
                 return $this->redirect()->toRoute('vigattinads_dashboard_ads_create', array('controller' => 'choose-website'));
                 break;
+            case 'tourism-bloggers':
+                $this->sessionManager->getStorage()->tempAdsTemplate = array('showIn' => 'vigattintourism.com', 'template' => 'home-body');
+                return $this->redirect()->toRoute('vigattinads_dashboard_ads_create', array('controller' => 'choose-tourism-blogger-author'));
+                break;
             default:
                 return $this->redirect()->toRoute('vigattinads_dashboard_ads_create', array('controller' => 'choose-website'));
                 break;

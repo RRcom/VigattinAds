@@ -288,6 +288,7 @@ return array(
             'VigattinAds\Controller\Dashboard\Ads\Create\ChooseVigDirectory'   => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseVigDirectoryController',
             'VigattinAds\Controller\Dashboard\Ads\Create\ChooseDirectory'   => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseDirectoryController',
             'VigattinAds\Controller\Dashboard\Ads\Create\ChooseCategory'   => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseCategoryController',
+            'VigattinAds\Controller\Dashboard\Ads\Create\ChooseTourismBloggerAuthor'   => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseTourismBloggerAuthorController',
             'VigattinAds\Controller\Dashboard\Ads\Edit'   => 'VigattinAds\Controller\Dashboard\Ads\AdsEditController',
             'VigattinAds\Controller\Dashboard\Ads\Template'   => 'VigattinAds\Controller\Dashboard\Ads\AdsWizardChooseTemplateController',
             'VigattinAds\Controller\Dashboard\Ads\Info'   => 'VigattinAds\Controller\Dashboard\Ads\AdsWizardEditInfoController',

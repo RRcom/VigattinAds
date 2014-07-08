@@ -2,15 +2,15 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <?php echo $this->headTitle('Vigattin Ads')->setSeparator(' | ')->setAutoEscape(false); ?>
+        <?php echo $this->headTitle('Vigattin Ads')->setSeparator(' | ')->setAutoEscape(true); ?>
 
         <?php echo $this->headMeta()
             ->appendName('viewport', 'width=device-width, initial-scale=1.0')
             ->appendHttpEquiv('X-UA-Compatible', 'IE=edge'); ?>
 
         <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
-            ->prependStylesheet('//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css')
-            ->prependStylesheet('//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap-theme.min.css')
+            ->prependStylesheet('//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css')
+            ->prependStylesheet('//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css')
             ->prependStylesheet($this->basePath() . '/assets/vigattinads/css/default.css?v='.$config['vigattinads']['assets_version']); ?>
     </head>
     <body
@@ -44,7 +44,7 @@
             ->appendScript('var vauthId = '.$vauthId)
             ->appendScript(isset($js) ? $js : '')
             ->appendFile('//code.jquery.com/jquery-1.10.2.min.js')
-            ->appendFile('//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js')
+            ->appendFile('//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js')
             ->appendFile($this->basePath().'/assets/vigattinads/js/global.js?v='.$config['vigattinads']['assets_version']); ?>
     </body>
 </html>
