@@ -156,7 +156,7 @@ body {
 /****************** sidebar ads fbstyle *******************/
 
 .sidebar-ads-fbstyle {
-    width: 217px;
+    /* width: 217px; */
     overflow: hidden;
     margin: 4px 6px;
     font-family: 'lucida grande',tahoma,verdana,arial,sans-serif;

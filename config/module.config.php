@@ -72,17 +72,47 @@ return array(
             'vigattinads_dashboard_ads_create' => array(
                 'type'    => 'segment',
                 'options' => array(
-                    'route'    => '/vigattinads/dashboard/ads/create[/:controller][/:action][/:param]',
+                    'route'    => '/vigattinads/dashboard/ads/create[/]',
+                    'defaults' => array(
+                        'controller'    => 'VigattinAds\Controller\Dashboard\Ads\Create\Create',
+                        'action'        => 'index',
+                    ),
+                ),
+            ),
+            'vigattinads_dashboard_ads_create_choose_website' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/vigattinads/dashboard/ads/create/choose-website[/:controller][/:action][/:param]',
                     'constraints' => array(
                         'controller'    => '[a-zA-Z0-9_-]*',
                         'action'        => '[a-zA-Z0-9_-]*',
                         'param'         => '[a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
-                        '__NAMESPACE__' => 'VigattinAds\Controller\Dashboard\Ads\Create',
-                        'controller'    => 'Create',
+                        '__NAMESPACE__' => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite',
+                        'controller'    => 'ChooseWebsite',
                         'action'        => 'index',
                         'param'         => '',
+                    ),
+                ),
+            ),
+            'vigattinads_dashboard_ads_create_choose_website_import' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/vigattinads/dashboard/ads/create/choose-website/import[/]',
+                    'defaults' => array(
+                        'controller'    => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\Import',
+                        'action'        => 'index',
+                    ),
+                ),
+            ),
+            'vigattinads_dashboard_ads_create_choose_website_import_edit' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/vigattinads/dashboard/ads/create/choose-website/import/edit[/]',
+                    'defaults' => array(
+                        'controller'    => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\Import\Edit',
+                        'action'        => 'index',
                     ),
                 ),
             ),
@@ -284,11 +314,13 @@ return array(
             'VigattinAds\Controller\Dashboard' => 'VigattinAds\Controller\Dashboard\DashboardController',
             'VigattinAds\Controller\Dashboard\Ads'   => 'VigattinAds\Controller\Dashboard\Ads\AdsController',
             'VigattinAds\Controller\Dashboard\Ads\Create\Create'   => 'VigattinAds\Controller\Dashboard\Ads\Create\CreateController',
-            'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite'   => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsiteController',
-            'VigattinAds\Controller\Dashboard\Ads\Create\ChooseVigDirectory'   => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseVigDirectoryController',
-            'VigattinAds\Controller\Dashboard\Ads\Create\ChooseDirectory'   => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseDirectoryController',
-            'VigattinAds\Controller\Dashboard\Ads\Create\ChooseCategory'   => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseCategoryController',
-            'VigattinAds\Controller\Dashboard\Ads\Create\ChooseTourismBloggerAuthor'   => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseTourismBloggerAuthorController',
+            'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseWebsite'   => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseWebsiteController',
+            'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseVigDirectory'   => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseVigDirectoryController',
+            'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseDirectory'   => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseDirectoryController',
+            'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseCategory'   => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseCategoryController',
+            'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseTourismBloggerAuthor'   => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseTourismBloggerAuthorController',
+            'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\Import' => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\Import\ImportController',
+            'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\Import\Edit' => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\Import\Edit\EditController',
             'VigattinAds\Controller\Dashboard\Ads\Edit'   => 'VigattinAds\Controller\Dashboard\Ads\AdsEditController',
             'VigattinAds\Controller\Dashboard\Ads\Template'   => 'VigattinAds\Controller\Dashboard\Ads\AdsWizardChooseTemplateController',
             'VigattinAds\Controller\Dashboard\Ads\Info'   => 'VigattinAds\Controller\Dashboard\Ads\AdsWizardEditInfoController',

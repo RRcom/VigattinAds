@@ -1,5 +1,5 @@
 <?php
-namespace VigattinAds\Controller\Dashboard\Ads\Create;
+namespace VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite;
 
 use VigattinAds\Controller\Dashboard\Ads\AdsController;
 use Zend\Mvc\MvcEvent;

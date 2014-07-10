@@ -37,7 +37,7 @@ class AdsWizardEditInfoController extends AdsController
         }
 
         // set main view title
-        $this->mainView->setVariable('title', 'Edit Ads Info');
+        $this->mainView->setVariable('title', 'Step 3. Edit your ads');
 
         // create final view
         $actionContent = new ViewModel();

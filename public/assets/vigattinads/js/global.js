@@ -940,7 +940,7 @@ $(document).ready(function(e) {
                             '<input class="ads-keyword" type="hidden" value="'+$('<div/>').html('Homepage|'+decodeArrayCategory(value.category, '')).text()+'" />'+
                             '<input class="ads-date" type="hidden" value="'+$('<div/>').html(value.date).text()+'" />'+
                             '</div>'+
-                            '<div class="col-xs-2"><a class="ads-import-single-button" data-target="#adsPanel'+Start+'" href="javascript:" data-dismiss="modal"><span class="glyphicon glyphicon-star"></span> Promote</a></div>'+
+                            '<div class="col-xs-2"><a class="ads-import-single-button btn btn-default" data-target="#adsPanel'+Start+'" href="javascript:" data-dismiss="modal">Import</a></div>'+
                             '</div>'+
                             '</li>';
                         $('.ads-import-list', e.currentTarget).append(list);
@@ -990,7 +990,7 @@ $(document).ready(function(e) {
         }
 
         function submitInfo(adsTitle, adsUrl, adsImage, adsKeyword, adsDescription, adsPrice, date) {
-            var form = $('<form method="post" action="/vigattinads/dashboard/ads/create/choose-website"></form>');
+            var form = $('<form method="post" action="/vigattinads/dashboard/ads/create/choose-website/import"></form>');
             form.append($('<input type="hidden" name="ads-title" value="'+adsTitle+'" />'));
             form.append($('<input type="hidden" name="ads-url" value="'+adsUrl+'" />'));
             form.append($('<input type="hidden" name="ads-image-data-url" value="'+adsImage+'" />'));
