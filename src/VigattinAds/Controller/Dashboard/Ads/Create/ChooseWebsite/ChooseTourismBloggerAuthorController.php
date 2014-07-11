@@ -7,6 +7,8 @@ use Zend\View\Model\ViewModel;
 
 class ChooseTourismBloggerAuthorController extends AdsController
 {
+    const USED_BY = ChooseWebsiteController::TOURISMBLOGGER;
+
     public function indexAction()
     {
         $actionContent = new ViewModel();
@@ -14,5 +16,15 @@ class ChooseTourismBloggerAuthorController extends AdsController
         $actionContent->setTemplate('vigattinads/view/dashboard/ads/create/chooseTourismBloggerAuthorView');
         $this->mainView->addChild($actionContent, 'actionContent');
         return $this->mainView;
+    }
+
+    public function onDispatch(MvcEvent $e)
+    {
+        $controller = parent::onDispatch($e);
+
+        if(strtolower($this->sessionManager->getStorage()->tempAdsTemplate['showIn']) != self::USED_BY) {
+            return $this->redirect()->toRoute('vigattinads_dashboard_ads_create', array('controller' => 'choose-website'));
+        }
+        return $controller;
     }
 }

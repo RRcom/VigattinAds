@@ -1,6 +1,7 @@
 <?php
 namespace VigattinAds\Controller\Dashboard\Ads;
 
+use VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseWebsiteController;
 use Zend\View\Model\ViewModel;
 use VigattinAds\DomainModel\Image;
 use VigattinAds\DomainModel\Validator;
@@ -42,7 +43,7 @@ class AdsWizardEditInfoController extends AdsController
         // create final view
         $actionContent = new ViewModel();
         switch(strtolower($this->sessionManager->getStorage()->tempAdsTemplate['showIn'])) {
-            case 'vigattintrade.com':
+            case ChooseWebsiteController::VIGATTINTRADE:
                 if($this->sessionManager->getStorage()->tempAdsTemplate['template'] == 'home-sidebar-left') {
                     $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsWizardEditInfoView');
                 }
@@ -50,13 +51,18 @@ class AdsWizardEditInfoController extends AdsController
                     $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsWizardEditInfoNoCatView');
                 }
                 break;
-            case 'vigattintourism.com':
+            case ChooseWebsiteController::VIGATTINTOURISM:
                 $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsWizardEditInfoTourismView');
                 $formError['adsTempKeyword'] = 'Homepage|Destination|Articles|Tourist Spots|Discussion|Directory';
                 $formError['adsKeyword'] = '';
                 break;
-            case 'vigattin.com':
+            case ChooseWebsiteController::VIGATTIN:
                 $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsWizardEditInfoVigattinView');
+                $formError['adsTempKeyword'] = 'Homepage';
+                $formError['adsKeyword'] = '';
+                break;
+            case ChooseWebsiteController::TOURISMBLOGGER:
+                $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsWizardEditInfoTourismView');
                 $formError['adsTempKeyword'] = 'Homepage';
                 $formError['adsKeyword'] = '';
                 break;
@@ -80,8 +86,7 @@ class AdsWizardEditInfoController extends AdsController
     public function redirectNoTemplate()
     {
         if(empty($this->sessionManager->getStorage()->tempAdsTemplate['showIn']) || empty($this->sessionManager->getStorage()->tempAdsTemplate['template'])) {
-            header('Location: /vigattinads/dashboard/ads/template');
-            exit();
+            $this->redirect()->toRoute('vigattinads_dashboard_ads_create_choose_website');
         }
     }
 
@@ -90,8 +95,7 @@ class AdsWizardEditInfoController extends AdsController
         if(strtolower($this->getRequest()->getQuery('template', '')) == 'true') {
             $this->sessionManager->getStorage()->tempAdsTemplate['showIn'] = '';
             $this->sessionManager->getStorage()->tempAdsTemplate['template'] = '';
-            header('Location: /vigattinads/dashboard/ads/template');
-            exit();
+            $this->redirect()->toRoute('vigattinads_dashboard_ads_create_choose_website');
         }
     }
 
@@ -178,8 +182,7 @@ class AdsWizardEditInfoController extends AdsController
             );
             $this->adsUser->flush();
             $this->clearTempData();
-            header('Location: /vigattinads/dashboard/ads');
-            exit();
+            $this->redirect()->toRoute('vigattinads_dashboard_ads');
         }
         return $result['reason'].' '.$repo;
     }

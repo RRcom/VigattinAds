@@ -843,6 +843,7 @@ $(document).ready(function(e) {
         var Name = '';
         var autoloadAdsImportList = $('.ads-import-list.auto-load');
 
+        if(typeof(importUrl) == 'undefined') importUrl = '';
         if(autoloadAdsImportList.length) {
             $('.import-ads-list-more-button').unbind('click').click(function(e) {
                 getJsonpData();
@@ -881,6 +882,7 @@ $(document).ready(function(e) {
                     }
                 },
                 success: function(data, textStatus, jqXHR) {
+                    var totalList = data.list.length;
                     $('.import-ads-list-progress').hide();
                     $.each(data.list, function(key, value) {
                         Start++;
@@ -899,6 +901,7 @@ $(document).ready(function(e) {
                                         '</div>'+
                                     '</li>';
                         $('.ads-import-list', e.currentTarget).append(list);
+                        if((key+1) < totalList) $('.ads-import-list', e.currentTarget).append('<hr>');
                     });
                     $('.ads-list-panel .ads-import-single-button').unbind('click').click(onImportSingleClick);
                     if(Start < data.total) $('.import-ads-list-more-button').show();
@@ -926,6 +929,7 @@ $(document).ready(function(e) {
                     }
                 },
                 success: function(data, textStatus, jqXHR) {
+                    var totalList = data.list.length;
                     $('.import-ads-list-progress').hide();
                     $.each(data.list, function(key, value) {
                         Start++;
@@ -944,6 +948,7 @@ $(document).ready(function(e) {
                             '</div>'+
                             '</li>';
                         $('.ads-import-list', e.currentTarget).append(list);
+                        if((key+1) < totalList) $('.ads-import-list', e.currentTarget).append('<hr>');
                     });
                     $('.ads-list-panel .ads-import-single-button').unbind('click').click(onImportSingleClick);
                     if(Start < data.total) $('.import-ads-list-more-button').show();
@@ -990,7 +995,7 @@ $(document).ready(function(e) {
         }
 
         function submitInfo(adsTitle, adsUrl, adsImage, adsKeyword, adsDescription, adsPrice, date) {
-            var form = $('<form method="post" action="/vigattinads/dashboard/ads/create/choose-website/import"></form>');
+            var form = $('<form method="post" action="'+importUrl+'"></form>');
             form.append($('<input type="hidden" name="ads-title" value="'+adsTitle+'" />'));
             form.append($('<input type="hidden" name="ads-url" value="'+adsUrl+'" />'));
             form.append($('<input type="hidden" name="ads-image-data-url" value="'+adsImage+'" />'));

@@ -7,7 +7,7 @@ use Zend\View\Model\ViewModel;
 
 class ChooseCategoryController extends AdsController
 {
-    const USED_BY = 'vigattintrade.com';
+    const USED_BY = ChooseWebsiteController::VIGATTINTRADE;
 
     public function indexAction()
     {

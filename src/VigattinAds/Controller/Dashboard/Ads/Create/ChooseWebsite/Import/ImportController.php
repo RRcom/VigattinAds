@@ -2,6 +2,7 @@
 namespace VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\Import;
 
 use VigattinAds\Controller\Dashboard\Ads\AdsController;
+use VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseWebsiteController;
 use Zend\Mvc\MvcEvent;
 use Zend\View\Model\ViewModel;
 
@@ -9,9 +10,16 @@ class ImportController extends AdsController
 {
     public function indexAction()
     {
+        if(empty($this->sessionManager->getStorage()->tempAdsTemplate['showIn']) || empty($this->sessionManager->getStorage()->tempAdsTemplate['template'])) {
+            $this->redirect()->toRoute('vigattinads_dashboard_ads_create_choose_website');
+        }
         $this->saveImportedAdsToSession();
         $actionContent = new ViewModel();
-        $this->mainView->setVariable('title', 'Step 2. Import ads template');
+        if($this->sessionManager->getStorage()->tempAdsTemplate['showIn'] == ChooseWebsiteController::TOURISMBLOGGER) {
+            $this->mainView->setVariable('title', 'Step 3. Import ads template (optional)');
+        } else {
+            $this->mainView->setVariable('title', 'Step 2. Import ads template (required)');
+        }
         $actionContent->setTemplate('vigattinads/view/dashboard/ads/create/import/importView');
         $actionContent->setVariable('website', $this->sessionManager->getStorage()->tempAdsTemplate['showIn']);
         $this->mainView->addChild($actionContent, 'actionContent');
@@ -20,7 +28,7 @@ class ImportController extends AdsController
 
     public function saveImportedAdsToSession()
     {
-        if($this->getRequest()->getPost('action', '') == 'save-session') {
+        if(($this->getRequest()->getPost('action', '') == 'save-session') || ($this->params()->fromRoute('param', '') == 'clear')) {
             $this->sessionManager->getStorage()->tempAdsTitle = $this->getRequest()->getPost('ads-title', '');
             $this->sessionManager->getStorage()->origAdsTitle = $this->getRequest()->getPost('ads-title', '');
             $this->sessionManager->getStorage()->tempAdsUrl = $this->getRequest()->getPost('ads-url', '');

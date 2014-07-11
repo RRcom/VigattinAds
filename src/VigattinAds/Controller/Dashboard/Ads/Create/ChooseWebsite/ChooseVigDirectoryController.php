@@ -7,7 +7,7 @@ use Zend\View\Model\ViewModel;
 
 class ChooseVigDirectoryController extends AdsController
 {
-    const USED_BY = 'vigattin.com';
+    const USED_BY = ChooseWebsiteController::VIGATTIN;
 
     public function indexAction()
     {

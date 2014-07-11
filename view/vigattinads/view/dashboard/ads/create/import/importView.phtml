@@ -1,9 +1,22 @@
 <div class="row">
     <div class="col-xs-12"><h4>Import template from Vigattin Trade</h4></div>
+    <?php if($website == \VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseWebsiteController::TOURISMBLOGGER): ?>
+        <?php $this->headScript()->prependScript('var importUrl = "'.$this->url('vigattinads_dashboard_ads_create_choose_website_blogger_import_edit').'"'); ?>
+        <div class="col-xs-8">
+            <div class="alert alert-info">
+                <span class="text-warning">You may skip this part if you want to compose your own ads or you do not have any ads on vigattintrade.com. If you click skip your ads editor will start with a fresh empty template.</span>
+            </div>
+        </div>
+    <?php else: ?>
+        <?php $this->headScript()->prependScript('var importUrl = "'.$this->url('vigattinads_dashboard_ads_create_choose_website_import_edit').'"'); ?>
+    <?php endif; ?>
 </div>
 <div class="row">
-    <div class="col-xs-12">
-        <p><a class="btn btn-default" href="<?php echo $this->url('vigattinads_dashboard_ads_create_choose_website'); ?>">Back</a></p>
+    <div class="col-xs-2">
+        <a class="btn btn-default" href="<?php echo $this->url('vigattinads_dashboard_ads_create_choose_website'); ?>">Back</a>
+        <?php if($website == \VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseWebsiteController::TOURISMBLOGGER): ?>
+        <a class="btn btn-default" href="<?php echo $this->url('vigattinads_dashboard_ads_create_choose_website_import', array('param' => 'clear')); ?>">Skip</a>
+        <?php endif; ?>
     </div>
 </div>
 <hr>

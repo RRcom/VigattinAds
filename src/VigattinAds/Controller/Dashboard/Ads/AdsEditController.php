@@ -52,15 +52,17 @@ class AdsEditController extends AdsController
                         // Change log to RE-EDIT status
                         /** @var \VigattinAds\DomainModel\AdsApproveLog $log */
                         $log = $this->adsManager->getLogByReviewVersion($adsEntity->get('reviewVersion'));
-                        $log->set('reviewResult', $adsEntity::STATUS_VALUE_CHANGED);
-                        $log->set('approvedTime', time());
-                        $log->persistSelf();
-                        $log->flush();
+                        if($log instanceof \VigattinAds\DomainModel\AdsApproveLog) {
+                            $log->set('reviewResult', $adsEntity::STATUS_VALUE_CHANGED);
+                            $log->set('approvedTime', time());
+                            $log->persistSelf();
+                            $log->flush();
 
-                        // Create new log status
-                        $this->adsManager->changeAdsStatus($adsEntity->get('reviewVersion'), $adsEntity::STATUS_VALUE_CHANGED, '');
-                        $adsEntity->set('reviewVersion', uniqid());
-                        $adsEntity->set('status', $adsEntity::STATUS_PENDING);
+                            // Create new log status
+                            $this->adsManager->changeAdsStatus($adsEntity->get('reviewVersion'), $adsEntity::STATUS_VALUE_CHANGED, '');
+                            $adsEntity->set('reviewVersion', uniqid());
+                            $adsEntity->set('status', $adsEntity::STATUS_PENDING);
+                        }
                     }
 
 
