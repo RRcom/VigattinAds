@@ -995,7 +995,7 @@ $(document).ready(function(e) {
         }
 
         function submitInfo(adsTitle, adsUrl, adsImage, adsKeyword, adsDescription, adsPrice, date) {
-            var form = $('<form method="post" action="'+importUrl+'"></form>');
+            var form = $('<form method="post" action=""></form>');
             form.append($('<input type="hidden" name="ads-title" value="'+adsTitle+'" />'));
             form.append($('<input type="hidden" name="ads-url" value="'+adsUrl+'" />'));
             form.append($('<input type="hidden" name="ads-image-data-url" value="'+adsImage+'" />'));
@@ -1004,6 +1004,7 @@ $(document).ready(function(e) {
             form.append($('<input type="hidden" name="ads-price" value="'+adsPrice+'" />'));
             form.append($('<input type="hidden" name="ads-date" value="'+date+'" />'));
             form.append($('<input type="hidden" name="action" value="save-session" />'));
+            form.append($('<input type="hidden" name="redirect-url" value="'+importUrl+'" />'));
             $('body').append(form);
             form.submit();
         }

@@ -39,7 +39,7 @@ class ImportController extends AdsController
             $this->sessionManager->getStorage()->tempAdsImageDataUrl = $this->getRequest()->getPost('ads-image-data-url', '');
             $this->sessionManager->getStorage()->tempAdsPrice = $this->getRequest()->getPost('ads-price', '');
             $this->sessionManager->getStorage()->tempAdsDate = $this->getRequest()->getPost('ads-date', '');
-            $this->redirect()->toRoute('vigattinads_dashboard_ads_create_choose_website_import_edit');
+            $this->redirect()->toUrl($this->getRequest()->getPost('redirect-url', ''));
         }
     }
 }
