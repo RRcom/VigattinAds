@@ -62,9 +62,9 @@ class AdsWizardEditInfoController extends AdsController
                 $formError['adsKeyword'] = '';
                 break;
             case ChooseWebsiteController::TOURISMBLOGGER:
-                $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsWizardEditInfoTourismView');
+                $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsWizardEditInfoTourismBloggerView');
                 $formError['adsTempKeyword'] = 'Homepage';
-                $formError['adsKeyword'] = '';
+                $formError['adsKeyword'] = '(Homepage Blogger '.$this->sessionManager->getStorage()->tempAdsAuthorId.')';
                 break;
             default:
                 $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsWizardEditInfoNoCatView');

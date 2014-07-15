@@ -25,7 +25,7 @@ class ChooseTourismBloggerAuthorController extends AdsController
     {
         $authorId = $this->getRequest()->getPost('authorId', '');
         if($authorId) {
-            //$this->sessionManager->getStorage()->tempAdsKeyword = $authorId;
+            $this->sessionManager->getStorage()->tempAdsAuthorId = $authorId;
             $this->redirect()->toRoute('vigattinads_dashboard_ads_create_choose_website_blogger_import');
         }
     }

@@ -167,6 +167,7 @@ class AdsManager
             $query = $this->entityManager->createQuery("SELECT COUNT(a.id) FROM VigattinAds\DomainModel\Ads a WHERE a.deleted = 0 AND a.status = 1 AND a.showIn = :showIn AND a.template = :template AND a.viewLimit > 0");
             $query->setParameters(array('showIn' => $showIn, 'template' => $template));
         }
+
         $result = $query->getSingleScalarResult();
         $this->cacheQuickExpire->addItem($queryKey, $result);
         return $result;
