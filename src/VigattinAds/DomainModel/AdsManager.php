@@ -19,7 +19,6 @@ class AdsManager
     const SORT_BY_LAST_NAME = 5;
     const SORT_BY_STATUS = 6;
 
-
     const SORT_DIRECTION_ASC = 0;
     const SORT_DIRECTION_DESC = 1;
 
