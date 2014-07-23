@@ -17,6 +17,7 @@ class ChooseTourismBloggerAuthorController extends AdsController
         $this->mainView->setVariable('title', 'Step 2. select author');
         $actionContent->setTemplate('vigattinads/view/dashboard/ads/create/chooseTourismBloggerAuthorView');
         $actionContent->setVariable('authors', $this->searchAuthor());
+        $actionContent->setVariable('searchString', $this->getRequest()->getPost('searchString', ''));
         $this->mainView->addChild($actionContent, 'actionContent');
         return $this->mainView;
     }
@@ -32,8 +33,12 @@ class ChooseTourismBloggerAuthorController extends AdsController
 
     protected function searchAuthor()
     {
+        $searchString = $this->getRequest()->getPost('searchString', '');
+        $filter = $this->getRequest()->getPost('filter', array());
+        $offset = $this->getRequest()->getPost('offset', 0);
+        $limit = $this->getRequest()->getPost('limit', 30);
         $authorProvider = new BasicAuthorProvider();
-        return $authorProvider->searchAuthor();
+        return $authorProvider->searchAuthor($searchString, $filter, $offset, $limit);
     }
 
     public function onDispatch(MvcEvent $e)

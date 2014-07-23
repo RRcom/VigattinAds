@@ -8,7 +8,7 @@ namespace VigattinAds\DomainModel\Tourism;
 class BasicAuthorProvider implements AuthorProviderInterface
 {
     protected $total = 0;
-    protected $apiUrl = "http://www.localhost/ci/api/author";
+    protected $apiUrl = "http://www.vigattintourism.com/service/author";
 
     /**
      * @param string $searchString The string to search for.
@@ -23,7 +23,7 @@ class BasicAuthorProvider implements AuthorProviderInterface
         $this->total = $result['total'];
         $authors = new AuthorCollection();
         foreach($result['authors'] as $key => $value) {
-            $authors->add(new Author($value['id'], $value['firstName'], $value['lastName']));
+            $authors->add(new Author($value['id'], $value['firstName'], $value['lastName'], $value['photoUrl']));
         }
         return $authors;
     }

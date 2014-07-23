@@ -4,11 +4,11 @@
 ?>
 <div class="row">
     <div class="col-xs-6">
-        <div class="form-group has-feedback">
+        <form class="form-group has-feedback" method="post" action="" id="authorSearchForm">
             <label class="control-label sr-only" for="inputTourismSearchAuthor">Search author</label>
-            <input type="text" class="form-control" placeholder="search author" id="inputTourismSearchAuthor">
-            <span class="glyphicon glyphicon-search form-control-feedback"></span>
-        </div>
+            <input type="text" class="form-control" placeholder="search author" id="inputTourismSearchAuthor" name="searchString" value="<?php echo $this->escapeHtmlAttr($searchString); ?>">
+            <span class="glyphicon glyphicon-search form-control-feedback" style="cursor: pointer" onclick="$('#authorSearchForm').submit()"></span>
+        </form>
     </div>
     <div class="clearfix"></div>
     <div class="fluid-result-container col-xs-12">
@@ -16,22 +16,19 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th><a href="#">#</a></th>
+                    <th><a href="#">Photo</a></th>
                     <th><a href="#">First Name</a></th>
                     <th><a href="#">Last Name</a></th>
-                    <th><a href="#">ID</a></th>
                     <th><a href="#">Action</a></th>
                 </tr>
                 </thead>
                 <tbody>
                 <?php foreach($authors as $key => $author): ?>
                     <tr>
-                        <td><?php echo $key; ?></td>
+                        <td><div style="height: 50px; width: 50px; background-size: contain; background-image: url('<?php echo $this->escapeHtmlAttr($author->getPhotoUrl()); ?>')"></div></td>
                         <td><?php echo $this->escapeHtml($author->getFirstName()); ?></td>
                         <td><?php echo $this->escapeHtml($author->getLastName()); ?></td>
-                        <td><?php echo $author->getId(); ?></td>
                         <td><button class="btn btn-default" type="submit" name="authorId" value="<?php echo $author->getId(); ?>">select</button></td>
-                        <!-- <td><a class="btn btn-default" href="/vigattinads/dashboard/ads/create/choose-website/blogger-author/import">select</a></td>-->
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
