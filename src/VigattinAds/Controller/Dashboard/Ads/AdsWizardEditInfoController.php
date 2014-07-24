@@ -43,7 +43,7 @@ class AdsWizardEditInfoController extends AdsController
         // create final view
         $actionContent = new ViewModel();
         switch(strtolower($this->sessionManager->getStorage()->tempAdsTemplate['showIn'])) {
-            case ChooseWebsiteController::VIGATTINTRADE:
+            case strtolower(ChooseWebsiteController::VIGATTINTRADE):
                 if($this->sessionManager->getStorage()->tempAdsTemplate['template'] == 'home-sidebar-left') {
                     $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsWizardEditInfoView');
                 }
@@ -51,20 +51,22 @@ class AdsWizardEditInfoController extends AdsController
                     $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsWizardEditInfoNoCatView');
                 }
                 break;
-            case ChooseWebsiteController::VIGATTINTOURISM:
+            case strtolower(ChooseWebsiteController::VIGATTINTOURISM):
                 $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsWizardEditInfoTourismView');
                 $formError['adsTempKeyword'] = 'Homepage|Destination|Articles|Tourist Spots|Discussion|Directory';
                 $formError['adsKeyword'] = '';
                 break;
-            case ChooseWebsiteController::VIGATTIN:
+            case strtolower(ChooseWebsiteController::VIGATTIN):
                 $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsWizardEditInfoVigattinView');
                 $formError['adsTempKeyword'] = 'Homepage';
                 $formError['adsKeyword'] = '';
                 break;
-            case ChooseWebsiteController::TOURISMBLOGGER:
+            case strtolower(ChooseWebsiteController::TOURISMBLOGGER):
                 $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsWizardEditInfoTourismBloggerView');
                 $formError['adsTempKeyword'] = 'Homepage';
-                $formError['adsKeyword'] = '(Homepage Blogger '.$this->sessionManager->getStorage()->tempAdsAuthorId.')';
+                $formError['adsKeyword'] = '(Homepage Article '.$this->sessionManager->getStorage()->tempAdsAuthorId.')';
+                $formError['adsAuthorName'] = $this->sessionManager->getStorage()->tempAdsAuthorName;
+
                 break;
             default:
                 $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsWizardEditInfoNoCatView');
@@ -168,21 +170,14 @@ class AdsWizardEditInfoController extends AdsController
         );
         if($result['status'] == 'success')
         {
-            $this->adsUser->createAds(
-                $this->sessionManager->getStorage()->tempAdsTitle,
-                $this->sessionManager->getStorage()->tempAdsUrl,
-                $result['path'],
-                $this->sessionManager->getStorage()->tempAdsDescription,
-                $this->sessionManager->getStorage()->tempAdsTemplate['showIn'],
-                $this->sessionManager->getStorage()->tempAdsTemplate['template'],
-                $this->adsKeyword,
-                $this->sessionManager->getStorage()->tempAdsPrice,
-                $this->getRequest()->getPost('ads-temp-keyword', ''),
-                $this->sessionManager->getStorage()->tempAdsDate
-            );
-            $this->adsUser->flush();
-            $this->clearTempData();
-            $this->redirect()->toRoute('vigattinads_dashboard_ads');
+            switch(strtolower($this->sessionManager->getStorage()->tempAdsTemplate['showIn'])) {
+                case strtolower(ChooseWebsiteController::TOURISMBLOGGER):
+                    $this->preProcessTourismBlog($result['path']);
+                    break;
+                default:
+                    $this->preProcessDefault($result['path']);
+                    break;
+            }
         }
         return $result['reason'].' '.$repo;
     }
@@ -196,6 +191,50 @@ class AdsWizardEditInfoController extends AdsController
         $this->sessionManager->getStorage()->tempAdsKeyword = null;
         $this->sessionManager->getStorage()->tempAdsPrice = null;
         $this->sessionManager->getStorage()->tempAdsImageDataUrl = null;
+    }
+
+    protected function preProcessTourismBlog($imagePath)
+    {
+        $authorId = $this->sessionManager->getStorage()->tempAdsAuthorId;
+        $keywords = "";
+        $categories = $this->getRequest()->getPost('keyword-item', array());
+        foreach($categories as $category) {
+            $keywords .= "(tourism article $category $authorId)";
+        }
+        $this->adsUser->createAds(
+            $this->sessionManager->getStorage()->tempAdsTitle,
+            $this->sessionManager->getStorage()->tempAdsUrl,
+            $imagePath,
+            $this->sessionManager->getStorage()->tempAdsDescription,
+            $this->sessionManager->getStorage()->tempAdsTemplate['showIn'],
+            $this->sessionManager->getStorage()->tempAdsTemplate['template'],
+            $keywords,
+            $this->sessionManager->getStorage()->tempAdsPrice,
+            '',
+            $this->sessionManager->getStorage()->tempAdsDate
+        );
+        $this->adsUser->flush();
+        $this->clearTempData();
+        $this->redirect()->toRoute('vigattinads_dashboard_ads');
+    }
+
+    protected function preProcessDefault($imagePath)
+    {
+        $this->adsUser->createAds(
+            $this->sessionManager->getStorage()->tempAdsTitle,
+            $this->sessionManager->getStorage()->tempAdsUrl,
+            $imagePath,
+            $this->sessionManager->getStorage()->tempAdsDescription,
+            $this->sessionManager->getStorage()->tempAdsTemplate['showIn'],
+            $this->sessionManager->getStorage()->tempAdsTemplate['template'],
+            $this->adsKeyword,
+            $this->sessionManager->getStorage()->tempAdsPrice,
+            $this->getRequest()->getPost('ads-temp-keyword', ''),
+            $this->sessionManager->getStorage()->tempAdsDate
+        );
+        $this->adsUser->flush();
+        $this->clearTempData();
+        $this->redirect()->toRoute('vigattinads_dashboard_ads');
     }
 
     /**

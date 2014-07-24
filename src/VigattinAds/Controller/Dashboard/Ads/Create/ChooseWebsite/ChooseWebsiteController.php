@@ -10,7 +10,7 @@ class ChooseWebsiteController extends AdsController
     const VIGATTINTRADE = 'vigattintrade.com';
     const VIGATTINTOURISM = 'vigattintourism.com';
     const VIGATTINDEALS = 'vigattindeals.com';
-    const TOURISMBLOGGER = 'vigattintourism.com/blogger';
+    const TOURISMBLOGGER = 'Vigattin Tourism Article';
 
     public function indexAction()
     {
@@ -41,7 +41,7 @@ class ChooseWebsiteController extends AdsController
                 return $this->redirect()->toRoute('vigattinads_dashboard_ads_create_choose_website_import');
                 break;
             case 'tourism-bloggers':
-                $this->sessionManager->getStorage()->tempAdsTemplate = array('showIn' => ChooseWebsiteController::TOURISMBLOGGER, 'template' => 'home-sidebar-right');
+                $this->sessionManager->getStorage()->tempAdsTemplate = array('showIn' => ChooseWebsiteController::TOURISMBLOGGER, 'template' => 'article');
                 return $this->redirect()->toRoute('vigattinads_dashboard_ads_create_choose_website', array('controller' => 'blogger-author'));
                 break;
             default:

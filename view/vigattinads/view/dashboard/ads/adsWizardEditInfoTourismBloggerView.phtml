@@ -13,8 +13,10 @@
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                         <!-- Change Site -->
                         <div class="alert alert-info">
-                            <span>These ads will show in</span>
+                            <span>Show in:</span>
                             <span class="text-warning"><?php echo $this->escapeHtml($adsShowIn); ?></span>
+                            <p></p>Author:
+                            <span class="text-warning"><?php echo $this->escapeHtml($adsAuthorName); ?></span>
                             <div><a class="" href="/vigattinads/dashboard/ads/create/choose-website"><span class="glyphicon glyphicon-edit"></span> click here to change</a></div>
                         </div>
 
@@ -33,15 +35,15 @@
                         <br/>
 
                         <!-- Live Preview -->
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 label2">Ads Type</div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 label2">Quick Preview </div>
                         <br/>
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ads-preview-column">
-                            <div class="label1 with-underline">Right Side</div><p></p>
+                            <div class="label1 with-underline"></div><p></p>
                             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
                             <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                                 <div class="row ads-frame">
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ads-frame-title"><?php echo $this->escapeHtmlAttr($adsTitle); ?></div>
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ads-frame-price">Php <span class="price-value"><?php echo $this->escapeHtmlAttr(number_format($adsPrice, 2, '.', '')); ?></span></div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ads-frame-price">Php <span class="price-value"><?php echo $this->escapeHtmlAttr(number_format(floatval($adsPrice), 2, '.', '')); ?></span></div>
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><div class="ads-image-preview-container"><img src="<?php echo $this->escapeHtmlAttr($adsImageDataUrl); ?>" class="ads-frame-image" /></div><span class="ads-frame-description"><?php echo $this->escapeHtml($adsDescription); ?></span></div>
                                 </div>
                             </div>
@@ -75,17 +77,19 @@
                                 <input type="hidden" id="ads-temp-keyword" name="ads-temp-keyword" value="<?php echo $this->escapeHtmlAttr($adsTempKeyword); ?>">
                             </div>
 
-                            <div class="hide form-group">
+                            <div class="form-group">
                                 <label class="control-label">Vigattintourism Directory <small class="text-warning">Choose which directory the ads will appear</small></label>
-                                <ul class="list-group list-unstyled" id="tourismDirectoryList">
-
+                                <ul class="list-group list-unstyled" id="">
+                                    <li><a class="ads-preview-link" href="#" data-toggle="modal" data-target="#previewModalHead">preview</a> <input class="must-have-one-checked" type="checkbox" style="margin-left: 10px" name="keyword-item[]" value="header" checked="checked"> Header</li>
+                                    <li><a class="ads-preview-link" href="#" data-toggle="modal" data-target="#previewModalSide">preview</a> <input class="must-have-one-checked" type="checkbox" style="margin-left: 10px" name="keyword-item[]" value="rightside" checked="checked"> Right Side</li>
+                                    <li><a class="ads-preview-link" href="#" data-toggle="modal" data-target="#previewModalHead">preview</a> <input class="must-have-one-checked" type="checkbox" style="margin-left: 10px" name="keyword-item[]" value="footer" checked="checked"> Footer</li>
                                 </ul>
                             </div>
 
                             <div class="form-group ads-form-price <?php echo $adsPriceError ? 'has-error' : ''; ?>">
                                 <label class="control-label" for="ads-keyword">Price in Php <small class="text-warning">numbers only no special characters</small></label>
                                 <span class="help-block"><?php if($adsPriceError) echo $adsPriceError; ?></span>
-                                <input type="number" step="any" class="form-control" id="ads-price" name="ads-price" placeholder="Ads price" value="<?php echo $this->escapeHtmlAttr($adsPrice); ?>">
+                                <input type="number" step="any" min="0" class="form-control" id="ads-price" name="ads-price" placeholder="Ads price" value="<?php echo $this->escapeHtmlAttr($adsPrice); ?>">
                             </div>
                             <div class="form-group ads-form-description <?php echo $adsDescriptionError ? 'has-error' : ''; ?>">
                                 <label class="control-label" for="ads-description">Edited Description <small id="adsDescriptionCountDisplay" class="text-warning"></small></label>
@@ -95,6 +99,53 @@
                             <input type="hidden" id="ads-image-data-url" name="ads-image-data-url" value="<?php echo $this->escapeHtml($adsImageDataUrl); ?>">
                             <button type="submit" class="btn btn-primary" name="submit" value="next">Submit</button>
                         </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="previewModalHead" tabindex="-1" role="dialog" aria-labelledby="headModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="headModalLabel">And Preview</h4>
+            </div>
+            <div class="modal-body">
+                <div class="trade-ads-listing" style="width: 680px; margin: auto">
+                    <div class="ads-frame">
+                        <div class="ads-image-preview-container no-resize"><img class="ads-frame-image" src="<?php echo $this->escapeHtmlAttr($adsImageDataUrl); ?>"></div>
+                        <div class="title-container">
+                            <div class="ads-frame-title"><?php echo $this->escapeHtml($adsTitle); ?></div>
+                            <div class="ads-frame-description"><?php echo $this->escapeHtml($adsDescription); ?></div>
+                        </div>
+                        <div class="price-container">
+                            <div class="ads-frame-price">Php <span class="price-value"><?php echo $this->escapeHtml(number_format($adsPrice, 2, '.', '')); ?></span></div>
+                            <div class="ads-frame-date"><?php echo $this->escapeHtml($adsDate); ?></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="previewModalSide" tabindex="-1" role="dialog" aria-labelledby="sideModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="sideModalLabel">And Preview</h4>
+            </div>
+            <div class="modal-body">
+                <div class="ads-preview-column ">
+                    <div class="row ads-frame" style="margin: auto">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ads-frame-title"><?php echo $this->escapeHtmlAttr($adsTitle); ?></div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ads-frame-price">Php <span class="price-value"><?php echo $this->escapeHtmlAttr(number_format(floatval($adsPrice), 2, '.', '')); ?></span></div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><div class="ads-image-preview-container"><img src="<?php echo $this->escapeHtmlAttr($adsImageDataUrl); ?>" class="ads-frame-image" /></div><span class="ads-frame-description"><?php echo $this->escapeHtml($adsDescription); ?></span></div>
                     </div>
                 </div>
             </div>

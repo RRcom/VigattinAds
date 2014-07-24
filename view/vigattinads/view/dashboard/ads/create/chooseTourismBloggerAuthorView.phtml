@@ -12,7 +12,6 @@
     </div>
     <div class="clearfix"></div>
     <div class="fluid-result-container col-xs-12">
-        <form method="post" action="">
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -28,11 +27,16 @@
                         <td><div style="height: 50px; width: 50px; background-size: contain; background-image: url('<?php echo $this->escapeHtmlAttr($author->getPhotoUrl()); ?>')"></div></td>
                         <td><?php echo $this->escapeHtml($author->getFirstName()); ?></td>
                         <td><?php echo $this->escapeHtml($author->getLastName()); ?></td>
-                        <td><button class="btn btn-default" type="submit" name="authorId" value="<?php echo $author->getId(); ?>">select</button></td>
+                        <td>
+                            <form method="post" action="">
+                                <button class="btn btn-default" type="submit" name="authorId" value="<?php echo $author->getId(); ?>">select</button>
+                                <input type="hidden" name="authorFirstName" value="<?php echo $this->escapeHtmlAttr($author->getFirstName()); ?>">
+                                <input type="hidden" name="authorLastName" value="<?php echo $this->escapeHtmlAttr($author->getLastName()); ?>">
+                            </form>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
             </table>
-        </form>
     </div>
 </div>

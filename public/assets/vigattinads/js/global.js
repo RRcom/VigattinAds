@@ -358,6 +358,9 @@ $(document).ready(function(e) {
                 $(element).css({'overflow':'hidden'}).height($(element).width() * ratio);
             }
         });
+        $('.modal').on('shown.bs.modal', function (e) {
+            resizeImage();
+        })
         $(window).resize(function(e) {
             resizeImage();
         });

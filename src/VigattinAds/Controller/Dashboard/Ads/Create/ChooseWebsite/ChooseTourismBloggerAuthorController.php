@@ -25,8 +25,11 @@ class ChooseTourismBloggerAuthorController extends AdsController
     protected function onSelectAuthor()
     {
         $authorId = $this->getRequest()->getPost('authorId', '');
+        $authorFirstName = $this->getRequest()->getPost('authorFirstName', '');
+        $authorLastName = $this->getRequest()->getPost('authorLastName', '');
         if($authorId) {
             $this->sessionManager->getStorage()->tempAdsAuthorId = $authorId;
+            $this->sessionManager->getStorage()->tempAdsAuthorName = $authorFirstName.' '.$authorLastName;
             $this->redirect()->toRoute('vigattinads_dashboard_ads_create_choose_website_blogger_import');
         }
     }
@@ -44,8 +47,7 @@ class ChooseTourismBloggerAuthorController extends AdsController
     public function onDispatch(MvcEvent $e)
     {
         $controller = parent::onDispatch($e);
-
-        if(strtolower($this->sessionManager->getStorage()->tempAdsTemplate['showIn']) != self::USED_BY) {
+        if(strtolower($this->sessionManager->getStorage()->tempAdsTemplate['showIn']) != strtolower(self::USED_BY)) {
             return $this->redirect()->toRoute('vigattinads_dashboard_ads_create', array('controller' => 'choose-website'));
         }
         return $controller;
