@@ -36,6 +36,7 @@ class Module
         $e->getApplication()->getEventManager()->attach(MvcEvent::EVENT_ROUTE,function(MvcEvent $e)
         {
             new OnRoute($e);
+            //print_r($e->getRouteMatch());
         });
     }
 

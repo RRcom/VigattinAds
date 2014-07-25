@@ -112,6 +112,9 @@ class AdsManager
      */
     public function getRotationAds($showIn, $template, $keyword, $limit = 10)
     {
+        //echo $showIn.'-'.$template.'-'.$keyword;
+        //exit();
+
         $success = false;
         $key = md5('global-rotate'.$showIn.$template.$keyword);
         $start = $this->cache->getItem($key, $success);

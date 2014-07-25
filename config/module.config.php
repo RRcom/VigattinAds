@@ -1,7 +1,7 @@
 <?php
 return array(
     'vigattinads' => array(
-        'assets_version' => 17,
+        'assets_version' => 18,
     ),
     'router' => array(
         'routes' => array(
@@ -22,6 +22,31 @@ return array(
                     ),
                 ),
             ),
+            'vigattinads_sampleads' => array(
+                'type'    => 'Segment',
+                'options' => array(
+                    'route'    => '/vigattinads/sample-ads[/]',
+                    'defaults' => array(
+                        'controller'    => 'VigattinAds\Controller\SampleAds\SampleAds',
+                        'action'        => 'index',
+                    ),
+                ),
+            ),
+            'vigattinads_showads2' => array(
+                'type'    => 'Segment',
+                'options' => array(
+                    'route'    => '/vigattinads/showads2[/:controller][/:action]',
+                    'constraints' => array(
+                        'controller'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'action'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'VigattinAds\Controller\ShowAds',
+                        'controller'    => 'ShowAds',
+                        'action'        => 'index',
+                    ),
+                ),
+            ),
             'vigattinads_showads' => array(
                 'type'    => 'Segment',
                 'options' => array(
@@ -30,7 +55,7 @@ return array(
                         'action'        => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
-                        'controller'    => 'VigattinAds\Controller\ShowAds',
+                        'controller'    => 'VigattinAds\Controller\ShowAds\ShowAds',
                         'action'        => 'index',
                     ),
                 ),
@@ -335,6 +360,7 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
+            'VigattinAds\Controller\SampleAds\SampleAds'   => 'VigattinAds\Controller\SampleAds\SampleAdsController',
             'VigattinAds\Controller\Login'   => 'VigattinAds\Controller\LoginController',
             'VigattinAds\Controller\Logout'   => 'VigattinAds\Controller\LogoutController',
             'VigattinAds\Controller\Dashboard' => 'VigattinAds\Controller\Dashboard\DashboardController',
@@ -360,7 +386,8 @@ return array(
             'VigattinAds\Controller\Debug' => 'VigattinAds\Controller\DebugController',
             'VigattinAds\Controller\Cli'   => 'VigattinAds\Controller\CliController',
             'VigattinAds\Controller\JsonService'   => 'VigattinAds\Controller\JsonServiceController',
-            'VigattinAds\Controller\ShowAds'   => 'VigattinAds\Controller\ShowAdsController',
+            'VigattinAds\Controller\ShowAds\ShowAds'   => 'VigattinAds\Controller\ShowAds\ShowAdsController',
+            'VigattinAds\Controller\ShowAds\TourismArticle'   => 'VigattinAds\Controller\ShowAds\TourismArticleController',
             'VigattinAds\Controller\PageBlock\BlockNoGold'   => 'VigattinAds\Controller\PageBlock\BlockNoGoldController',
             'VigattinAds\Controller\Comm'   => 'VigattinAds\Controller\CommController',
         ),

@@ -1,5 +1,5 @@
 <?php
-namespace VigattinAds\Controller;
+namespace VigattinAds\Controller\ShowAds;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
