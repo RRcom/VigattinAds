@@ -29,7 +29,7 @@ class OnRoute
         if(!preg_match('/^vigattinads*/', $this->event->getRouteMatch()->getMatchedRouteName())) return;
         switch(strtolower($this->event->getRouteMatch()->getParam('controller'))) {
             // if show ads only
-            case strtolower('VigattinAds\Controller\ShowAds'):
+            case strtolower('VigattinAds\Controller\ShowAds\ShowAds'):
                 break;
 
             // if comm controller call
