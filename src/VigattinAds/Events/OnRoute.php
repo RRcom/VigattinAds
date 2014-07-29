@@ -32,6 +32,10 @@ class OnRoute
             case strtolower('VigattinAds\Controller\ShowAds\ShowAds'):
                 break;
 
+            // if show tourism article ads only
+            case strtolower('VigattinAds\Controller\ShowAds\TourismArticle'):
+                break;
+
             // if comm controller call
             case strtolower('VigattinAds\Controller\Comm'):
                 break;
