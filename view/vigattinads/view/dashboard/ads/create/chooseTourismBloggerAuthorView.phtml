@@ -1,13 +1,40 @@
 <?php
 /** @var \VigattinAds\DomainModel\Tourism\AuthorCollection $authors */
 /** @var \VigattinAds\DomainModel\Tourism\Author $author */
+/** @var \VigattinAds\DomainModel\Tourism\ArticleCategoryCollection $categories */
+/** @var \VigattinAds\DomainModel\Tourism\ArticleCategory $category */
 ?>
 <div class="row">
     <div class="col-xs-6">
         <form class="form-group has-feedback" method="post" action="" id="authorSearchForm">
+            <!--
             <label class="control-label sr-only" for="inputTourismSearchAuthor">Search author</label>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Action <span class="caret"></span></button>
             <input type="text" class="form-control" placeholder="search author" id="inputTourismSearchAuthor" name="searchString" value="<?php echo $this->escapeHtmlAttr($searchString); ?>">
             <span class="glyphicon glyphicon-search form-control-feedback" style="cursor: pointer" onclick="$('#authorSearchForm').submit()"></span>
+            -->
+
+            <div class="input-group">
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Categories <span class="caret"></span></button>
+                    <ul class="dropdown-menu disable-toggle" role="menu">
+                        <?php foreach($categories as $key => $category): ?>
+                        <li>
+                            <a class="checkbox">
+                                <label>
+                                    <input type="checkbox" <?php echo isset($_POST['filter'][$key]) ? 'checked' : ''; ?> name="filter[<?php echo $key; ?>]" value="<?php echo $this->escapeHtmlAttr($category->getCategoryId()); ?>"> <?php echo $this->escapeHtml(ucfirst(strtolower($category->getCategoryName()))); ?>
+                                </label>
+                            </a>
+                        </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+                <input type="text" class="form-control" placeholder="search author" name="searchString" value="<?php echo $this->escapeHtmlAttr($searchString); ?>">
+                <div class="input-group-btn">
+                    <button type="submit" class="btn btn-default" >Search</button>
+                </div>
+            </div>
+
         </form>
     </div>
     <div class="clearfix"></div>
@@ -15,10 +42,10 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th><a href="#">Photo</a></th>
-                    <th><a href="#">First Name</a></th>
-                    <th><a href="#">Last Name</a></th>
-                    <th><a href="#">Action</a></th>
+                    <th>Photo</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>

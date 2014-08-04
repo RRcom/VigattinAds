@@ -1694,6 +1694,13 @@ $(document).ready(function(e) {
     tempPreview.init();
 });
 
+/** disable dropdown menu item toggle close add this class to dropdown menu ul (dropdown-menu-form) */
+$('.dropdown-menu').on('click', function(e){
+    if($(this).hasClass('disable-toggle')){
+        e.stopPropagation();
+    }
+});
+
 
 
 

@@ -17,9 +17,11 @@ class BasicAuthorProvider implements AuthorProviderInterface
      * @param int $limit
      * @return \VigattinAds\DomainModel\Tourism\AuthorCollection
      */
-    public function searchAuthor($searchString = '', $filter = array(), $offset = 0, $limit = 10)
+    public function searchAuthor($searchString = '', $filters = array(), $offset = 0, $limit = 10)
     {
-        $result = $this->apiCall($searchString, $filter, $offset, $limit);
+        $strFilter = '';
+        if(count($filters)) $strFilter = implode(',', $filters);
+        $result = $this->apiCall($searchString, $strFilter, $offset, $limit);
         $this->total = $result['total'];
         $authors = new AuthorCollection();
         foreach($result['authors'] as $key => $value) {

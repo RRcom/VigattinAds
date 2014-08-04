@@ -2,6 +2,7 @@
 namespace VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite;
 
 use VigattinAds\Controller\Dashboard\Ads\AdsController;
+use VigattinAds\DomainModel\Tourism\BasicArticleCategoryProvider;
 use VigattinAds\DomainModel\Tourism\BasicAuthorProvider;
 use Zend\Mvc\MvcEvent;
 use Zend\View\Model\ViewModel;
@@ -9,6 +10,8 @@ use Zend\View\Model\ViewModel;
 class ChooseTourismBloggerAuthorController extends AdsController
 {
     const USED_BY = ChooseWebsiteController::TOURISMBLOGGER;
+    /** @var \Zend\Cache\Storage\Adapter\Filesystem */
+    protected $cache;
 
     public function indexAction()
     {
@@ -16,6 +19,7 @@ class ChooseTourismBloggerAuthorController extends AdsController
         $actionContent = new ViewModel();
         $this->mainView->setVariable('title', 'Step 2. select author');
         $actionContent->setTemplate('vigattinads/view/dashboard/ads/create/chooseTourismBloggerAuthorView');
+        $actionContent->setVariable('categories', $this->getCategories());
         $actionContent->setVariable('authors', $this->searchAuthor());
         $actionContent->setVariable('searchString', $this->getRequest()->getPost('searchString', ''));
         $this->mainView->addChild($actionContent, 'actionContent');
@@ -44,9 +48,25 @@ class ChooseTourismBloggerAuthorController extends AdsController
         return $authorProvider->searchAuthor($searchString, $filter, $offset, $limit);
     }
 
+    protected function getCategories()
+    {
+        $offset = $this->getRequest()->getPost('offset', 0);
+        $limit = $this->getRequest()->getPost('limit', 30);
+        /*
+        $key = "tourismArticleCategory($offset)($limit)";
+        $this->cache->getItem($key, $success);
+        if(!$success) {
+            $this->cache->setItem($key, $start);
+        }
+        */
+        $articleCategoryProvider = new BasicArticleCategoryProvider();
+        return $articleCategoryProvider->getCategories($offset, $limit);
+    }
+
     public function onDispatch(MvcEvent $e)
     {
         $controller = parent::onDispatch($e);
+        $this->cache = $this->serviceLocator->get('VigattinAds\DomainModel\LongCache');
         if(strtolower($this->sessionManager->getStorage()->tempAdsTemplate['showIn']) != strtolower(self::USED_BY)) {
             return $this->redirect()->toRoute('vigattinads_dashboard_ads_create', array('controller' => 'choose-website'));
         }
