@@ -507,6 +507,9 @@ a:hover {
     color: #70644C;
     text-align: right;
 }
+.table>tbody>tr>td {
+    vertical-align: middle;
+}
 
 /******************** result fluid type ****************/
 .fluid-result-container {

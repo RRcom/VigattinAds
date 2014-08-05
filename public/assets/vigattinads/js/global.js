@@ -1685,7 +1685,7 @@ $(document).ready(function(e) {
                                 '<td>'+value.lastName+'</td>'+
                                 '<td>'+
                                     '<form method="post" action="">'+
-                                        '<button class="btn btn-default" type="submit" name="authorId" value="">select</button>'+
+                                        '<input type="checkbox">'+
                                         '<input type="hidden" name="authorFirstName" value="">'+
                                         '<input type="hidden" name="authorLastName" value="">'+
                                     '</form>'+
