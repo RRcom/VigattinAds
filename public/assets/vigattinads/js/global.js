@@ -1,3 +1,4 @@
+var enableDebugLog = true;
 
 /* trade category map v1.0 */
 var catMap = {
@@ -250,6 +251,10 @@ var tempPreview = new (function($){
         localStorage.tempAdsDate = adsDate;
     }
 })(jQuery);
+
+function log(message) {
+    if(enableDebugLog) console.log(message);
+}
 
 /* tools */
 function getBase64Image(img) {
@@ -676,7 +681,6 @@ $(document).ready(function(e) {
 
         function onLogScroll(e) {
             if(e.currentTarget.scrollHeight <= ((e.currentTarget.offsetHeight + e.currentTarget.scrollTop)+50)) {
-                console.log('trigger');
                 fetchLog();
             }
         }
@@ -1506,102 +1510,6 @@ $(document).ready(function(e) {
         });
     })(jQuery);
 
-    /* Views inline update v1.0
-    (function($) {
-        var viewElement = $('.ads-inline-edit-views');
-
-        function apiChangeReserve(newReserve, adsId, currentViewElement) {
-            var image;
-            var oldValue = 0;
-
-            currentViewElement.removeClass('edit-active');
-
-            $.ajax( {
-                type: 'POST',
-                data: {"requestViews":newReserve, "adsId":adsId},
-                url: '/vigattinads/json-service/add-view-credit/post',
-                dataType: 'json',
-                beforeSend: function(jqXHR, settings) {
-                    image = new Image();
-                    image.src = '/assets/vigattinads/img/circle-preloader-2.gif';
-                    oldValue = currentViewElement.attr('data-old-value');
-                    currentViewElement.html(image);
-                },
-                complete: function(jqXHR, textStatus) {
-                    $('.views-remaining-progress').hide();
-                    $('.current-gold-progress').hide();
-                    if(textStatus != 'success') {
-                        currentViewElement.text(oldValue);
-                        $('.alert-box').html('<div class="alert alert-danger fade in"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><strong>Failed!</strong> Network error</div>');
-                        $(".alert").alert();
-                    }
-                },
-                success: function(data, textStatus, jqXHR) {
-                    if(data.status == 'success') {
-                        $('.current-gold').html(data.gold);
-                        $('.remaining-views').html(data.views);
-                        $('.current-gold-success').show().fadeOut(1000);
-                        $('.views-remaining-success').show().fadeOut(1000);
-                        currentViewElement.html(data.views+'<a title="edit reserve" href="javascript:" class="pull-right"><span class="glyphicon glyphicon-edit"></span></a>');
-                    }
-                    else {
-                        currentViewElement.text(oldValue);
-                        $('.alert-box').html('<div class="alert alert-danger fade in"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><strong>'+data.status.charAt(0).toUpperCase()+data.status.slice(1)+'!</strong> '+data.reason.charAt(0).toUpperCase()+data.reason.slice(1)+'</div>');
-                        $(".alert").alert();
-                    }
-                }
-            });
-        }
-
-        function resetEditView() {
-            $('.ads-inline-edit-views.edit-active').each(function(key, element) {
-                var currentViewElement = $(element);
-                var oldValue = currentViewElement.attr('data-old-value');
-                currentViewElement.html(oldValue+'<a title="edit reserve" href="javascript:" class="pull-right"><span class="glyphicon glyphicon-edit"></span></a>');
-            });
-            viewElement.removeClass('edit-active');
-            viewElement.unbind('click').click(function(e) {
-                onEditViewClick(e);
-            });
-        }
-
-        function onEditInputApply(e) {
-            var currentInputElement = $(e.currentTarget);
-            switch(e.which) {
-                case 13: //enter
-                    currentInputElement.unbind('keydown');
-                    apiChangeReserve(currentInputElement.val(), currentInputElement.attr('data-ads-id'), currentInputElement.parent());
-                    resetEditView();
-                    break;
-                case 27: // esc
-                    currentInputElement.unbind('keydown');
-                    resetEditView();
-                    break;
-            }
-        }
-
-        function onEditViewClick(e) {
-            var currentViewElement = $(e.currentTarget);
-            var value = currentViewElement.text();
-            var inputElement = $('<input data-ads-id="'+currentViewElement.parent().attr('data-ads-id')+'" title="press Enter to apply Esc to cancel" type="number" value="'+value+'" min="0" style="width:80px;" data-toggle="tooltip" data-placement="left" />');
-            resetEditView();
-            currentViewElement.attr('data-old-value', value);
-            currentViewElement.addClass('edit-active');
-            currentViewElement.unbind('click');
-            currentViewElement.html('').append(inputElement);
-            inputElement.tooltip();
-            inputElement.focus();
-            inputElement.keydown(function(e) {
-                onEditInputApply(e);
-            });
-        }
-
-        viewElement.click(function(e) {
-           onEditViewClick(e);
-        });
-    })(jQuery);
-    */
-
     /* Views inline update v2.0 */
     (function($){
         function init() {
@@ -1692,14 +1600,111 @@ $(document).ready(function(e) {
 
     /* activate preview link */
     tempPreview.init();
+
+    /* disable drop down menu item toggle close, add this class to drop down menu ul (disable-toggle) */
+    $('.dropdown-menu').on('click', function(e){
+        if($(this).hasClass('disable-toggle')){
+            e.stopPropagation();
+        }
+    });
+
+    /* table tourism author list jsonP fetcher */
+    (function($) {
+        var actionUrl = 'http://www.vigattintourism.com/service/author';
+        var tableBody = $('#authorSearchTable');
+        var tableFootTr = $('#authorSearchTablePreloader');
+        var SubmitButton = $('#authorSearchSubmit');
+        var stringInput = $('#authorSearchString');
+        var categoryInput = $('.authorSearchCategories');
+        var searchString = '';
+        var filter = '';
+        var offset = 0;
+        var limit = 10;
+        var fetching = false;
+        var ajax;
+        var isLast = false;
+
+        function init() {
+            $(document).scroll(onLogScroll);
+            SubmitButton.click(onSubmit);
+            fetchMore();
+        }
+
+        function onSubmit(e) {
+            e.preventDefault();
+            ajax.abort();
+            fetching = false;
+            searchString = stringInput.val();
+            filter = getStrCat();
+            offset = 0;
+            tableBody.html('');
+            fetchMore();
+        }
+
+        function getStrCat() {
+            var strCat = '';
+            $.each(categoryInput, function(key, value) {
+                if($(value).is(":checked")) {
+                    strCat += $(value).val()+',';
+                }
+            });
+            return strCat;
+        }
+
+        function onLogScroll(e) {
+            var scrollValue = $(document).scrollTop()+$(window).height();
+            var scrollMax = $(document).height();
+            if(scrollValue+200 >= scrollMax) {
+                if(!isLast) fetchMore();
+            }
+        }
+
+        function fetchMore() {
+            if(fetching) return;
+            fetching = true;
+            tableFootTr.show();
+            ajax = $.ajax( {
+                type: 'GET',
+                data: {'string':searchString, 'filter':filter, 'offset':offset, 'limit':limit},
+                url: actionUrl,
+                dataType: 'jsonp',
+                beforeSend: function(jqXHR, settings) {
+
+                },
+                complete: function(jqXHR, textStatus) {
+                    if(textStatus != 'success') {
+                    }
+                },
+                success: function(data, textStatus, jqXHR) {
+                    offset += limit;
+                    $.each(data.authors, function(key, value) {
+                        tableBody.append(
+                            '<tr>'+
+                                '<td><div style="height: 50px; width: 50px; background-size: contain; background-image: url(\''+value.photoUrl+'\')"></div></td>'+
+                                '<td>'+value.firstName+'</td>'+
+                                '<td>'+value.lastName+'</td>'+
+                                '<td>'+
+                                    '<form method="post" action="">'+
+                                        '<button class="btn btn-default" type="submit" name="authorId" value="">select</button>'+
+                                        '<input type="hidden" name="authorFirstName" value="">'+
+                                        '<input type="hidden" name="authorLastName" value="">'+
+                                    '</form>'+
+                                '</td>'+
+                            '</tr>'
+                        );
+                    });
+                    fetching = false;
+                    tableFootTr.hide();
+                    if(offset >= data.total) isLast = true;
+                    else isLast = false;
+                }
+            });
+        }
+
+        init();
+    })(jQuery);
 });
 
-/** disable dropdown menu item toggle close add this class to dropdown menu ul (dropdown-menu-form) */
-$('.dropdown-menu').on('click', function(e){
-    if($(this).hasClass('disable-toggle')){
-        e.stopPropagation();
-    }
-});
 
 
 

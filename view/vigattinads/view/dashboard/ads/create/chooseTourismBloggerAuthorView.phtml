@@ -22,16 +22,16 @@
                         <li>
                             <a class="checkbox">
                                 <label>
-                                    <input type="checkbox" <?php echo isset($_POST['filter'][$key]) ? 'checked' : ''; ?> name="filter[<?php echo $key; ?>]" value="<?php echo $this->escapeHtmlAttr($category->getCategoryId()); ?>"> <?php echo $this->escapeHtml(ucfirst(strtolower($category->getCategoryName()))); ?>
+                                    <input class="authorSearchCategories" type="checkbox" <?php echo isset($_POST['filter'][$key]) ? 'checked' : ''; ?> name="filter[<?php echo $key; ?>]" value="<?php echo $this->escapeHtmlAttr($category->getCategoryId()); ?>"> <?php echo $this->escapeHtml(ucfirst(strtolower($category->getCategoryName()))); ?>
                                 </label>
                             </a>
                         </li>
                         <?php endforeach; ?>
                     </ul>
                 </div>
-                <input type="text" class="form-control" placeholder="search author" name="searchString" value="<?php echo $this->escapeHtmlAttr($searchString); ?>">
+                <input id="authorSearchString" type="text" class="form-control" placeholder="search author" name="searchString" value="<?php echo $this->escapeHtmlAttr($searchString); ?>">
                 <div class="input-group-btn">
-                    <button type="submit" class="btn btn-default" >Search</button>
+                    <button id="authorSearchSubmit" type="submit" class="btn btn-default" >Search</button>
                 </div>
             </div>
 
@@ -48,7 +48,12 @@
                     <th>Action</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tfoot>
+                    <tr id="authorSearchTablePreloader">
+                        <td colspan="4" class="text-center"><img src="/assets/vigattinads/img/circle-preloader-2.gif"></td>
+                    </tr>
+                </tfoot>
+                <tbody id="authorSearchTable">
                 <?php foreach($authors as $key => $author): ?>
                     <tr>
                         <td><div style="height: 50px; width: 50px; background-size: contain; background-image: url('<?php echo $this->escapeHtmlAttr($author->getPhotoUrl()); ?>')"></div></td>

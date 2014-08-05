@@ -1,8 +1,15 @@
 <?php
 namespace VigattinAds\DomainModel\Tourism;
 
+use \Zend\ServiceManager\ServiceManager;
+
 interface AuthorProviderInterface
 {
+    /**
+     * @param ServiceManager $serviceManager
+     */
+    public function __construct(ServiceManager $serviceManager);
+
     /**
      * @param string $searchString The string to search for.
      * @param array $filter Search filter eg. array("gadget") to search for author that has a category of "gadget" in his article.

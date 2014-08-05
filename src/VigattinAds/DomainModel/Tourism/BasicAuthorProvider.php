@@ -1,5 +1,6 @@
 <?php
 namespace VigattinAds\DomainModel\Tourism;
+use Zend\ServiceManager\ServiceManager;
 
 /**
  * Class BasicAuthorProvider
@@ -9,6 +10,22 @@ class BasicAuthorProvider implements AuthorProviderInterface
 {
     protected $total = 0;
     protected $apiUrl = "http://www.vigattintourism.com/service/author";
+
+    /** @var  ServiceManager */
+    protected $serviceManager;
+
+    /** @var \Zend\Cache\Storage\Adapter\Filesystem */
+    protected $cache;
+
+    /**
+     * @param ServiceManager $serviceManager
+     */
+    public function __construct(ServiceManager $serviceManager)
+    {
+        $this->serviceManager = $serviceManager;
+        $this->cache = $this->serviceManager->get('VigattinAds\DomainModel\LongCache');
+    }
+
 
     /**
      * @param string $searchString The string to search for.
@@ -50,20 +67,26 @@ class BasicAuthorProvider implements AuthorProviderInterface
      */
     public function apiCall($searchString = '', $filter = array(), $offset = 0, $limit = 10)
     {
-        $config = array(
-            'adapter'   => 'Zend\Http\Client\Adapter\Curl',
-            'curloptions' => array(CURLOPT_FOLLOWLOCATION => true),
-        );
-        $client = new \Zend\Http\Client($this->apiUrl, $config);
-        $client->setParameterGet(array(
-            'string'    => $searchString,
-            'filter'    => $filter,
-            'offset'    => $offset,
-            'limit'     => $limit,
-        ));
-        $client->setMethod('GET');
-        $response = $client->send();
-        $result = json_decode($response->getBody(), true);
+        $strFilter = serialize($filter);
+        $key = md5($this->apiUrl."v1?string=$strFilter&filter=$filter&offset=$offset&limit=$limit");
+        $result = unserialize($this->cache->getItem($key, $success));
+        if(!$success) {
+            $config = array(
+                'adapter'   => 'Zend\Http\Client\Adapter\Curl',
+                'curloptions' => array(CURLOPT_FOLLOWLOCATION => true),
+            );
+            $client = new \Zend\Http\Client($this->apiUrl, $config);
+            $client->setParameterGet(array(
+                'string'    => $searchString,
+                'filter'    => $filter,
+                'offset'    => $offset,
+                'limit'     => $limit,
+            ));
+            $client->setMethod('GET');
+            $response = $client->send();
+            $result = json_decode($response->getBody(), true);
+            $this->cache->setItem($key, serialize($result));
+        }
         if(!is_array($result) || !isset($result['total'])) $result = array('total' => 0, 'authors' => array());
         return $result;
     }

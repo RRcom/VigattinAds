@@ -1,8 +1,15 @@
 <?php
 namespace VigattinAds\DomainModel\Tourism;
 
+use \Zend\ServiceManager\ServiceManager;
+
 interface ArticleCategoryProviderInterface
 {
+    /**
+     * @param ServiceManager $serviceManager
+     */
+    public function __construct(ServiceManager $serviceManager);
+
     /**
      * @param int $offset
      * @param int $limit

@@ -2,6 +2,7 @@
 namespace VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite;
 
 use VigattinAds\Controller\Dashboard\Ads\AdsController;
+use VigattinAds\DomainModel\Tourism\AuthorCollection;
 use VigattinAds\DomainModel\Tourism\BasicArticleCategoryProvider;
 use VigattinAds\DomainModel\Tourism\BasicAuthorProvider;
 use Zend\Mvc\MvcEvent;
@@ -10,8 +11,11 @@ use Zend\View\Model\ViewModel;
 class ChooseTourismBloggerAuthorController extends AdsController
 {
     const USED_BY = ChooseWebsiteController::TOURISMBLOGGER;
-    /** @var \Zend\Cache\Storage\Adapter\Filesystem */
-    protected $cache;
+    /**
+     * set to true if fetching is done by php false if using ajax, this will disable fetching author list from server
+     * @var bool
+     */
+    protected $autoFetchAuthor = false;
 
     public function indexAction()
     {
@@ -40,11 +44,12 @@ class ChooseTourismBloggerAuthorController extends AdsController
 
     protected function searchAuthor()
     {
+        if(!$this->autoFetchAuthor) return new AuthorCollection();
         $searchString = $this->getRequest()->getPost('searchString', '');
         $filter = $this->getRequest()->getPost('filter', array());
         $offset = $this->getRequest()->getPost('offset', 0);
-        $limit = $this->getRequest()->getPost('limit', 30);
-        $authorProvider = new BasicAuthorProvider();
+        $limit = $this->getRequest()->getPost('limit', 10);
+        $authorProvider = new BasicAuthorProvider($this->serviceLocator);
         return $authorProvider->searchAuthor($searchString, $filter, $offset, $limit);
     }
 
@@ -52,21 +57,13 @@ class ChooseTourismBloggerAuthorController extends AdsController
     {
         $offset = $this->getRequest()->getPost('offset', 0);
         $limit = $this->getRequest()->getPost('limit', 30);
-        /*
-        $key = "tourismArticleCategory($offset)($limit)";
-        $this->cache->getItem($key, $success);
-        if(!$success) {
-            $this->cache->setItem($key, $start);
-        }
-        */
-        $articleCategoryProvider = new BasicArticleCategoryProvider();
+        $articleCategoryProvider = new BasicArticleCategoryProvider($this->serviceLocator);
         return $articleCategoryProvider->getCategories($offset, $limit);
     }
 
     public function onDispatch(MvcEvent $e)
     {
         $controller = parent::onDispatch($e);
-        $this->cache = $this->serviceLocator->get('VigattinAds\DomainModel\LongCache');
         if(strtolower($this->sessionManager->getStorage()->tempAdsTemplate['showIn']) != strtolower(self::USED_BY)) {
             return $this->redirect()->toRoute('vigattinads_dashboard_ads_create', array('controller' => 'choose-website'));
         }

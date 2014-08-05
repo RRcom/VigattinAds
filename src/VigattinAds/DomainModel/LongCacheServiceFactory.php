@@ -19,6 +19,7 @@ class LongCacheServiceFactory implements FactoryInterface
             array(
                 'adapter' => array(
                     'name' => 'filesystem',
+                    'options' => array('ttl' => 3600), // 1 hour
                 ),
                 'plugins' => array(
                     'exception_handler' => array(
