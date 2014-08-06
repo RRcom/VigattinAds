@@ -515,3 +515,27 @@ a:hover {
 .fluid-result-container {
 
 }
+
+/******************* multi selector *****************/
+.multi-selector-box {
+
+}
+.multi-selector-item {
+    border: 1px solid #ccc;
+    padding: 3px;
+    border-radius: 5px;
+    color: #666;
+    margin: 2px;
+    display: inline-block;
+}
+.multi-selector-item > .multi-selector-close {
+    padding: 0 3px;
+    cursor: pointer;
+    color: #269abc;
+}
+.box-container {
+    border: 1px solid #ccc;
+    padding: 10px;
+    z-index: 10;
+    background-color: #FFF;
+}

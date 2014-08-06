@@ -1623,11 +1623,27 @@ $(document).ready(function(e) {
         var fetching = false;
         var ajax;
         var isLast = false;
+        var multiSelectorBox = $('.multi-selector-box');
+        var mainBox = $('.box-container');
+        var mainBoxOffset
+        var itemLimit = 15;
 
         function init() {
+            updateMainBoxSize();
+            hideItemBoxIfEmpty();
             $(document).scroll(onLogScroll);
             SubmitButton.click(onSubmit);
             fetchMore();
+            $(window).resize(function(){
+                updateMainBoxSize();
+            });
+        }
+
+        function updateMainBoxSize() {
+            var currentPosition = mainBox.css('position');
+            mainBox.css({'width':'auto', 'position':'relative'});
+            mainBox.css({'width':mainBox.width(), 'position':currentPosition});
+            mainBoxOffset = mainBox.offset();
         }
 
         function onSubmit(e) {
@@ -1657,6 +1673,65 @@ $(document).ready(function(e) {
             if(scrollValue+200 >= scrollMax) {
                 if(!isLast) fetchMore();
             }
+            fixedIfScrolled();
+        }
+
+        function fixedIfScrolled() {
+            if($(document).scrollTop()+50 >= mainBoxOffset.top) {
+                log(mainBoxOffset.top);
+                if(mainBox.is(":visible")) {
+                    fixMainBox(true);
+                }
+            } else {
+                if(mainBox.is(":visible")) {
+                    fixMainBox(false);
+                }
+            }
+        }
+
+        function fixMainBox(yes) {
+            if(yes) {
+                mainBox.css({
+                    'position':'fixed',
+                    'top':0,
+                    'margin-top':50
+                });
+            }
+            else {
+                mainBox.css({
+                    'position':'relative',
+                    'margin-top':0
+                });
+            }
+        }
+
+        function hideItemBoxIfEmpty() {
+            if($('.multi-selector-item', multiSelectorBox).length) {
+                mainBox.css({'display':'block'});
+            } else {
+                mainBox.hide({'display':'none'});
+            }
+        }
+
+        function onListButtonAdd(e) {
+            if($('#multiSelectorItem'+$(e.currentTarget).val()).length || ($('.multi-selector-item', multiSelectorBox).length >= itemLimit)) {
+            } else {
+
+                multiSelectorBox.append(
+                    $('<span id="multiSelectorItem'+$(e.currentTarget).val()+'" class="multi-selector-item">'+$(e.currentTarget).attr('data-name')+'</span>')
+                        .append(
+                            $('<span class="small multi-selector-close" data-target="'+$(e.currentTarget).val()+'">x</span></span>').click(onItemClose)
+                        )
+                );
+            }
+            hideItemBoxIfEmpty();
+            fixedIfScrolled();
+        }
+
+        function onItemClose(e) {
+            log('#multiSelectorItem'+$(e.currentTarget).attr('data-target'))
+            $('span[id=multiSelectorItem'+$(e.currentTarget, multiSelectorBox).attr('data-target')+']').remove();
+            hideItemBoxIfEmpty();
         }
 
         function fetchMore() {
@@ -1685,7 +1760,7 @@ $(document).ready(function(e) {
                                 '<td>'+value.lastName+'</td>'+
                                 '<td>'+
                                     '<form method="post" action="">'+
-                                        '<input type="checkbox">'+
+                                        '<button type="button" id="authorListItem'+value.id+'" class="author-list-add-button btn btn-default" value="'+value.id+'" data-name="'+value.firstName+' '+value.lastName+'">add</button>'+
                                         '<input type="hidden" name="authorFirstName" value="">'+
                                         '<input type="hidden" name="authorLastName" value="">'+
                                     '</form>'+
@@ -1697,6 +1772,7 @@ $(document).ready(function(e) {
                     tableFootTr.hide();
                     if(offset >= data.total) isLast = true;
                     else isLast = false;
+                    $('.author-list-add-button').unbind('click').click(onListButtonAdd);
                 }
             });
         }

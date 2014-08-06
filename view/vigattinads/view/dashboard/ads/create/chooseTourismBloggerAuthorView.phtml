@@ -7,12 +7,6 @@
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-8 col-lg-7">
         <form class="form-group has-feedback" method="post" action="" id="authorSearchForm">
-            <!--
-            <label class="control-label sr-only" for="inputTourismSearchAuthor">Search author</label>
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Action <span class="caret"></span></button>
-            <input type="text" class="form-control" placeholder="search author" id="inputTourismSearchAuthor" name="searchString" value="<?php echo $this->escapeHtmlAttr($searchString); ?>">
-            <span class="glyphicon glyphicon-search form-control-feedback" style="cursor: pointer" onclick="$('#authorSearchForm').submit()"></span>
-            -->
 
             <div class="input-group">
                 <div class="input-group-btn">
@@ -38,6 +32,20 @@
         </form>
     </div>
     <div class="clearfix"></div>
+    <div class="col-xs-12">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box-container">
+                    <div class="multi-selector-box text-center">
+                    </div>
+                    <div>
+                        <p></p>
+                        <button class="btn btn-default">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="fluid-result-container col-xs-12">
             <table class="table table-striped">
                 <thead>
