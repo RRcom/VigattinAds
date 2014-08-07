@@ -1629,6 +1629,7 @@ $(document).ready(function(e) {
         var itemLimit = 15;
 
         function init() {
+            if(!multiSelectorBox.length) return;
             updateMainBoxSize();
             hideItemBoxIfEmpty();
             $(document).scroll(onLogScroll);
@@ -1716,24 +1717,36 @@ $(document).ready(function(e) {
         function onListButtonAdd(e) {
             if($('#multiSelectorItem'+$(e.currentTarget).val()).length || ($('.multi-selector-item', multiSelectorBox).length >= itemLimit)) {
             } else {
-
                 multiSelectorBox.append(
-                    $('<span id="multiSelectorItem'+$(e.currentTarget).val()+'" class="multi-selector-item">'+$(e.currentTarget).attr('data-name')+'</span>')
+                    $('<span id="multiSelectorItem'+$(e.currentTarget).val()+'" data-target="'+$(e.currentTarget).val()+'" data-name="'+$(e.currentTarget).attr('data-name')+'" class="multi-selector-item">'+$(e.currentTarget).attr('data-name')+'</span>')
                         .append(
                             $('<span class="small multi-selector-close" data-target="'+$(e.currentTarget).val()+'">x</span></span>').click(onItemClose)
                         )
                 );
+                onMultiSelectorBoxItemChange();
             }
             hideItemBoxIfEmpty();
             fixedIfScrolled();
         }
 
         function onItemClose(e) {
-            log('#multiSelectorItem'+$(e.currentTarget).attr('data-target'))
             $('span[id=multiSelectorItem'+$(e.currentTarget, multiSelectorBox).attr('data-target')+']').remove();
+            onMultiSelectorBoxItemChange();
             hideItemBoxIfEmpty();
         }
 
+        function onMultiSelectorBoxItemChange() {
+            var ids = '';
+            var names = '';
+            $.each($('.multi-selector-item', multiSelectorBox), function(key, value) {
+                ids += $(value).attr('data-target')+',';
+                names += $(value).attr('data-name')+',';
+            });
+            $('#submitAuthorId').val(ids);
+            $('#submitAuthorName').val(names);
+            log( $('#submitAuthorId').val());
+            log($('#submitAuthorName').val());
+        }
         function fetchMore() {
             if(fetching) return;
             fetching = true;

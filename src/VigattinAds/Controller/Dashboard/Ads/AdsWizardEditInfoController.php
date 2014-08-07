@@ -66,7 +66,6 @@ class AdsWizardEditInfoController extends AdsController
                 $formError['adsTempKeyword'] = 'Homepage';
                 $formError['adsKeyword'] = '(Homepage Article '.$this->sessionManager->getStorage()->tempAdsAuthorId.')';
                 $formError['adsAuthorName'] = $this->sessionManager->getStorage()->tempAdsAuthorName;
-
                 break;
             default:
                 $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsWizardEditInfoNoCatView');
@@ -195,11 +194,13 @@ class AdsWizardEditInfoController extends AdsController
 
     protected function preProcessTourismBlog($imagePath)
     {
-        $authorId = $this->sessionManager->getStorage()->tempAdsAuthorId;
+        $authorId = explode(',', $this->sessionManager->getStorage()->tempAdsAuthorId);
         $keywords = "";
         $categories = $this->getRequest()->getPost('keyword-item', array());
         foreach($categories as $category) {
-            $keywords .= "(tourism article $category $authorId)";
+            foreach($authorId as $id) {
+                $keywords .= "(tourism article $category $id)";
+            }
         }
         $this->adsUser->createAds(
             $this->sessionManager->getStorage()->tempAdsTitle,

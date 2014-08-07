@@ -32,12 +32,11 @@ class ChooseTourismBloggerAuthorController extends AdsController
 
     protected function onSelectAuthor()
     {
-        $authorId = $this->getRequest()->getPost('authorId', '');
-        $authorFirstName = $this->getRequest()->getPost('authorFirstName', '');
-        $authorLastName = $this->getRequest()->getPost('authorLastName', '');
+        $authorId = trim($this->getRequest()->getPost('submitAuthorId', ''), ', ');
+        $authorNames = trim($this->getRequest()->getPost('submitAuthorName', ''), ', ');
         if($authorId) {
             $this->sessionManager->getStorage()->tempAdsAuthorId = $authorId;
-            $this->sessionManager->getStorage()->tempAdsAuthorName = $authorFirstName.' '.$authorLastName;
+            $this->sessionManager->getStorage()->tempAdsAuthorName = $authorNames;
             $this->redirect()->toRoute('vigattinads_dashboard_ads_create_choose_website_blogger_import');
         }
     }
