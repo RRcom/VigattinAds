@@ -1637,14 +1637,14 @@ $(document).ready(function(e) {
             fetchMore();
             $(window).resize(function(){
                 updateMainBoxSize();
+                fixedIfScrolled();
             });
         }
 
         function updateMainBoxSize() {
-            var currentPosition = mainBox.css('position');
-            mainBox.css({'width':'auto', 'position':'relative'});
-            mainBox.css({'width':mainBox.width(), 'position':currentPosition});
-            mainBoxOffset = mainBox.offset();
+            var containerWidth = mainBox.parent().width();
+            mainBox.css({'width':containerWidth});
+            mainBoxOffset = mainBox.parent().offset();
         }
 
         function onSubmit(e) {
@@ -1679,7 +1679,6 @@ $(document).ready(function(e) {
 
         function fixedIfScrolled() {
             if($(document).scrollTop()+50 >= mainBoxOffset.top) {
-                log(mainBoxOffset.top);
                 if(mainBox.is(":visible")) {
                     fixMainBox(true);
                 }
