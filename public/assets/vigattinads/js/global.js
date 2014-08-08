@@ -1694,13 +1694,15 @@ $(document).ready(function(e) {
                 mainBox.css({
                     'position':'fixed',
                     'top':0,
+                    'left':mainBoxOffset.left+15,
                     'margin-top':50
                 });
             }
             else {
                 mainBox.css({
                     'position':'relative',
-                    'margin-top':0
+                    'margin-top':0,
+                    'left':'auto'
                 });
             }
         }
