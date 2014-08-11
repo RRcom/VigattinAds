@@ -1655,6 +1655,7 @@ $(document).ready(function(e) {
             filter = getStrCat();
             offset = 0;
             tableBody.html('');
+            updateMainBoxSize();
             fetchMore();
         }
 
@@ -1748,6 +1749,7 @@ $(document).ready(function(e) {
             log( $('#submitAuthorId').val());
             log($('#submitAuthorName').val());
         }
+
         function fetchMore() {
             if(fetching) return;
             fetching = true;
@@ -1787,6 +1789,7 @@ $(document).ready(function(e) {
                     if(offset >= data.total) isLast = true;
                     else isLast = false;
                     $('.author-list-add-button').unbind('click').click(onListButtonAdd);
+                    updateMainBoxSize();
                 }
             });
         }
