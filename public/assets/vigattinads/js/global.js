@@ -1626,7 +1626,7 @@ $(document).ready(function(e) {
         var multiSelectorBox = $('.multi-selector-box');
         var mainBox = $('.box-container');
         var mainBoxOffset
-        var itemLimit = 15;
+        var itemLimit = 10;
 
         function init() {
             if(!multiSelectorBox.length) return;
