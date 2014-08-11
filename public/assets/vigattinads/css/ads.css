@@ -347,3 +347,8 @@ body {
     color: #70644C;
     text-align: right;
 }
+
+/***************** .trade-ads-listing.tourism-head-ads *****************/
+.trade-ads-listing.tourism-head-ads .ads-frame {
+    background-color: #F0EECB;
+}

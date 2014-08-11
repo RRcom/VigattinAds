@@ -15,7 +15,7 @@ class TourismArticleController extends ShowAdsController
 
     public function headAction() {
         // use this view to show the ads
-        $this->viewModel->setTemplate('vigattinads/view/show-trade-ads-listing');
+        $this->viewModel->setTemplate('vigattinads/view/show-tourism-ads-header');
         $this->viewModel->setVariable('ads', $this->generateAds());
         return $this->viewModel;
     }

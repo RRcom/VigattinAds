@@ -3,19 +3,26 @@
     <head>
         <meta charset="utf-8">
         <?php echo $this->headTitle('Vigattin Ads')->setSeparator(' | ')->setAutoEscape(false); ?>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <?php echo $this->headMeta()
+            ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+            ->appendHttpEquiv('X-UA-Compatible', 'IE=edge'); ?>
         <!-- <meta http-equiv="refresh" content="180"> -->
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-        <link rel="stylesheet" href="/assets/vigattinads/css/ads.css?v=<?php echo $config['vigattinads']['assets_version']; ?>">
+        <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
+            ->appendStylesheet($this->basePath().'/css/bootstrap.min.css')
+            ->appendStylesheet($this->basePath().'/css/bootstrap-theme.min.css')
+            ->appendStylesheet($this->basePath().'/assets/vigattinads/css/ads.css?v='.$config['vigattinads']['assets_version']); ?>
     </head>
     <body style="background-color: <?php echo $this->escapeHtmlAttr($bgcolor); ?>">
         <div class="container">
             <?php echo $content; ?>
         </div>
-        <script><?php echo isset($js) ? $js : ''; ?></script>
-        <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
-        <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-        <script src="/assets/vigattinads/js/ads.js?v=<?php echo $config['vigattinads']['assets_version']; ?>"></script>
+
+        <?php echo $this->headScript()
+            ->appendScript(isset($js) ? $js : '')
+            ->appendFile($this->basePath().'/js/jquery.min.js')
+            ->appendFile($this->basePath().'/js/bootstrap.min.js')
+            ->appendFile($this->basePath().'/js/html5shiv.js', 'text/javascript', array('conditional' => 'lt IE 9',))
+            ->appendFile($this->basePath().'/js/respond.min.js', 'text/javascript', array('conditional' => 'lt IE 9',))
+            ->appendFile($this->basePath().'/assets/vigattinads/js/ads.js?v='.$config['vigattinads']['assets_version']); ?>
     </body>
 </html>
