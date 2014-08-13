@@ -147,20 +147,20 @@ class AdsEditController extends AdsController
         switch(strtolower($adsEntity->get('showIn'))) {
             case 'vigattintrade.com':
                 if(strtolower($adsEntity->get('template')) == 'home-sidebar-left') {
-                    $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsEditWithCatView');
+                    $actionContent->setTemplate('vigattinads/view/dashboard/ads/edit/adsEditWithCatView');
                 }
                 else {
-                    $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsEditView');
+                    $actionContent->setTemplate('vigattinads/view/dashboard/ads/edit/adsEditView');
                 }
                 break;
             case 'vigattintourism.com':
-                $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsEditWithCatTourismView');
+                $actionContent->setTemplate('vigattinads/view/dashboard/ads/edit/adsEditWithCatTourismView');
                 break;
             case 'vigattin.com':
-                $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsEditVigattinView');
+                $actionContent->setTemplate('vigattinads/view/dashboard/ads/edit/adsEditVigattinView');
                 break;
             default:
-                $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsEditView');
+                $actionContent->setTemplate('vigattinads/view/dashboard/ads/edit/adsEditView');
                 break;
         }
         $actionContent->setVariables($formError);
@@ -170,6 +170,11 @@ class AdsEditController extends AdsController
         $actionContent->setVariable('adsViewCount', $adsViewCount);
         $actionContent->setVariable('adsReviewReason', $adsEntity->getLastReviewReason());
         $actionContent->setVariable('request', $this->getRequest());
+
+        $changeTargetSiteView = new ViewModel();
+        $changeTargetSiteView->setTemplate('vigattinads/view/dashboard/ads/edit/changeTargetSiteView');
+        $changeTargetSiteView->setVariable('ads', $adsEntity);
+        $actionContent->addChild($changeTargetSiteView, 'changeTargetSiteView');
 
         $this->mainView->addChild($actionContent, 'actionContent');
         return $this->mainView;

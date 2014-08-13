@@ -44,8 +44,9 @@
                 case \VigattinAds\DomainModel\Ads::STATUS_REVIEWING: ?>
                     <span class="text-warning"><span class="glyphicon glyphicon-search"></span> Reviewing</span>
                     <?php break;
-            endswitch; ?></div>
-            <div class="panel-body">
+        endswitch; ?></div>
+        <div class="panel-body">
+            <?php echo isset($changeTargetSiteView) ? $changeTargetSiteView : ''; ?>
             <div class="row">
                 <!-- Left Panel -->
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
@@ -53,13 +54,31 @@
                     <!-- Live Preview -->
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 label2">Ads Type</div>
                     <br/>
+
+                    <!-- Sidebar Ads -->
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ads-preview-column">
-                        <!-- Vigattin Body Tiles Ads -->
-                        <div class="label1 with-underline">Body Ads</div><p></p>
+                        <div class="label1 with-underline">Left Side</div><p></p>
                         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
-                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ads-vigattin-tiles">
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                             <div class="row ads-frame">
-                                <div class="ads-image-preview-container no-resize"><img src="/repo<?php echo $ads->get('adsImage'); ?>" class="ads-frame-image" /></div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ads-frame-title"><?php echo $this->escapeHtml($ads->get('adsTitle')); ?></div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ads-frame-price">Php <span class="price-value"><?php echo $this->escapeHtml(number_format($ads->get('adsPrice'), 2, '.', '')); ?></span></div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><div class="ads-image-preview-container"><img class="ads-frame-image" src="/repo<?php echo $ads->get('adsImage'); ?>"></div><span class="ads-frame-description"><?php echo $this->escapeHtml($ads->get('adsDescription')); ?></span></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <br />
+
+                    <!-- Trade Featured Ads -->
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ads-preview-column">
+                        <div class="label1 with-underline">Featured Ads</div><p></p>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 trade-featured-ads">
+                            <div class="ads-frame">
+                                <div class="ads-image-preview-container no-resize"><img class="ads-frame-image" src="/repo<?php echo $ads->get('adsImage'); ?>"></div>
                                 <div class="ads-frame-title"><?php echo $this->escapeHtml($ads->get('adsTitle')); ?></div>
                                 <div class="ads-frame-price">Php <span class="price-value"><?php echo $this->escapeHtml(number_format($ads->get('adsPrice'), 2, '.', '')); ?></span></div>
                             </div>
@@ -68,18 +87,25 @@
                         <div class="clearfix"></div>
                     </div>
 
-                    <!--
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ads-live-preview-label"><strong>Ads Preview</strong><p></p></div>
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                        <div class="row ads-frame">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ads-frame-title"><?php echo $this->escapeHtmlAttr($ads->get('adsTitle')); ?></div>
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ads-frame-price">Php <span class="price-value"><?php echo $this->escapeHtmlAttr(number_format($ads->get('adsPrice'), 2, '.', '')); ?></span></div>
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><div class="ads-image-preview-container"><img class="ads-frame-image" src="/repo<?php echo $ads->get('adsImage'); ?>"></div><span class="ads-frame-description"><?php echo $this->escapeHtml($ads->get('adsDescription')); ?></span></div>
+                    <br />
+
+                    <!-- Trade Ads Listing -->
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ads-preview-column">
+                        <div class="label1 with-underline">Ads Listing</div><p></p>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 trade-ads-listing">
+                            <div class="ads-frame">
+                                <div class="ads-image-preview-container no-resize"><img class="ads-frame-image" src="/repo<?php echo $ads->get('adsImage'); ?>"></div>
+                                <div class="title-container">
+                                    <div class="ads-frame-title"><?php echo $this->escapeHtml($ads->get('adsTitle')); ?></div>
+                                    <div class="ads-frame-description"><?php echo $this->escapeHtml($ads->get('adsDescription')); ?></div>
+                                </div>
+                                <div class="price-container">
+                                    <div class="ads-frame-price">Php <span class="price-value"><?php echo $this->escapeHtml(number_format($ads->get('adsPrice'), 2, '.', '')); ?></span></div>
+                                    <div class="ads-frame-date"><?php echo $this->escapeHtml($ads->get('date')); ?></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2"></div>
-                    -->
 
                 </div>
                 <!-- Right Panel -->
@@ -92,7 +118,7 @@
                     <div class="hide form-group ads-form-url <?php echo $adsUrlError ? 'has-error' : ''; ?>">
                         <label class="control-label" for="ads-url">Ads Url <small class="text-warning">allowed valid url</small></label>
                         <span class="help-block"><?php if($adsUrlError) echo $adsUrlError; ?></span>
-                        <input type="text" class="form-control" id="ads-url" name="ads-url" required="true" placeholder="Ads URL" value="<?php echo $this->escapeHtmlAttr($adsUrl); ?>">
+                        <input type="text" maxlength="256" class="form-control" id="ads-url" name="ads-url" required="true" placeholder="Ads URL" value="<?php echo $this->escapeHtmlAttr($adsUrl); ?>">
                     </div>
                     <div class="hide form-group ads-form-keyword <?php echo $adsKeywordError ? 'has-error' : ''; ?>">
                         <label class="control-label" for="ads-keyword">Target Keyword <small class="text-warning">max character 512</small></label>
@@ -103,9 +129,30 @@
 
 
                     <div class="form-group">
-                        <label class="control-label">Vigattin Directory <small class="text-warning">Choose which directory the ads will appear</small></label>
-                        <ul class="list-group list-unstyled" id="vigattinDirectoryList">
+                        <label class="control-label">Vigattintrade Category <small class="text-warning">Choose which categories the ads will appear</small></label>
+                        <br /><br />
 
+                        <strong>Left Side</strong>
+                        <ul class="list-group list-unstyled" id="tradeCategoryList1">
+                        <?php $keywordArray = explode('|', $adsTempKeyword); foreach($keywordArray as $key => $value): ?>
+                            <li><a class="ads-preview-link" target="_blank" href="<?php echo \VigattinAds\DomainModel\VigattinTrade\CatMap::generatePreviewUrl($keywordArray, $key) ?>#preview">preview</a> <input name="selectedKeyword[]" value="<?php echo $tempAbsoluteKey = \VigattinAds\DomainModel\VigattinTrade\CatMap::createAbsoluteCat($keywordArray, $key) ?>" class="must-have-one-checked trade-cat-checkbox1" data-pos="0" type="checkbox" style="margin-left: 10px" <?php echo (strpos($ads->get('keywords'), $tempAbsoluteKey) !== false) ? 'checked="checked"' : '' ?>> <?php echo ($key == 0) ? 'All Category' : $this->escapeHtml(ucwords($value)); ?></li>
+                        <?php endforeach; ?>
+                        </ul>
+
+                        <strong>Featured Ads</strong>
+                        <ul class="list-group list-unstyled" id="tradeCategoryList2">
+                            <li><a class="ads-preview-link" target="_blank" href="//www.vigattintrade.com#preview">preview</a> <input name="selectedKeyword[]" value="(featured ads vehicles cars, sedans & minivans)" class="must-have-one-checked trade-cat-checkbox2" data-pos="0" type="checkbox" style="margin-left: 10px" <?php echo (strpos($ads->get('keywords'), '(featured ads vehicles cars, sedans & minivans)') !== false) ? 'checked="checked"' : '' ?> <?php if(!\VigattinAds\Controller\Dashboard\Ads\AdsWizardEditInfoController::isCatMatch($adsTempKeyword, 'cars, sedans & minivans')) echo 'disabled="disabled"'; ?>> Cars and Sedans</li>
+                            <li><a class="ads-preview-link" target="_blank" href="//www.vigattintrade.com#preview">preview</a> <input name="selectedKeyword[]" value="(featured ads real estate)" class="must-have-one-checked trade-cat-checkbox2" data-pos="0" type="checkbox" style="margin-left: 10px" <?php echo (strpos($ads->get('keywords'), '(featured ads real estate)') !== false) ? 'checked="checked"' : '' ?> <?php if(!\VigattinAds\Controller\Dashboard\Ads\AdsWizardEditInfoController::isCatMatch($adsTempKeyword, 'real estate')) echo 'disabled="disabled"'; ?>> Real Estate</li>
+                            <li><a class="ads-preview-link" target="_blank" href="//www.vigattintrade.com#preview">preview</a> <input name="selectedKeyword[]" value="(featured ads vehicles motorcycles & scooters)" class="must-have-one-checked trade-cat-checkbox2" data-pos="0" type="checkbox" style="margin-left: 10px" <?php echo (strpos($ads->get('keywords'), '(featured ads vehicles motorcycles & scooters)') !== false) ? 'checked="checked"' : '' ?> <?php if(!\VigattinAds\Controller\Dashboard\Ads\AdsWizardEditInfoController::isCatMatch($adsTempKeyword, 'motorcycles & scooters')) echo 'disabled="disabled"'; ?>> Motorcycle</li>
+                            <li><a class="ads-preview-link" target="_blank" href="//www.vigattintrade.com#preview">preview</a> <input name="selectedKeyword[]" value="(featured ads vehicles suvs, crossovers & pickups)" class="must-have-one-checked trade-cat-checkbox2" data-pos="0" type="checkbox" style="margin-left: 10px" <?php echo (strpos($ads->get('keywords'), '(featured ads vehicles suvs, crossovers & pickups)') !== false) ? 'checked="checked"' : '' ?> <?php if(!\VigattinAds\Controller\Dashboard\Ads\AdsWizardEditInfoController::isCatMatch($adsTempKeyword, 'suvs, crossovers & pickups')) echo 'disabled="disabled"'; ?>> Suvs, Crossovers & Pickups</li>
+                            <li><a class="ads-preview-link" target="_blank" href="//www.vigattintrade.com#preview">preview</a> <input name="selectedKeyword[]" value="(featured ads general category)" class="must-have-one-checked trade-cat-checkbox2" data-pos="0" type="checkbox" style="margin-left: 10px" <?php echo (strpos($ads->get('keywords'), '(featured ads general category)') !== false) ? 'checked="checked"' : '' ?> <?php if(!\VigattinAds\Controller\Dashboard\Ads\AdsWizardEditInfoController::isCatMatch($adsTempKeyword, 'general category')) echo 'disabled="disabled"'; ?>> General Category</li>
+                        </ul>
+
+                        <strong>Ads Listing</strong>
+                        <ul class="list-group list-unstyled" id="tradeCategoryList3">
+                        <?php foreach($keywordArray as $key => $value): ?>
+                            <li><a class="ads-preview-link" target="_blank" href="<?php echo \VigattinAds\DomainModel\VigattinTrade\CatMap::generatePreviewUrl($keywordArray, $key) ?>#preview">preview</a> <input name="selectedKeyword[]" value="<?php echo $tempAbsoluteKey = \VigattinAds\DomainModel\VigattinTrade\CatMap::createAbsoluteCat($keywordArray, $key, 'Ads Listing') ?>" class="must-have-one-checked trade-cat-checkbox3" data-pos="0" type="checkbox" style="margin-left: 10px" <?php echo (strpos($ads->get('keywords'), $tempAbsoluteKey) !== false) ? 'checked="checked"' : '' ?>> <?php echo ($key == 0) ? 'All Category' : $this->escapeHtml(ucwords($value)); ?></li>
+                        <?php endforeach; ?>
                         </ul>
                     </div>
 
@@ -114,7 +161,7 @@
                         <span class="help-block"><?php if($adsPriceError) echo $adsPriceError; ?></span>
                         <input type="number" step="any" class="form-control" id="ads-price" name="ads-price" placeholder="Ads price" value="<?php echo $this->escapeHtmlAttr($adsPrice); ?>">
                     </div>
-                    <div class="hide form-group ads-form-description <?php echo $adsDescriptionError ? 'has-error' : ''; ?>">
+                    <div class="form-group ads-form-description <?php echo $adsDescriptionError ? 'has-error' : ''; ?>">
                         <label class="control-label" for="ads-description">Edited Description <small id="adsDescriptionCountDisplay" class="text-warning"></small></label>
                         <span class="help-block"><?php if($adsDescriptionError) echo $adsDescriptionError; ?></span>
                         <textarea class="description-input form-control countable-character" data-max-char="130" data-target-display="#adsDescriptionCountDisplay" id="ads-description" name="ads-description" placeholder="Ads Description"><?php echo $this->escapeHtml($adsDescription); ?></textarea>
