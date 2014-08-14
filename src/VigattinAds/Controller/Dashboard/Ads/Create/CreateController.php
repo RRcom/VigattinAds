@@ -13,6 +13,5 @@ class CreateController extends AdsController
         $actionContent->setTemplate('vigattinads/view/dashboard/ads/create/createView');
         $this->mainView->addChild($actionContent, 'actionContent');
         return $this->mainView;
-        //return $this->redirect()->toRoute('vigattinads_dashboard_ads_create', array('controller' => 'choose-website'));
     }
 }

@@ -10,7 +10,7 @@ class ChooseWebsiteController extends AdsController
     const VIGATTINTRADE = 'vigattintrade.com';
     const VIGATTINTOURISM = 'vigattintourism.com';
     const VIGATTINDEALS = 'vigattindeals.com';
-    const TOURISMBLOGGER = 'Vigattin Tourism Article';
+    const TOURISMBLOGGER = 'vigattin-tourism-article';
 
     public function indexAction()
     {

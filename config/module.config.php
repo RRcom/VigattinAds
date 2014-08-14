@@ -190,10 +190,10 @@ return array(
                     'constraints' => array(
                         'controller'    => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'param1'        => '[a-zA-Z0-9_-]*',
-                        'param2'        => '[a-zA-Z0-9_-]*',
+                        'param2'        => '[a-zA-Z0-9_.-]*',
                     ),
                     'defaults' => array(
-                        '__NAMESPACE__' => 'VigattinAds\Controller\Dashboard\Ads',
+                        '__NAMESPACE__' => 'VigattinAds\Controller\Dashboard\Ads\Edit',
                         'controller'    => 'Edit',
                         'action'        => 'index',
                     ),
@@ -373,7 +373,8 @@ return array(
             'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\BloggerAuthor'   => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseTourismBloggerAuthorController',
             'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\Import' => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\Import\ImportController',
             'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\Import\Edit' => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\Import\Edit\EditController',
-            'VigattinAds\Controller\Dashboard\Ads\Edit'   => 'VigattinAds\Controller\Dashboard\Ads\AdsEditController',
+            'VigattinAds\Controller\Dashboard\Ads\Edit\Edit'   => 'VigattinAds\Controller\Dashboard\Ads\Edit\EditController',
+            'VigattinAds\Controller\Dashboard\Ads\Edit\ChangeSite'   => 'VigattinAds\Controller\Dashboard\Ads\Edit\EditController',
             'VigattinAds\Controller\Dashboard\Ads\Template'   => 'VigattinAds\Controller\Dashboard\Ads\AdsWizardChooseTemplateController',
             'VigattinAds\Controller\Dashboard\Ads\Info'   => 'VigattinAds\Controller\Dashboard\Ads\AdsWizardEditInfoController',
             'VigattinAds\Controller\Dashboard\Ads\Import'   => 'VigattinAds\Controller\Dashboard\Ads\AdsImportController',
