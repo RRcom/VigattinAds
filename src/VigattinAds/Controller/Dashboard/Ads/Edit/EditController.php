@@ -2,8 +2,9 @@
 namespace VigattinAds\Controller\Dashboard\Ads\Edit;
 
 use Zend\View\Model\ViewModel;
-use VigattinAds\DomainModel\Validator;
 use VigattinAds\Controller\Dashboard\Ads\AdsController;
+use VigattinAds\DomainModel\Validator;
+use VigattinAds\DomainModel\Ads;
 use VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseWebsiteController;
 
 class EditController extends AdsController
@@ -11,103 +12,110 @@ class EditController extends AdsController
     /** @var \VigattinAds\DomainModel\Ads */
     protected $adsEntity;
 
+    protected $formValue = array();
+
+    protected $adsViewCount = 0;
+
+    protected $formAction;
+
+    protected $showIn;
+
+    public function __construct()
+    {
+        $this->formValue = array(
+            'adsTitle' => '',
+            'adsUrl' => '',
+            'adsKeyword' => '',
+            'adsCategory' => '',
+            'adsPrice' => '',
+            'adsDescription' => '',
+            'adsTitleError' => '',
+            'adsUrlError' => '',
+            'adsPriceError' => '',
+            'adsDescriptionError' => '',
+        );
+    }
+
     public function indexAction()
     {
-        $this->adsEntity = $this->adsUser->getSingleAds($this->params('param1', ''));
-        if($this->params('param2', '')) $this->adsEntity->set('showIn', $this->params('param2'));
-        $adsViewCount = 0;
-
-        if($this->adsEntity instanceof \VigattinAds\DomainModel\Ads) {
-            $adsViewCount = $this->adsEntity->get('viewCount');
-            /** @var \Doctrine\Common\Collections\ArrayCollection $adsApproveLog */
-            $adsApproveLog =  $this->adsEntity->get('adsApproveLog');
-            if(strtolower($this->getRequest()->getPost('submit', '')) == 'next') {
-                $formError = $this->onApply();
-            }
-            elseif(strtolower($this->getRequest()->getPost('submit', '')) == 'delete') {
-                $this->onDelete();
-            }
-            elseif(strtolower($this->getRequest()->getPost('submit', '')) == 'pause') {
-                $formError = $this->onPause();
-            }
-            elseif(strtolower($this->getRequest()->getPost('submit', '')) == 'resume') {
-                $formError = $this->onResume();
-            }
-            else {
-                $formError = $this->onEnter();
-            }
-        } else {
-            return $this->redirect()->toRoute('vigattinads_dashboard_ads');
-        }
-
+        // set partial view title
         $this->mainView->setVariable('title', 'Ads Edit');
-        $actionContent = new ViewModel();
-        $this->setTemplate($actionContent, $this->adsEntity, $this->adsEntity->get('showIn'));
 
-        $actionContent->setVariables($formError);
+        // get form action
+        $this->formAction = strtolower($this->getRequest()->getPost('submit', ''));
+
+        // get ads entity from param1 id
+        $this->adsEntity = $this->adsUser->getSingleAds($this->params('param1', ''));
+
+        // get show in data
+        $this->showIn = strtolower($this->params('param2', '') ? $this->params('param2') : $this->adsEntity->get('showIn'));
+
+        // load edit partial view
+        $actionContent = new ViewModel();
+
+        // block if no ads found
+        if(!$this->adsEntity instanceof \VigattinAds\DomainModel\Ads) {
+            $actionContent->setTemplate('vigattinads/view/dashboard/ads/edit/notFoundView');
+            $this->mainView->addChild($actionContent, 'actionContent');
+            return $this->mainView;
+        } else $actionContent->setTemplate('vigattinads/view/dashboard/ads/edit/editView');
+
+        // load change target site partial view
+        $actionContent->addChild($this->changeSiteTargetMenu(), 'changeTargetSiteView');
+
+        // load category partial
+        $actionContent->addChild($this->categoryMenu(), 'categoryView');
+
+        // process on enter page
+        $this->onEnter();
+
+        // process form action
+        $this->processFormAction();
+
+        // load required variable to action content
+        $actionContent->setVariables($this->formValue);
         $actionContent->setVariable('ads', $this->adsEntity);
         $actionContent->setVariable('userManager', $this->userManager);
         $actionContent->setVariable('adsUser', $this->adsUser);
-        $actionContent->setVariable('adsViewCount', $adsViewCount);
+        $actionContent->setVariable('adsViewCount', $this->adsViewCount);
         $actionContent->setVariable('adsReviewReason', $this->adsEntity->getLastReviewReason());
         $actionContent->setVariable('request', $this->getRequest());
 
-        $changeTargetSiteView = new ViewModel();
-        $changeTargetSiteView->setTemplate('vigattinads/view/dashboard/ads/edit/changeTargetSiteView');
-        $changeTargetSiteView->setVariable('ads', $this->adsEntity);
-        $actionContent->addChild($changeTargetSiteView, 'changeTargetSiteView');
-
+        // load the main view
         $this->mainView->addChild($actionContent, 'actionContent');
         return $this->mainView;
     }
 
-    public function onApply()
+    /**
+     * If user only enter the page
+     */
+    protected function onEnter()
     {
-        $formError = array(
-            'adsTitle' => $this->getRequest()->getPost('ads-title', ''),
-            'adsUrl' => $this->getRequest()->getPost('ads-url', ''),
-            'adsKeyword' => $this->getRequest()->getPost('ads-keyword', ''),
-            'adsTempKeyword' => $this->adsEntity->get('category'),
-            'adsPrice' => $this->getRequest()->getPost('ads-price', ''),
-            'adsDescription' => $this->getRequest()->getPost('ads-description', ''),
-            'adsTitleError' => Validator::isTitleValid($this->getRequest()->getPost('ads-title', '')),
-            'adsUrlError' => Validator::isUrlValid($this->getRequest()->getPost('ads-url', '')),
-            'adsKeywordError' => Validator::isKeywordValid($this->getRequest()->getPost('ads-keyword', '')),
-            'adsPriceError' => Validator::isNumber($this->getRequest()->getPost('ads-price', '')),
-            'adsDescriptionError' => Validator::isDescriptionValid($this->getRequest()->getPost('ads-description', '')),
-        );
-        if(!strlen($formError['adsTitleError'].$formError['adsUrlError'].$formError['adsKeywordError'].$formError['adsPriceError'].$formError['adsDescriptionError'])) {
-            // check some value that need to verify first if change happen
-            $oldValue = strtolower($this->adsEntity->get('adsTitle').$this->adsEntity->get('adsUrl').$this->adsEntity->get('adsDescription'));
-            $newValue = strtolower($formError['adsTitle'].$formError['adsUrl'].$formError['adsDescription']);
+        $this->formValue['adsTitle'] = $this->adsEntity->get('adsTitle');
+        $this->formValue['adsUrl'] = $this->adsEntity->get('adsUrl');
+        $this->formValue['adsKeyword'] = $this->adsEntity->get('keywords');
+        $this->formValue['adsCategory'] = $this->adsEntity->get('category');
+        $this->formValue['adsPrice'] = $this->adsEntity->get('adsPrice');
+        $this->formValue['adsDescription'] = $this->adsEntity->get('adsDescription');
+    }
 
-            $this->adsEntity->set('adsTitle', $formError['adsTitle']);
-            $this->adsEntity->set('adsUrl', $formError['adsUrl']);
-            if(strtolower($this->adsEntity->get('showIn')) == 'vigattintrade.com') $this->adsEntity->set('keywords', \VigattinAds\Controller\Dashboard\Ads\AdsWizardEditInfoController::processTradeAdditionalAdsPosition($this->getRequest()->getPost('selectedKeyword', array())));
-            else $this->adsEntity->set('keywords', $formError['adsKeyword']);
-            $this->adsEntity->set('adsPrice', $formError['adsPrice']);
-            $this->adsEntity->set('adsDescription', $formError['adsDescription']);
-            if($oldValue !== $newValue) {
-                // Change log to RE-EDIT status
-                /** @var \VigattinAds\DomainModel\AdsApproveLog $log */
-                $log = $this->adsManager->getLogByReviewVersion($this->adsEntity->get('reviewVersion'));
-                if($log instanceof \VigattinAds\DomainModel\AdsApproveLog) {
-                    $log->set('reviewResult', Ads::STATUS_VALUE_CHANGED);
-                    $log->set('approvedTime', time());
-                    $log->persistSelf();
-                    $log->flush();
-
-                    // Create new log status
-                    $this->adsManager->changeAdsStatus($this->adsEntity->get('reviewVersion'), Ads::STATUS_VALUE_CHANGED, '');
-                    $this->adsEntity->set('reviewVersion', uniqid());
-                    $this->adsEntity->set('status', Ads::STATUS_PENDING);
-                }
-            }
-
-
-            $this->adsEntity->persistSelf();
-            $this->adsEntity->flush();
-            return $formError;
+    protected function processFormAction()
+    {
+        switch($this->formAction) {
+            case 'next':
+                $this->onNext();
+                break;
+            case 'resume':
+                $this->onResume();
+                break;
+            case 'delete':
+                $this->onDelete();
+                break;
+            case 'pause':
+                $this->onPause();
+                break;
+            default:
+                break;
         }
     }
 
@@ -123,113 +131,107 @@ class EditController extends AdsController
         $this->redirect()->toRoute('vigattinads_dashboard_ads');
     }
 
-    public function onPause()
+    protected function onPause()
     {
         if($this->adsEntity->get('status') == Ads::STATUS_APPROVED) {
             $this->adsEntity->set('status', Ads::STATUS_PAUSED);
             $this->adsEntity->persistSelf();
             $this->adsEntity->flush();
         }
-        $formError = array(
-            'adsTitle' => $this->adsEntity->get('adsTitle'),
-            'adsUrl' => $this->adsEntity->get('adsUrl'),
-            'adsKeyword' => $this->adsEntity->get('keywords'),
-            'adsTempKeyword' => $this->adsEntity->get('category'),
-            'adsPrice' => $this->adsEntity->get('adsPrice'),
-            'adsDescription' => $this->adsEntity->get('adsDescription'),
-            'adsTitleError' => '',
-            'adsUrlError' => '',
-            'adsKeywordError' => '',
-            'adsPriceError' => '',
-            'adsDescriptionError' => '',
-        );
-        return $formError;
     }
 
-    public function onResume()
+    protected function onResume()
     {
         if($this->adsEntity->get('status') == Ads::STATUS_PAUSED) {
             $this->adsEntity->set('status', Ads::STATUS_APPROVED);
             $this->adsEntity->persistSelf();
             $this->adsEntity->flush();
         }
-        $formError = array(
-            'adsTitle' => $this->adsEntity->get('adsTitle'),
-            'adsUrl' => $this->adsEntity->get('adsUrl'),
-            'adsKeyword' => $this->adsEntity->get('keywords'),
-            'adsTempKeyword' => $this->adsEntity->get('category'),
-            'adsPrice' => $this->adsEntity->get('adsPrice'),
-            'adsDescription' => $this->adsEntity->get('adsDescription'),
-            'adsTitleError' => '',
-            'adsUrlError' => '',
-            'adsPriceError' => '',
-            'adsKeywordError' => '',
-            'adsDescriptionError' => '',
-        );
-        return $formError;
     }
 
-    public function onEnter()
+    protected function onNext()
     {
-        $formError = array(
-            'adsTitle' => $this->adsEntity->get('adsTitle'),
-            'adsUrl' => $this->adsEntity->get('adsUrl'),
-            'adsKeyword' => $this->adsEntity->get('keywords'),
-            'adsTempKeyword' => $this->setAdsTempKeyword($this->adsEntity->get('showIn')),
-            'adsPrice' => $this->adsEntity->get('adsPrice'),
-            'adsDescription' => $this->adsEntity->get('adsDescription'),
-            'adsTitleError' => '',
-            'adsUrlError' => '',
-            'adsKeywordError' => '',
-            'adsPriceError' => '',
-            'adsDescriptionError' => '',
-        );
-        return $formError;
+        $this->validateInput();
+        // return if has error
+        if(strlen($this->formValue['adsTitleError'].$this->formValue['adsUrlError'].$this->formValue['adsKeywordError'].$this->formValue['adsPriceError'].$this->formValue['adsDescriptionError'])) return;
+        // check some value that need to verify first if change happen
+        $oldValue = strtolower($this->adsEntity->get('adsTitle').$this->adsEntity->get('adsUrl').$this->adsEntity->get('adsDescription'));
+        $newValue = strtolower($this->formValue['adsTitle'].$this->formValue['adsUrl'].$this->formValue['adsDescription']);
+        // set new value
+        $this->adsEntity->set('adsTitle', $this->formValue['adsTitle']);
+        $this->adsEntity->set('adsUrl', $this->formValue['adsUrl']);
+        $this->adsEntity->set('keywords', $this->keywordGenerator());
+        $this->adsEntity->set('adsPrice', $this->formValue['adsPrice']);
+        $this->adsEntity->set('adsDescription', $this->formValue['adsDescription']);
+        // if has new value
+        if($oldValue !== $newValue) {
+            // Change log to RE-EDIT status
+            $log = $this->adsManager->getLogByReviewVersion($this->adsEntity->get('reviewVersion'));
+            if($log instanceof \VigattinAds\DomainModel\AdsApproveLog) {
+                $log->set('reviewResult', Ads::STATUS_VALUE_CHANGED);
+                $log->set('approvedTime', time());
+                $log->persistSelf();
+                $log->flush();
+
+                // Create new log status
+                $this->adsManager->changeAdsStatus($this->adsEntity->get('reviewVersion'), Ads::STATUS_VALUE_CHANGED, '');
+                $this->adsEntity->set('reviewVersion', uniqid());
+                $this->adsEntity->set('status', Ads::STATUS_PENDING);
+            }
+        }
+        $this->adsEntity->persistSelf();
+        $this->adsEntity->flush();
     }
 
-    public function setTemplate(ViewModel $viewModel, \VigattinAds\DomainModel\Ads $adsEntity, $showIn)
+    protected function validateInput()
     {
-        switch(strtolower($showIn)) {
-            case ChooseWebsiteController::VIGATTINTRADE:
-                if(strtolower($adsEntity->get('template')) == 'home-sidebar-left') {
-                    $viewModel->setTemplate('vigattinads/view/dashboard/ads/edit/adsEditWithCatView');
-                }
-                else {
-                    $viewModel->setTemplate('vigattinads/view/dashboard/ads/edit/adsEditView');
-                }
+        $this->formValue['adsTitle'] = $this->getRequest()->getPost('ads-title', '');
+        $this->formValue['adsUrl'] = $this->getRequest()->getPost('ads-url', '');
+        $this->formValue['adsKeyword'] = $this->getRequest()->getPost('ads-keyword', '');
+        $this->formValue['adsCategory'] = $this->adsEntity->get('category');
+        $this->formValue['adsPrice'] = $this->getRequest()->getPost('ads-price', '');
+        $this->formValue['adsDescription'] = $this->getRequest()->getPost('ads-description', '');
+        $this->formValue['adsTitleError'] = Validator::isTitleValid($this->getRequest()->getPost('ads-title', ''));
+        $this->formValue['adsUrlError'] = Validator::isUrlValid($this->getRequest()->getPost('ads-url', ''));
+        $this->formValue['adsKeywordError'] = Validator::isKeywordValid($this->getRequest()->getPost('ads-keyword', ''));
+        $this->formValue['adsPriceError'] = Validator::isNumber($this->getRequest()->getPost('ads-price', ''));
+        $this->formValue['adsDescriptionError'] = Validator::isDescriptionValid($this->getRequest()->getPost('ads-description', ''));
+    }
+
+    protected function keywordGenerator()
+    {
+
+    }
+
+    protected function categoryMenu()
+    {
+        $catView = new ViewModel();
+        switch($this->showIn) {
+            case ChooseWebsiteController::VIGATTIN:
+                $catView->setTemplate('vigattinads/view/dashboard/ads/edit/category/vigattinCatView');
                 break;
             case ChooseWebsiteController::VIGATTINTOURISM:
-                $viewModel->setTemplate('vigattinads/view/dashboard/ads/edit/adsEditWithCatTourismView');
+                $catView->setTemplate('vigattinads/view/dashboard/ads/edit/category/tourismCatView');
                 break;
-            case ChooseWebsiteController::VIGATTIN:
-                $viewModel->setTemplate('vigattinads/view/dashboard/ads/edit/adsEditVigattinView');
+            case ChooseWebsiteController::VIGATTINTRADE:
+                $catView->setTemplate('vigattinads/view/dashboard/ads/edit/category/tradeCatView');
                 break;
             case ChooseWebsiteController::TOURISMBLOGGER:
-                $viewModel->setTemplate('vigattinads/view/dashboard/ads/edit/adsEditView');
+                $catView->setTemplate('vigattinads/view/dashboard/ads/edit/category/articleCatView');
                 break;
             default:
-                $viewModel->setTemplate('vigattinads/view/dashboard/ads/edit/adsEditView');
+                $catView->setTemplate('vigattinads/view/dashboard/ads/edit/category/vigattinCatView');
                 break;
         }
-        return $viewModel;
+        return $catView;
     }
 
-    public function setAdsTempKeyword($showIn)
+    protected function changeSiteTargetMenu()
     {
-        switch(strtolower($showIn)) {
-            case strtolower(ChooseWebsiteController::VIGATTINTRADE):
-                return '';
-                break;
-            case strtolower(ChooseWebsiteController::VIGATTINTOURISM):
-                return 'Homepage|Destination|Articles|Tourist Spots|Discussion|Directory';
-                break;
-            case strtolower(ChooseWebsiteController::VIGATTIN):
-                return 'Homepage';
-                break;
-            case strtolower(ChooseWebsiteController::TOURISMBLOGGER):
-                return 'Homepage';
-                break;
-        }
-        return '';
+        $changeTargetSiteView = new ViewModel();
+        $changeTargetSiteView->setTemplate('vigattinads/view/dashboard/ads/edit/changeTargetSiteView');
+        $changeTargetSiteView->setVariable('ads', $this->adsEntity);
+        $changeTargetSiteView->setVariable('showIn', $this->showIn);
+        return $changeTargetSiteView;
     }
 }

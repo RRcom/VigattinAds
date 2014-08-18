@@ -10,9 +10,7 @@
             </div>
             <div class="ads-divided-content"><div class="ads-frame-leftbar">
                 <div class="ads-image-preview-container"><img class="ads-frame-image" src="/repo<?php echo $this->escapeHtmlAttr($ad['adsImage']); ?>"></div>
-            </div><div class="ads-frame-rightbar">
-                <div class="ads-frame-description"><?php echo $this->escapeHtml($ad['adsDescription']); ?></div>
-            </div></div>
+            </div><?php echo $this->escapeHtml($ad['adsDescription']); ?></div>
         </a>
         <div class="ads-separator"></div>
     <?php endforeach; ?>

@@ -5,7 +5,7 @@
             <div class="panel panel-info">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <span>current target site is</span> <span class="text-warning"><?php echo $ads->get('showIn'); ?></span>
+                        <span>current target site is</span> <span class="text-warning"><?php echo $showIn; ?></span>
                         <p></p>
                         <a class="btn btn-default" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
                             Change target site
@@ -18,7 +18,7 @@
 
                             <!-- vigattin.com -->
                             <div class="col-xs-4 col-sm-3 col-md-2">
-                                <?php if(strtolower($ads->get('showIn')) == \VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseWebsiteController::VIGATTIN): ?>
+                                <?php if($showIn == \VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseWebsiteController::VIGATTIN): ?>
                                     <div class="thumbnail opacity-50" title="<?php echo \VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseWebsiteController::VIGATTIN; ?>">
                                         <img src="/assets/vigattinads/img/logo-vig.jpg" alt="<?php echo \VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseWebsiteController::VIGATTIN; ?>">
                                     </div>
@@ -32,7 +32,7 @@
 
                             <!-- vigattintrade.com -->
                             <div class="col-xs-4 col-sm-3 col-md-2">
-                                <?php if(strtolower($ads->get('showIn')) == \VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseWebsiteController::VIGATTINTRADE): ?>
+                                <?php if($showIn == \VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseWebsiteController::VIGATTINTRADE): ?>
                                     <div class="thumbnail opacity-50" title="<?php echo \VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseWebsiteController::VIGATTINTRADE; ?>">
                                         <img src="/assets/vigattinads/img/logo-trade.jpg" alt="<?php echo \VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseWebsiteController::VIGATTINTRADE; ?>">
                                     </div>
@@ -46,7 +46,7 @@
 
                             <!-- vigattintourism.com -->
                             <div class="col-xs-4 col-sm-3 col-md-2">
-                                <?php if(strtolower($ads->get('showIn')) == \VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseWebsiteController::VIGATTINTOURISM): ?>
+                                <?php if($showIn == \VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseWebsiteController::VIGATTINTOURISM): ?>
                                     <div class="thumbnail opacity-50" title="<?php echo \VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseWebsiteController::VIGATTINTOURISM; ?>">
                                         <img src="/assets/vigattinads/img/logo-tourism.jpg" alt="<?php echo \VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseWebsiteController::VIGATTINTOURISM; ?>">
                                     </div>
@@ -60,7 +60,7 @@
 
                             <!-- vigattintourism bloggers -->
                             <div class="col-xs-4 col-sm-3 col-md-2">
-                                <?php if(strtolower($ads->get('showIn')) == \VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseWebsiteController::TOURISMBLOGGER): ?>
+                                <?php if($showIn == \VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseWebsiteController::TOURISMBLOGGER): ?>
                                     <div class="thumbnail opacity-50" title="<?php echo \VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseWebsiteController::TOURISMBLOGGER; ?>">
                                         <img src="/assets/vigattinads/img/logo-bloggers.jpg" alt="<?php echo \VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseWebsiteController::TOURISMBLOGGER; ?>">
                                     </div>

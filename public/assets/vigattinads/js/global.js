@@ -657,7 +657,7 @@ $(document).ready(function(e) {
                 case 'next':
                     if(!checkTitle()) err++;
                     if(!checkUrl()) err++;
-                    if(!checkKeyword()) err++;
+                    //if(!checkKeyword()) err++;
                     if(!checkDescription()) err++;
                     if(err) return false
                     break;
@@ -666,11 +666,6 @@ $(document).ready(function(e) {
                     break;
             }
         });
-    })(jQuery);
-
-    /* modal ads confirm delete */
-    (function($) {
-
     })(jQuery);
 
     /* modal account form */

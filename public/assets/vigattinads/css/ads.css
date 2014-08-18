@@ -193,6 +193,7 @@ body {
 .sidebar-ads-fbstyle .ads-frame .ads-divided-content .ads-frame-leftbar {
     width: 100px;
     margin: 0 5px 5px 0;
+    float: left;
 }
 .sidebar-ads-fbstyle .ads-frame .ads-divided-content .ads-frame-rightbar {
     width: 112px;
