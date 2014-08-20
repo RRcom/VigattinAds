@@ -6,6 +6,7 @@ use VigattinAds\Controller\Dashboard\Ads\AdsController;
 use VigattinAds\DomainModel\Validator;
 use VigattinAds\DomainModel\Ads;
 use VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseWebsiteController;
+use VigattinAds\DomainModel\AdsCategory;
 
 class EditController extends AdsController
 {
@@ -19,6 +20,8 @@ class EditController extends AdsController
     protected $formAction;
 
     protected $showIn;
+
+    protected $selectedCategory;
 
     public function __construct()
     {
@@ -43,6 +46,9 @@ class EditController extends AdsController
 
         // get form action
         $this->formAction = strtolower($this->getRequest()->getPost('submit', ''));
+
+        // get selected category
+        $this->selectedCategory = $this->getRequest()->getPost('selectedCategory', array());
 
         // get ads entity from param1 id
         $this->adsEntity = $this->adsUser->getSingleAds($this->params('param1', ''));
@@ -198,29 +204,40 @@ class EditController extends AdsController
         $this->formValue['adsDescriptionError'] = Validator::isDescriptionValid($this->getRequest()->getPost('ads-description', ''));
     }
 
-    protected function keywordGenerator()
-    {
-
-    }
-
     protected function categoryMenu()
     {
         $catView = new ViewModel();
+        $catView->setTemplate('vigattinads/view/dashboard/ads/edit/category/siteCatView');
         switch($this->showIn) {
             case ChooseWebsiteController::VIGATTIN:
-                $catView->setTemplate('vigattinads/view/dashboard/ads/edit/category/vigattinCatView');
+                $catProvider = new AdsCategory\VigattinAdsCategoryProvider($this->serviceLocator, $this->adsEntity, $this->getRequest()->getPost('selectedCategory', array()));
+                $catView->setVariable('title', 'Vigattin Directory');
+                $catView->setVariable('description', 'Choose which directory the ads will appear');
+                $catView->setVariable('adsCategories', $catProvider->getAdsCategory());
                 break;
             case ChooseWebsiteController::VIGATTINTOURISM:
-                $catView->setTemplate('vigattinads/view/dashboard/ads/edit/category/tourismCatView');
+                $catProvider = new AdsCategory\TourismAdsCategoryProvider($this->serviceLocator, $this->adsEntity, $this->getRequest()->getPost('selectedCategory', array()));
+                $catView->setVariable('title', 'Vigattintourism Directory');
+                $catView->setVariable('description', 'Choose which directory the ads will appear');
+                $catView->setVariable('adsCategories', $catProvider->getAdsCategory());
                 break;
             case ChooseWebsiteController::VIGATTINTRADE:
-                $catView->setTemplate('vigattinads/view/dashboard/ads/edit/category/tradeCatView');
+                $catProvider = new AdsCategory\VigattinAdsCategoryProvider($this->serviceLocator, $this->adsEntity, $this->getRequest()->getPost('selectedCategory', array()));
+                $catView->setVariable('title', 'Vigattin Directory');
+                $catView->setVariable('description', 'Choose which directory the ads will appear');
+                $catView->setVariable('adsCategories', $catProvider->getAdsCategory());
                 break;
             case ChooseWebsiteController::TOURISMBLOGGER:
-                $catView->setTemplate('vigattinads/view/dashboard/ads/edit/category/articleCatView');
+                $catProvider = new AdsCategory\VigattinAdsCategoryProvider($this->serviceLocator, $this->adsEntity, $this->getRequest()->getPost('selectedCategory', array()));
+                $catView->setVariable('title', 'Vigattin Directory');
+                $catView->setVariable('description', 'Choose which directory the ads will appear');
+                $catView->setVariable('adsCategories', $catProvider->getAdsCategory());
                 break;
             default:
-                $catView->setTemplate('vigattinads/view/dashboard/ads/edit/category/vigattinCatView');
+                $catProvider = new AdsCategory\VigattinAdsCategoryProvider($this->serviceLocator, $this->adsEntity, $this->getRequest()->getPost('selectedCategory', array()));
+                $catView->setVariable('title', 'Vigattin Directory');
+                $catView->setVariable('description', 'Choose which directory the ads will appear');
+                $catView->setVariable('adsCategories', $catProvider->getAdsCategory());
                 break;
         }
         return $catView;
@@ -233,5 +250,10 @@ class EditController extends AdsController
         $changeTargetSiteView->setVariable('ads', $this->adsEntity);
         $changeTargetSiteView->setVariable('showIn', $this->showIn);
         return $changeTargetSiteView;
+    }
+
+    protected function keywordGenerator()
+    {
+
     }
 }
