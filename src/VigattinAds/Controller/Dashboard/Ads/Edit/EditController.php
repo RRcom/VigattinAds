@@ -53,9 +53,6 @@ class EditController extends AdsController
         // get ads entity from param1 id
         $this->adsEntity = $this->adsUser->getSingleAds($this->params('param1', ''));
 
-        // get show in data
-        $this->showIn = strtolower($this->params('param2', '') ? $this->params('param2') : $this->adsEntity->get('showIn'));
-
         // load edit partial view
         $actionContent = new ViewModel();
 
@@ -65,6 +62,9 @@ class EditController extends AdsController
             $this->mainView->addChild($actionContent, 'actionContent');
             return $this->mainView;
         } else $actionContent->setTemplate('vigattinads/view/dashboard/ads/edit/editView');
+
+        // get show in data
+        $this->showIn = strtolower($this->params('param2', '') ? $this->params('param2') : $this->adsEntity->get('showIn'));
 
         // load change target site partial view
         $actionContent->addChild($this->changeSiteTargetMenu(), 'changeTargetSiteView');
