@@ -186,7 +186,7 @@ return array(
             'vigattinads_dashboard_ads_edit' => array(
                 'type'    => 'segment',
                 'options' => array(
-                    'route'    => '/vigattinads/dashboard/ads/edit[/][:controller][/][:param1][/][:param2]',
+                    'route'    => '/vigattinads/dashboard/ads/edit[/:controller][/:param1][/:param2]',
                     'constraints' => array(
                         'controller'    => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'param1'        => '[a-zA-Z0-9_-]*',

@@ -150,8 +150,8 @@ class AdsManager
     /**
      * Count total of search result
      * @param $showIn
-     * @param $template
-     * @param $keyword
+     * @param $template leave empty to count all
+     * @param $keyword leave empty to count all
      * @return mixed
      */
     public function countAdsTotal($showIn, $template, $keyword)
@@ -161,13 +161,23 @@ class AdsManager
         if($result) return $result;
         if($keyword)
         {
-            $query = $this->entityManager->createQuery("SELECT COUNT(a.id) FROM VigattinAds\DomainModel\Ads a WHERE a.deleted = 0 AND a.status = 1 AND a.showIn = :showIn AND a.template = :template AND a.keywords LIKE :keyword AND a.viewLimit > 0");
-            $query->setParameters(array('showIn' => $showIn, 'template' => $template, 'keyword' => '%'.$keyword.'%'));
+            if($template) {
+                $query = $this->entityManager->createQuery("SELECT COUNT(a.id) FROM VigattinAds\DomainModel\Ads a WHERE a.deleted = 0 AND a.status = 1 AND a.showIn = :showIn AND a.template = :template AND a.keywords LIKE :keyword AND a.viewLimit > 0");
+                $query->setParameters(array('showIn' => $showIn, 'template' => $template, 'keyword' => '%'.$keyword.'%'));
+            } else {
+                $query = $this->entityManager->createQuery("SELECT COUNT(a.id) FROM VigattinAds\DomainModel\Ads a WHERE a.deleted = 0 AND a.status = 1 AND a.showIn = :showIn AND a.keywords LIKE :keyword AND a.viewLimit > 0");
+                $query->setParameters(array('showIn' => $showIn, 'keyword' => '%'.$keyword.'%'));
+            }
         }
         else
         {
-            $query = $this->entityManager->createQuery("SELECT COUNT(a.id) FROM VigattinAds\DomainModel\Ads a WHERE a.deleted = 0 AND a.status = 1 AND a.showIn = :showIn AND a.template = :template AND a.viewLimit > 0");
-            $query->setParameters(array('showIn' => $showIn, 'template' => $template));
+            if($template) {
+                $query = $this->entityManager->createQuery("SELECT COUNT(a.id) FROM VigattinAds\DomainModel\Ads a WHERE a.deleted = 0 AND a.status = 1 AND a.showIn = :showIn AND a.template = :template AND a.viewLimit > 0");
+                $query->setParameters(array('showIn' => $showIn, 'template' => $template));
+            } else {
+                $query = $this->entityManager->createQuery("SELECT COUNT(a.id) FROM VigattinAds\DomainModel\Ads a WHERE a.deleted = 0 AND a.status = 1 AND a.showIn = :showIn AND a.viewLimit > 0");
+                $query->setParameters(array('showIn' => $showIn));
+            }
         }
 
         $result = $query->getSingleScalarResult();
@@ -175,11 +185,10 @@ class AdsManager
         return $result;
     }
 
-
     /**
      * @param $showIn
-     * @param $template
-     * @param $keyword
+     * @param $template leave empty to search all
+     * @param $keyword leave empty to search all
      * @param int $start
      * @param int $limit
      * @return AdsEntity[]
@@ -191,13 +200,23 @@ class AdsManager
         if($result) return unserialize($result);
         if($keyword)
         {
-            $query = $this->entityManager->createQuery("SELECT a FROM VigattinAds\DomainModel\Ads a WHERE a.deleted = 0 AND a.status = 1 AND a.showIn = :showIn AND a.template = :template AND a.keywords LIKE :keyword AND a.viewLimit > 0");
-            $query->setParameters(array('showIn' => $showIn, 'template' => $template, 'keyword' => '%'.$keyword.'%'));
+            if($template) {
+                $query = $this->entityManager->createQuery("SELECT a FROM VigattinAds\DomainModel\Ads a WHERE a.deleted = 0 AND a.status = 1 AND a.showIn = :showIn AND a.template = :template AND a.keywords LIKE :keyword AND a.viewLimit > 0");
+                $query->setParameters(array('showIn' => $showIn, 'template' => $template, 'keyword' => '%'.$keyword.'%'));
+            } else {
+                $query = $this->entityManager->createQuery("SELECT a FROM VigattinAds\DomainModel\Ads a WHERE a.deleted = 0 AND a.status = 1 AND a.showIn = :showIn AND a.keywords LIKE :keyword AND a.viewLimit > 0");
+                $query->setParameters(array('showIn' => $showIn, 'keyword' => '%'.$keyword.'%'));
+            }
         }
         else
         {
-            $query = $this->entityManager->createQuery("SELECT a FROM VigattinAds\DomainModel\Ads a WHERE a.deleted = 0 AND a.status = 1 AND a.showIn = :showIn AND a.template = :template AND a.viewLimit > 0");
-            $query->setParameters(array('showIn' => $showIn, 'template' => $template));
+            if($template) {
+                $query = $this->entityManager->createQuery("SELECT a FROM VigattinAds\DomainModel\Ads a WHERE a.deleted = 0 AND a.status = 1 AND a.showIn = :showIn AND a.template = :template AND a.viewLimit > 0");
+                $query->setParameters(array('showIn' => $showIn, 'template' => $template));
+            } else {
+                $query = $this->entityManager->createQuery("SELECT a FROM VigattinAds\DomainModel\Ads a WHERE a.deleted = 0 AND a.status = 1 AND a.showIn = :showIn AND a.viewLimit > 0");
+                $query->setParameters(array('showIn' => $showIn));
+            }
         }
         $query->setFirstResult(intval($start));
         $query->setMaxResults(intval($limit));

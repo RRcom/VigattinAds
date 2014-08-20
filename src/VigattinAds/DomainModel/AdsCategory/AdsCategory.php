@@ -63,5 +63,37 @@ class AdsCategory
         return $this->title;
     }
 
+    /**
+     * @param string $keyword
+     */
+    public function setKeyword($keyword)
+    {
+        $this->keyword = $keyword;
+    }
+
+    /**
+     * @param string $previewLink
+     */
+    public function setPreviewLink($previewLink)
+    {
+        $this->previewLink = $previewLink;
+    }
+
+    /**
+     * @param boolean $selected
+     */
+    public function setSelected($selected)
+    {
+        $this->selected = $selected;
+    }
+
+    /**
+     * @param string $title
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
 
 }

@@ -125,7 +125,7 @@ class EditController extends AdsController
         }
     }
 
-    public function onDelete()
+    protected function onDelete()
     {
         $viewToGoldRate = floatval($this->settingsManager->get('viewToGoldRate'));
         $viewLimit = $this->adsEntity->get('viewLimit');
@@ -169,6 +169,7 @@ class EditController extends AdsController
         $this->adsEntity->set('keywords', $this->keywordGenerator());
         $this->adsEntity->set('adsPrice', $this->formValue['adsPrice']);
         $this->adsEntity->set('adsDescription', $this->formValue['adsDescription']);
+        $this->adsEntity->set('showIn', $this->showIn);
         // if has new value
         if($oldValue !== $newValue) {
             // Change log to RE-EDIT status
@@ -187,6 +188,7 @@ class EditController extends AdsController
         }
         $this->adsEntity->persistSelf();
         $this->adsEntity->flush();
+        $this->redirect()->toRoute('vigattinads_dashboard_ads_edit', array('param1' => $this->adsEntity->get('id')));
     }
 
     protected function validateInput()
@@ -228,9 +230,9 @@ class EditController extends AdsController
                 $catView->setVariable('adsCategories', $catProvider->getAdsCategory());
                 break;
             case ChooseWebsiteController::TOURISMBLOGGER:
-                $catProvider = new AdsCategory\VigattinAdsCategoryProvider($this->serviceLocator, $this->adsEntity, $this->getRequest()->getPost('selectedCategory', array()));
-                $catView->setVariable('title', 'Vigattin Directory');
-                $catView->setVariable('description', 'Choose which directory the ads will appear');
+                $catProvider = new AdsCategory\TourismArticleAdsCategoryProvider($this->serviceLocator, $this->adsEntity, $this->getRequest()->getPost('selectedCategory', array()));
+                $catView->setVariable('title', 'Page Position');
+                $catView->setVariable('description', 'Choose which position the ads will appear');
                 $catView->setVariable('adsCategories', $catProvider->getAdsCategory());
                 break;
             default:
@@ -254,6 +256,6 @@ class EditController extends AdsController
 
     protected function keywordGenerator()
     {
-
+        return implode('', $this->getRequest()->getPost('selectedCategory', array()));
     }
 }

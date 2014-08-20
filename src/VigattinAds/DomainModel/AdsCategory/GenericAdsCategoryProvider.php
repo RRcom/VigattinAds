@@ -6,6 +6,10 @@ use VigattinAds\DomainModel\Ads;
 
 class GenericAdsCategoryProvider implements AdsCategoryProviderInterface
 {
+    protected $categories = array(
+        array('keyword' => '(homepage)',    'title' => 'Homepage',  'previewLink' => 'http://vigattin.com#preview'),
+    );
+
     /**
      * @var \Zend\ServiceManager\ServiceManager
      */
@@ -21,10 +25,14 @@ class GenericAdsCategoryProvider implements AdsCategoryProviderInterface
      * @param Ads $ads
      * @param array $selectedCategory
      */
+
+    protected $selectedCategory;
+
     public function __construct(ServiceManager $serviceManager, Ads $ads, Array $selectedCategory)
     {
         $this->serviceManager = $serviceManager;
         $this->ads = $ads;
+        $this->selectedCategory = implode('', $selectedCategory);
     }
 
 
@@ -33,7 +41,27 @@ class GenericAdsCategoryProvider implements AdsCategoryProviderInterface
      */
     public function getAdsCategory()
     {
-        // TODO: Implement getAdsCategory() method.
+        $catCollection = new AdsCategoryCollection();
+        $checkedCount = 0;
+        if($this->selectedCategory) {
+            foreach($this->categories as $category) {
+                $checked = is_int(strpos($this->selectedCategory, $category['keyword'])) ? true : false;
+                $catCollection->add(new AdsCategory($category['keyword'], $category['previewLink'], $checked, $category['title']));
+                if($checked) $checkedCount++;
+            }
+        } else {
+            foreach($this->categories as $category) {
+                $checked = is_int(strpos($this->ads->get('keywords'), $category['keyword'])) ? true : false;
+                $catCollection->add(new AdsCategory($category['keyword'], $category['previewLink'], $checked, $category['title']));
+                if($checked) $checkedCount++;
+            }
+        }
+
+        if(count($catCollection) && !$checkedCount) {
+            $catCollection->current()->setSelected(true);
+        }
+
+        return $catCollection;
     }
 
 }
