@@ -1791,6 +1791,185 @@ $(document).ready(function(e) {
 
         init();
     })(jQuery);
+
+    /* #articleAuthorSelectModal */
+    (function($) {
+
+        var modal = $('#articleAuthorSelectModal');
+        var searchButton = $('#authorSearchSubmit', modal);
+        var actionUrl = 'http://www.vigattintourism.com/service/author';
+        var stringInput = $('#authorSearchString', modal);
+        var resultContainer = $('#authorResultListContainer', modal);
+        var categoryInput = $('.authorSearchCategories', modal);
+        var selectedAuthors = $('.selected-authors', modal);
+        var ajax;
+        var fetching = false;
+        var loader = $('#authorSearchTablePreloader', modal);
+        var tableBody = $('#authorSearchTable', modal);
+        var offset = 0;
+        var limit = 10;
+        var isLast = false;
+        var maxItem = 10;
+
+        function onFetchCurrentAuthors(authors) {
+            $.each(authors, function(key, value) {
+                var button =  $('<button type="button" value="'+value.id+'" data-name="'+value.firstName+' '+value.lastName+'">add</button>');
+                button.click(onAddAuthor);
+                button.trigger('click');
+            });
+            $('.body-content', modal).show();
+            $('.body-loader', modal).hide();
+        }
+
+        function onSearchClick(e) {
+            fetching = false;
+            offset = 0;
+            isLast = false;
+            tableBody.html('');
+            fetchMore();
+        }
+
+        function onTextInputKeydown(e) {
+            if(e.which == 13) {
+                onSearchClick(e);
+                return false;
+            }
+        }
+
+        function onAddAuthor(e) {
+            var id = $(e.currentTarget).val();
+            var name = $(e.currentTarget).attr('data-name');
+            var item;
+            if($('.multi-selector-item', selectedAuthors).length >= maxItem) return;
+            if(!$('#author_'+id, selectedAuthors).length) {
+                selectedAuthors.show();
+                item = $('<div class="multi-selector-item" id="author_'+id+'" author="'+id+'"><span class="author-name">'+name+'</span> <span class="multi-selector-close" data-target="#author_'+id+'">x</span></div>');
+                $('.multi-selector-close', item).click(onRemoveAuthor);
+                selectedAuthors.append(item);
+                generateKeywords();
+            }
+        }
+
+        function onRemoveAuthor(e) {
+            var dataTarget = $(e.currentTarget).attr('data-target');
+            $(dataTarget, selectedAuthors).remove();
+            generateKeywords();
+            if(!$('.multi-selector-item', selectedAuthors).length) selectedAuthors.hide();
+        }
+
+        function onScroll(e) {
+            if(e.currentTarget.scrollHeight <= ((e.currentTarget.offsetHeight + e.currentTarget.scrollTop)+50)) {
+                if(!isLast) fetchMore();
+            }
+        }
+
+        function init(e) {
+            $('.body-content', modal).hide();
+            $('.body-loader', modal).show();
+            selectedAuthors.html('');
+            fetchCurrentAuthors();
+            $(searchButton).unbind('click').click(onSearchClick);
+            tableBody.html('');
+            selectedAuthors.hide();
+            fetching = false;
+            offset = 0;
+            isLast = false;
+            stringInput.val('').unbind('keydown').keydown(onTextInputKeydown);
+            loader.hide();
+            resultContainer.unbind('scroll').scroll(onScroll);
+        }
+
+        function fetchMore() {
+            if(fetching) return;
+            fetching = true;
+            loader.show();
+            ajax = $.ajax( {
+                type: 'GET',
+                data: {'string':stringInput.val(), 'filter':getStrCat(), 'offset':offset, 'limit':limit},
+                url: actionUrl,
+                dataType: 'jsonp',
+                complete: function(jqXHR, textStatus) {
+                    if(textStatus != 'success') {
+                        setTimeout(function(){fetchMore()}, 3000);
+                    }
+                },
+                success: function(data, textStatus, jqXHR) {
+                    offset += limit;
+                    var item;
+                    $.each(data.authors, function(key, value) {
+                        item =  $('<tr>'+
+                                    '<td><div style="height: 50px; width: 50px; background-size: contain; background-image: url(\''+value.photoUrl+'\')"></div></td>'+
+                                    '<td class="text-center full-name">'+value.firstName+' '+value.lastName+'</td>'+
+                                    '<td class="text-right">'+
+                                        '<button type="button" id="authorListItem'+value.id+'" class="author-list-add-button btn btn-default" value="'+value.id+'" data-name="'+value.firstName+' '+value.lastName+'">add</button>'+
+                                    '</td>'+
+                                '</tr>');
+                        $('button', item).click(onAddAuthor);
+                        tableBody.append(item);
+                    });
+                    fetching = false;
+                    loader.hide();
+                    if(offset >= data.total) isLast = true;
+                    else isLast = false;
+                }
+            });
+        }
+
+        function getStrCat() {
+            var strCat = '';
+            $.each(categoryInput, function(key, value) {
+                if($(value).is(":checked")) {
+                    strCat += $(value).val()+',';
+                }
+            });
+            return strCat;
+        }
+
+        function generateKeywords() {
+            var keywords = [];
+            var keywordsRightSide = '';
+            var keywordsFooter = '';
+            var id;
+            keywords[0] = '';
+            keywords[1] = '';
+            keywords[2] = '';
+            $('.multi-selector-item', selectedAuthors).each(function(key, value) {
+                id = $(value).attr('author');
+                keywords[0] += '(tourism article header '+id+')';
+                keywords[1] += '(tourism article rightside '+id+')';
+                keywords[2] += '(tourism article footer '+id+')';
+            });
+            $('.tourism-cat-checkbox').each(function(key, value) {
+                $(value).val(keywords[key]);
+            });
+        }
+
+        function fetchCurrentAuthors() {
+            $.ajax( {
+                type: 'GET',
+                data: {'ids':getIdsFromCheckBoxValue(), 'limit':10},
+                url: actionUrl,
+                dataType: 'jsonp',
+                success: function(data, textStatus, jqXHR) {
+                    onFetchCurrentAuthors(data.authors);
+                }
+            });
+        }
+
+        function getIdsFromCheckBoxValue() {
+            var checkBox = $('.tourism-cat-checkbox')[0];
+            var id;
+            var ids = '';
+            $.each($(checkBox).val().split(')'), function(key, value) {
+                id = value.replace( /^\D+/g, '');
+                if(id) ids += id+',';
+            });
+            return ids;
+        }
+
+        $(modal).on('show.bs.modal', init);
+
+    })(jQuery);
 });
 
 

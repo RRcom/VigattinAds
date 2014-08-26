@@ -6,7 +6,12 @@ use VigattinAds\DomainModel\Ads;
 
 class GenericAdsCategoryProvider implements AdsCategoryProviderInterface
 {
+    /**
+     * This will be your checkboxes. alter this code to generate custom checkboxes.
+     * @var array
+     */
     protected $categories = array(
+        // add more array like this to generate more checkboxes
         array('keyword' => '(homepage)',    'title' => 'Homepage',  'previewLink' => 'http://vigattin.com#preview'),
     );
 
@@ -20,14 +25,13 @@ class GenericAdsCategoryProvider implements AdsCategoryProviderInterface
      */
     protected $ads;
 
+    protected $selectedCategory;
+
     /**
      * @param ServiceManager $serviceManager
      * @param Ads $ads
      * @param array $selectedCategory
      */
-
-    protected $selectedCategory;
-
     public function __construct(ServiceManager $serviceManager, Ads $ads, Array $selectedCategory)
     {
         $this->serviceManager = $serviceManager;
@@ -51,7 +55,7 @@ class GenericAdsCategoryProvider implements AdsCategoryProviderInterface
             }
         } else {
             foreach($this->categories as $category) {
-                $checked = is_int(strpos($this->ads->get('keywords'), $category['keyword'])) ? true : false;
+                $checked = is_int(@strpos($this->ads->get('keywords'), $category['keyword'])) ? true : false;
                 $catCollection->add(new AdsCategory($category['keyword'], $category['previewLink'], $checked, $category['title']));
                 if($checked) $checkedCount++;
             }

@@ -234,6 +234,7 @@ class EditController extends AdsController
                 $catView->setVariable('title', 'Page Position');
                 $catView->setVariable('description', 'Choose which position the ads will appear');
                 $catView->setVariable('adsCategories', $catProvider->getAdsCategory());
+                $catView->addChild($catProvider->getAuthorSelectMenu(), 'authorMenu');
                 break;
             default:
                 $catProvider = new AdsCategory\VigattinAdsCategoryProvider($this->serviceLocator, $this->adsEntity, $this->getRequest()->getPost('selectedCategory', array()));

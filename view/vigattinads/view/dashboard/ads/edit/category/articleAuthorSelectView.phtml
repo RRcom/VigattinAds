@@ -1,0 +1,62 @@
+<div>
+    <p><b>Select Article Author</b></p>
+    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#articleAuthorSelectModal">Choose Author</button>
+</div>
+<br>
+
+<!-- Modal -->
+<div class="modal fade" id="articleAuthorSelectModal" tabindex="-1" role="dialog" aria-labelledby="articleAuthorSelectModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="articleAuthorSelectModalLabel">Search Author</h4>
+            </div>
+            <div class="modal-body">
+                <!-- modal body -->
+                <div class="text-center body-loader"><img src="/assets/vigattinads/img/circle-preloader-2.gif"></div>
+                <div class="input-group body-content">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Categories <span class="caret"></span></button>
+                        <ul class="dropdown-menu disable-toggle" role="menu">
+                            <?php foreach($categories as $key => $category): ?>
+                                <li>
+                                    <a class="checkbox">
+                                        <label>
+                                            <input class="authorSearchCategories" type="checkbox" value="<?php echo $this->escapeHtmlAttr($category->getCategoryId()); ?>"> <?php echo $this->escapeHtml(ucfirst(strtolower($category->getCategoryName()))); ?>
+                                        </label>
+                                    </a>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                    <input id="authorSearchString" type="text" class="form-control" placeholder="search author">
+                    <div class="input-group-btn">
+                        <button id="authorSearchSubmit" type="button" class="btn btn-default" >Search</button>
+                    </div>
+                </div>
+
+                <div class="selected-authors">
+
+                </div>
+
+                <div id="authorResultListContainer" style="height: 300px; overflow: auto">
+                    <table class="table">
+                        <tbody id="authorSearchTable">
+                        </tbody>
+                        <tfoot>
+                            <tr id="authorSearchTablePreloader">
+                                <td colspan="4" class="text-center"><img src="/assets/vigattinads/img/circle-preloader-2.gif"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <!-- /modal body -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+            </div>
+        </div>
+    </div>
+</div>
