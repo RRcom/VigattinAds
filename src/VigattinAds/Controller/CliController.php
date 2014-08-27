@@ -4,6 +4,7 @@ namespace VigattinAds\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use VigattinAds\DomainModel\UserManager;
 use Zend\Mvc\MvcEvent;
+use VigattinAds\DomainModel\Assets\AssetsGenerator;
 
 /*
  * Command line system tools
@@ -38,7 +39,7 @@ class CliController extends AbstractActionController
 
     public function indexAction()
     {
-        return "vigattinads newuser\nvigattinads changepass\nupdatesearchads\n";
+        return "vigattinads newuser\nvigattinads changepass\nupdatesearchads\nassets\n";
     }
 
     public function newuserAction()
@@ -101,4 +102,11 @@ class CliController extends AbstractActionController
         }
         echo "$batchStart user(s) successfully updated\n";
     }
+
+    public function assetsAction()
+    {
+        $assetsGenerator = new AssetsGenerator();
+        $assetsGenerator->generate();
+    }
+
 }

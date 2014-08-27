@@ -467,6 +467,15 @@ return array(
                         )
                     )
                 ),
+                'vigattinads-assets' => array(
+                    'options' => array(
+                        'route'    => 'vigattinads assets',
+                        'defaults' => array(
+                            'controller' => 'VigattinAds\Controller\Cli',
+                            'action'     => 'assets',
+                        )
+                    )
+                ),
             )
         )
     ),

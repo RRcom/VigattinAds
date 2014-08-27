@@ -41,7 +41,6 @@ class TourismArticleAdsCategoryProvider extends GenericAdsCategoryProvider
         $this->generateCheckboxValue();
     }
 
-
     public function getAuthorSelectMenu()
     {
         $menu = new ViewModel();
@@ -77,8 +76,8 @@ class TourismArticleAdsCategoryProvider extends GenericAdsCategoryProvider
             $footer .= "(tourism article footer $id)";
         }
 
-        $this->categories[] = array('keyword' => $header, 'title' => 'Head Banner',  'previewLink' => 'http://vigattintourism.com/tourism/articles#preview');
-        $this->categories[] = array('keyword' => $rightside, 'title' => 'Side Bar',  'previewLink' => 'http://vigattintourism.com/tourism/articles#preview');
-        $this->categories[] = array('keyword' => $footer, 'title' => 'Foot Banner',  'previewLink' => 'http://vigattintourism.com/tourism/articles#preview');
+        $this->categories[] = array('keyword' => $header, 'title' => 'Head Banner',  'previewLink' => 'http://vigattintourism.com/tourism/articles#preview', 'group' => '');
+        $this->categories[] = array('keyword' => $rightside, 'title' => 'Side Bar',  'previewLink' => 'http://vigattintourism.com/tourism/articles#preview', 'group' => '');
+        $this->categories[] = array('keyword' => $footer, 'title' => 'Foot Banner',  'previewLink' => 'http://vigattintourism.com/tourism/articles#preview', 'group' => '');
     }
 }

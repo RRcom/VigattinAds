@@ -12,7 +12,7 @@ class GenericAdsCategoryProvider implements AdsCategoryProviderInterface
      */
     protected $categories = array(
         // add more array like this to generate more checkboxes
-        array('keyword' => '(homepage)',    'title' => 'Homepage',  'previewLink' => 'http://vigattin.com#preview'),
+        array('keyword' => '(homepage)',    'title' => 'Homepage',  'previewLink' => 'http://vigattin.com#preview', 'group' => ''),
     );
 
     /**
@@ -25,6 +25,9 @@ class GenericAdsCategoryProvider implements AdsCategoryProviderInterface
      */
     protected $ads;
 
+    /**
+     * @var string joint value of checkboxes ex. value "(homepage)(sidebar)(footer)"
+     */
     protected $selectedCategory;
 
     /**
@@ -49,14 +52,14 @@ class GenericAdsCategoryProvider implements AdsCategoryProviderInterface
         $checkedCount = 0;
         if($this->selectedCategory) {
             foreach($this->categories as $category) {
-                $checked = is_int(strpos($this->selectedCategory, $category['keyword'])) ? true : false;
-                $catCollection->add(new AdsCategory($category['keyword'], $category['previewLink'], $checked, $category['title']));
+                $checked = is_int(@strpos($this->selectedCategory, $category['keyword'])) ? true : false;
+                $catCollection->add(new AdsCategory($category['keyword'], $category['previewLink'], $checked, $category['title'], $category['group']));
                 if($checked) $checkedCount++;
             }
         } else {
             foreach($this->categories as $category) {
                 $checked = is_int(@strpos($this->ads->get('keywords'), $category['keyword'])) ? true : false;
-                $catCollection->add(new AdsCategory($category['keyword'], $category['previewLink'], $checked, $category['title']));
+                $catCollection->add(new AdsCategory($category['keyword'], $category['previewLink'], $checked, $category['title'], $category['group']));
                 if($checked) $checkedCount++;
             }
         }

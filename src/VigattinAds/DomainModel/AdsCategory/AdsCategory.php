@@ -23,12 +23,18 @@ class AdsCategory
      */
     protected $title;
 
-    function __construct($keyword, $previewLink, $selected, $title)
+    /**
+     * @var string group name
+     */
+    protected $group;
+
+    function __construct($keyword, $previewLink, $selected, $title, $group = '')
     {
         $this->keyword = $keyword;
         $this->previewLink = $previewLink;
         $this->selected = $selected;
         $this->title = $title;
+        $this->group = $group;
     }
 
     /**
@@ -95,5 +101,19 @@ class AdsCategory
         $this->title = $title;
     }
 
+    /**
+     * @return string
+     */
+    public function getGroup()
+    {
+        return $this->group;
+    }
 
+    /**
+     * @param string $group
+     */
+    public function setGroup($group)
+    {
+        $this->group = $group;
+    }
 }
