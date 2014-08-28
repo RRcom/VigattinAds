@@ -224,7 +224,7 @@ class EditController extends AdsController
                 $catView->setVariable('adsCategories', $catProvider->getAdsCategory());
                 break;
             case ChooseWebsiteController::VIGATTINTRADE:
-                $catProvider = new AdsCategory\VigattinAdsCategoryProvider($this->serviceLocator, $this->adsEntity, $this->getRequest()->getPost('selectedCategory', array()));
+                $catProvider = new AdsCategory\TradeAdsCategoryProvider($this->serviceLocator, $this->adsEntity, $this->getRequest()->getPost('selectedCategory', array()));
                 $catView->setVariable('title', 'Vigattin Directory');
                 $catView->setVariable('description', 'Choose which directory the ads will appear');
                 $catView->setVariable('adsCategories', $catProvider->getAdsCategory());

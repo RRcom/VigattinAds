@@ -28,13 +28,19 @@ class AdsCategory
      */
     protected $group;
 
-    function __construct($keyword, $previewLink, $selected, $title, $group = '')
+    /**
+     * @var bool
+     */
+    protected $disable = false;
+
+    function __construct($keyword, $previewLink, $selected, $title, $group = '', $disable = false)
     {
         $this->keyword = $keyword;
         $this->previewLink = $previewLink;
         $this->selected = $selected;
         $this->title = $title;
         $this->group = $group;
+        $this->disable = $disable;
     }
 
     /**
@@ -115,5 +121,21 @@ class AdsCategory
     public function setGroup($group)
     {
         $this->group = $group;
+    }
+
+    /**
+     * @param boolean $disable
+     */
+    public function setDisable($disable)
+    {
+        $this->disable = $disable;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getDisable()
+    {
+        return $this->disable;
     }
 }

@@ -4,12 +4,15 @@
     <ul class="list-group list-unstyled">
         <?php $groupName = ''; ?>
         <?php foreach($adsCategories as $key => $adsCategory): ?>
+            <!-- Generate sub category title -->
             <?php if($adsCategory->getGroup() && ($adsCategory->getGroup() !== $groupName)): ?>
-                <li><strong><?php echo $adsCategory->getGroup(); ?></strong></li>
+                <?php $groupName = $adsCategory->getGroup(); ?>
+                <li style="margin-top: 5px;"><strong><?php echo $adsCategory->getGroup(); ?></strong></li>
             <?php endif; ?>
+            <!-- /Generate sub category title -->
             <li>
                 <a class="ads-preview-link" target="_blank" href="<?php echo $adsCategory->getPreviewLink(); ?>">preview</a>
-                <input class="tourism-cat-checkbox must-have-one-checked" type="checkbox" style="margin-left: 10px" name="selectedCategory[<?php echo $key; ?>]" value="<?php echo $adsCategory->getKeyword(); ?>" <?php echo $adsCategory->getSelected() ? 'checked="checked"' : ''; ?>> <?php echo $adsCategory->getTitle(); ?>
+                <input class="tourism-cat-checkbox must-have-one-checked" type="checkbox" style="margin-left: 10px" name="selectedCategory[<?php echo $key; ?>]" value="<?php echo $adsCategory->getKeyword(); ?>" <?php echo $adsCategory->getSelected() ? 'checked="checked"' : ''; ?> <?php echo $adsCategory->getDisable() ? 'disabled="disabled"': ''; ?>> <?php echo $adsCategory->getTitle(); ?>
             </li>
         <?php endforeach; ?>
     </ul>

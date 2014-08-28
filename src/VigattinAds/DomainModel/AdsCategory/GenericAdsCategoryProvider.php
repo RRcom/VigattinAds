@@ -12,7 +12,7 @@ class GenericAdsCategoryProvider implements AdsCategoryProviderInterface
      */
     protected $categories = array(
         // add more array like this to generate more checkboxes
-        array('keyword' => '(homepage)',    'title' => 'Homepage',  'previewLink' => 'http://vigattin.com#preview', 'group' => ''),
+        array('keyword' => '(homepage)',    'title' => 'Homepage',  'previewLink' => 'http://vigattin.com#preview', 'group' => '', 'disable' => false),
     );
 
     /**
@@ -53,18 +53,19 @@ class GenericAdsCategoryProvider implements AdsCategoryProviderInterface
         if($this->selectedCategory) {
             foreach($this->categories as $category) {
                 $checked = is_int(@strpos($this->selectedCategory, $category['keyword'])) ? true : false;
-                $catCollection->add(new AdsCategory($category['keyword'], $category['previewLink'], $checked, $category['title'], $category['group']));
+                $catCollection->add(new AdsCategory($category['keyword'], $category['previewLink'], $checked, $category['title'], $category['group'], $category['disable']));
                 if($checked) $checkedCount++;
             }
         } else {
             foreach($this->categories as $category) {
                 $checked = is_int(@strpos($this->ads->get('keywords'), $category['keyword'])) ? true : false;
-                $catCollection->add(new AdsCategory($category['keyword'], $category['previewLink'], $checked, $category['title'], $category['group']));
+                $catCollection->add(new AdsCategory($category['keyword'], $category['previewLink'], $checked, $category['title'], $category['group'], $category['disable']));
                 if($checked) $checkedCount++;
             }
         }
 
-        if(count($catCollection) && !$checkedCount) {
+        if(iterator_count($catCollection) && !$checkedCount) {
+            $catCollection->rewind();
             $catCollection->current()->setSelected(true);
         }
 

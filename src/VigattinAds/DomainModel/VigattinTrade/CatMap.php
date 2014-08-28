@@ -274,4 +274,12 @@ class CatMap {
         }
         return $mainUrl;
     }
+
+    static public function isCatMatch($allowedCat, $cat)
+    {
+        $allowedCat = strtolower($allowedCat);
+        $cat = strtolower(trim($cat, '()'));
+        if(strpos($allowedCat, $cat) !== false) return true;
+        else return false;
+    }
 }
