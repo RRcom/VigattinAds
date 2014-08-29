@@ -282,4 +282,67 @@ class CatMap {
         if(strpos($allowedCat, $cat) !== false) return true;
         else return false;
     }
+
+    static public function cutCategoryIfNotValid($categoryArray)
+    {
+        $newCategoryArray = array();
+        $tempCat = array();
+        foreach($categoryArray as $key => $category) {
+            if($key === 0) {
+                $newCategoryArray[] = 'Homepage';
+            } elseif($key === 1) {
+                if(isset(self::$categoryMap[strtolower($category)])) {
+                    $tempCat = self::$categoryMap[strtolower($category)];
+                    $newCategoryArray[] = $category;
+                }
+                else return $newCategoryArray;
+            } else {
+                if(isset($tempCat['cat'][strtolower($category)])) {
+                    $tempCat = $tempCat['cat'][strtolower($category)];
+                    $newCategoryArray[] = $category;
+                }
+                else return $newCategoryArray;
+            }
+            /*
+            switch($key) {
+                case 0:
+                    $newCategoryArray[] = 'Homepage';
+                break;
+                case 1:
+                    if(isset(self::$categoryMap[strtolower($category)])) $newCategoryArray[] = $category;
+                    else return $newCategoryArray;
+                break;
+                case 2:
+                    if(isset(self::$categoryMap[strtolower($newCategoryArray[1])]['cat'][strtolower($category)])) $newCategoryArray[] = $category;
+                    else return $newCategoryArray;
+                break;
+                case 3:
+                    if(isset(self::$categoryMap[strtolower($newCategoryArray[2])][strtolower($newCategoryArray[1])][strtolower($category)])) $newCategoryArray[] = $category;
+                    else return $newCategoryArray;
+                break;
+            }
+            */
+        }
+        return $newCategoryArray;
+    }
+
+    static public function generateAccordion($categories, $stringCategory = 'homepage', $isFirst = true)
+    {
+        if(is_array($categories) && isset($categories['cat'])) $categories = $categories['cat'];
+        $list = '';
+        if(is_array($categories) && count($categories)) {
+            $list = '<ul class="'.($isFirst ? '' : 'trade-accordion').'">';
+            foreach($categories as $key => $value) {
+                if(count($value['cat'])) {
+                    $list .= '<li><a href="javascript:" class="trade-accordion-dropdown"><strong>'.$key.'</strong> <span class="caret"></span></a>';
+                        $list .= self::generateAccordion($value, $stringCategory.'|'.$key, false);
+                    $list .= '</li>';
+                } else {
+                    $list .= '<li><a class="trade-accordion-final" href="javascript:" data-category="'.$stringCategory.'|'.$key.'"><strong>'.$key.'</strong></a></li>';
+                }
+            }
+            $list .= '</ul>';
+        }
+        return $list;
+    }
 }

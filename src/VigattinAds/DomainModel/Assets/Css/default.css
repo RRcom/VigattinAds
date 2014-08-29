@@ -1,0 +1,556 @@
+/*
+ * Style tweaks
+ * --------------------------------------------------
+ */
+html {
+    overflow-x: hidden; /* Prevent scroll on narrow devices */
+}
+body {
+    padding-top: 70px;
+}
+footer {
+    padding: 30px 0 5px 0;
+    font-size: 0.85em;
+}
+a:hover {
+    text-decoration: none;
+}
+.ol-no-padding {
+    padding: 0;
+}
+.description-input {
+    resize: vertical;
+    min-height: 150px
+}
+.wizard-edit-info-form {
+    max-width: 500px;
+}
+.ads-sample-template {
+    height: 200px;
+    position: relative;
+}
+.ads-sample-template div {
+    border: 1px solid #CCC;
+    text-align: center;
+    font-size: 2em;
+    color: #CCC;
+}
+.ads-sample-topbar > div {
+    height: 48px;
+    line-height: 48px;
+}
+.ads-sample-template.ads-sample-bottombar {
+   height: 50px;
+   margin-top: 138px;
+}
+.ads-sample-template.ads-sample-sidebar-left > div {
+    height: 180px;
+    width: 38px;
+    padding: 0 5px 0 5px;
+    word-break: break-all;
+}
+.padding-no {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+.padding-5px {
+    padding: 5px !important;
+    margin: 0 !important;
+}
+.padding-no-left {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+}
+.padding-no-right {
+    padding-right: 0 !important;
+    margin-right: 0 !important;
+}
+.margin-right-30px {
+    margin-right: 30px;
+}
+.ads-live-preview-label {
+    border-bottom: 1px solid #DDD;
+    margin-bottom: 15px;
+    color: #999;
+}
+.ads-frame {
+    font-size: 11px;
+    padding: 10px 0;
+    background-color: #EEEDDD;
+    width: 247px;
+    font-family: 'lucida grande',tahoma,verdana,arial,sans-serif;
+    margin: auto;
+}
+.ads-frame .ads-frame-image {
+    width: 100px;
+}
+.ads-frame .ads-frame-title {
+    color: #3b5998;
+    font-weight: bold;
+    word-wrap: break-word;
+    padding-bottom: 2px;
+}
+.ads-frame .ads-frame-price {
+    color: #666;
+    word-wrap: break-word;
+}
+.ads-frame .ads-frame-description {
+    word-wrap: break-word;
+    display: inline-block;
+    width: 112px;
+}
+.ads-frame .ads-image-preview-container {
+    display: inline-block;
+    margin-right: 5px;
+    float: left;
+}
+.ads-frame .ads-frame-url {
+    word-wrap: break-word;
+}
+/*
+ * Off Canvas
+ * --------------------------------------------------
+ */
+@media screen and (max-width: 767px) {
+    .row-offcanvas {
+        position: relative;
+        -webkit-transition: all 0.25s ease-out;
+        -moz-transition: all 0.25s ease-out;
+        transition: all 0.25s ease-out;
+    }
+
+    .row-offcanvas-right
+    .sidebar-offcanvas {
+        right: -50%; /* 6 columns */
+    }
+
+    .row-offcanvas-left
+    .sidebar-offcanvas {
+        left: -50%; /* 6 columns */
+    }
+
+    .row-offcanvas-right.active {
+        right: 50%; /* 6 columns */
+    }
+
+    .row-offcanvas-left.active {
+        left: 50%; /* 6 columns */
+    }
+
+    .sidebar-offcanvas {
+        position: absolute;
+        top: 0;
+        width: 50%; /* 6 columns */
+    }
+}
+.navbar {
+    border-radius: 0;
+}
+.form-signin input {
+    margin-bottom: 5px;
+}
+.big-font {
+    font-size: 5em;
+}
+.big-font-3em {
+    font-size: 3em;
+}
+.big-font-2em {
+    font-size: 2em;
+}
+.ads-view-info {
+
+}
+.ads-view-info .ads-view-info-col {
+    vertical-align: middle;
+}
+.border-right-light {
+    border-right: 1px solid #CCCCCC;
+}
+.middle-align {
+    vertical-align: middle;
+}
+.top-align {
+    vertical-align: top;
+}
+.inline-block {
+    display: inline-block;
+}
+.hover-do-underline:hover {
+    text-decoration: none;
+}
+.tooltip-inner {
+    font-size: 11px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.hide {
+    display: none;
+}
+.ads-import-list {
+    list-style: none;
+    padding: 0;
+}
+.ads-import-list > li {
+    padding-bottom: 5px;
+}
+.ads-list-panel {
+    background-color: #FFFFFF;
+    padding: 5px;
+}
+.ads-list-panel .image-frame {
+    height: 100px;
+    overflow: hidden;
+}
+.ads-list-panel .image-frame img {
+    width: 100%;
+}
+.ads-list-panel .title-container {
+    height: 20px;
+    overflow: hidden;
+    word-wrap: break-word;
+}
+.ads-list-panel .title-container .ads-title {
+    font-weight: bold;
+    font-size: 0.8em;
+}
+.ads-list-panel .ads-description {
+    font-size: 0.8em;
+    word-wrap: break-word;
+    height: 60px;
+    overflow: hidden;
+}
+.dashboard-number-status {
+    font-size: .8em;
+}
+.ads-import-single-button {
+
+}
+.ads-import-single-button:hover {
+    text-decoration: none;
+}
+.change-template-container {
+    font-size: 0.95em;
+}
+.change-template-container .template-website, .change-template-container .template-position {
+}
+.label1 {
+    font-weight: bold;
+    color: #999;
+    font-size: 12px;
+}
+.label2 {
+    font-weight: bold;
+    color: #666;
+    font-size: 14px;
+}
+.with-underline {
+    padding-bottom: 5px;
+    border-bottom: 1px solid #DDD;
+}
+.full-ads-container {
+    font-size: 0.9em;
+    padding: 10px;
+    border: 1px solid #DDD;
+    margin: 5px 0 20px 0;
+    color: #444;
+    min-height: 200px;
+    max-height: 300px;
+    overflow: auto;
+    word-wrap: break-word;
+}
+.full-ads-container .full-ads-label {
+    color: #999;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+}
+.full-ads-container .full-title {
+    font-weight: bold;
+    word-wrap: break-word;
+    margin-bottom: 2px;
+}
+.legend {
+    font-size: 0.85em;
+}
+
+/* Admin ads manage modal form */
+
+#adminAdsForm {
+
+}
+#adminAdsForm textarea {
+    width: 300px;
+    min-height: 100px;
+}
+
+/* ads history container */
+.ads-history-container {
+    font-size: 0.9em;
+}
+.ads-history-container .ads-history-title {
+    color: #777;
+}
+.ads-history-container .ads-history-log {
+    min-height: 50px;
+    border: 1px solid #DDD;
+    white-space: pre-line;
+    word-wrap: break-word;
+    font-size: 0.9em;
+    max-height: 300px;
+    overflow: auto;
+    padding: 10px;
+    color: #666;
+}
+.ads-history-container .ads-history-control {
+    padding: 10px;
+
+}
+.ads-list-tbody {
+    font-size: 0.9em;
+}
+
+/***************** ads vigattin tiles *****************/
+
+.ads-vigattin-tiles {
+    width: auto;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.ads-vigattin-tiles .ads-panel-title {
+    font-weight: bold;
+    margin: 5px 5px 0 5px;
+}
+.ads-vigattin-tiles a:hover {
+    text-decoration: none;
+}
+.ads-vigattin-tiles .ads-frame {
+    width: 223px;
+    display: inline-block;
+    background-color: #E0E0E0;
+    margin: 5px;
+    overflow: hidden;
+    vertical-align: top;
+    transition: background-color 0.3s;
+    padding: 0;
+}
+.ads-vigattin-tiles .ads-frame:hover {
+    background-color: #F5F5F5;
+}
+.ads-vigattin-tiles .ads-frame .ads-image-preview-container {
+    height: 150px;
+    margin: 5px;
+    overflow: hidden;
+    line-height: 160px;
+    text-align: center;
+    display: block;
+    float: none;
+}
+.ads-vigattin-tiles .ads-frame .ads-image-preview-container .ads-frame-image {
+    max-width: 222px;
+    max-height: 150px;
+    width: auto;
+}
+.ads-vigattin-tiles .ads-frame .ads-frame-title {
+    text-align: center;
+    height: 40px;
+    overflow: hidden;
+    margin: 0 5px;
+    color: #000;
+    vertical-align: top;
+    word-wrap: break-word;
+    font-size: 13px;
+    font-weight: normal;
+}
+.ads-vigattin-tiles .ads-frame .ads-frame-price {
+    height: 35px;
+    background-color: #000;
+    color: #CCC;
+    line-height: 35px;
+    text-align: center;
+    font-size: 12px;
+    overflow: hidden;
+    padding: 0 5px;
+}
+
+/***************** trade featured ads *****************/
+.trade-featured-ads {
+    width: auto;
+}
+.trade-featured-ads .ads-frame {
+    display: inline-block;
+    background-color: #f3ebe0;
+    vertical-align: top;
+    margin: 2px;
+    padding: 0;
+}
+.trade-featured-ads .ads-frame:hover {
+    background-color: #ffffff;
+    text-decoration: none;
+}
+.trade-featured-ads .ads-frame .ads-image-preview-container {
+    width: 120px;
+    height: 106px;
+    margin: 32px 62px 32px 62px;
+    text-align: center;
+    background-color: #eaeaea;
+    line-height: 106px;
+    overflow: hidden;
+    display: block;
+    float: none;
+}
+.trade-featured-ads .ads-frame .ads-image-preview-container .ads-frame-image {
+    width: 120px;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+}
+.trade-featured-ads .ads-frame .ads-frame-title {
+    width: 220px;
+    margin: 12px 12px 0 12px;
+    word-wrap: break-word;
+    text-align: center;
+    color: #433c2d;
+    height: 34px;
+    font-weight: bold;
+    font-size: 12px;
+}
+.trade-featured-ads .ads-frame .ads-frame-price {
+    height: 30px;
+    background-color: #70644c;
+    text-align: center;
+    font-size: 14px;
+    line-height: 30px;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+/***************** trade ads listing *****************/
+.trade-ads-listing {
+    display: block;
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 0;
+}
+.trade-ads-listing .ads-frame {
+    display: block;
+    width: auto;
+    height: 111px;
+    padding: 7px;
+    margin: 0;
+    background-color: #f3ebe0;
+    border-bottom: 1px solid #b9aa8b;
+    border-left: 1px solid #f3ebe0;
+    border-right: 1px solid #f3ebe0;
+    border-top: 1px solid #f3ebe0;
+    font-family: Tahoma;
+    overflow: hidden;
+}
+.trade-ads-listing .ads-frame:hover {
+    text-decoration: none;
+}
+.trade-ads-listing .ads-frame .ads-image-preview-container {
+    float: none;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    border: 1px solid #b2a896;
+    width: 121px;
+    height: 95px;
+    text-align: center;
+    padding: 2px;
+    vertical-align: middle;
+}
+.trade-ads-listing .ads-frame .ads-image-preview-container .ads-frame-image {
+    width: auto;
+    height: 100%;
+    max-width: 100%;
+    display: inline-block;
+    vertical-align: middle;
+}
+.trade-ads-listing .ads-frame .title-container {
+    display: inline-block;
+    vertical-align: top;
+    padding-left: 3px;
+    max-width: 400px;
+}
+.trade-ads-listing .ads-frame .title-container .ads-frame-title {
+    color: #433c2d;
+    text-decoration: none;
+    font-weight: bold;
+}
+.trade-ads-listing .ads-frame .title-container .ads-frame-title:hover {
+    text-decoration: underline;
+}
+.trade-ads-listing .ads-frame .title-container .ads-frame-description {
+    color: #70644C;
+    font-size: 11px;
+    max-width: 150px;
+    word-wrap: break-word;
+    padding-left: 2px;
+}
+.trade-ads-listing .ads-frame .price-container {
+    display: inline-block;
+    vertical-align: top;
+    float: right;
+    padding-right: 10px;
+    padding-top: 40px;
+}
+.trade-ads-listing .ads-frame .price-container .ads-frame-price {
+    color: #cf8e49;
+    font-size: 20px;
+    font-family: Arial;
+    font-weight: bold;
+}
+.trade-ads-listing .ads-frame .price-container .ads-frame-date {
+    font-size: 12px;
+    color: #70644C;
+    text-align: right;
+}
+.table>tbody>tr>td {
+    vertical-align: middle;
+}
+
+/******************** result fluid type ****************/
+.fluid-result-container {
+
+}
+
+/******************* multi selector *****************/
+.multi-selector-box {
+
+}
+.multi-selector-item {
+    border: 1px solid #ccc;
+    padding: 3px;
+    border-radius: 5px;
+    color: #666;
+    margin: 2px;
+    display: inline-block;
+}
+.multi-selector-item > .multi-selector-close {
+    padding: 0 3px;
+    cursor: pointer;
+    color: #269abc;
+}
+.box-container {
+    border: 1px solid #ccc;
+    padding: 10px;
+    z-index: 10;
+    background-color: #FFF;
+}
+.opacity-50 {
+    opacity: 0.50;
+}
+
+/******************* article author search **************/
+.selected-authors {
+    border: 1px solid #CCC;
+    border-radius: 5px;
+    margin-top: 10px;
+    padding: 10px;
+}
+
+#authorResultListContainer {
+    margin-top: 10px;
+}

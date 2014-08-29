@@ -228,13 +228,14 @@ class EditController extends AdsController
                 $catView->setVariable('title', 'Vigattin Directory');
                 $catView->setVariable('description', 'Choose which directory the ads will appear');
                 $catView->setVariable('adsCategories', $catProvider->getAdsCategory());
+                $catView->addChild($catProvider->changeCategoryMenu(), 'customMenu');
                 break;
             case ChooseWebsiteController::TOURISMBLOGGER:
                 $catProvider = new AdsCategory\TourismArticleAdsCategoryProvider($this->serviceLocator, $this->adsEntity, $this->getRequest()->getPost('selectedCategory', array()));
                 $catView->setVariable('title', 'Page Position');
                 $catView->setVariable('description', 'Choose which position the ads will appear');
                 $catView->setVariable('adsCategories', $catProvider->getAdsCategory());
-                $catView->addChild($catProvider->getAuthorSelectMenu(), 'authorMenu');
+                $catView->addChild($catProvider->getAuthorSelectMenu(), 'customMenu');
                 break;
             default:
                 $catProvider = new AdsCategory\VigattinAdsCategoryProvider($this->serviceLocator, $this->adsEntity, $this->getRequest()->getPost('selectedCategory', array()));

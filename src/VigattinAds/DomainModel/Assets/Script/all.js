@@ -1903,4 +1903,21 @@ $(document).ready(function(e) {
         $(modal).on('show.bs.modal', init);
 
     })(jQuery);
+
+    /* trade Accordion */
+    (function($){
+        $('.trade-accordion').hide();
+        $('.trade-accordion-dropdown').click(function(e) {
+            $(e.currentTarget).next().slideDown();
+            var sibling = $(e.currentTarget).parent().siblings().find('.trade-accordion').slideUp();
+        });
+        $('.trade-accordion-final').click(function(e){
+            $('#tradeChangeCategoryModal').modal('hide');
+            var catInput = $('<input type="hidden" name="tradeStringCategory">');
+            var catForm = $('<form action="" method="post"></form>');
+            catInput.val($(e.currentTarget).attr('data-category'));
+            catForm.append(catInput);
+            catForm.submit();
+        });
+    })(jQuery);
 });
