@@ -24,7 +24,7 @@ var tourismAds = new (function($) {
     function setIframe() {
         var keyword = '('+urlToKeyword(window.location.href)+')';
         var showIn = iframe.attr('data-showin');
-        var template = iframe.attr('data-template');
+        var template = (iframe.attr('data-template')) ? iframe.attr('data-template') : '';
         var limit = (iframe.attr('data-limit')) ? iframe.attr('data-limit') : 6;
         if(window.location.hash.substr(1) == 'preview') {
             iframe.attr('src', 'http://www.service.vigattin.com/vigattinads/showads?showin=preview');
@@ -38,9 +38,12 @@ var tourismAds = new (function($) {
     function urlToKeyword(url) {
         if(url.match(/vigattintourism.com\/tourism\/destinations\/91\/directory/)) return 'directory';
         if(url.match(/vigattintourism.com\/tourism\/destinations/)) return 'destination';
-        if(url.match(/vigattintourism.com\/tourism\/destinations\/articles/)) return 'articles';
-        if(url.match(/vigattintourism.com\/tourism\/destinations\/tourist_spots/)) return 'tourist spots';
-        if(url.match(/vigattintourism.com\/tourism\/destinations\/discussion/)) return 'discussion';
+        //if(url.match(/vigattintourism.com\/tourism\/destinations\/articles/)) return 'articles';
+        if(url.match(/vigattintourism.com\/tourism\/articles/)) return 'articles';
+        //if(url.match(/vigattintourism.com\/tourism\/destinations\/tourist_spots/)) return 'tourist spots';
+        if(url.match(/vigattintourism.com\/tourism\/tourist_spots/)) return 'tourist spots';
+        //if(url.match(/vigattintourism.com\/tourism\/destinations\/discussion/)) return 'discussion';
+        if(url.match(/vigattintourism.com\/tourism\/discussion/)) return 'discussion';
         if(url.match(/vigattintourism.com/)) return 'homepage';
     }
 })(jQuery);

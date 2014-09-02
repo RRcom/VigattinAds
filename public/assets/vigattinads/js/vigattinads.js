@@ -19,7 +19,7 @@ var vigattinAds = new (function($) {
     function setIframe() {
         var keyword = '('+urlToKeyword(window.location.href)+')';
         var showIn = iframe.attr('data-showin');
-        var template = iframe.attr('data-template');
+        var template = (iframe.attr('data-template')) ? iframe.attr('data-template') : '';
         var limit = (iframe.attr('data-limit')) ? iframe.attr('data-limit') : 6;
         if(window.location.hash.substr(1) == 'preview') {
             iframe.attr('src', 'http://www.service.vigattin.com/vigattinads/showads/vigattin-tiles?showin=preview');
