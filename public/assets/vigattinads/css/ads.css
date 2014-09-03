@@ -353,3 +353,32 @@ body {
 .trade-ads-listing.tourism-head-ads .ads-frame {
     background-color: #F0EECB;
 }
+
+/**************** .sidebar-ads-large **********/
+.sidebar-ads-large {
+    font-size: 12px;
+    color: #333;
+}
+.sidebar-ads-large .ads-frame {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    padding: 5px;
+}
+.sidebar-ads-large .ads-frame .ads-image-preview-container {
+    max-height: 160px;
+    overflow: hidden;
+}
+.sidebar-ads-large .ads-frame .ads-image-preview-container .ads-frame-image {
+    width: 100%;
+}
+.sidebar-ads-large .ads-frame .ads-frame-title {
+    font-weight: bolder;
+    margin-top: 5px;
+}
+.sidebar-ads-large .ads-frame .ads-frame-price {
+   font-size: 0.9em;
+}
+.sidebar-ads-large .ads-frame .ads-frame-description {
+    font-size: 0.9em;
+}
