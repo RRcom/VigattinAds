@@ -27,11 +27,11 @@ var tourismAds = new (function($) {
         var template = (iframe.attr('data-template')) ? iframe.attr('data-template') : '';
         var limit = (iframe.attr('data-limit')) ? iframe.attr('data-limit') : 6;
         if(window.location.hash.substr(1) == 'preview') {
-            iframe.attr('src', 'http://www.service.vigattin.com/vigattinads/showads?showin=preview');
+            iframe.attr('src', 'http://www.service.vigattin.com/vigattinads/showads2/tourism-article/side-large?showin=preview');
         }
         else {
 
-            iframe.attr('src', 'http://www.service.vigattin.com/vigattinads/showads?showin='+encodeURIComponent(showIn)+'&template='+encodeURIComponent(template)+'&limit='+encodeURIComponent(limit)+'&keyword='+encodeURIComponent(keyword));
+            iframe.attr('src', 'http://www.service.vigattin.com/vigattinads/showads2/tourism-article/side-large?showin='+encodeURIComponent(showIn)+'&template='+encodeURIComponent(template)+'&limit='+encodeURIComponent(limit)+'&keyword='+encodeURIComponent(keyword));
         }
     }
 

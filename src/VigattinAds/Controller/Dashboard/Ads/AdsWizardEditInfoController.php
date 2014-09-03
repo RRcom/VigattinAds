@@ -9,7 +9,7 @@ use VigattinAds\DomainModel\Validator;
 class AdsWizardEditInfoController extends AdsController
 {
     const IMAGE_REPO = 'repo';
-    const IMAGE_WIDTH = 150;
+    const IMAGE_WIDTH = 300;
     const IMAGE_QUALITY = 75;
     const IMAGE_PROGRESSIVE = true;
 
