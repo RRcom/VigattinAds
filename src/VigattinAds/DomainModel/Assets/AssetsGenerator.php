@@ -14,15 +14,35 @@ class AssetsGenerator
     const JS_NAME = 'global';
     const CSS_NAME = 'default';
 
+    protected $css = array(
+        'global',
+        'default',
+    );
+
+    protected $adsCss = array(
+        'ads',
+    );
+
     protected $script = array(
         'global',
         'tools',
         'all',
     );
 
-    protected $css = array(
-        'global',
-        'default',
+    protected $adsJs = array(
+        'ads',
+    );
+
+    protected $tourismAdsJs = array(
+        'tourismads',
+    );
+
+    protected $tradeAdsJs = array(
+        'tradeads',
+    );
+
+    protected $vigattinAdsJs = array(
+        'vigattinads',
     );
 
     protected $assetsDir;
@@ -38,21 +58,35 @@ class AssetsGenerator
         echo "\nfile created ".$this->assetsDir.'js/'.self::JS_NAME.'.js '.$byte.' byte';
         $byte = file_put_contents($this->assetsDir.'css/'.self::CSS_NAME.'.css', $this->css());
         echo "\nfile created ".$this->assetsDir.'css/'.self::CSS_NAME.'.css '.$byte.' byte';
+        // view ads assets
+        $byte = file_put_contents($this->assetsDir.'css/ads.css', $this->css($this->adsCss));
+        echo "\nfile created ".$this->assetsDir.'css/ads.css '.$byte.' byte';
+        $byte = file_put_contents($this->assetsDir.'js/ads.js', $this->js($this->adsJs));
+        echo "\nfile created ".$this->assetsDir.'js/ads.js '.$byte.' byte';
+        $byte = file_put_contents($this->assetsDir.'js/tourismads.js', $this->js($this->tourismAdsJs));
+        echo "\nfile created ".$this->assetsDir.'js/tourism.js '.$byte.' byte';
+        $byte = file_put_contents($this->assetsDir.'js/tradeads.js', $this->js($this->tradeAdsJs));
+        echo "\nfile created ".$this->assetsDir.'js/tradeads.js '.$byte.' byte';
+        $byte = file_put_contents($this->assetsDir.'js/vigattinads.js', $this->js($this->vigattinAdsJs));
+        echo "\nfile created ".$this->assetsDir.'js/vigattinads.js '.$byte.' byte';
+
     }
 
-    protected function js()
+    protected function js($filesArray = null)
     {
+        if(!$filesArray) $filesArray = $this->script;
         $content = '';
-        foreach($this->script as $script) {
+        foreach($filesArray as $script) {
             $content .= $this->readJs($script)."\n";
         }
         return JSMin::minify($content);
     }
 
-    protected function css()
+    protected function css($filesArray = null)
     {
+        if(!$filesArray) $filesArray = $this->css;
         $content = '';
-        foreach($this->css as $css) {
+        foreach($filesArray as $css) {
             $content .= $this->readCss($css)."\n";
         }
         return CSSmin::process($content);

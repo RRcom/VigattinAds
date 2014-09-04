@@ -1,0 +1,384 @@
+body {
+    background-color: #EEEDDD;
+    padding-top: 10px;
+}
+.ads-no-padding {
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+}
+.clear-float {
+    clear: both;
+}
+.ads-sidebar-generic .ads-frame {
+    width: 100%;
+    font-size: 11px;
+    margin-bottom: 10px;
+    display: block;
+    color: #333333;
+    opacity: 0.90;
+}
+.ads-sidebar-generic .ads-frame:hover {
+    text-decoration: none;
+    color: #333333;
+    opacity: 1.00;
+}
+.ads-sidebar-generic .ads-frame .ads-frame-title {
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    padding: 3px 0;
+}
+.ads-sidebar-generic .ads-frame .ads-content {
+    width: 100%;
+}
+
+.ads-sidebar-generic .ads-frame .ads-content .ads-image-preview-container {
+    width: 40%;
+    display: inline-block;
+    float: left;
+    margin-right: 5px;
+}
+.ads-sidebar-generic .ads-frame .ads-content .ads-image-preview-container .ads-frame-image {
+    width: 100%;
+}
+.ads-sidebar-generic .ads-separator {
+    border-top: 1px solid #FFFFFF;
+    border-bottom: 1px solid #CCCCCC;
+    opacity: 0.50;
+    margin: 5px;
+}
+.float-left {
+    float: left;
+}
+.float-right {
+    float: right;
+}
+
+/***************** trade featured ads *****************/
+.trade-featured-ads {
+ width: 745px;
+}
+.trade-featured-ads .ads-frame {
+    display: inline-block;
+    background-color: #f3ebe0;
+    vertical-align: top;
+    margin: 2px;
+}
+.trade-featured-ads .ads-frame:hover {
+    background-color: #ffffff;
+    text-decoration: none;
+}
+.trade-featured-ads .ads-frame .ads-image-preview-container {
+    width: 120px;
+    height: 106px;
+    margin: 32px 62px 32px 62px;
+    text-align: center;
+    background-color: #eaeaea;
+    line-height: 106px;
+    overflow: hidden;
+}
+.trade-featured-ads .ads-frame .ads-image-preview-container .ads-frame-image {
+    width: 120px;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+}
+.trade-featured-ads .ads-frame .ads-frame-title {
+    width: 220px;
+    margin: 12px 12px 0 12px;
+    word-wrap: break-word;
+    text-align: center;
+    color: #433c2d;
+    height: 34px;
+    font-weight: bold;
+    font-size: 12px;
+}
+.trade-featured-ads .ads-frame .ads-frame-price {
+    height: 30px;
+    background-color: #70644c;
+    text-align: center;
+    font-size: 14px;
+    line-height: 30px;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+/*************** trade sidebar ads *****************/
+
+.trade-sidebar-ads {
+    font-family: Tahoma;
+    font-size: 11px;
+    color: #564d39;
+    width: 217px;
+    overflow: hidden;
+    margin: 4px 6px;
+}
+.trade-sidebar-ads .ads-frame {
+    font-weight: bold;
+    color: inherit;
+    display: block;
+    padding: 6px 0 6px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.15);
+    width: inherit;
+    min-height: 130px;
+ }
+.trade-sidebar-ads .ads-frame.last {
+    border: none;
+}
+.trade-sidebar-ads .ads-frame:hover {
+    text-decoration: none;
+}
+.trade-sidebar-ads .ads-frame .ads-divided-content {
+
+}
+.trade-sidebar-ads .ads-frame .ads-divided-content .ads-frame-leftbar, .trade-sidebar-ads .ads-frame .ads-divided-content .ads-frame-rightbar {
+    display: inline-block;
+    vertical-align: top;
+}
+.trade-sidebar-ads .ads-frame .ads-divided-content .ads-frame-leftbar {
+    width: 87px;
+}
+.trade-sidebar-ads .ads-frame .ads-divided-content .ads-frame-rightbar {
+    width: 130px;
+    font-weight: normal;
+}
+.trade-sidebar-ads .ads-frame .ads-divided-content .ads-frame-leftbar .ads-image-preview-container {
+    padding: 4px 4px 4px 0;
+    height: 61px;
+    overflow: hidden;
+}
+.trade-sidebar-ads .ads-frame .ads-divided-content .ads-frame-leftbar .ads-image-preview-container .ads-frame-image {
+    width: 83px;
+}
+
+/****************** sidebar ads fbstyle *******************/
+
+.sidebar-ads-fbstyle {
+    /* width: 217px; */
+    overflow: hidden;
+    margin: 4px 6px;
+    font-family: 'lucida grande',tahoma,verdana,arial,sans-serif;
+    font-size: 11px;
+}
+.sidebar-ads-fbstyle .ads-panel-title {
+    color: #6a7480;
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
+.sidebar-ads-fbstyle .ads-frame {
+    color: #333;
+    padding: 6px 0 6px 0;
+    border-top: 1px solid #d3d7dc;
+    display: block;
+}
+.sidebar-ads-fbstyle .ads-frame:hover {
+    text-decoration: none;
+}
+.sidebar-ads-fbstyle .ads-frame .ads-frame-title {
+    color: #3b5998;
+    font-weight: bold;
+    word-wrap: break-word;
+    padding-bottom: 2px;
+}
+.sidebar-ads-fbstyle .ads-frame .ads-frame-price {
+    color: #666;
+}
+.sidebar-ads-fbstyle .ads-frame .ads-divided-content .ads-frame-leftbar, .sidebar-ads-fbstyle .ads-frame .ads-divided-content .ads-frame-rightbar {
+    display: inline-block;
+    vertical-align: top;
+}
+.sidebar-ads-fbstyle .ads-frame .ads-divided-content .ads-frame-leftbar {
+    width: 100px;
+    margin: 0 5px 5px 0;
+    float: left;
+}
+.sidebar-ads-fbstyle .ads-frame .ads-divided-content .ads-frame-rightbar {
+    width: 112px;
+    word-wrap: break-word;
+}
+.sidebar-ads-fbstyle .ads-frame .ads-divided-content .ads-frame-leftbar .ads-image-preview-container {
+    height: 72px;
+    overflow: hidden;
+}
+.sidebar-ads-fbstyle .ads-frame .ads-divided-content .ads-frame-leftbar .ads-image-preview-container .ads-frame-image {
+    width: 100px;
+}
+
+/***************** ads vigattin tiles *****************/
+
+.ads-vigattin-tiles {
+    width: 950px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.ads-vigattin-tiles .ads-panel-title {
+    font-weight: bold;
+    margin: 5px 5px 0 5px;
+}
+.ads-vigattin-tiles a:hover {
+    text-decoration: none;
+}
+.ads-vigattin-tiles .ads-frame {
+    width: 223px;
+    display: inline-block;
+    background-color: #E0E0E0;
+    margin: 5px;
+    overflow: hidden;
+    vertical-align: top;
+    transition: background-color 0.3s;
+}
+.ads-vigattin-tiles .ads-frame:hover {
+    background-color: #F5F5F5;
+}
+.ads-vigattin-tiles .ads-frame .ads-image-preview-container {
+    height: 150px;
+    margin: 5px;
+    overflow: hidden;
+    line-height: 160px;
+    text-align: center;
+}
+.ads-vigattin-tiles .ads-frame .ads-image-preview-container .ads-frame-image {
+    max-width: 222px;
+    max-height: 150px;
+}
+.ads-vigattin-tiles .ads-frame .ads-frame-title {
+    text-align: center;
+    height: 40px;
+    overflow: hidden;
+    margin: 0 5px;
+    color: #000;
+    vertical-align: top;
+    word-wrap: break-word;
+    font-size: 13px;
+}
+.ads-vigattin-tiles .ads-frame .ads-frame-price {
+    height: 35px;
+    background-color: #000;
+    color: #CCC;
+    line-height: 35px;
+    text-align: center;
+    font-size: 12px;
+    overflow: hidden;
+    padding: 0 5px;
+}
+
+/***************** trade ads listing *****************/
+.trade-ads-listing {
+    display: block;
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 0;
+}
+.trade-ads-listing .ads-frame {
+    display: block;
+    width: auto;
+    height: 111px;
+    padding: 7px;
+    margin: 0;
+    background-color: #E9D3B5;
+    border-bottom: 1px solid #b9aa8b;
+    border-left: 1px solid #E9D3B5;
+    border-right: 1px solid #E9D3B5;
+    border-top: 1px solid #E9D3B5;
+    font-family: Tahoma;
+}
+.trade-ads-listing .ads-frame:hover {
+    text-decoration: none;
+    background-color: #ffffff;
+}
+.trade-ads-listing .ads-frame .ads-image-preview-container {
+    float: none;
+    margin: 0;
+    display: inline-block;
+    border: 1px solid #b2a896;
+    width: 121px;
+    height: 95px;
+    text-align: center;
+    padding: 2px;
+    vertical-align: middle;
+    overflow: hidden;
+}
+.trade-ads-listing .ads-frame .ads-image-preview-container .ads-frame-image {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    display: inline-block;
+    vertical-align: middle;
+}
+.trade-ads-listing .ads-frame .title-container {
+    display: inline-block;
+    vertical-align: top;
+    padding-left: 3px;
+    max-width: 400px;
+}
+.trade-ads-listing .ads-frame .title-container .ads-frame-title {
+    color: #433c2d;
+    text-decoration: none;
+    font-weight: bold;
+}
+.trade-ads-listing .ads-frame .title-container .ads-frame-title:hover {
+    text-decoration: underline;
+}
+.trade-ads-listing .ads-frame .title-container .ads-frame-description {
+    color: #70644C;
+    font-size: 11px;
+    max-width: 200px;
+    word-wrap: break-word;
+    padding-left: 2px;
+}
+.trade-ads-listing .ads-frame .price-container {
+    display: inline-block;
+    vertical-align: top;
+    float: right;
+    padding-right: 10px;
+    padding-top: 40px;
+}
+.trade-ads-listing .ads-frame .price-container .ads-frame-price {
+    color: #cf8e49;
+    font-size: 20px;
+    font-family: Arial;
+    font-weight: bold;
+}
+.trade-ads-listing .ads-frame .price-container .ads-frame-date {
+    font-size: 12px;
+    color: #70644C;
+    text-align: right;
+}
+
+/***************** .trade-ads-listing.tourism-head-ads *****************/
+.trade-ads-listing.tourism-head-ads .ads-frame {
+    background-color: #F0EECB;
+}
+
+/**************** .sidebar-ads-large **********/
+.sidebar-ads-large {
+    font-size: 12px;
+    color: #333;
+}
+.sidebar-ads-large .ads-frame {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    padding: 5px;
+}
+.sidebar-ads-large .ads-frame .ads-image-preview-container {
+    max-height: 160px;
+    overflow: hidden;
+}
+.sidebar-ads-large .ads-frame .ads-image-preview-container .ads-frame-image {
+    width: 100%;
+}
+.sidebar-ads-large .ads-frame .ads-frame-title {
+    font-weight: bolder;
+    margin-top: 5px;
+}
+.sidebar-ads-large .ads-frame .ads-frame-price {
+   font-size: 0.9em;
+}
+.sidebar-ads-large .ads-frame .ads-frame-description {
+    font-size: 0.9em;
+}

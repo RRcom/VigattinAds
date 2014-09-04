@@ -18,6 +18,8 @@ class EditController extends AdsController
 
     protected $showImportAds = false;
 
+    protected $showUploadImage = false;
+
     /** @var \VigattinAds\DomainModel\Ads */
     protected $adsEntity;
 
@@ -97,6 +99,7 @@ class EditController extends AdsController
         $actionContent->setVariable('adsReviewReason', $this->adsEntity->getLastReviewReason());
         $actionContent->setVariable('request', $this->getRequest());
         $actionContent->setVariable('showImportAds', $this->showImportAds);
+        $actionContent->setVariable('showUploadImage', $this->showUploadImage);
 
         // load the main view
         $this->mainView->addChild($actionContent, 'actionContent');

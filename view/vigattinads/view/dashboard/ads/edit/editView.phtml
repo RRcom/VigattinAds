@@ -92,7 +92,7 @@
                 <!-- /ads preview -->
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                     <!-- ads form -->
-                    <div class="form-group ads-form-image <?php echo $adsImageError ? 'has-error' : ''; ?>">
+                    <div class="<?php echo $showUploadImage ? '': 'hide'; ?> form-group ads-form-image <?php echo $adsImageError ? 'has-error' : ''; ?>">
                         <label class="control-label" for="ads-title">Choose an image</label>
                         <span class="help-block"><?php if($adsImageError) echo $adsImageError; ?></span>
                         <input type="file" id="ads-choose-image-input" name="ads-image" accept="image/*">
