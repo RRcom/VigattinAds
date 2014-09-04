@@ -7,9 +7,17 @@ use VigattinAds\DomainModel\Validator;
 use VigattinAds\DomainModel\Ads;
 use VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseWebsiteController;
 use VigattinAds\DomainModel\AdsCategory;
+use VigattinAds\DomainModel\Image;
 
 class EditController extends AdsController
 {
+    const IMAGE_REPO = 'public/repo';
+    const IMAGE_WIDTH = 320;
+    const IMAGE_QUALITY = 90;
+    const IMAGE_PROGRESSIVE = true;
+
+    protected $showImportAds = false;
+
     /** @var \VigattinAds\DomainModel\Ads */
     protected $adsEntity;
 
@@ -26,12 +34,14 @@ class EditController extends AdsController
     public function __construct()
     {
         $this->formValue = array(
+            'adsImageDataUrl' => '',
             'adsTitle' => '',
             'adsUrl' => '',
             'adsKeyword' => '',
             'adsCategory' => '',
             'adsPrice' => '',
             'adsDescription' => '',
+            'adsImageError' => '',
             'adsTitleError' => '',
             'adsUrlError' => '',
             'adsPriceError' => '',
@@ -86,6 +96,7 @@ class EditController extends AdsController
         $actionContent->setVariable('adsViewCount', $this->adsViewCount);
         $actionContent->setVariable('adsReviewReason', $this->adsEntity->getLastReviewReason());
         $actionContent->setVariable('request', $this->getRequest());
+        $actionContent->setVariable('showImportAds', $this->showImportAds);
 
         // load the main view
         $this->mainView->addChild($actionContent, 'actionContent');
@@ -97,6 +108,7 @@ class EditController extends AdsController
      */
     protected function onEnter()
     {
+        $this->formValue['adsImageDataUrl'] = $this->adsEntity->get('adsImage');
         $this->formValue['adsTitle'] = $this->adsEntity->get('adsTitle');
         $this->formValue['adsUrl'] = $this->adsEntity->get('adsUrl');
         $this->formValue['adsKeyword'] = $this->adsEntity->get('keywords');
@@ -159,11 +171,16 @@ class EditController extends AdsController
     {
         $this->validateInput();
         // return if has error
-        if(strlen($this->formValue['adsTitleError'].$this->formValue['adsUrlError'].$this->formValue['adsKeywordError'].$this->formValue['adsPriceError'].$this->formValue['adsDescriptionError'])) return;
+        if(strlen($this->formValue['adsImageError'].$this->formValue['adsTitleError'].$this->formValue['adsUrlError'].$this->formValue['adsKeywordError'].$this->formValue['adsPriceError'].$this->formValue['adsDescriptionError'])) return;
+
+        // save image
+        $image = $this->createImage();
+
         // check some value that need to verify first if change happen
-        $oldValue = strtolower($this->adsEntity->get('adsTitle').$this->adsEntity->get('adsUrl').$this->adsEntity->get('adsDescription'));
-        $newValue = strtolower($this->formValue['adsTitle'].$this->formValue['adsUrl'].$this->formValue['adsDescription']);
+        $oldValue = strtolower($this->adsEntity->get('adsImage').$this->adsEntity->get('adsTitle').$this->adsEntity->get('adsUrl').$this->adsEntity->get('adsDescription'));
+        $newValue = strtolower($image.$this->formValue['adsTitle'].$this->formValue['adsUrl'].$this->formValue['adsDescription']);
         // set new value
+        $this->adsEntity->set('adsImage', $image);
         $this->adsEntity->set('adsTitle', $this->formValue['adsTitle']);
         $this->adsEntity->set('adsUrl', $this->formValue['adsUrl']);
         $this->adsEntity->set('keywords', $this->keywordGenerator());
@@ -199,11 +216,33 @@ class EditController extends AdsController
         $this->formValue['adsCategory'] = $this->adsEntity->get('category');
         $this->formValue['adsPrice'] = $this->getRequest()->getPost('ads-price', '');
         $this->formValue['adsDescription'] = $this->getRequest()->getPost('ads-description', '');
+        $this->formValue['adsImageError'] = $this->validateImage();
         $this->formValue['adsTitleError'] = Validator::isTitleValid($this->getRequest()->getPost('ads-title', ''));
         $this->formValue['adsUrlError'] = Validator::isUrlValid($this->getRequest()->getPost('ads-url', ''));
         $this->formValue['adsKeywordError'] = Validator::isKeywordValid($this->getRequest()->getPost('ads-keyword', ''));
         $this->formValue['adsPriceError'] = Validator::isNumber($this->getRequest()->getPost('ads-price', ''));
         $this->formValue['adsDescriptionError'] = Validator::isDescriptionValid($this->getRequest()->getPost('ads-description', ''));
+    }
+
+    protected function validateImage()
+    {
+        if($this->adsEntity->get('adsImage') && ($this->adsEntity->get('adsImage') != $this->getRequest()->getPost('ads-image-data-url', ''))) {
+            return Validator::isImageString($this->getRequest()->getPost('ads-image-data-url', ''));
+        }
+        return '';
+    }
+
+    protected function createImage()
+    {
+        if($this->adsEntity->get('adsImage') == $this->getRequest()->getPost('ads-image-data-url', '')) return $this->adsEntity->get('adsImage');
+        $image = new Image(self::IMAGE_REPO);
+        $result = $image->save_convert_resize(
+            $this->getRequest()->getPost('ads-image-data-url', ''),
+            self::IMAGE_WIDTH,
+            self::IMAGE_QUALITY,
+            self::IMAGE_PROGRESSIVE
+        );
+        return $result['path'];
     }
 
     protected function categoryMenu()

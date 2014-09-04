@@ -13,7 +13,7 @@ function log(message) {
  */
 function getBase64Image(img) {
     var canvas = document.createElement("canvas");
-    var newSize = sizeConverter(img.width, img.height, 320)
+    var newSize = sizeConverter(img.width, img.height, 480)
     canvas.width = newSize.width;
     canvas.height = newSize.height;
 

@@ -49,6 +49,29 @@
         endswitch; ?></div>
         <!-- /panel ads status -->
         <div class="panel-body">
+            <?php if($showImportAds): ?>
+            <!-- import ads from trade -->
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="dropdown">
+                        <button title="Import data from external website" class="btn btn-primary dropdown-toggle tooltip-enable-right" type="button" id="adsImportDropdownButton" data-toggle="dropdown">
+                            <span class="glyphicon glyphicon-import"></span> Import Ads <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="adsImportDropdownButton">
+                            <li role="presentation"><a data-toggle="modal" data-target="#importAdsModal" role="menuitem" tabindex="-1" href="javascript:" name="vigattintrade">Vigattintrade.com</a></li>
+                            <!-- <li role="presentation"><a data-toggle="modal" data-target="#importAdsModal" role="menuitem" tabindex="-1" href="javascript:" name="vigattin">Vigattin.com</a></li> -->
+                            <!-- <li role="presentation"><a data-toggle="modal" data-target="#importAdsModal" role="menuitem" tabindex="-1" href="javascript:" name="test">Test.com</a></li> -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- /import ads from trade -->
+            <div class="row">
+                <div class="col-xs-12">
+                    <p></p>
+                </div>
+            </div>
+            <?php endif; ?>
             <!-- change target site -->
             <?php echo isset($changeTargetSiteView) ? $changeTargetSiteView : ''; ?>
             <!-- /change target site -->
@@ -69,6 +92,12 @@
                 <!-- /ads preview -->
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                     <!-- ads form -->
+                    <div class="form-group ads-form-image <?php echo $adsImageError ? 'has-error' : ''; ?>">
+                        <label class="control-label" for="ads-title">Choose an image</label>
+                        <span class="help-block"><?php if($adsImageError) echo $adsImageError; ?></span>
+                        <input type="file" id="ads-choose-image-input" name="ads-image" accept="image/*">
+                        <input type="hidden" id="ads-image-data-url" name="ads-image-data-url" value="<?php echo $this->escapeHtml($adsImageDataUrl); ?>">
+                    </div>
                     <div class="form-group ads-form-title <?php echo $adsTitleError ? 'has-error' : ''; ?>">
                         <label class="control-label" for="ads-title">Edited Title <small id="adsTitleCountDisplay" class="text-warning"></small></label>
                         <span class="help-block"><?php if($adsTitleError) echo $adsTitleError; ?></span>
@@ -238,3 +267,24 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 <?php endif; ?>
+
+<!-- Import Modal -->
+<div class="modal fade" id="importAdsModal" tabindex="-1" role="dialog" aria-labelledby="importAdsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="importAdsModalLabel">Import Ads</h4>
+            </div>
+            <div class="modal-body">
+                <ul class="ads-import-list">
+
+                </ul>
+                <div class="text-center"><button type="button" class="btn btn-default import-ads-list-more-button">More</button><img  class="import-ads-list-progress" src="/assets/vigattinads/img/circle-preloader-2.gif" /></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
