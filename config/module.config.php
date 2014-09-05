@@ -1,7 +1,7 @@
 <?php
 return array(
     'vigattinads' => array(
-        'assets_version' => 21,
+        'assets_version' => 22,
     ),
     'router' => array(
         'routes' => array(
