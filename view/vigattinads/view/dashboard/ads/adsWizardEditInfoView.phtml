@@ -140,7 +140,7 @@
                                 <strong>Left Side</strong>
                                 <ul class="list-group list-unstyled" id="tradeCategoryList1">
                                     <?php $keywordArray = explode('|', $adsTempKeyword); foreach($keywordArray as $key => $value): ?>
-                                        <li><a class="ads-preview-link" target="_blank" href="<?php echo \VigattinAds\DomainModel\VigattinTrade\CatMap::generatePreviewUrl($keywordArray, $key) ?>#preview">preview</a> <input name="selectedKeyword[]" value="<?php echo $tempAbsoluteKey = \VigattinAds\DomainModel\VigattinTrade\CatMap::createAbsoluteCat($keywordArray, $key) ?>" class="must-have-one-checked trade-cat-checkbox1" data-pos="0" type="checkbox" style="margin-left: 10px" checked="checked"> <?php echo ($key == 0) ? 'All Category' : $this->escapeHtml(ucwords($value)); ?></li>
+                                        <li><a class="ads-preview-link" target="_blank" href="<?php echo \VigattinAds\DomainModel\VigattinTrade\CatMap::generatePreviewUrl($keywordArray, $key) ?>#preview">preview</a> <input name="selectedKeyword[]" value="<?php echo $tempAbsoluteKey = \VigattinAds\DomainModel\VigattinTrade\CatMap::createAbsoluteCat($keywordArray, $key) ?>" class="must-have-one-checked trade-cat-checkbox1" data-pos="0" type="checkbox" style="margin-left: 10px" checked="checked"> <?php echo ($key == 0) ? 'Homepage' : $this->escapeHtml(ucwords($value)); ?></li>
                                     <?php endforeach; ?>
                                 </ul>
 

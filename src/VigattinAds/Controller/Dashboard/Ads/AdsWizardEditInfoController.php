@@ -53,7 +53,7 @@ class AdsWizardEditInfoController extends AdsController
                 break;
             case strtolower(ChooseWebsiteController::VIGATTINTOURISM):
                 $actionContent->setTemplate('vigattinads/view/dashboard/ads/adsWizardEditInfoTourismView');
-                $formError['adsTempKeyword'] = 'Homepage|Destination|Articles|Tourist Spots|Discussion|Directory';
+                $formError['adsTempKeyword'] = 'Homepage|Destinations|Articles|Tourist Spots|Discussion|Directory';
                 $formError['adsKeyword'] = '';
                 break;
             case strtolower(ChooseWebsiteController::VIGATTIN):
@@ -199,7 +199,7 @@ class AdsWizardEditInfoController extends AdsController
         $categories = $this->getRequest()->getPost('keyword-item', array());
         foreach($categories as $category) {
             foreach($authorId as $id) {
-                $keywords .= "(tourism article $category $id)";
+                $keywords .= strtolower("(tourism article $category $id)");
             }
         }
         $this->adsUser->createAds(
@@ -228,7 +228,7 @@ class AdsWizardEditInfoController extends AdsController
             $this->sessionManager->getStorage()->tempAdsDescription,
             $this->sessionManager->getStorage()->tempAdsTemplate['showIn'],
             $this->sessionManager->getStorage()->tempAdsTemplate['template'],
-            $this->adsKeyword,
+            strtolower($this->adsKeyword),
             $this->sessionManager->getStorage()->tempAdsPrice,
             $this->getRequest()->getPost('ads-temp-keyword', ''),
             $this->sessionManager->getStorage()->tempAdsDate
@@ -249,7 +249,7 @@ class AdsWizardEditInfoController extends AdsController
     {
         $adsKeyword = '';
         foreach($selectedKeywordArray as $value) {
-            $adsKeyword .= $value;
+            $adsKeyword .= strtolower($value);
         }
         return $adsKeyword;
     }

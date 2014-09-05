@@ -37,7 +37,7 @@ var tourismAds = new (function($) {
 
     function urlToKeyword(url) {
         if(url.match(/vigattintourism.com\/tourism\/destinations\/91\/directory/)) return 'directory';
-        if(url.match(/vigattintourism.com\/tourism\/destinations/)) return 'destination';
+        if(url.match(/vigattintourism.com\/tourism\/destinations/)) return 'destinations';
         //if(url.match(/vigattintourism.com\/tourism\/destinations\/articles/)) return 'articles';
         if(url.match(/vigattintourism.com\/tourism\/articles/)) return 'articles';
         //if(url.match(/vigattintourism.com\/tourism\/destinations\/tourist_spots/)) return 'tourist spots';

@@ -206,7 +206,7 @@ var catMap = {
 /* tourism category map v1.0 */
 var catMapTourism = {
     'homepage' : {'url' : '/vigattintourism.com'},
-    'destination' : {'url' : '/vigattintourism.com/tourism/destinations'},
+    'destinations' : {'url' : '/vigattintourism.com/tourism/destinations'},
     'articles' : {'url' : '/vigattintourism.com/tourism/articles?page=1'},
     'tourist spots' : {'url' : '/vigattintourism.com/tourism/tourist_spots'},
     'discussion' : {'url' : '/vigattintourism.com/tourism/discussion'},
