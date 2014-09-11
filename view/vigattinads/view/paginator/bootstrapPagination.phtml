@@ -1,26 +1,53 @@
 <?php if ($this->pageCount > 1): ?>
-    <ul class="pagination">
-        <!-- Previous page link -->
-        <?php if (isset($this->previous)): ?>
-            <li><a href="<?php echo $this->url($this->route, array('page' => $this->previous)); ?>">&laquo;</a></li>
-        <?php else: ?>
-            <li class="disabled"><span>&laquo;</span></li>
-        <?php endif; ?>
+    <form class="form-inline bootstrap-pagination" role="form">
+        <div class="form-group">
+            <ul class="pagination">
+                <!-- First page link -->
+                <?php if (isset($this->previous)): ?>
+                    <li><a href="<?php echo $this->url($this->route, array('page' => $this->first)); ?>">First</a></li>
+                <?php else: ?>
+                    <li class="disabled"><span>First</span></li>
+                <?php endif; ?>
 
-        <!-- Numbered page links -->
-        <?php foreach ($this->pagesInRange as $page): ?>
-            <?php if ($page != $this->current): ?>
-                <li ><a href="<?php echo $this->url($this->route, array('page' => $page)); ?>"><?php echo $page; ?><span class="sr-only">(current)</span></a></li>
-            <?php else: ?>
-                <li><span><?php echo $page; ?></span></li>
-            <?php endif; ?>
-        <?php endforeach; ?>
+                <!-- Previous page link -->
+                <?php if (isset($this->previous)): ?>
+                    <li><a href="<?php echo $this->url($this->route, array('page' => $this->previous)); ?>">&laquo;</a></li>
+                <?php else: ?>
+                    <li class="disabled"><span>&laquo;</span></li>
+                <?php endif; ?>
 
-        <!-- Next page link -->
-        <?php if (isset($this->next)): ?>
-            <li><a href="<?php echo $this->url($this->route, array('page' => $this->next)); ?>">&raquo;</a></li>
-        <?php else: ?>
-            <li class="disabled"><span>&raquo;</span></li>
-        <?php endif; ?>
-    </ul>
+                <!-- Numbered page links -->
+                <?php foreach ($this->pagesInRange as $page): ?>
+                    <?php if ($page != $this->current): ?>
+                        <li ><a href="<?php echo $this->url($this->route, array('page' => $page)); ?>"><?php echo $page; ?><span class="sr-only">(current)</span></a></li>
+                    <?php else: ?>
+                        <li class="disabled"><span><?php echo $page; ?></span></li>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+
+                <!-- Next page link -->
+                <?php if (isset($this->next)): ?>
+                    <li><a href="<?php echo $this->url($this->route, array('page' => $this->next)); ?>">&raquo;</a></li>
+                <?php else: ?>
+                    <li class="disabled"><span>&raquo;</span></li>
+                <?php endif; ?>
+
+                <!-- Last page link -->
+                <?php if (isset($this->next)): ?>
+                    <li><a href="<?php echo $this->url($this->route, array('page' => $this->last)); ?>">Last</a></li>
+                <?php else: ?>
+                    <li class="disabled"><span>Last</span></li>
+                <?php endif; ?>
+            </ul>
+        </div>
+
+        <div class="form-group goto-page">
+            <div class="input-group">
+                <input type="number" min="0" class="form-control jump-to-page-input" placeholder="page">
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-default jump-to-page-button" data-url="<?php echo $this->url($this->route); ?>" >Go</button>
+                </div>
+            </div>
+        </div>
+    </form>
 <?php endif; ?>

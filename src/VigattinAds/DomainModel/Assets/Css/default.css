@@ -554,3 +554,12 @@ a:hover {
 #authorResultListContainer {
     margin-top: 10px;
 }
+
+/******************* bootstrap-pagination **************/
+.bootstrap-pagination .pagination {
+    vertical-align: middle;
+}
+.bootstrap-pagination .goto-page {
+    width: 120px;
+    margin-left: 10px;
+}

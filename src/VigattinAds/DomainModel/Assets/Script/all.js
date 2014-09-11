@@ -1920,4 +1920,11 @@ $(document).ready(function(e) {
             catForm.submit();
         });
     })(jQuery);
+
+    /* pagination goto-page */
+    (function($){
+        $('.goto-page .jump-to-page-button').click(function(e) {
+            window.location = $(e.currentTarget).attr('data-url')+$('.goto-page .jump-to-page-input').val();
+        });
+    })(jQuery);
 });
