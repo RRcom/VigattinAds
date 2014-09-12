@@ -1,0 +1,82 @@
+<?php echo $this->headTitle('Approval'); ?>
+<form method="post" action="">
+    <?php if($ads instanceof \VigattinAds\DomainModel\Ads): ?>
+
+    <!-- Ads preview -->
+    <div class="row">
+        <div class="col-xs-5">
+            <div class="thumbnail">
+                <img src="/repo<?php echo $this->escapeHtmlAttr($ads->get('adsImage')); ?>" alt="<?php echo $this->escapeHtmlAttr($ads->get('adsTitle')); ?>">
+            </div>
+        </div>
+        <div class="col-xs-7">
+            <h4>Title:</h4>
+            <p><?php echo $this->escapeHtml($ads->get('adsTitle')); ?></p>
+            <h4>Description:</h4>
+            <p><?php echo $this->escapeHtml($ads->get('adsDescription')); ?></p>
+            <h4>Url:</h4>
+            <p><a href="<?php echo $this->escapeHtmlAttr($ads->get('adsUrl')); ?>" target="_blank"><?php echo $this->escapeHtml($ads->get('adsUrl')); ?></a></p>
+        </div>
+    </div>
+    <!-- /Ads preview -->
+
+    <!-- Action form -->
+    <div class="row">
+        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+            <div class="form-group">
+                <label class="control-label" for="review-reason"></label>
+                <!-- <textarea maxlength="1012" class="form-control" id="review-reason" name="review_reason" placeholder="If this advertise did not pass the required criteria, please explain why you disapproved this ads."></textarea> -->
+                <textarea maxlength="1012" class="form-control" id="review-reason" name="review_reason" placeholder="Comments here..."></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <button type="submit" name="result" value="approved" class="btn btn-success">Approve</button>
+            <button type="submit" name="result" value="disapproved" class="btn btn-danger">Disapprove</button>
+            <input type="hidden" name="version" value="<?php echo $ads->get('reviewVersion'); ?>" />
+        </div>
+    </div>
+    <!-- /Action form -->
+
+    <?php else: ?>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="alert alert-warning">
+                <strong>No Pending Ads</strong> Please click recheck to check if there has pending ads.
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <button type="submit" name="result" value="recheck" class="btn btn-success">Recheck</button>
+        </div>
+    </div>
+    <?php endif; ?>
+</form>
+<?php if($totalPending): ?>
+    <hr>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="alert alert-warning">
+                <strong>Remaining ads to review <?php echo $paginator->getTotalItemCount(); ?></strong>
+            </div>
+        </div>
+    </div>
+    <div class="pending-ads-list">
+        <?php foreach($paginator as $key => $ads): ?>
+            <div class="media">
+                <a class="pull-left" href="#">
+                    <img style="width: 100px;" class="media-object" src="/repo<?php echo $this->escapeHtmlAttr($ads->get('adsImage')); ?>" alt="<?php echo $this->escapeHtmlAttr($ads->get('adsTitle')); ?>">
+                </a>
+                <div class="media-body">
+                    <h4 class="media-heading"><?php echo $this->escapeHtml($ads->get('adsTitle')); ?></h4>
+                    <?php echo $this->escapeHtml($ads->get('adsDescription')); ?>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+    <div class="text-center">
+        <?php echo $this->paginationControl($paginator, 'Sliding', 'vigattinads/view/paginator/bootstrapPagination', array('route' => 'vigattinads_dashboard_approval')); ?>
+    </div>
+<?php endif; ?>

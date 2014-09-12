@@ -1,7 +1,7 @@
 <?php
 return array(
     'vigattinads' => array(
-        'assets_version' => 23,
+        'assets_version' => 24,
     ),
     'router' => array(
         'routes' => array(
@@ -317,12 +317,11 @@ return array(
             'vigattinads_dashboard_approval' => array(
                 'type'    => 'segment',
                 'options' => array(
-                    'route'    => '/vigattinads/dashboard/approval[/][:controller][/][:action][/][:param1][/][:param2]',
+                    'route'    => '/vigattinads/dashboard/approval[/:controller][/:action][/:page]',
                     'constraints' => array(
                         'controller'    => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'action'        => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'param1'        => '[a-zA-Z0-9_-]*',
-                        'param2'        => '[a-zA-Z0-9_-]*',
+                        'page'          => '[0-9]*',
                     ),
                     'defaults' => array(
                         '__NAMESPACE__' => 'VigattinAds\Controller\Dashboard',

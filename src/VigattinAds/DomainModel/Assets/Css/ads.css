@@ -366,7 +366,7 @@ body {
     padding: 5px;
 }
 .sidebar-ads-large .ads-frame .ads-image-preview-container {
-    max-height: 160px;
+    max-height: 140px;
     overflow: hidden;
 }
 .sidebar-ads-large .ads-frame .ads-image-preview-container .ads-frame-image {

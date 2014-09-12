@@ -1441,6 +1441,7 @@ $(document).ready(function(e) {
     /* Views inline update v2.0 */
     (function($){
         function init() {
+            $('.ads-view-limit-inline-edit').click(onInlineEditClick);
             $('.ads-view-limit-inline-edit').on('show.bs.popover', function (e){onPopupShow(e);});
             $('.ads-view-limit-inline-edit').on('shown.bs.popover', function (e){onPopupShown(e);});
             iniPopover();
@@ -1452,8 +1453,11 @@ $(document).ready(function(e) {
             });
         }
 
-        function onPopupShow(e) {
+        function onInlineEditClick(e) {
             $('.ads-view-limit-inline-edit').popover('hide');
+        }
+
+        function onPopupShow(e) {
         }
 
         function onPopupShown(e) {
