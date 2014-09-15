@@ -202,7 +202,7 @@ class AdsWizardEditInfoController extends AdsController
                 $keywords .= strtolower("(tourism article $category $id)");
             }
         }
-        $this->adsUser->createAds(
+        $newAds = $this->adsUser->createAds(
             $this->sessionManager->getStorage()->tempAdsTitle,
             $this->sessionManager->getStorage()->tempAdsUrl,
             $imagePath,
@@ -216,12 +216,14 @@ class AdsWizardEditInfoController extends AdsController
         );
         $this->adsUser->flush();
         $this->clearTempData();
-        $this->redirect()->toRoute('vigattinads_dashboard_ads');
+        // use to detect if this is newly created ads. use in ads edit to show a modal that prompt user to add a initial credit
+        $this->sessionManager->getStorage()->newAds = $newAds->get('id');
+        $this->redirect()->toRoute('vigattinads_dashboard_ads_edit', array('param1' => $newAds->get('id')));
     }
 
     protected function preProcessDefault($imagePath)
     {
-        $this->adsUser->createAds(
+        $newAds = $this->adsUser->createAds(
             $this->sessionManager->getStorage()->tempAdsTitle,
             $this->sessionManager->getStorage()->tempAdsUrl,
             $imagePath,
@@ -235,7 +237,9 @@ class AdsWizardEditInfoController extends AdsController
         );
         $this->adsUser->flush();
         $this->clearTempData();
-        $this->redirect()->toRoute('vigattinads_dashboard_ads');
+        // use to detect if this is newly created ads. use in ads edit to show a modal that prompt user to add a initial credit
+        $this->sessionManager->getStorage()->newAds = $newAds->get('id');
+        $this->redirect()->toRoute('vigattinads_dashboard_ads_edit', array('param1' => $newAds->get('id')));
     }
 
     /**
