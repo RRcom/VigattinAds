@@ -1,12 +1,14 @@
 <?php $this->headTitle('Edit'); ?>
 <!-- show ads status -->
 <div class="alert-box">
-    <?php if($ads->get('status') == $ads::STATUS_PENDING): ?>
+    <?php if($ads->get('status') == \VigattinAds\DomainModel\Ads::STATUS_PENDING): ?>
         <div class="alert auto-hide alert-warning fade in"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><strong>Ads under review!</strong> For now this ads is in pending status, please wait until the review finish.</div>
-    <?php elseif($ads->get('status') == $ads::STATUS_DISAPPROVED): ?>
-        <div class="alert auto-hide alert-danger fade in"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><strong>Ads Disapproved!</strong> <?php echo $this->escapeHtml($adsReviewReason); ?></div>
-        <?php elseif($ads->get('status') == $ads::STATUS_PAUSED): ?>
+    <?php elseif($ads->get('status') == \VigattinAds\DomainModel\Ads::STATUS_DISAPPROVED): ?>
+        <div class="alert auto-hide alert-danger fade in"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><strong>Ads disapproved!</strong> <?php echo $this->escapeHtml($adsReviewReason); ?></div>
+    <?php elseif($ads->get('status') == \VigattinAds\DomainModel\Ads::STATUS_PAUSED): ?>
         <div class="alert auto-hide alert-warning fade in"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><strong>Ads paused!</strong> To continue your ads service please click resume.</div>
+    <?php elseif($ads->get('status') == \VigattinAds\DomainModel\Ads::STATUS_DRAFT): ?>
+        <div class="alert auto-hide alert-info fade in"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><strong>New ads!</strong> Edit your new ads.</div>
     <?php endif; ?>
 </div>
 <!-- /show ads status -->
@@ -45,6 +47,9 @@
                     <?php break;
                 case \VigattinAds\DomainModel\Ads::STATUS_REVIEWING: ?>
                     <span class="text-warning"><span class="glyphicon glyphicon-search"></span> Reviewing</span>
+                    <?php break;
+                case \VigattinAds\DomainModel\Ads::STATUS_DRAFT: ?>
+                    <span class="text-info"><span class="glyphicon glyphicon-pencil"></span> Draft</span>
                     <?php break;
         endswitch; ?></div>
         <!-- /panel ads status -->

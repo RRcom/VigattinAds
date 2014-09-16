@@ -1,7 +1,7 @@
 <?php
 return array(
     'vigattinads' => array(
-        'assets_version' => 24,
+        'assets_version' => 25,
     ),
     'router' => array(
         'routes' => array(
@@ -152,7 +152,7 @@ return array(
                 'options' => array(
                     'route'    => '/vigattinads/dashboard/ads/create/choose-website/import/edit[/]',
                     'defaults' => array(
-                        'controller'    => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\Import\Edit',
+                        'controller'    => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\Import\CreateDraft',
                         'action'        => 'index',
                     ),
                 ),
@@ -162,7 +162,7 @@ return array(
                 'options' => array(
                     'route'    => '/vigattinads/dashboard/ads/create/choose-website/blogger-author/import/edit[/]',
                     'defaults' => array(
-                        'controller'    => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\Import\Edit',
+                        'controller'    => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\Import\CreateDraft',
                         'action'        => 'index',
                     ),
                 ),
@@ -372,6 +372,7 @@ return array(
             'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\BloggerAuthor'   => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\ChooseTourismBloggerAuthorController',
             'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\Import' => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\Import\ImportController',
             'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\Import\Edit' => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\Import\Edit\EditController',
+            'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\Import\CreateDraft' => 'VigattinAds\Controller\Dashboard\Ads\Create\ChooseWebsite\Import\CreateDraft\CreateDraftController',
             'VigattinAds\Controller\Dashboard\Ads\Edit\Edit'   => 'VigattinAds\Controller\Dashboard\Ads\Edit\EditController',
             'VigattinAds\Controller\Dashboard\Ads\Edit\ChangeSite'   => 'VigattinAds\Controller\Dashboard\Ads\Edit\EditController',
             'VigattinAds\Controller\Dashboard\Ads\Template'   => 'VigattinAds\Controller\Dashboard\Ads\AdsWizardChooseTemplateController',

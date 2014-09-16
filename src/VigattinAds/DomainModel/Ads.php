@@ -19,6 +19,7 @@ use VigattinAds\DomainModel\AdsView;
  */
 class Ads extends AbstractEntity
 {
+    const STATUS_DRAFT = -3;
     const STATUS_VALUE_CHANGED = -2;
     const STATUS_DISAPPROVED = -1;
     const STATUS_PENDING = 0;

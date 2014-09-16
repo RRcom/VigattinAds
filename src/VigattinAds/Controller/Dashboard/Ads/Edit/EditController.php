@@ -13,7 +13,7 @@ class EditController extends AdsController
 {
     const IMAGE_REPO = 'public/repo';
     const IMAGE_WIDTH = 320;
-    const IMAGE_QUALITY = 90;
+    const IMAGE_QUALITY = 100;
     const IMAGE_PROGRESSIVE = true;
 
     protected $showImportAds = false;
@@ -74,6 +74,11 @@ class EditController extends AdsController
             $this->mainView->addChild($actionContent, 'actionContent');
             return $this->mainView;
         } else $actionContent->setTemplate('vigattinads/view/dashboard/ads/edit/editView');
+
+        if($this->adsEntity->get('status') == Ads::STATUS_DRAFT) {
+            $this->showImportAds = true;
+            $this->showUploadImage = true;
+        }
 
         // get show in data
         $this->showIn = strtolower($this->params('param2', '') ? $this->params('param2') : $this->adsEntity->get('showIn'));
@@ -190,8 +195,13 @@ class EditController extends AdsController
         $this->adsEntity->set('adsPrice', $this->formValue['adsPrice']);
         $this->adsEntity->set('adsDescription', $this->formValue['adsDescription']);
         $this->adsEntity->set('showIn', $this->showIn);
+
+        if($this->adsEntity->get('status') == Ads::STATUS_DRAFT) {
+            $this->adsEntity->set('status', Ads::STATUS_PENDING);
+        }
+
         // if has new value
-        if($oldValue !== $newValue) {
+        elseif($oldValue !== $newValue) {
             // Change log to RE-EDIT status
             $log = $this->adsManager->getLogByReviewVersion($this->adsEntity->get('reviewVersion'));
             if($log instanceof \VigattinAds\DomainModel\AdsApproveLog) {

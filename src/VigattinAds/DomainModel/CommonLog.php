@@ -18,6 +18,7 @@ class CommonLog extends AbstractEntity
     const LOG_TYPE_ALTER_FIRST_NAME = 5;
     const LOG_TYPE_ALTER_LAST_NAME = 6;
     const LOG_TYPE_ALTER_PRIVILEGE = 7;
+    const LOG_TYPE_DRAFT_ADS_CREATED = 8;
 
     /**
      * @ORM\Id

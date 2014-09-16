@@ -195,7 +195,7 @@ class AdsUser extends AbstractEntity
             ->set('template', $template)
             ->set('keywords', $keyword)
             ->set('adsPrice', $adsPrice)
-            ->set('status', Ads::STATUS_PENDING)
+            ->set('status', Ads::STATUS_DRAFT)
             ->set('category', $category)
             ->set('reviewVersion', uniqid())
             ->set('userUsername', $this->get('username'))

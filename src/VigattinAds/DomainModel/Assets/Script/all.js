@@ -832,7 +832,7 @@ $(document).ready(function(e) {
                             '<input class="ads-keyword" type="hidden" value="'+$('<div/>').html('Homepage|'+decodeArrayCategory(value.category, '')).text()+'" />'+
                             '<input class="ads-date" type="hidden" value="'+$('<div/>').html(value.date).text()+'" />'+
                             '</div>'+
-                            '<div class="col-xs-2"><a class="ads-import-single-button" data-target="#adsPanel'+Start+'" href="javascript:" data-dismiss="modal"><span class="glyphicon glyphicon-star"></span> Promote</a></div>'+
+                            '<div class="col-xs-2"><a class="ads-import-single-button" data-target="#adsPanel'+Start+'" href="javascript:" data-dismiss="modal"><span class="glyphicon glyphicon-import"></span> Import</a></div>'+
                             '</div>'+
                             '</li>';
                         $('.ads-import-list', e.currentTarget).append(list);
