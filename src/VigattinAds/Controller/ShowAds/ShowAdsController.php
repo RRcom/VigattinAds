@@ -40,6 +40,11 @@ class ShowAdsController extends AbstractActionController
         $this->viewModel = new ViewModel();
     }
 
+    public function debugAction()
+    {
+        return '';
+    }
+
     /**
      * 2 initialize require method
      * @param MvcEvent $e

@@ -551,6 +551,13 @@ a:hover {
     padding: 10px;
 }
 
+.selected-category-list {
+    font-style: italic;
+    padding-left: 10px;
+    padding-top: 5px;
+    color: #666666;
+}
+
 #authorResultListContainer {
     margin-top: 10px;
 }

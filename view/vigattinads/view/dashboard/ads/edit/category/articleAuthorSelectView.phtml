@@ -19,14 +19,21 @@
                     <div class="input-group-btn">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Categories <span class="caret"></span></button>
                         <ul class="dropdown-menu disable-toggle" role="menu">
+                            <li>
+                                <a class="checkbox">
+                                    <label>
+                                        <input title="All" class="authorSearchCategories all" type="checkbox" checked="checked" <?php echo isset($_POST['filterAll']) ? 'checked' : ''; ?> name="filterAll" value="1000"> All
+                                    </label>
+                                </a>
+                            </li>
                             <?php foreach($categories as $key => $category): ?>
-                                <li>
-                                    <a class="checkbox">
-                                        <label>
-                                            <input class="authorSearchCategories" type="checkbox" value="<?php echo $this->escapeHtmlAttr($category->getCategoryId()); ?>"> <?php echo $this->escapeHtml(ucfirst(strtolower($category->getCategoryName()))); ?>
-                                        </label>
-                                    </a>
-                                </li>
+                            <li>
+                                <a class="checkbox">
+                                    <label>
+                                        <input title="<?php echo $catName = $this->escapeHtml(ucfirst(strtolower($category->getCategoryName()))); ?>" class="authorSearchCategories" type="checkbox" checked="checked" value="<?php echo $this->escapeHtmlAttr($category->getCategoryId()); ?>"> <?php echo $catName; ?>
+                                    </label>
+                                </a>
+                            </li>
                             <?php endforeach; ?>
                         </ul>
                     </div>
@@ -34,6 +41,12 @@
                     <div class="input-group-btn">
                         <button id="authorSearchSubmit" type="button" class="btn btn-default" >Search</button>
                     </div>
+                </div>
+
+                <div class="selected-category-list">
+                    <p>
+                        <small></small>
+                    </p>
                 </div>
 
                 <div class="selected-authors">

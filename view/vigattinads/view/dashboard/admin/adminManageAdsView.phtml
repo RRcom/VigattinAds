@@ -88,6 +88,9 @@
                                 case \VigattinAds\DomainModel\Ads::STATUS_REVIEWING: ?>
                                     <span class="text-warning"><span class="glyphicon glyphicon-search"></span></span>
                                     <?php break;
+                                case \VigattinAds\DomainModel\Ads::STATUS_DRAFT: ?>
+                                    <span class="text-info"><span class="glyphicon glyphicon-edit"></span></span>
+                                    <?php break;
                             endswitch; ?>
                         </td>
                         <td class="data-website"><?php echo $this->escapeHtml($ads->get('showIn')); ?></td>

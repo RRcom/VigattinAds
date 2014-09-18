@@ -563,6 +563,23 @@ class AdsManager
     }
 
     /**
+     * @param string|array $keywords
+     * @return array generated dql query at index 0 ex. (a.keywords LIKE :keyword0 OR a.keywords LIKE :keyword1 ...) and array value in index 1 ex. array('keyword0' => 'cars', 'keyword1' => 'houses' ...)
+     */
+    public function keywordArrayToLikeDql($keywords)
+    {
+        $dql = '';
+        $value = array();
+        if(!is_array($keywords)) $keywords = array($keywords);
+        foreach($keywords as $key => $keyword) {
+            $dql .= 'a.keywords LIKE :keyword'.$key.' OR ';
+            $value['keyword'.$key] = "%$keyword%";
+        }
+        $dql = '('.rtrim($dql, ' OR').')';
+        return array($dql, $value);
+    }
+
+    /**
      * Get log
      * @param AdsUser $approver
      */

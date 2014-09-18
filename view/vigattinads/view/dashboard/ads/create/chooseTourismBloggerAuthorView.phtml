@@ -5,18 +5,25 @@
 /** @var \VigattinAds\DomainModel\Tourism\ArticleCategory $category */
 ?>
 <div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-7">
-        <form class="form-group has-feedback" method="post" action="" id="authorSearchForm">
+    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+        <form style="margin-bottom: 0;" class="form-group has-feedback" method="post" action="" id="authorSearchForm">
 
             <div class="input-group">
                 <div class="input-group-btn">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Categories <span class="caret"></span></button>
                     <ul class="dropdown-menu disable-toggle" role="menu">
+                        <li>
+                            <a class="checkbox">
+                                <label>
+                                    <input title="All" class="authorSearchCategories all" type="checkbox" checked="checked" <?php echo isset($_POST['filterAll']) ? 'checked' : ''; ?> name="filterAll" value="1000"> All
+                                </label>
+                            </a>
+                        </li>
                         <?php foreach($categories as $key => $category): ?>
                         <li>
                             <a class="checkbox">
                                 <label>
-                                    <input class="authorSearchCategories" type="checkbox" <?php echo isset($_POST['filter'][$key]) ? 'checked' : ''; ?> name="filter[<?php echo $key; ?>]" value="<?php echo $this->escapeHtmlAttr($category->getCategoryId()); ?>"> <?php echo $this->escapeHtml(ucfirst(strtolower($category->getCategoryName()))); ?>
+                                    <input title="<?php echo $catName = $this->escapeHtml(ucfirst(strtolower($category->getCategoryName()))); ?>" class="authorSearchCategories" type="checkbox" checked="checked" <?php echo isset($_POST['filter'][$key]) ? 'checked' : ''; ?> name="filter[<?php echo $key; ?>]" value="<?php echo $this->escapeHtmlAttr($category->getCategoryId()); ?>"> <?php echo $catName; ?>
                                 </label>
                             </a>
                         </li>
@@ -28,10 +35,16 @@
                     <button id="authorSearchSubmit" type="submit" class="btn btn-default" >Search</button>
                 </div>
             </div>
-
         </form>
     </div>
     <div class="clearfix"></div>
+    <div class="col-xs-12">
+        <div class="selected-category-list">
+            <p>
+                <small></small>
+            </p>
+        </div>
+    </div>
     <div class="col-xs-12">
         <div class="row">
             <div class="col-xs-12">

@@ -14,33 +14,41 @@ class AssetsGenerator
     const JS_NAME = 'global';
     const CSS_NAME = 'default';
 
+    // use by service.vigattin.com
     protected $css = array(
         'global',
         'default',
     );
 
+    // use by service.vigattin.com ads service
     protected $adsCss = array(
         'ads',
     );
 
+    // use by service.vigattin.com
     protected $script = array(
         'global',
         'tools',
         'all',
+        'tourismAuthor',
     );
 
+    // use by service.vigattin.com ads service
     protected $adsJs = array(
         'ads',
     );
 
+    // use by vigattintourism.com
     protected $tourismAdsJs = array(
         'tourismads',
     );
 
+    // use by vigattintrade.com
     protected $tradeAdsJs = array(
         'tradeads',
     );
 
+    // use by vigattin.com
     protected $vigattinAdsJs = array(
         'vigattinads',
     );
