@@ -38,4 +38,34 @@ class AdsManagerTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    function testCountAdsTotal()
+    {
+        $showIn = 'vigattin-tourism-article';
+        $template = '';
+        $keywords = array('(tourism article header 36)', '(tourism article rightside 98)');
+
+        $result = $this->adsManager->countAdsTotal($showIn, $template, $keywords);
+        $this->assertTrue($result > 0, "total result is $result");
+        return $result;
+    }
+
+    /**
+     * @depends testCountAdsTotal
+     */
+    function testSearchAds($total)
+    {
+        $showIn = 'vigattin-tourism-article';
+        $template = '';
+        $keywords = array('(tourism article header 36)', '(tourism article rightside 98)');
+        $start = 0;
+        $limit = 10;
+        $result = $this->adsManager->searchAds($showIn, $template, $keywords, $start, $limit);
+        $this->assertEquals($total, count($result));
+        foreach($result as $ads) {
+            $this->assertTrue(is_array($ads));
+            $this->assertTrue(count($ads) == 22);
+            $this->assertTrue(($ads['id'] == 494) || ($ads['id'] == 484));
+        }
+    }
+
 }

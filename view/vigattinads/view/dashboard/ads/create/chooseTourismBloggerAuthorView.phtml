@@ -5,7 +5,14 @@
 /** @var \VigattinAds\DomainModel\Tourism\ArticleCategory $category */
 ?>
 <div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+    <div class="col-xs-12">
+        <div class="checkbox authors-select-all">
+            <label>
+                <input type="checkbox"> <span>All Authors</span>
+            </label>
+        </div>
+    </div>
+    <div class="hide-if-all-author col-xs-12 col-sm-12 col-md-8 col-lg-8">
         <form style="margin-bottom: 0;" class="form-group has-feedback" method="post" action="" id="authorSearchForm">
 
             <div class="input-group">
@@ -38,7 +45,7 @@
         </form>
     </div>
     <div class="clearfix"></div>
-    <div class="col-xs-12">
+    <div class="hide-if-all-author col-xs-12">
         <div class="selected-category-list">
             <p>
                 <small></small>
@@ -64,7 +71,7 @@
             </div>
         </div>
     </div>
-    <div class="fluid-result-container col-xs-12">
+    <div class="hide-if-all-author fluid-result-container col-xs-12">
             <table class="table table-striped">
                 <thead>
                 <tr>

@@ -15,7 +15,16 @@
             <div class="modal-body">
                 <!-- modal body -->
                 <div class="text-center body-loader"><img src="/assets/vigattinads/img/circle-preloader-2.gif"></div>
-                <div class="input-group body-content">
+                 <div class="row">
+                     <div class="col-xs-12">
+                         <div class="checkbox authors-select-all">
+                             <label>
+                                 <input type="checkbox"> <span style="vertical-align: sub">All Authors</span>
+                             </label>
+                         </div>
+                     </div>
+                 </div>
+                <div class="hide-if-all-author input-group body-content">
                     <div class="input-group-btn">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Categories <span class="caret"></span></button>
                         <ul class="dropdown-menu disable-toggle" role="menu">
@@ -43,7 +52,7 @@
                     </div>
                 </div>
 
-                <div class="selected-category-list">
+                <div class="hide-if-all-author selected-category-list">
                     <p>
                         <small></small>
                     </p>
@@ -53,7 +62,7 @@
 
                 </div>
 
-                <div id="authorResultListContainer" style="height: 300px; overflow: auto">
+                <div class="hide-if-all-author" id="authorResultListContainer" style="height: 300px; overflow: auto">
                     <table class="table">
                         <tbody id="authorSearchTable">
                         </tbody>

@@ -28,6 +28,7 @@ $(document).ready(function() {
             hideItemBoxIfEmpty();
             $(document).scroll(onLogScroll);
             SubmitButton.click(onSubmit);
+            $('.authors-select-all input').click(onSelectAllAuthors);
             fetchMore();
             $(window).resize(function(){
                 updateMainBoxSize();
@@ -39,6 +40,20 @@ $(document).ready(function() {
             var containerWidth = mainBox.parent().width();
             mainBox.css({'width':containerWidth});
             mainBoxOffset = mainBox.parent().offset();
+        }
+
+        function onSelectAllAuthors(e) {
+            $('span[id=multiSelectorItem0]').remove();
+            if($(e.currentTarget).prop('checked')) {
+                $('.hide-if-all-author').hide();
+                multiSelectorBox.append('<span id="multiSelectorItem0" data-name="All" data-target="0" class="multi-selector-item">All Authors</span>');
+                onMultiSelectorBoxItemChange();
+            } else {
+                $('.hide-if-all-author').show();
+                onMultiSelectorBoxItemChange();
+            }
+            hideItemBoxIfEmpty();
+            fixedIfScrolled();
         }
 
         function onSubmit(e) {
@@ -114,7 +129,7 @@ $(document).ready(function() {
             if($('#multiSelectorItem'+$(e.currentTarget).val()).length || ($('.multi-selector-item', multiSelectorBox).length >= itemLimit)) {
             } else {
                 multiSelectorBox.append(
-                    $('<span id="multiSelectorItem'+$(e.currentTarget).val()+'" data-target="'+$(e.currentTarget).val()+'" data-name="'+$(e.currentTarget).attr('data-name')+'" class="multi-selector-item">'+$(e.currentTarget).attr('data-name')+'</span>')
+                    $('<span id="multiSelectorItem'+$(e.currentTarget).val()+'" data-target="'+$(e.currentTarget).val()+'" data-name="'+$(e.currentTarget).attr('data-name')+'" class="hide-if-all-author multi-selector-item">'+$(e.currentTarget).attr('data-name')+'</span>')
                         .append(
                             $('<span class="small multi-selector-close" data-target="'+$(e.currentTarget).val()+'">x</span></span>').click(onItemClose)
                         )
@@ -209,6 +224,18 @@ $(document).ready(function() {
         var limit = 10;
         var isLast = false;
         var maxItem = 10;
+        var hasSelectAllAuthors = false;
+
+        function onSelectAllAuthors() {
+            $('div[id=author_0]').remove();
+            if($('.authors-select-all input').prop('checked')) {
+                $('.hide-if-all-author').hide();
+                selectedAuthors.append('<div class="multi-selector-item" id="author_0" author="0"><span class="author-name">All Authors</span></div>');
+            } else {
+                $('.hide-if-all-author').show();
+            }
+            generateKeywords();
+        }
 
         function onFetchCurrentAuthors(authors) {
             $.each(authors, function(key, value) {
@@ -217,7 +244,12 @@ $(document).ready(function() {
                 button.trigger('click');
             });
             $('.body-content', modal).show();
+            $('.selected-category-list', modal).show();
             $('.body-loader', modal).hide();
+            if(hasSelectAllAuthors) {
+                $('.authors-select-all input').prop('checked', true);
+                onSelectAllAuthors();
+            }
         }
 
         function onSearchClick(e) {
@@ -242,7 +274,7 @@ $(document).ready(function() {
             if($('.multi-selector-item', selectedAuthors).length >= maxItem) return;
             if(!$('#author_'+id, selectedAuthors).length) {
                 selectedAuthors.show();
-                item = $('<div class="multi-selector-item" id="author_'+id+'" author="'+id+'"><span class="author-name">'+name+'</span> <span class="multi-selector-close" data-target="#author_'+id+'">x</span></div>');
+                item = $('<div class="multi-selector-item hide-if-all-author" id="author_'+id+'" author="'+id+'"><span class="author-name">'+name+'</span> <span class="multi-selector-close" data-target="#author_'+id+'">x</span></div>');
                 $('.multi-selector-close', item).click(onRemoveAuthor);
                 selectedAuthors.append(item);
                 generateKeywords();
@@ -264,10 +296,13 @@ $(document).ready(function() {
 
         function init(e) {
             $('.body-content', modal).hide();
+            $('.selected-category-list', modal).hide();
             $('.body-loader', modal).show();
+            hasSelectAllAuthors = hasAllSelected();
             selectedAuthors.html('');
             fetchCurrentAuthors();
             $(searchButton).unbind('click').click(onSearchClick);
+            $('.authors-select-all input').unbind('click').click(onSelectAllAuthors);
             tableBody.html('');
             selectedAuthors.hide();
             fetching = false;
@@ -353,6 +388,16 @@ $(document).ready(function() {
                     onFetchCurrentAuthors(data.authors);
                 }
             });
+        }
+
+        function hasAllSelected() {
+            var checkBox = $('.tourism-cat-checkbox')[0];
+            var hasAll = false
+            $.each($(checkBox).val().split(')'), function(key, value) {
+                id = value.replace( /^\D+/g, '');
+                if((id !== '') && (id == 0) ) hasAll = true;
+            });
+            return hasAll;
         }
 
         function getIdsFromCheckBoxValue() {

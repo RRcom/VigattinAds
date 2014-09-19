@@ -562,6 +562,11 @@ a:hover {
     margin-top: 10px;
 }
 
+/******************* article authors-select-all **************/
+.authors-select-all {
+    padding-left: 10px;
+}
+
 /******************* bootstrap-pagination **************/
 .bootstrap-pagination .pagination {
     vertical-align: middle;

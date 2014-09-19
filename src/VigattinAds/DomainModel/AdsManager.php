@@ -116,7 +116,7 @@ class AdsManager
         //exit();
 
         $success = false;
-        $key = md5('global-rotate'.$showIn.$template.$keyword);
+        $key = md5('global-rotate'.$showIn.$template.serialize($keyword));
         $start = $this->cache->getItem($key, $success);
         if(!$success) {
             $start = 0;
@@ -156,17 +156,24 @@ class AdsManager
      */
     public function countAdsTotal($showIn, $template, $keyword)
     {
-        $queryKey = md5('countAdsTotal'.$showIn.$template.$keyword);
+        $queryKey = md5('countAdsTotal'.$showIn.$template.serialize($keyword));
         $result = $this->cacheQuickExpire->getItem($queryKey);
         if($result) return $result;
         if($keyword)
         {
+            $keywordsResult = $this->keywordArrayToLikeDql($keyword);
+            $keywordDql = $keywordsResult[0];
+            $keywordValue = $keywordsResult[1];
             if($template) {
-                $query = $this->entityManager->createQuery("SELECT COUNT(a.id) FROM VigattinAds\DomainModel\Ads a WHERE a.deleted = 0 AND a.status = 1 AND a.showIn = :showIn AND a.template = :template AND a.keywords LIKE :keyword AND a.viewLimit > 0");
-                $query->setParameters(array('showIn' => $showIn, 'template' => $template, 'keyword' => '%'.$keyword.'%'));
+                $params = array('showIn' => $showIn, 'template' => $template);
+                $params = array_merge($params, $keywordValue);
+                $query = $this->entityManager->createQuery("SELECT COUNT(a.id) FROM VigattinAds\DomainModel\Ads a WHERE a.deleted = 0 AND a.status = 1 AND a.showIn = :showIn AND a.template = :template AND $keywordDql AND a.viewLimit > 0");
+                $query->setParameters($params);
             } else {
-                $query = $this->entityManager->createQuery("SELECT COUNT(a.id) FROM VigattinAds\DomainModel\Ads a WHERE a.deleted = 0 AND a.status = 1 AND a.showIn = :showIn AND a.keywords LIKE :keyword AND a.viewLimit > 0");
-                $query->setParameters(array('showIn' => $showIn, 'keyword' => '%'.$keyword.'%'));
+                $params = array('showIn' => $showIn);
+                $params = array_merge($params, $keywordValue);
+                $query = $this->entityManager->createQuery("SELECT COUNT(a.id) FROM VigattinAds\DomainModel\Ads a WHERE a.deleted = 0 AND a.status = 1 AND a.showIn = :showIn AND $keywordDql AND a.viewLimit > 0");
+                $query->setParameters($params);
             }
         }
         else
@@ -195,17 +202,24 @@ class AdsManager
      */
     public function searchAds($showIn, $template, $keyword, $start = 0, $limit = 10)
     {
-        $queryKey = md5('searchAds'.$showIn.$template.$keyword.$start.$limit);
+        $queryKey = md5('searchAds'.$showIn.$template.serialize($keyword).$start.$limit);
         $result = $this->cacheQuickExpire->getItem($queryKey);
         if($result) return unserialize($result);
         if($keyword)
         {
+            $keywordsResult = $this->keywordArrayToLikeDql($keyword);
+            $keywordDql = $keywordsResult[0];
+            $keywordValue = $keywordsResult[1];
             if($template) {
-                $query = $this->entityManager->createQuery("SELECT a FROM VigattinAds\DomainModel\Ads a WHERE a.deleted = 0 AND a.status = 1 AND a.showIn = :showIn AND a.template = :template AND a.keywords LIKE :keyword AND a.viewLimit > 0");
-                $query->setParameters(array('showIn' => $showIn, 'template' => $template, 'keyword' => '%'.$keyword.'%'));
+                $params = array('showIn' => $showIn, 'template' => $template);
+                $params = array_merge($params, $keywordValue);
+                $query = $this->entityManager->createQuery("SELECT a FROM VigattinAds\DomainModel\Ads a WHERE a.deleted = 0 AND a.status = 1 AND a.showIn = :showIn AND a.template = :template AND $keywordDql AND a.viewLimit > 0");
+                $query->setParameters($params);
             } else {
-                $query = $this->entityManager->createQuery("SELECT a FROM VigattinAds\DomainModel\Ads a WHERE a.deleted = 0 AND a.status = 1 AND a.showIn = :showIn AND a.keywords LIKE :keyword AND a.viewLimit > 0");
-                $query->setParameters(array('showIn' => $showIn, 'keyword' => '%'.$keyword.'%'));
+                $params = array('showIn' => $showIn);
+                $params = array_merge($params, $keywordValue);
+                $query = $this->entityManager->createQuery("SELECT a FROM VigattinAds\DomainModel\Ads a WHERE a.deleted = 0 AND a.status = 1 AND a.showIn = :showIn AND $keywordDql AND a.viewLimit > 0");
+                $query->setParameters($params);
             }
         }
         else

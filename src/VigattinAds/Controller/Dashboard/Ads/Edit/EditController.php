@@ -105,6 +105,7 @@ class EditController extends AdsController
         $actionContent->setVariable('request', $this->getRequest());
         $actionContent->setVariable('showImportAds', $this->showImportAds);
         $actionContent->setVariable('showUploadImage', $this->showUploadImage);
+        $actionContent->setVariable('viewToGoldRate', $this->settingsManager->get('viewToGoldRate'));
 
         // load the main view
         $this->mainView->addChild($actionContent, 'actionContent');

@@ -15,10 +15,11 @@
 <input id="adsId" type="hidden" name="adsId" value="<?php echo $ads->get('id'); ?>" />
 <div class="row">
     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-        <div>Current Gold <img style="display: none" class="current-gold-progress" src="/assets/vigattinads/img/circle-preloader-2.gif" /><span style="display: none" class="glyphicon glyphicon-ok text-success current-gold-success"></span></div>
-        <span class="big-font-3em text-warning current-gold middle-align"><?php echo $adsUser->get('credit'); ?></span> <a href="#" data-toggle="modal" data-target="#addGoldCredit" class="middle-align inline-block hover-do-underline tooltip-enable-right" data-toggle="tooltip" title="Add credit to your gold"><span class="glyphicon glyphicon-plus-sign top-align"></span> <small class="top-align">add gold</small></a>
+        <div>My Vigattin Coin <img style="display: none" class="current-gold-progress" src="/assets/vigattinads/img/circle-preloader-2.gif" /><span style="display: none" class="glyphicon glyphicon-ok text-success current-gold-success"></span></div>
+        <span class="big-font-3em text-warning current-gold middle-align"><?php echo $adsUser->get('credit'); ?></span> <!-- <a href="#" data-toggle="modal" data-target="#addGoldCredit" class="middle-align inline-block hover-do-underline tooltip-enable-right" data-toggle="tooltip" title="Add credit to your gold"><span class="glyphicon glyphicon-plus-sign top-align"></span> <small class="top-align">add gold</small></a> -->
     </div>
-    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+    <!--
+    <div class=" col-lg-4 col-md-4 col-sm-4 col-xs-12">
         <div>Total View(s)</div>
         <span class="big-font-3em total-views middle-align"><?php echo $adsViewCount; ?></span>
     </div>
@@ -26,7 +27,7 @@
         <div>Reserve View(s) <img style="display: none" class="views-remaining-progress" src="/assets/vigattinads/img/circle-preloader-2.gif" /><span style="display: none" class="glyphicon glyphicon-ok text-success views-remaining-success"></span></div>
         <span class="big-font-3em text-success middle-align remaining-views"><?php echo $ads->get('viewLimit'); ?></span> <a href="#" data-toggle="modal" data-target="#addViewCredit" class="middle-align inline-block hover-do-underline tooltip-enable-right" data-toggle="tooltip" title="Add credit to your remaining view(s) using your gold points"><span class="glyphicon glyphicon-plus-sign top-align"></span> <small class="top-align">edit reserve</small></a>
     </div>
-
+    -->
 </div>
 <!-- ads panel -->
 <form id="ads-form" class="small" method="post" action="">
@@ -81,6 +82,11 @@
             <?php echo isset($changeTargetSiteView) ? $changeTargetSiteView : ''; ?>
             <!-- /change target site -->
             <div class="row">
+                <div class="col-xs-6"></div>
+                <div class="col-xs-6" style="font-size: 1.3em;">Remaining Views: <span class="text-danger"><?php echo $ads->get('viewLimit'); ?></span></div>
+            </div>
+            <hr>
+            <div class="row">
                 <!-- ads preview -->
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ads-live-preview-label"><strong>Ads Preview</strong><p></p></div>
@@ -130,6 +136,18 @@
                         <textarea class="description-input form-control countable-character" data-max-char="130" data-target-display="#adsDescriptionCountDisplay" id="ads-description" name="ads-description" placeholder="Ads Description"><?php echo $this->escapeHtml($adsDescription); ?></textarea>
                     </div>
                     <!-- /ads form -->
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <span style="font-size: 1.3em" id="reserve<?php echo $ads->get('id'); ?>" class="ads-inline-edit-views">
+                                Remaining Vigattin Coin(s):
+                                <span class="reserve-value text-danger"><?php echo  number_format(intval($ads->get('viewLimit')), 2, '.', ''); ?></span>
+                                <a href="javascript:" data-target-id="<?php echo $ads->get('id'); ?>" class="ads-view-limit-inline-edit" data-container="body" data-toggle="popover" data-placement="left" data-content="<?php echo $this->escapeHtmlAttr('<div id="adsViewInlineEdit'.$ads->get('id').'" data-target-id="'.$ads->get('id').'"><div><input type="number" min="0" max="1000000" style="width: 200px; margin-bottom: 5px; font-size: 0.9em;" class="inline-edit-input"></div><div style="font-size: 0.9em; margin-bottom: 5px;">gold: <span class="inline-edit-gold"></span></div><div style="text-align: right;"><button style="font-size: 0.8em; padding-top: 5px; padding-bottom: 5px;" class="btn btn-default inline-edit-apply">apply</button> <button style="font-size: 0.8em; padding-top: 5px; padding-bottom: 5px;" class="btn btn-default inline-edit-cancel">cancel</button></div></div>'); ?>">
+                                    <span title="edit reserve" class="glyphicon glyphicon-edit"></span>
+                                </a>
+                            </span>
+                            <p></p>
+                        </div>
+                    </div>
                     <div class="row">
                         <!-- action button -->
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">

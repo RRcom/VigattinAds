@@ -56,7 +56,7 @@ class TourismArticleAdsCategoryProvider extends GenericAdsCategoryProvider
         $keywords = $this->ads->get('keywords');
         foreach(explode(')', $keywords) as $keyword ) {
             $id = filter_var($keyword, FILTER_SANITIZE_NUMBER_INT);
-            if($id) $this->ids[$id] = $id;
+            if(is_numeric($id)) $this->ids[$id] = $id;
             if(strpos($keyword, 'header') !== false) $this->position['header'] = 'header';
             if(strpos($keyword, 'rightside') !== false) $this->position['rightside'] = 'rightside';
             if(strpos($keyword, 'footer') !== false) $this->position['footer'] = 'footer';
