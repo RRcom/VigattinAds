@@ -118,12 +118,13 @@ class OnUpdateFreeGold implements MessageInterface
 
             // create new account
             else {
+                $vigApiResult = json_decode(file_get_contents('http://www.vigattin.com/api/member?id='.intval($this->message['id'])), true);
                 $user = $this->userManager->createUser(
-                    $this->message['email'],
-                    $this->message['username'] ? $this->message['username'] : uniqid(),
+                    $vigApiResult['email'],
+                    $vigApiResult['username'] ? $vigApiResult['username'] : uniqid(),
                     uniqid(),
-                    $this->message['firstName'] ? $this->message['firstName'] : 'no first name',
-                    $this->message['lastName'] ? $this->message['lastName'] : 'no last name'
+                    $vigApiResult['first_name'] ? $vigApiResult['first_name'] : 'no first name',
+                    $vigApiResult['last_name'] ? $vigApiResult['last_name'] : 'no last name'
                 );
                 $response['beforeGold'] = 0;
                 if($user instanceof \VigattinAds\DomainModel\AdsUser) {
