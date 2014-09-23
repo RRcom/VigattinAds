@@ -30,6 +30,7 @@ class AdsController extends DashboardController
         $actionContent->setVariable('adsList', $adsList);
         $actionContent->setVariable('userManager', $this->userManager);
         $actionContent->setVariable('paginator', $paginator);
+        $actionContent->setVariable('viewToGoldRate', $this->settingsManager->get('viewToGoldRate'));
 
         $this->mainView->addChild($actionContent, 'actionContent');
         return $this->mainView;

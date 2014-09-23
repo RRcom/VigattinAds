@@ -15,7 +15,7 @@ class ChooseWebsiteController extends AdsController
     public function indexAction()
     {
         $actionContent = new ViewModel();
-        $this->mainView->setVariable('title', 'Step 1. Choose a website');
+        $this->mainView->setVariable('title', 'Step 1. Choose a website for your ads');
         $actionContent->setTemplate('vigattinads/view/dashboard/ads/create/chooseWebsiteView');
         $this->mainView->addChild($actionContent, 'actionContent');
         return $this->mainView;

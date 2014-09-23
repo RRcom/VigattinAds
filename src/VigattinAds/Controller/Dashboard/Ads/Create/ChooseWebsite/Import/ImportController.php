@@ -18,7 +18,7 @@ class ImportController extends AdsController
         if($this->sessionManager->getStorage()->tempAdsTemplate['showIn'] == ChooseWebsiteController::TOURISMBLOGGER) {
             $this->mainView->setVariable('title', 'Step 3. Import ads template (optional)');
         } else {
-            $this->mainView->setVariable('title', 'Step 2. Import ads template (required)');
+            $this->mainView->setVariable('title', 'Step 2. Import ads template (optional)');
         }
         $actionContent->setTemplate('vigattinads/view/dashboard/ads/create/import/importView');
         $actionContent->setVariable('website', $this->sessionManager->getStorage()->tempAdsTemplate['showIn']);

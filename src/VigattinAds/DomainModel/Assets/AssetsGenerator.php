@@ -31,6 +31,7 @@ class AssetsGenerator
         'tools',
         'all',
         'tourismAuthor',
+        'reserveInlineUpdate',
     );
 
     // use by service.vigattin.com ads service

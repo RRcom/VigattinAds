@@ -55,4 +55,9 @@ class DebugController extends AbstractActionController
         ));
         return $viewModel;
     }
+
+    public function testErrorAction()
+    {
+        runError();
+    }
 }

@@ -15,6 +15,7 @@ class Module
     public function onBootstrap(MvcEvent $e)
     {
         date_default_timezone_set('Asia/Manila');
+        $this->logPhpError($e);
         $this->initRenderEvents($e);
         $application = $e->getApplication();
         $eventManager = $application->getEventManager();
@@ -94,5 +95,15 @@ class Module
         {
             new OnErrorViewRender($e);
         });
+    }
+
+    public function logPhpError(MvcEvent $e)
+    {
+        $config = $e->getApplication()->getServiceManager()->get('config');
+        if(empty($config['logError'])) return;
+        $logger = new \Zend\Log\Logger;
+        $writer = new \Zend\Log\Writer\Stream('./log/php-error.log');
+        $logger->addWriter($writer);
+        \Zend\Log\Logger::registerErrorHandler($logger);
     }
 }

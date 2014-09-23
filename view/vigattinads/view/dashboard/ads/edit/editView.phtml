@@ -83,7 +83,7 @@
             <!-- /change target site -->
             <div class="row">
                 <div class="col-xs-6"></div>
-                <div class="col-xs-6" style="font-size: 1.3em;">Remaining Views: <span class="text-danger"><?php echo $ads->get('viewLimit'); ?></span></div>
+                <div class="col-xs-6" style="font-size: 1.3em;">Total Views: <span class="text-danger"><?php echo $ads->get('viewCount'); ?></span></div>
             </div>
             <hr>
             <div class="row">
@@ -140,8 +140,8 @@
                         <div class="col-xs-12">
                             <span style="font-size: 1.3em" id="reserve<?php echo $ads->get('id'); ?>" class="ads-inline-edit-views">
                                 Remaining Vigattin Coin(s):
-                                <span class="reserve-value text-danger"><?php echo  number_format(intval($ads->get('viewLimit')), 2, '.', ''); ?></span>
-                                <a href="javascript:" data-target-id="<?php echo $ads->get('id'); ?>" class="ads-view-limit-inline-edit" data-container="body" data-toggle="popover" data-placement="left" data-content="<?php echo $this->escapeHtmlAttr('<div id="adsViewInlineEdit'.$ads->get('id').'" data-target-id="'.$ads->get('id').'"><div><input type="number" min="0" max="1000000" style="width: 200px; margin-bottom: 5px; font-size: 0.9em;" class="inline-edit-input"></div><div style="font-size: 0.9em; margin-bottom: 5px;">gold: <span class="inline-edit-gold"></span></div><div style="text-align: right;"><button style="font-size: 0.8em; padding-top: 5px; padding-bottom: 5px;" class="btn btn-default inline-edit-apply">apply</button> <button style="font-size: 0.8em; padding-top: 5px; padding-bottom: 5px;" class="btn btn-default inline-edit-cancel">cancel</button></div></div>'); ?>">
+                                <span class="reserve-value text-danger"><?php echo  number_format(intval($ads->get('viewLimit') * $viewToGoldRate), 2, '.', ''); ?></span>
+                                <a href="javascript:" data-target-id="<?php echo $ads->get('id'); ?>" class="ads-view-limit-inline-edit" data-container="body" data-toggle="popover" data-placement="left" data-content="<?php echo $this->escapeHtmlAttr('<div id="adsViewInlineEdit'.$ads->get('id').'" data-target-id="'.$ads->get('id').'"><div><input type="number" min="0" max="1000000" style="width: 200px; margin-bottom: 5px; font-size: 0.9em;" class="inline-edit-input"></div><div style="font-size: 0.9em; margin-bottom: 5px;">remaining gold: <span class="inline-edit-gold"></span></div><div style="font-size: 0.9em; margin-bottom: 5px;">equivalent views: <span class="inline-estimated-view">0</span></div><div style="text-align: right;"><button style="font-size: 0.8em; padding-top: 5px; padding-bottom: 5px;" class="btn btn-default inline-edit-apply">apply</button> <button style="font-size: 0.8em; padding-top: 5px; padding-bottom: 5px;" class="btn btn-default inline-edit-cancel">cancel</button></div></div>'); ?>">
                                     <span title="edit reserve" class="glyphicon glyphicon-edit"></span>
                                 </a>
                             </span>
